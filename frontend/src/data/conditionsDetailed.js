@@ -1,24 +1,24 @@
 // Comprehensive orthopedic conditions with detailed scientific treatment protocols
 // SEO-optimized for Google ranking with internal linking structure
 
-// Condition images - high quality medical stock photos
+// Condition images - high quality professional medical stock photos
 const conditionImages = {
-  'knee-arthritis': 'https://images.pexels.com/photos/8436924/pexels-photo-8436924.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'rotator-cuff': 'https://images.pexels.com/photos/8093240/pexels-photo-8093240.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'acl-tear': 'https://images.pexels.com/photos/9623436/pexels-photo-9623436.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'hip-arthritis': 'https://images.pexels.com/photos/7089401/pexels-photo-7089401.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'frozen-shoulder': 'https://images.pexels.com/photos/5473182/pexels-photo-5473182.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'meniscus-tear': 'https://images.pexels.com/photos/4506105/pexels-photo-4506105.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'tennis-elbow': 'https://images.pexels.com/photos/5473215/pexels-photo-5473215.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'shoulder-dislocation': 'https://images.pexels.com/photos/7298902/pexels-photo-7298902.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'knee-arthritis': 'https://images.pexels.com/photos/7446985/pexels-photo-7446985.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'rotator-cuff': 'https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=800&q=80',
+  'acl-tear': 'https://images.unsplash.com/photo-1649751361457-01d3a696c7e6?w=800&q=80',
+  'hip-arthritis': 'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'frozen-shoulder': 'https://images.unsplash.com/photo-1631217871099-88310a909a32?w=800&q=80',
+  'meniscus-tear': 'https://images.pexels.com/photos/339619/pexels-photo-339619.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'tennis-elbow': 'https://images.pexels.com/photos/1350560/pexels-photo-1350560.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'shoulder-dislocation': 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=800&q=80',
   'carpal-tunnel': 'https://images.pexels.com/photos/5723885/pexels-photo-5723885.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'ankle-sprain': 'https://images.pexels.com/photos/7298878/pexels-photo-7298878.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'plantar-fasciitis': 'https://images.pexels.com/photos/5473177/pexels-photo-5473177.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'spinal-fracture': 'https://images.pexels.com/photos/2678059/pexels-photo-2678059.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'pcl-injury': 'https://images.pexels.com/photos/6111609/pexels-photo-6111609.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'fracture-trauma': 'https://images.pexels.com/photos/207496/pexels-photo-207496.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'bursitis': 'https://images.pexels.com/photos/5473186/pexels-photo-5473186.jpeg?auto=compress&cs=tinysrgb&w=800',
-  'patella-dislocation': 'https://images.pexels.com/photos/6111616/pexels-photo-6111616.jpeg?auto=compress&cs=tinysrgb&w=800'
+  'ankle-sprain': 'https://images.unsplash.com/photo-1545463913-5083aa7359a6?w=800&q=80',
+  'plantar-fasciitis': 'https://images.pexels.com/photos/275768/pexels-photo-275768.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'spinal-fracture': 'https://images.unsplash.com/photo-1618939261405-54e783a52f51?w=800&q=80',
+  'pcl-injury': 'https://images.unsplash.com/photo-1581595219618-375a1a48d324?w=800&q=80',
+  'fracture-trauma': 'https://images.pexels.com/photos/7089331/pexels-photo-7089331.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'bursitis': 'https://images.unsplash.com/photo-1539815208687-a0f05e15d601?w=800&q=80',
+  'patella-dislocation': 'https://images.unsplash.com/photo-1715531786074-e21c1d3b4fc6?w=800&q=80'
 };
 
 export const conditionsDetailed = [
