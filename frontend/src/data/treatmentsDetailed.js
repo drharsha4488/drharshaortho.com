@@ -925,11 +925,10 @@ Modern fracture surgery emphasizes minimally invasive techniques, anatomic reduc
     seoTitle: 'Fracture Surgery in Hyderabad | ORIF | Trauma Specialist | Dr. Harsha',
     seoDescription: 'Expert fracture fixation surgery at Yashoda Hospital Hyderabad. Plates, screws, nails for all fractures. 24/7 trauma care. Minimally invasive techniques.',
     seoKeywords: 'fracture surgery Hyderabad, ORIF surgery, trauma surgeon, broken bone treatment, fracture specialist, orthopedic trauma'
-  }
-];
+  },
 
-// Shorter entries for remaining treatments (will be expanded)
-export const treatmentsShort = [
+  // ============ EXPANDED TREATMENTS ============
+
   {
     id: 'hip-arthroscopy',
     name: 'Hip Arthroscopy',
@@ -938,8 +937,149 @@ export const treatmentsShort = [
     icon: '🦴',
     imageUrl: 'https://images.pexels.com/photos/5793694/pexels-photo-5793694.jpeg?auto=compress&cs=tinysrgb&w=800',
     shortDescription: 'Minimally invasive hip surgery for labral tears and FAI.',
-    hasDetailedContent: false
+    
+    heroTitle: 'Hip Arthroscopy in Hyderabad',
+    heroSubtitle: 'Advanced keyhole surgery for hip pain, labral tears, and femoroacetabular impingement.',
+    
+    overview: `Hip arthroscopy is a minimally invasive surgical procedure that allows Dr. B Harsha Vardhana Reddy to diagnose and treat hip joint problems through small incisions using a camera and specialized instruments. This technique has revolutionized the treatment of hip conditions in young, active patients.
+
+Common conditions treated include labral tears, femoroacetabular impingement (FAI), loose bodies, and early hip arthritis. The procedure preserves the hip joint and can delay or prevent the need for hip replacement in suitable candidates.`,
+
+    statistics: [
+      { label: 'Success Rate', value: '85-90%', description: 'For FAI treatment' },
+      { label: 'Incisions', value: '2-3', description: '1cm each' },
+      { label: 'Hospital Stay', value: '1 day', description: 'Overnight observation' },
+      { label: 'Crutches', value: '2-4 weeks', description: 'Protected weight bearing' }
+    ],
+
+    candidatesFor: [
+      'Hip labral tears causing pain and clicking',
+      'Femoroacetabular impingement (FAI) - cam or pincer type',
+      'Hip pain in young active adults',
+      'Snapping hip syndrome',
+      'Loose bodies in hip joint',
+      'Early hip arthritis (Grade 1-2)',
+      'Athletes with groin pain'
+    ],
+
+    procedureSteps: [
+      {
+        step: 1,
+        title: 'Positioning & Traction',
+        description: 'Patient positioned supine. Traction applied to distract hip joint for camera access.',
+        duration: '15-20 minutes'
+      },
+      {
+        step: 2,
+        title: 'Portal Placement',
+        description: 'Two to three small incisions made under fluoroscopy guidance.',
+        duration: '10 minutes'
+      },
+      {
+        step: 3,
+        title: 'Central Compartment',
+        description: 'Camera inserted to inspect labrum, cartilage, and ligamentum teres.',
+        duration: '20-30 minutes'
+      },
+      {
+        step: 4,
+        title: 'Labral Treatment',
+        description: 'Repair labrum with suture anchors or debride if irreparable.',
+        duration: '30-45 minutes'
+      },
+      {
+        step: 5,
+        title: 'Bony Reshaping',
+        description: 'Shave cam lesion on femoral head or pincer lesion on acetabulum.',
+        duration: '20-30 minutes'
+      },
+      {
+        step: 6,
+        title: 'Peripheral Compartment',
+        description: 'Release traction, examine peripheral hip structures.',
+        duration: '15-20 minutes'
+      }
+    ],
+
+    benefits: [
+      { title: 'Joint Preservation', description: 'Delays or prevents hip replacement', icon: '✓' },
+      { title: 'Minimal Scarring', description: 'Only 2-3 small incisions', icon: '✓' },
+      { title: 'Faster Recovery', description: 'Compared to open hip surgery', icon: '✓' },
+      { title: 'Accurate Diagnosis', description: 'Direct visualization of joint', icon: '✓' },
+      { title: 'Return to Sports', description: '80-90% return to prior level', icon: '✓' },
+      { title: 'Outpatient Surgery', description: 'Go home same or next day', icon: '✓' }
+    ],
+
+    recoveryTimeline: [
+      { phase: 'Day 1', milestone: 'Walk with crutches', activities: 'Partial weight bearing' },
+      { phase: 'Week 1-2', milestone: 'Gentle ROM exercises', activities: 'CPM machine if available' },
+      { phase: 'Week 3-4', milestone: 'Wean off crutches', activities: 'Pool exercises' },
+      { phase: 'Week 6-8', milestone: 'Stationary bike', activities: 'Progressive strengthening' },
+      { phase: 'Month 3', milestone: 'Light jogging', activities: 'Sport-specific training' },
+      { phase: 'Month 4-6', milestone: 'Return to sports', activities: 'Full activities' }
+    ],
+
+    risks: [
+      { risk: 'Nerve injury (transient)', percentage: '1-2%', prevention: 'Proper portal placement' },
+      { risk: 'Heterotopic ossification', percentage: '1-5%', prevention: 'NSAIDs post-op' },
+      { risk: 'Continued pain', percentage: '10-15%', prevention: 'Proper patient selection' },
+      { risk: 'Cartilage damage', percentage: '<1%', prevention: 'Careful instrumentation' },
+      { risk: 'DVT', percentage: '<1%', prevention: 'Early mobilization' }
+    ],
+
+    preOpPreparation: [
+      'MRI arthrogram for detailed labral assessment',
+      'Stop anti-inflammatory medications 1 week before',
+      'Arrange crutches and CPM machine if prescribed',
+      'Plan 2-4 weeks off work',
+      'Pre-habilitation exercises to strengthen hip',
+      'Stop smoking to optimize healing'
+    ],
+
+    postOpCare: [
+      'Crutches for 2-4 weeks with partial weight bearing',
+      'Ice hip 20 minutes every 2-3 hours',
+      'CPM machine 4-6 hours daily if prescribed',
+      'NSAIDs for 2-3 weeks to prevent bone formation',
+      'Avoid hip flexion beyond 90° for 4 weeks',
+      'No pivoting or twisting for 6 weeks'
+    ],
+
+    faqs: [
+      {
+        question: 'What is FAI (Femoroacetabular Impingement)?',
+        answer: 'FAI is a condition where abnormal bone growth on the femoral head (cam) or acetabulum (pincer) causes painful contact during hip movement. This repetitive impingement damages the labrum and cartilage, leading to pain and eventually arthritis if untreated.'
+      },
+      {
+        question: 'How successful is hip arthroscopy for labral tears?',
+        answer: 'Labral repair has 85-90% success rates in properly selected patients. Factors affecting success include tear size, cartilage condition, and compliance with rehabilitation. Patients with significant arthritis have lower success rates.'
+      },
+      {
+        question: 'Can hip arthroscopy prevent hip replacement?',
+        answer: 'In young patients with FAI and minimal arthritis, hip arthroscopy can delay or prevent hip replacement by treating the underlying cause. However, patients with advanced arthritis (Grade 3-4) are not good candidates and may need replacement.'
+      },
+      {
+        question: 'What is the cost of hip arthroscopy in Hyderabad?',
+        answer: 'Hip arthroscopy costs ₹1.5-2.5 lakhs depending on the procedures performed. Simple labral debridement costs less than complex labral repair with FAI correction requiring multiple anchors.'
+      },
+      {
+        question: 'When can I return to sports after hip arthroscopy?',
+        answer: 'Most athletes return to sports at 4-6 months. High-impact sports like football or hockey may take longer. Return is based on achieving full strength, range of motion, and completing sport-specific rehabilitation.'
+      },
+      {
+        question: 'Is hip arthroscopy painful?',
+        answer: 'Post-operative pain is typically moderate and well-controlled with medications. Most patients describe it as less painful than expected. The traction used during surgery may cause temporary groin numbness that resolves within days.'
+      }
+    ],
+
+    relatedConditions: ['hip-arthritis', 'labral-tear'],
+    relatedTreatments: ['total-hip-replacement'],
+
+    seoTitle: 'Hip Arthroscopy Surgery in Hyderabad | FAI Treatment | Dr. Harsha Reddy',
+    seoDescription: 'Expert hip arthroscopy for labral tears, FAI, and hip pain at Yashoda Hospital Hyderabad. Minimally invasive, joint-preserving surgery. Book consultation.',
+    seoKeywords: 'hip arthroscopy Hyderabad, FAI treatment, labral tear surgery, hip pain treatment, femoroacetabular impingement, hip preservation surgery'
   },
+
   {
     id: 'shoulder-replacement',
     name: 'Shoulder Replacement Surgery',
@@ -947,9 +1087,149 @@ export const treatmentsShort = [
     category: 'Joint Replacement',
     icon: '💪',
     imageUrl: 'https://images.pexels.com/photos/263337/pexels-photo-263337.jpeg?auto=compress&cs=tinysrgb&w=800',
-    shortDescription: 'Total or reverse shoulder replacement for severe arthritis.',
-    hasDetailedContent: false
+    shortDescription: 'Total or reverse shoulder replacement for severe arthritis and rotator cuff arthropathy.',
+    
+    heroTitle: 'Shoulder Replacement Surgery in Hyderabad',
+    heroSubtitle: 'Advanced anatomic and reverse shoulder replacement for pain-free shoulder function.',
+    
+    overview: `Shoulder replacement surgery (shoulder arthroplasty) involves replacing damaged parts of the shoulder joint with artificial components. Dr. B Harsha Vardhana Reddy performs both anatomic total shoulder replacement (for arthritis with intact rotator cuff) and reverse shoulder replacement (for arthritis with rotator cuff deficiency).
+
+Modern shoulder replacement provides excellent pain relief and improved function. The reverse shoulder replacement has been a game-changer for patients with combined arthritis and massive rotator cuff tears who previously had limited options.`,
+
+    statistics: [
+      { label: 'Pain Relief', value: '95%', description: 'Significant improvement' },
+      { label: 'Implant Life', value: '15-20 yrs', description: 'With modern implants' },
+      { label: 'Hospital Stay', value: '2-3 days', description: 'Standard protocol' },
+      { label: 'Sling Duration', value: '4-6 weeks', description: 'For healing' }
+    ],
+
+    candidatesFor: [
+      'Severe shoulder arthritis (osteoarthritis or inflammatory)',
+      'Rotator cuff tear arthropathy',
+      'Failed rotator cuff repair with arthritis',
+      'Complex proximal humerus fractures in elderly',
+      'Failed previous shoulder surgery',
+      'Avascular necrosis of humeral head',
+      'Severe rheumatoid arthritis of shoulder'
+    ],
+
+    procedureSteps: [
+      {
+        step: 1,
+        title: 'Pre-operative Planning',
+        description: 'CT scan for 3D planning. Choose anatomic vs reverse based on rotator cuff status.',
+        duration: 'Before surgery'
+      },
+      {
+        step: 2,
+        title: 'Surgical Approach',
+        description: 'Deltopectoral approach preserving deltoid muscle.',
+        duration: '15-20 minutes'
+      },
+      {
+        step: 3,
+        title: 'Humeral Preparation',
+        description: 'Remove damaged humeral head and prepare canal for stem.',
+        duration: '30-40 minutes'
+      },
+      {
+        step: 4,
+        title: 'Glenoid Preparation',
+        description: 'Prepare socket and implant glenoid component (baseplate for reverse).',
+        duration: '30-40 minutes'
+      },
+      {
+        step: 5,
+        title: 'Trial & Final Implants',
+        description: 'Test trial components for stability and motion. Implant final prosthesis.',
+        duration: '30-40 minutes'
+      },
+      {
+        step: 6,
+        title: 'Closure',
+        description: 'Repair subscapularis (anatomic) or deltoid (reverse). Layered closure.',
+        duration: '20-30 minutes'
+      }
+    ],
+
+    benefits: [
+      { title: 'Excellent Pain Relief', description: '95%+ patients satisfied', icon: '✓' },
+      { title: 'Improved Function', description: 'Raise arm overhead again', icon: '✓' },
+      { title: 'Reverse Option', description: 'Solution for rotator cuff deficiency', icon: '✓' },
+      { title: 'Durable Implants', description: '90% survive 15+ years', icon: '✓' },
+      { title: 'Better Sleep', description: 'No more night pain', icon: '✓' },
+      { title: 'Return to Activities', description: 'Golf, swimming, daily tasks', icon: '✓' }
+    ],
+
+    recoveryTimeline: [
+      { phase: 'Day 1-3', milestone: 'In hospital', activities: 'Pendulum exercises begin' },
+      { phase: 'Week 1-6', milestone: 'Sling immobilization', activities: 'Passive ROM only' },
+      { phase: 'Week 6-12', milestone: 'Active motion begins', activities: 'Gentle strengthening' },
+      { phase: 'Month 3-4', milestone: 'Progressive loading', activities: 'Light activities' },
+      { phase: 'Month 4-6', milestone: 'Full recovery', activities: 'Return to golf, swimming' }
+    ],
+
+    risks: [
+      { risk: 'Infection', percentage: '1-2%', prevention: 'Antibiotics, sterile technique' },
+      { risk: 'Instability/Dislocation', percentage: '2-5%', prevention: 'Proper soft tissue balance' },
+      { risk: 'Nerve injury', percentage: '<1%', prevention: 'Careful retraction' },
+      { risk: 'Glenoid loosening', percentage: '5-10% at 10 yrs', prevention: 'Good bone quality, technique' },
+      { risk: 'Stiffness', percentage: '5-10%', prevention: 'Physiotherapy compliance' }
+    ],
+
+    preOpPreparation: [
+      'CT scan for surgical planning',
+      'Optimize medical conditions (diabetes, blood pressure)',
+      'Dental clearance to prevent infection',
+      'Stop blood thinners as advised',
+      'Arrange help at home for 4-6 weeks',
+      'Practice dressing one-handed'
+    ],
+
+    postOpCare: [
+      'Sling at all times for 4-6 weeks',
+      'Ice shoulder to reduce swelling',
+      'Pendulum exercises 3-4 times daily',
+      'Sleep semi-reclined or in recliner',
+      'No lifting, pushing, or pulling for 6 weeks',
+      'Physiotherapy starts at 6 weeks'
+    ],
+
+    faqs: [
+      {
+        question: 'What is the difference between anatomic and reverse shoulder replacement?',
+        answer: 'Anatomic replacement mimics normal shoulder anatomy - ball on humerus, socket on scapula. Reverse replacement switches this - ball on scapula, socket on humerus. Reverse is used when rotator cuff is deficient, allowing deltoid muscle to lift the arm.'
+      },
+      {
+        question: 'How long does a shoulder replacement last?',
+        answer: 'Modern shoulder replacements last 15-20 years in most patients. Reverse replacements have excellent 10-year data. Younger, more active patients may wear out implants faster.'
+      },
+      {
+        question: 'Can I play golf after shoulder replacement?',
+        answer: 'Yes! Most patients return to golf at 4-6 months. Start with putting and chipping, then progress to full swings. Studies show 90%+ golfers return to playing after shoulder replacement.'
+      },
+      {
+        question: 'What is the cost of shoulder replacement in Hyderabad?',
+        answer: 'Shoulder replacement costs ₹3-5 lakhs depending on implant type (anatomic vs reverse) and brand. Reverse shoulder replacement typically costs more due to more complex implant design.'
+      },
+      {
+        question: 'Is shoulder replacement as successful as hip or knee replacement?',
+        answer: 'Shoulder replacement has excellent outcomes with 95%+ satisfaction rates for pain relief. However, functional gains may be more modest than hip/knee replacement due to the complexity of shoulder motion.'
+      },
+      {
+        question: 'Can both shoulders be replaced?',
+        answer: 'Yes, if both shoulders have severe arthritis. Usually done as staged procedures (one shoulder first, then the other 3-6 months later). Bilateral replacement in one surgery is rarely done due to rehabilitation challenges.'
+      }
+    ],
+
+    relatedConditions: ['shoulder-arthritis', 'rotator-cuff-tear'],
+    relatedTreatments: ['shoulder-arthroscopy'],
+
+    seoTitle: 'Shoulder Replacement Surgery in Hyderabad | Reverse Shoulder | Dr. Harsha',
+    seoDescription: 'Expert shoulder replacement surgery at Yashoda Hospital Hyderabad. Anatomic and reverse shoulder replacement for arthritis. 95% pain relief. Book consultation.',
+    seoKeywords: 'shoulder replacement Hyderabad, reverse shoulder replacement, shoulder arthroplasty cost, rotator cuff arthropathy treatment, shoulder surgeon Hyderabad'
   },
+
   {
     id: 'ankle-ligament-reconstruction',
     name: 'Ankle Ligament Reconstruction',
@@ -957,9 +1237,149 @@ export const treatmentsShort = [
     category: 'Sports Medicine',
     icon: '👣',
     imageUrl: 'https://images.pexels.com/photos/4506160/pexels-photo-4506160.jpeg?auto=compress&cs=tinysrgb&w=800',
-    shortDescription: 'Surgical repair for chronic ankle instability.',
-    hasDetailedContent: false
+    shortDescription: 'Surgical repair for chronic ankle instability and recurrent sprains.',
+    
+    heroTitle: 'Ankle Ligament Reconstruction in Hyderabad',
+    heroSubtitle: 'Restore ankle stability and get back to sports with modern ligament repair techniques.',
+    
+    overview: `Ankle ligament reconstruction is performed for chronic lateral ankle instability - a condition where the ankle repeatedly "gives way" due to damaged ligaments from previous sprains. Dr. B Harsha Vardhana Reddy uses both anatomic repair (Broström procedure) and reconstruction techniques depending on ligament quality.
+
+Chronic ankle instability affects 20-40% of people after ankle sprains. Without treatment, it leads to recurrent sprains, cartilage damage, and eventually ankle arthritis. Surgery restores stability and protects the joint.`,
+
+    statistics: [
+      { label: 'Success Rate', value: '85-95%', description: 'Good to excellent' },
+      { label: 'Surgery Time', value: '60-90 min', description: 'Outpatient procedure' },
+      { label: 'Hospital Stay', value: 'Day care', description: 'Go home same day' },
+      { label: 'Sports Return', value: '4-6 months', description: 'Full activities' }
+    ],
+
+    candidatesFor: [
+      'Recurrent ankle sprains (3 or more)',
+      'Ankle giving way during activities',
+      'Failed physiotherapy for 3-6 months',
+      'Persistent ankle pain and swelling',
+      'Athletes with ankle instability',
+      'Visible ankle laxity on examination'
+    ],
+
+    procedureSteps: [
+      {
+        step: 1,
+        title: 'Ankle Arthroscopy',
+        description: 'Inspect joint for cartilage damage, loose bodies, and synovitis.',
+        duration: '20-30 minutes'
+      },
+      {
+        step: 2,
+        title: 'Ligament Assessment',
+        description: 'Evaluate ATFL and CFL ligament quality and tissue availability.',
+        duration: '10 minutes'
+      },
+      {
+        step: 3,
+        title: 'Broström Repair',
+        description: 'Reattach and tighten native ligaments to fibula using suture anchors.',
+        duration: '30-40 minutes'
+      },
+      {
+        step: 4,
+        title: 'Gould Augmentation',
+        description: 'Reinforce repair with extensor retinaculum tissue.',
+        duration: '15-20 minutes'
+      },
+      {
+        step: 5,
+        title: 'Alternative: Reconstruction',
+        description: 'If ligaments poor quality, reconstruct using hamstring graft.',
+        duration: '45-60 minutes'
+      },
+      {
+        step: 6,
+        title: 'Closure & Splint',
+        description: 'Close wound and apply below-knee splint or cast.',
+        duration: '15 minutes'
+      }
+    ],
+
+    benefits: [
+      { title: 'Restored Stability', description: 'No more ankle giving way', icon: '✓' },
+      { title: 'Prevent Arthritis', description: 'Protect cartilage from damage', icon: '✓' },
+      { title: 'Return to Sports', description: '90%+ return to prior level', icon: '✓' },
+      { title: 'Minimally Invasive', description: 'Small incision, faster healing', icon: '✓' },
+      { title: 'Day Care Surgery', description: 'Go home same day', icon: '✓' },
+      { title: 'Long-lasting Results', description: 'Durable stability restoration', icon: '✓' }
+    ],
+
+    recoveryTimeline: [
+      { phase: 'Week 0-2', milestone: 'Non-weight bearing', activities: 'Splint/cast, elevation' },
+      { phase: 'Week 2-4', milestone: 'Protected weight bearing', activities: 'Walking boot, crutches' },
+      { phase: 'Week 4-6', milestone: 'Full weight bearing', activities: 'Wean off boot' },
+      { phase: 'Week 6-12', milestone: 'Strengthening', activities: 'Balance training' },
+      { phase: 'Month 3-4', milestone: 'Running progression', activities: 'Agility drills' },
+      { phase: 'Month 4-6', milestone: 'Return to sports', activities: 'Full activities' }
+    ],
+
+    risks: [
+      { risk: 'Recurrent instability', percentage: '5-10%', prevention: 'Proper technique, rehab' },
+      { risk: 'Stiffness', percentage: '5-10%', prevention: 'Early motion, physiotherapy' },
+      { risk: 'Nerve injury (sural)', percentage: '2-5%', prevention: 'Careful dissection' },
+      { risk: 'Wound problems', percentage: '2-3%', prevention: 'Gentle tissue handling' },
+      { risk: 'Infection', percentage: '<1%', prevention: 'Sterile technique' }
+    ],
+
+    preOpPreparation: [
+      'MRI to assess ligament and cartilage condition',
+      'Stress X-rays to document instability',
+      'Complete physiotherapy trial first',
+      'Stop smoking for better healing',
+      'Arrange crutches and walking boot',
+      'Plan 2-3 weeks off work'
+    ],
+
+    postOpCare: [
+      'Non-weight bearing for 2 weeks',
+      'Keep leg elevated above heart level',
+      'Ice and compression to reduce swelling',
+      'Toe and knee exercises to prevent stiffness',
+      'Walking boot at 2 weeks',
+      'Physiotherapy starts at 4 weeks'
+    ],
+
+    faqs: [
+      {
+        question: 'What causes chronic ankle instability?',
+        answer: 'Chronic instability results from damaged ankle ligaments (ATFL, CFL) that dont heal properly after sprains. Each subsequent sprain further weakens the ligaments, creating a cycle of instability and injury.'
+      },
+      {
+        question: 'Can ankle instability be treated without surgery?',
+        answer: 'Many patients improve with physiotherapy focusing on proprioception and peroneal strengthening. Ankle braces can provide support. Surgery is recommended when conservative treatment fails after 3-6 months.'
+      },
+      {
+        question: 'What is the Broström procedure?',
+        answer: 'The Broström procedure is the gold standard for ankle ligament repair. It involves tightening and reattaching the stretched ATFL and CFL ligaments to the fibula using suture anchors, restoring normal anatomy.'
+      },
+      {
+        question: 'What is the cost of ankle ligament surgery in Hyderabad?',
+        answer: 'Ankle ligament reconstruction costs ₹80,000-1.5 lakhs depending on whether its a simple repair (Broström) or requires tendon graft reconstruction. Arthroscopic procedures may cost slightly more.'
+      },
+      {
+        question: 'When can I run after ankle ligament surgery?',
+        answer: 'Light jogging typically starts at 3 months if healing is progressing well. Running and agility training progress from 3-4 months. Return to sports is usually 4-6 months after surgery.'
+      },
+      {
+        question: 'Will I need to wear a brace after surgery?',
+        answer: 'During sports, a lace-up ankle brace is recommended for 6-12 months after surgery. Many athletes continue using braces for high-risk activities long-term as a precaution.'
+      }
+    ],
+
+    relatedConditions: ['ankle-sprain', 'ankle-instability'],
+    relatedTreatments: [],
+
+    seoTitle: 'Ankle Ligament Reconstruction Surgery Hyderabad | Dr. Harsha Reddy',
+    seoDescription: 'Expert ankle ligament repair for chronic instability at Yashoda Hospital Hyderabad. Broström procedure, day care surgery. Return to sports. Book consultation.',
+    seoKeywords: 'ankle ligament surgery Hyderabad, chronic ankle instability treatment, Broström procedure, ankle sprain surgery, ankle reconstruction, sports injury ankle'
   },
+
   {
     id: 'carpal-tunnel-release',
     name: 'Carpal Tunnel Release Surgery',
@@ -967,9 +1387,144 @@ export const treatmentsShort = [
     category: 'Hand & Wrist',
     icon: '✋',
     imageUrl: 'https://images.pexels.com/photos/6153067/pexels-photo-6153067.jpeg?auto=compress&cs=tinysrgb&w=800',
-    shortDescription: 'Surgical decompression for carpal tunnel syndrome.',
-    hasDetailedContent: false
+    shortDescription: 'Surgical decompression for carpal tunnel syndrome - numbness and weakness in hand.',
+    
+    heroTitle: 'Carpal Tunnel Release Surgery in Hyderabad',
+    heroSubtitle: 'Quick, effective relief from hand numbness and tingling with minimally invasive surgery.',
+    
+    overview: `Carpal tunnel syndrome occurs when the median nerve is compressed at the wrist, causing numbness, tingling, and weakness in the hand. Carpal tunnel release surgery involves cutting the transverse carpal ligament to relieve pressure on the nerve.
+
+Dr. B Harsha Vardhana Reddy performs both open and endoscopic carpal tunnel release. The procedure takes only 15-20 minutes and can be done under local anesthesia. Most patients experience immediate relief of symptoms.`,
+
+    statistics: [
+      { label: 'Success Rate', value: '95%+', description: 'Symptom relief' },
+      { label: 'Surgery Time', value: '15-20 min', description: 'Quick procedure' },
+      { label: 'Anesthesia', value: 'Local', description: 'No general anesthesia needed' },
+      { label: 'Recovery', value: '2-4 weeks', description: 'Back to normal activities' }
+    ],
+
+    candidatesFor: [
+      'Numbness and tingling in thumb, index, middle fingers',
+      'Night-time symptoms waking from sleep',
+      'Hand weakness and dropping objects',
+      'Failed conservative treatment (splinting, injections)',
+      'Positive nerve conduction study',
+      'Muscle wasting at base of thumb (thenar atrophy)',
+      'Symptoms affecting work or daily activities'
+    ],
+
+    procedureSteps: [
+      {
+        step: 1,
+        title: 'Anesthesia',
+        description: 'Local anesthesia injected at wrist. Patient awake during procedure.',
+        duration: '5 minutes'
+      },
+      {
+        step: 2,
+        title: 'Incision',
+        description: 'Small incision (2-3 cm) at base of palm, or two tiny incisions for endoscopic.',
+        duration: '2 minutes'
+      },
+      {
+        step: 3,
+        title: 'Ligament Division',
+        description: 'Transverse carpal ligament carefully cut to decompress median nerve.',
+        duration: '5-10 minutes'
+      },
+      {
+        step: 4,
+        title: 'Nerve Inspection',
+        description: 'Check median nerve is fully decompressed and mobile.',
+        duration: '2-3 minutes'
+      },
+      {
+        step: 5,
+        title: 'Closure',
+        description: 'Skin closed with sutures. Soft dressing applied.',
+        duration: '5 minutes'
+      }
+    ],
+
+    benefits: [
+      { title: 'Immediate Relief', description: 'Tingling often resolves same day', icon: '✓' },
+      { title: 'Local Anesthesia', description: 'No general anesthesia risks', icon: '✓' },
+      { title: 'Quick Procedure', description: 'Done in 15-20 minutes', icon: '✓' },
+      { title: 'High Success', description: '95%+ symptom improvement', icon: '✓' },
+      { title: 'Outpatient', description: 'Go home immediately after', icon: '✓' },
+      { title: 'Prevents Damage', description: 'Stops permanent nerve injury', icon: '✓' }
+    ],
+
+    recoveryTimeline: [
+      { phase: 'Day 1', milestone: 'Light hand use', activities: 'Keep elevated, move fingers' },
+      { phase: 'Week 1', milestone: 'Light activities', activities: 'Typing, writing possible' },
+      { phase: 'Week 2', milestone: 'Suture removal', activities: 'Increase activities' },
+      { phase: 'Week 3-4', milestone: 'Normal activities', activities: 'Most daily tasks' },
+      { phase: 'Week 6-8', milestone: 'Full strength', activities: 'Gripping, lifting' },
+      { phase: 'Month 3', milestone: 'Complete recovery', activities: 'Scar matures' }
+    ],
+
+    risks: [
+      { risk: 'Pillar pain', percentage: '10-20%', prevention: 'Usually resolves by 3 months' },
+      { risk: 'Scar sensitivity', percentage: '5-10%', prevention: 'Scar massage, desensitization' },
+      { risk: 'Incomplete release', percentage: '1-2%', prevention: 'Experienced surgeon' },
+      { risk: 'Nerve injury', percentage: '<1%', prevention: 'Direct visualization' },
+      { risk: 'Infection', percentage: '<1%', prevention: 'Sterile technique' }
+    ],
+
+    preOpPreparation: [
+      'Nerve conduction study to confirm diagnosis',
+      'Stop blood thinners if advised',
+      'Arrange someone to drive you home',
+      'Wear loose, comfortable clothing',
+      'No need for fasting (local anesthesia)',
+      'Plan 1-2 weeks of limited hand use'
+    ],
+
+    postOpCare: [
+      'Keep hand elevated for 48 hours',
+      'Move fingers frequently to prevent stiffness',
+      'Keep dressing clean and dry',
+      'Ice palm area to reduce swelling',
+      'Gentle grip exercises after 1 week',
+      'Scar massage after sutures removed'
+    ],
+
+    faqs: [
+      {
+        question: 'How do I know if I need carpal tunnel surgery?',
+        answer: 'Surgery is recommended when symptoms are severe, persistent, or not responding to conservative treatment (splinting, steroid injections). Muscle wasting or abnormal nerve conduction studies also indicate surgery is needed.'
+      },
+      {
+        question: 'Is carpal tunnel surgery painful?',
+        answer: 'The surgery is done under local anesthesia, so you wont feel pain during the procedure. Afterwards, most patients describe mild to moderate discomfort for a few days, easily managed with painkillers.'
+      },
+      {
+        question: 'How soon will my symptoms improve after surgery?',
+        answer: 'Tingling and night-time symptoms often improve immediately or within days. Numbness may take weeks to months to fully resolve. If there was muscle wasting, strength recovery takes 6-12 months.'
+      },
+      {
+        question: 'What is the cost of carpal tunnel surgery in Hyderabad?',
+        answer: 'Carpal tunnel release costs ₹25,000-50,000 for open surgery. Endoscopic release may cost slightly more. The procedure is usually covered by health insurance.'
+      },
+      {
+        question: 'Can I type and use computer after carpal tunnel surgery?',
+        answer: 'Light typing is usually possible within 1-2 weeks. Full computer work with comfortable grip takes 3-4 weeks. Using an ergonomic keyboard and taking breaks helps prevent recurrence.'
+      },
+      {
+        question: 'Can carpal tunnel come back after surgery?',
+        answer: 'Recurrence after surgery is rare (<5%). If symptoms return, it may be due to incomplete release or scar tissue formation. Maintaining good wrist ergonomics reduces recurrence risk.'
+      }
+    ],
+
+    relatedConditions: ['carpal-tunnel-syndrome'],
+    relatedTreatments: [],
+
+    seoTitle: 'Carpal Tunnel Release Surgery in Hyderabad | Hand Surgery | Dr. Harsha',
+    seoDescription: 'Expert carpal tunnel surgery at Yashoda Hospital Hyderabad. Quick 15-minute procedure, local anesthesia, 95% success rate. Relief from hand numbness. Book now.',
+    seoKeywords: 'carpal tunnel surgery Hyderabad, hand numbness treatment, median nerve decompression, carpal tunnel release cost, hand surgeon Hyderabad'
   },
+
   {
     id: 'bankart-repair',
     name: 'Arthroscopic Bankart Repair',
@@ -977,9 +1532,149 @@ export const treatmentsShort = [
     category: 'Sports Medicine',
     icon: '🤕',
     imageUrl: 'https://images.pexels.com/photos/6076136/pexels-photo-6076136.jpeg?auto=compress&cs=tinysrgb&w=800',
-    shortDescription: 'Keyhole surgery for recurrent shoulder dislocation.',
-    hasDetailedContent: false
+    shortDescription: 'Keyhole surgery for recurrent shoulder dislocation and instability.',
+    
+    heroTitle: 'Bankart Repair Surgery in Hyderabad',
+    heroSubtitle: 'Stop shoulder dislocations with arthroscopic labral repair. Return to sports confidently.',
+    
+    overview: `Bankart repair is an arthroscopic procedure to treat shoulder instability caused by labral tears. When the shoulder dislocates, it often tears the labrum (cartilage rim) from the glenoid socket - called a Bankart lesion. This leads to recurrent dislocations.
+
+Dr. B Harsha Vardhana Reddy performs arthroscopic Bankart repair using suture anchors to reattach the torn labrum, restoring shoulder stability. The success rate is 85-95% for preventing future dislocations.`,
+
+    statistics: [
+      { label: 'Success Rate', value: '85-95%', description: 'No recurrence' },
+      { label: 'Surgery Time', value: '60-90 min', description: 'Arthroscopic' },
+      { label: 'Hospital Stay', value: '1 day', description: 'Overnight observation' },
+      { label: 'Sports Return', value: '4-6 months', description: 'Contact sports' }
+    ],
+
+    candidatesFor: [
+      'Recurrent shoulder dislocations',
+      'First-time dislocation in young athlete (<25 years)',
+      'Shoulder instability affecting sports or work',
+      'MRI showing Bankart lesion',
+      'Apprehension with arm in throwing position',
+      'Failed conservative treatment'
+    ],
+
+    procedureSteps: [
+      {
+        step: 1,
+        title: 'Positioning',
+        description: 'Beach chair or lateral position. General anesthesia with nerve block.',
+        duration: '15 minutes'
+      },
+      {
+        step: 2,
+        title: 'Portal Placement',
+        description: 'Three small incisions for camera and instruments.',
+        duration: '10 minutes'
+      },
+      {
+        step: 3,
+        title: 'Diagnostic Arthroscopy',
+        description: 'Assess labrum, capsule, biceps, and rotator cuff.',
+        duration: '15 minutes'
+      },
+      {
+        step: 4,
+        title: 'Labral Preparation',
+        description: 'Roughen glenoid rim to promote healing. Mobilize torn labrum.',
+        duration: '15-20 minutes'
+      },
+      {
+        step: 5,
+        title: 'Anchor Placement',
+        description: 'Place 3-5 suture anchors along glenoid rim. Pass sutures through labrum.',
+        duration: '30-40 minutes'
+      },
+      {
+        step: 6,
+        title: 'Capsular Shift',
+        description: 'Tighten loose capsule if needed (capsulorrhaphy).',
+        duration: '10-15 minutes'
+      }
+    ],
+
+    benefits: [
+      { title: 'Stops Dislocations', description: '85-95% success rate', icon: '✓' },
+      { title: 'Minimally Invasive', description: 'Only 3 small incisions', icon: '✓' },
+      { title: 'Preserves Motion', description: 'Better than open surgery', icon: '✓' },
+      { title: 'Return to Sports', description: '90%+ return to throwing', icon: '✓' },
+      { title: 'Prevents Arthritis', description: 'Stabilizes joint early', icon: '✓' },
+      { title: 'Quick Recovery', description: 'Outpatient or 1 night stay', icon: '✓' }
+    ],
+
+    recoveryTimeline: [
+      { phase: 'Week 0-4', milestone: 'Sling immobilization', activities: 'Elbow/wrist exercises only' },
+      { phase: 'Week 4-6', milestone: 'Sling off', activities: 'Passive ROM begins' },
+      { phase: 'Week 6-12', milestone: 'Active motion', activities: 'Gentle strengthening' },
+      { phase: 'Month 3-4', milestone: 'Full ROM', activities: 'Progressive resistance' },
+      { phase: 'Month 4-6', milestone: 'Sport-specific', activities: 'Throwing program' },
+      { phase: 'Month 6', milestone: 'Return to sports', activities: 'Full contact allowed' }
+    ],
+
+    risks: [
+      { risk: 'Recurrent instability', percentage: '5-15%', prevention: 'Proper anchor placement' },
+      { risk: 'Stiffness', percentage: '5-10%', prevention: 'Avoid over-tightening' },
+      { risk: 'Anchor problems', percentage: '2-5%', prevention: 'Quality implants' },
+      { risk: 'Nerve injury', percentage: '<1%', prevention: 'Careful portal placement' },
+      { risk: 'Infection', percentage: '<1%', prevention: 'Sterile technique' }
+    ],
+
+    preOpPreparation: [
+      'MRI to assess labral and bone damage',
+      'CT scan if bone loss suspected',
+      'Discuss activity goals with surgeon',
+      'Stop smoking for better healing',
+      'Arrange post-op help at home',
+      'Practice one-handed dressing'
+    ],
+
+    postOpCare: [
+      'Sling at all times for 4 weeks',
+      'Ice shoulder regularly',
+      'Sleep semi-reclined or upright',
+      'Elbow, wrist, and hand exercises',
+      'No reaching behind back for 3 months',
+      'No lifting >1 kg for 6 weeks'
+    ],
+
+    faqs: [
+      {
+        question: 'What is a Bankart lesion?',
+        answer: 'A Bankart lesion is a tear of the anterior-inferior labrum (cartilage rim) of the shoulder socket, typically caused by shoulder dislocation. This tear allows the humeral head to slip out of the socket, causing instability.'
+      },
+      {
+        question: 'Should I get surgery after my first shoulder dislocation?',
+        answer: 'In young athletes (<25 years), the recurrence rate after first dislocation is 70-90%. Early surgery in this group significantly reduces recurrence. Older patients or non-athletes may try rehabilitation first.'
+      },
+      {
+        question: 'How many anchors are needed for Bankart repair?',
+        answer: 'Typically 3-5 suture anchors are used depending on the size of the labral tear. Adequate anchor number and proper placement are key to successful repair and preventing recurrence.'
+      },
+      {
+        question: 'What is the cost of Bankart repair in Hyderabad?',
+        answer: 'Arthroscopic Bankart repair costs ₹1-1.5 lakhs including implants (suture anchors). Complex cases requiring bone grafting (Latarjet procedure) cost ₹1.5-2 lakhs.'
+      },
+      {
+        question: 'Can I throw after Bankart repair?',
+        answer: 'Yes! Most throwing athletes return to their sport. A structured throwing program starts at 4 months. Full throwing is typically allowed at 6 months. Professional throwers may take 9-12 months.'
+      },
+      {
+        question: 'What if I have bone loss with my shoulder instability?',
+        answer: 'Significant glenoid bone loss (>20%) requires a different procedure called Latarjet, where a bone block is transferred to rebuild the socket. Dr. Harsha will assess this with CT scan.'
+      }
+    ],
+
+    relatedConditions: ['shoulder-dislocation', 'shoulder-instability'],
+    relatedTreatments: ['shoulder-arthroscopy'],
+
+    seoTitle: 'Bankart Repair Surgery in Hyderabad | Shoulder Dislocation Treatment | Dr. Harsha',
+    seoDescription: 'Expert arthroscopic Bankart repair for shoulder dislocations at Yashoda Hospital Hyderabad. Stop recurrent instability, return to sports. Book consultation.',
+    seoKeywords: 'Bankart repair Hyderabad, shoulder dislocation surgery, labral tear repair, shoulder instability treatment, arthroscopic shoulder surgery'
   },
+
   {
     id: 'spinal-decompression',
     name: 'Spinal Decompression Surgery',
@@ -987,17 +1682,157 @@ export const treatmentsShort = [
     category: 'Spine Surgery',
     icon: '🏥',
     imageUrl: 'https://images.pexels.com/photos/2324837/pexels-photo-2324837.jpeg?auto=compress&cs=tinysrgb&w=800',
-    shortDescription: 'Surgical treatment for spinal stenosis and nerve compression.',
-    hasDetailedContent: false
+    shortDescription: 'Surgical treatment for spinal stenosis, disc herniation, and nerve compression.',
+    
+    heroTitle: 'Spinal Decompression Surgery in Hyderabad',
+    heroSubtitle: 'Relief from back and leg pain caused by spinal stenosis and nerve compression.',
+    
+    overview: `Spinal decompression surgery relieves pressure on spinal nerves caused by conditions like spinal stenosis, herniated discs, or bone spurs. Dr. B Harsha Vardhana Reddy performs various decompression procedures including laminectomy, discectomy, and foraminotomy using minimally invasive techniques when possible.
+
+The goal is to create more space for the nerves, relieving pain, numbness, and weakness in the back and legs. Modern techniques allow faster recovery with less tissue damage than traditional open surgery.`,
+
+    statistics: [
+      { label: 'Success Rate', value: '80-90%', description: 'Pain relief' },
+      { label: 'Hospital Stay', value: '1-3 days', description: 'Depending on procedure' },
+      { label: 'Walking', value: 'Same day', description: 'With assistance' },
+      { label: 'Recovery', value: '4-6 weeks', description: 'Return to activities' }
+    ],
+
+    candidatesFor: [
+      'Spinal stenosis causing leg pain (claudication)',
+      'Herniated disc not responding to conservative treatment',
+      'Sciatica lasting more than 6-12 weeks',
+      'Progressive weakness in legs',
+      'Cauda equina syndrome (emergency)',
+      'Failed epidural injections',
+      'Significantly impaired walking ability'
+    ],
+
+    procedureSteps: [
+      {
+        step: 1,
+        title: 'Pre-operative Imaging',
+        description: 'MRI and sometimes CT to plan decompression levels.',
+        duration: 'Before surgery'
+      },
+      {
+        step: 2,
+        title: 'Anesthesia & Positioning',
+        description: 'General anesthesia. Prone position on special frame.',
+        duration: '30 minutes'
+      },
+      {
+        step: 3,
+        title: 'Approach',
+        description: 'Midline or minimally invasive paramedian incision.',
+        duration: '15-20 minutes'
+      },
+      {
+        step: 4,
+        title: 'Laminectomy/Laminotomy',
+        description: 'Remove bone compressing the spinal canal.',
+        duration: '30-60 minutes per level'
+      },
+      {
+        step: 5,
+        title: 'Foraminotomy',
+        description: 'Enlarge nerve exit holes if needed.',
+        duration: '15-20 minutes per side'
+      },
+      {
+        step: 6,
+        title: 'Discectomy',
+        description: 'Remove herniated disc material if present.',
+        duration: '15-30 minutes'
+      }
+    ],
+
+    benefits: [
+      { title: 'Leg Pain Relief', description: '80-90% significant improvement', icon: '✓' },
+      { title: 'Improved Walking', description: 'Walk longer distances', icon: '✓' },
+      { title: 'Prevents Progression', description: 'Stops nerve damage', icon: '✓' },
+      { title: 'Minimally Invasive', description: 'Smaller incisions available', icon: '✓' },
+      { title: 'Quick Mobilization', description: 'Walk same day', icon: '✓' },
+      { title: 'Durable Results', description: '70-80% good at 5 years', icon: '✓' }
+    ],
+
+    recoveryTimeline: [
+      { phase: 'Day 0-1', milestone: 'Walk with support', activities: 'In hospital' },
+      { phase: 'Week 1', milestone: 'Light walking', activities: 'Home rest' },
+      { phase: 'Week 2-4', milestone: 'Increase activity', activities: 'Short walks, light tasks' },
+      { phase: 'Week 4-6', milestone: 'Return to work', activities: 'Desk job possible' },
+      { phase: 'Month 2-3', milestone: 'Normal activities', activities: 'Driving, light exercise' },
+      { phase: 'Month 3-6', milestone: 'Full recovery', activities: 'Sports, heavy work' }
+    ],
+
+    risks: [
+      { risk: 'Dural tear (CSF leak)', percentage: '2-5%', prevention: 'Careful technique, repair if occurs' },
+      { risk: 'Recurrent stenosis', percentage: '10-15% at 5 years', prevention: 'Adequate decompression' },
+      { risk: 'Infection', percentage: '1-3%', prevention: 'Antibiotics, sterile technique' },
+      { risk: 'Nerve injury', percentage: '<1%', prevention: 'Microsurgical technique' },
+      { risk: 'Instability', percentage: '5-10%', prevention: 'Preserve facet joints' }
+    ],
+
+    preOpPreparation: [
+      'MRI of lumbar spine within 3 months',
+      'Medical clearance for surgery',
+      'Stop smoking for better healing',
+      'Optimize diabetes and blood pressure',
+      'Stop blood thinners as advised',
+      'Arrange help at home for 2 weeks'
+    ],
+
+    postOpCare: [
+      'Walk regularly - short walks frequently',
+      'Avoid bending, lifting, twisting (BLT) for 6 weeks',
+      'Log roll when getting out of bed',
+      'Ice incision area for comfort',
+      'Wound care until healed',
+      'Physiotherapy starts at 2-4 weeks'
+    ],
+
+    faqs: [
+      {
+        question: 'What is spinal stenosis?',
+        answer: 'Spinal stenosis is narrowing of the spinal canal that compresses the nerves. It causes leg pain, numbness, and weakness, especially when walking (neurogenic claudication). Symptoms typically improve with sitting or bending forward.'
+      },
+      {
+        question: 'How long does spinal decompression surgery take?',
+        answer: 'Single-level decompression takes 1-2 hours. Multi-level procedures take longer (2-4 hours). Minimally invasive techniques may take slightly longer but have faster recovery.'
+      },
+      {
+        question: 'What is the success rate of spinal decompression?',
+        answer: 'Leg pain improves in 80-90% of patients. Back pain improvement is less predictable (60-70%). Most patients can walk longer distances and have better quality of life after surgery.'
+      },
+      {
+        question: 'What is the cost of spinal decompression surgery in Hyderabad?',
+        answer: 'Single-level decompression costs ₹1.5-2.5 lakhs. Multi-level procedures cost ₹2.5-4 lakhs. If fusion is needed, costs increase to ₹3-5 lakhs due to implant requirements.'
+      },
+      {
+        question: 'Will I need spinal fusion with decompression?',
+        answer: 'Not always. Simple decompression is preferred when spine is stable. Fusion is added if there is instability, spondylolisthesis, or scoliosis. Dr. Harsha will discuss this based on your imaging.'
+      },
+      {
+        question: 'Can spinal stenosis come back after surgery?',
+        answer: 'Symptoms can recur in 10-15% of patients over 5-10 years due to progressive degeneration. Maintaining healthy weight, core strength, and good posture helps prevent recurrence.'
+      }
+    ],
+
+    relatedConditions: ['spinal-stenosis', 'herniated-disc'],
+    relatedTreatments: [],
+
+    seoTitle: 'Spinal Decompression Surgery in Hyderabad | Spine Specialist | Dr. Harsha',
+    seoDescription: 'Expert spinal decompression for stenosis, disc herniation at Yashoda Hospital Hyderabad. Minimally invasive options, 80-90% success. Book spine consultation.',
+    seoKeywords: 'spinal decompression Hyderabad, laminectomy surgery, spinal stenosis treatment, disc surgery, spine surgeon Hyderabad, back pain surgery'
   }
 ];
 
-// Helper to get all treatments (detailed + short)
+// Helper to get all treatments
 export const getAllTreatments = () => {
-  return [...treatmentsDetailed, ...treatmentsShort];
+  return treatmentsDetailed;
 };
 
 // Helper to get treatment by ID
 export const getTreatmentById = (id) => {
-  return treatmentsDetailed.find(t => t.id === id) || treatmentsShort.find(t => t.id === id);
+  return treatmentsDetailed.find(t => t.id === id || t.slug === id);
 };
