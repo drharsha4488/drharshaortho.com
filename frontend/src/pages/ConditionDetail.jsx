@@ -113,20 +113,21 @@ const ConditionDetail = () => {
               </h1>
               <p className={`text-lg mb-8 ${condition.imageUrl ? 'text-white/90' : 'text-muted-foreground'}`}>
                 {condition.overview}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/contact">
-                <Button size="lg" className="bg-accent hover:brightness-110 text-accent-foreground gap-2">
-                  <Calendar className="w-5 h-5" />
-                  Book Consultation
-                </Button>
-              </Link>
-              <a href="tel:+919959964567">
-                <Button size="lg" variant="outline" className="gap-2">
-                  <Phone className="w-5 h-5" />
-                  Call +91 99599 64567
-                </Button>
-              </a>
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link to="/contact">
+                  <Button size="lg" className="bg-accent hover:brightness-110 text-accent-foreground gap-2 shadow-lg">
+                    <Calendar className="w-5 h-5" />
+                    Book Consultation
+                  </Button>
+                </Link>
+                <a href="tel:+919959964567">
+                  <Button size="lg" variant="outline" className={`gap-2 ${condition.imageUrl ? 'border-white text-white hover:bg-white/10' : ''}`}>
+                    <Phone className="w-5 h-5" />
+                    Call +91 99599 64567
+                  </Button>
+                </a>
+              </div>
             </div>
           </div>
         </div>
