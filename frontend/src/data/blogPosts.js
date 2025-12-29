@@ -805,7 +805,7 @@ Early consultation means better outcomes. Don't wait until you can't walk!
     id: '5',
     title: 'Shoulder Pain When Sleeping? 8 Causes and How to Get Relief Tonight',
     slug: 'shoulder-pain-when-sleeping-causes-relief',
-    excerpt: 'Can\\'t sleep due to shoulder pain? Discover 8 common causes of nighttime shoulder pain and practical solutions to sleep pain-free tonight.',
+    excerpt: 'Cannot sleep due to shoulder pain? Discover 8 common causes of nighttime shoulder pain and practical solutions to sleep pain-free tonight.',
     content: `# Why Does My Shoulder Hurt at Night? Complete Guide
 
 Shoulder pain that worsens at night is one of the most common orthopedic complaints. Here's everything you need to know.
