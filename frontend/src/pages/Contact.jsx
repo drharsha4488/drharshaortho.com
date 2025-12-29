@@ -36,7 +36,7 @@ const Contact = () => {
 
       toast({
         title: 'Appointment Request Sent!',
-        description: 'We'll contact you within 24 hours to confirm your appointment.',
+        description: 'We will contact you within 24 hours to confirm your appointment.',
       });
 
       setFormData({ name: '', email: '', phone: '', date: '', message: '' });
