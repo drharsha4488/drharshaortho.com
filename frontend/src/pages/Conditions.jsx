@@ -100,30 +100,22 @@ const Conditions = () => {
                     <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
                       {condition.shortDescription}
                     </p>
-                      {condition.symptoms?.slice(0, 3).map((symptom, idx) => (
-                        <li key={idx} className="text-xs text-muted-foreground flex items-start">
-                          <span className="text-primary mr-2">•</span>
-                          {symptom.name}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
 
-                  {/* Treatment tags */}
-                  <div className="mb-4">
-                    <p className="font-semibold text-xs text-foreground mb-2">Treatment Options:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {condition.surgicalTreatments?.slice(0, 2).map((treatment, idx) => (
-                        <span key={idx} className="text-xs bg-teal-light text-primary px-2 py-1 rounded-full">
-                          {treatment.name.length > 25 ? treatment.name.substring(0, 25) + '...' : treatment.name}
-                        </span>
-                      ))}
+                    {/* Treatment tags */}
+                    <div className="mb-4">
+                      <div className="flex flex-wrap gap-1">
+                        {condition.surgicalTreatments?.slice(0, 2).map((treatment, idx) => (
+                          <span key={idx} className="text-xs bg-teal-light text-primary px-2 py-0.5 rounded-full">
+                            {treatment.name.length > 20 ? treatment.name.substring(0, 20) + '...' : treatment.name}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Read more link */}
-                  <div className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
-                    Learn More <ArrowRight className="w-4 h-4 ml-1" />
+                    {/* Read more link */}
+                    <div className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
+                      Learn More <ArrowRight className="w-4 h-4 ml-1" />
+                    </div>
                   </div>
                 </Link>
               </motion.div>
