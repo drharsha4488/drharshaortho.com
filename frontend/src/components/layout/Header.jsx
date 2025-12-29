@@ -23,11 +23,17 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2" data-testid="logo-link">
-            <img 
-              src="/images/dr-harsha-logo.png" 
-              alt="Dr. Harsha Orthopedic Centre Logo"
-              className="h-12 lg:h-14 w-auto"
-            />
+            <picture>
+              <source srcSet="/images/dr-harsha-logo.webp" type="image/webp" />
+              <img 
+                src="/images/dr-harsha-logo.png" 
+                alt="Dr. Harsha Orthopedic Centre Logo"
+                className="h-12 lg:h-14 w-auto"
+                width="170"
+                height="56"
+                loading="eager"
+              />
+            </picture>
           </Link>
 
           {/* Desktop Navigation */}
