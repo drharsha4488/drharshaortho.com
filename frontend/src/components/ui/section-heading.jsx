@@ -4,7 +4,7 @@ export const SectionHeading = ({ badge, title, subtitle, centered = true }) => {
   return (
     <div className={`max-w-3xl ${centered ? 'mx-auto text-center' : ''} mb-12`}>
       {badge && (
-        <span className="inline-flex items-center px-3 py-1 bg-teal-light text-primary text-sm font-medium rounded-full mb-4">
+        <span className="inline-flex items-center px-3 py-1 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">
           {badge}
         </span>
       )}
