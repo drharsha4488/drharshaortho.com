@@ -13,7 +13,8 @@ const Footer = () => {
           <div>
             <h3 className="font-serif font-semibold text-lg mb-4">Dr. B Harsha Vardhana Reddy</h3>
             <p className="text-sm text-ivory/80 mb-4">
-              Expert orthopedic surgeon with 13+ years of experience in joint replacement, sports medicine, and trauma surgery.
+              Expert orthopedic surgeon with 15+ years of experience in joint replacement, sports medicine, and trauma surgery. 
+              MBA in Hospital Administration. Founder of AgileOrtho Healthcare.
             </p>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
