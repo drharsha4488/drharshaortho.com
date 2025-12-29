@@ -127,8 +127,105 @@ code {
     .shadow-gold {
         box-shadow: 0 4px 6px -1px rgba(212, 175, 55, 0.1), 0 2px 4px -1px rgba(212, 175, 55, 0.06);
     }
+    
+    /* Smooth hover transitions */
+    .hover-lift {
+        @apply transition-all duration-300 ease-out;
+    }
+    
+    .hover-lift:hover {
+        @apply -translate-y-1 shadow-lg;
+    }
+    
+    /* Card hover effect */
+    .card-hover {
+        @apply transition-all duration-300;
+    }
+    
+    .card-hover:hover {
+        @apply border-primary shadow-md;
+    }
+    
+    /* Image zoom effect */
+    .img-zoom {
+        @apply overflow-hidden;
+    }
+    
+    .img-zoom img {
+        @apply transition-transform duration-500;
+    }
+    
+    .img-zoom:hover img {
+        @apply scale-105;
+    }
+    
+    /* Button shine effect */
+    .btn-shine {
+        @apply relative overflow-hidden;
+    }
+    
+    .btn-shine::after {
+        content: '';
+        @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500;
+    }
+    
+    .btn-shine:hover::after {
+        @apply translate-x-full;
+    }
+    
+    /* Staggered animation */
+    .stagger-item {
+        @apply opacity-0 translate-y-4;
+        animation: staggerIn 0.5s ease forwards;
+    }
+    
+    @keyframes staggerIn {
+        to {
+            @apply opacity-100 translate-y-0;
+        }
+    }
+    
+    /* Gradient text */
+    .gradient-text {
+        @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+    }
+    
+    /* Glass effect */
+    .glass {
+        @apply bg-white/80 backdrop-blur-md;
+    }
 }
 
 .font-serif {
     font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* Smooth page transitions */
+.page-transition-enter {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: hsl(var(--secondary));
+}
+
+::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
 }
