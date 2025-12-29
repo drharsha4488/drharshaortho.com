@@ -65,13 +65,11 @@ const About = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <div className="rounded-2xl shadow-xl w-full aspect-[4/5] bg-teal-light flex items-center justify-center">
-                <div className="text-center p-8">
-                  <Award className="w-24 h-24 text-primary mx-auto mb-4" />
-                  <p className="text-xl font-serif font-semibold text-foreground">Dr. B Harsha Vardhana Reddy</p>
-                  <p className="text-sm text-muted-foreground mt-2">Orthopedic Surgeon</p>
-                </div>
-              </div>
+              <img
+                src="/images/dr-harsha-profile.png"
+                alt="Dr. B Harsha Vardhana Reddy - Orthopedic Surgeon Hyderabad"
+                className="rounded-2xl shadow-xl w-full aspect-[4/5] object-cover object-top"
+              />
             </motion.div>
           </div>
         </div>
