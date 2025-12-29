@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     question: 'What is the cost of robotic knee replacement in Hyderabad?',
-    answer: 'Robotic knee replacement at Yashoda Hospital costs ₹3.5-5 lakhs, including pre-op tests, surgery, implants, hospital stay, and initial physiotherapy. Insurance typically covers 80-100%. The precision of robotic surgery leads to better outcomes and longer implant life, making it worth the investment.',
+    answer: 'Robotic knee replacement at Yashoda Hospital costs 3.5-5 lakhs rupees, including pre-op tests, surgery, implants, hospital stay, and initial physiotherapy. Insurance typically covers 80-100%. The precision of robotic surgery leads to better outcomes and longer implant life, making it worth the investment.',
   },
   {
     question: 'Can I avoid surgery for my rotator cuff tear?',
@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     question: 'How do I know if my knee pain is serious?',
-    answer: 'Seek immediate medical attention if you have: knee locking or inability to straighten, severe swelling within 2 hours of injury, inability to bear weight, visible deformity, or popping sound with immediate severe pain. For gradual onset pain lasting >3 weeks, book a consultation to prevent worsening.',
+    answer: 'Seek immediate medical attention if you have: knee locking or inability to straighten, severe swelling within 2 hours of injury, inability to bear weight, visible deformity, or popping sound with immediate severe pain. For gradual onset pain lasting more than 3 weeks, book a consultation to prevent worsening.',
   },
   {
     question: 'What is the youngest age for knee replacement?',
@@ -58,7 +58,7 @@ const FAQSection = () => {
           subtitle="Get answers to common questions about orthopedic surgery, recovery, costs, and treatments."
         />
 
-        <div className=\"max-w-3xl mx-auto space-y-4\">
+        <div className="max-w-3xl mx-auto space-y-4">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
@@ -66,18 +66,18 @@ const FAQSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className=\"bg-card rounded-lg border border-border overflow-hidden\"
+              className="bg-card rounded-lg border border-border overflow-hidden"
               data-testid={`faq-${index}`}
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className=\"w-full px-6 py-4 flex items-start justify-between gap-4 text-left hover:bg-muted/50 transition-colors\"
+                className="w-full px-6 py-4 flex items-start justify-between gap-4 text-left hover:bg-muted/50 transition-colors"
               >
-                <span className=\"font-semibold text-foreground pr-4\">{faq.question}</span>
+                <span className="font-semibold text-foreground pr-4">{faq.question}</span>
                 {openIndex === index ? (
-                  <Minus className=\"w-5 h-5 text-primary flex-shrink-0 mt-0.5\" />
+                  <Minus className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                 ) : (
-                  <Plus className=\"w-5 h-5 text-primary flex-shrink-0 mt-0.5\" />
+                  <Plus className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                 )}
               </button>
               
@@ -89,7 +89,7 @@ const FAQSection = () => {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <div className=\"px-6 pb-4 text-sm text-muted-foreground leading-relaxed\">
+                    <div className="px-6 pb-4 text-sm text-muted-foreground leading-relaxed">
                       {faq.answer}
                     </div>
                   </motion.div>
@@ -99,12 +99,12 @@ const FAQSection = () => {
           ))}
         </div>
 
-        <div className=\"mt-12 text-center\">
-          <p className=\"text-muted-foreground mb-4\">Still have questions?</p>
+        <div className="mt-12 text-center">
+          <p className="text-muted-foreground mb-4">Still have questions?</p>
           <a
-            href=\"tel:+919959964567\"
-            className=\"inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:brightness-110 transition-all font-medium\"
-            data-testid=\"call-faq-btn\"
+            href="tel:+919959964567"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:brightness-110 transition-all font-medium"
+            data-testid="call-faq-btn"
           >
             Call +91 99599 64567
           </a>
