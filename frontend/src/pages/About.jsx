@@ -72,7 +72,7 @@ const About = () => {
               transition={{ delay: 0.2 }}
             >
               <img
-                src="/images/dr-harsha-profile.png"
+                src="/images/dr-harsha-profile-optimized.jpg"
                 alt="Dr. B Harsha Vardhana Reddy - Orthopedic Surgeon Hyderabad"
                 className="rounded-2xl shadow-xl w-full aspect-[4/5] object-cover object-top"
               />

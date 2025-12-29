@@ -108,7 +108,7 @@ const HeroSection = () => {
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/images/dr-harsha-profile.png"
+                src="/images/dr-harsha-profile-optimized.jpg"
                 alt="Dr. B Harsha Vardhana Reddy - Best Orthopedic Surgeon in Hyderabad"
                 className="w-full aspect-[4/5] object-cover object-top"
               />
