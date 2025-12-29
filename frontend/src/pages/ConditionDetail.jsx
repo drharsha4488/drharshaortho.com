@@ -86,18 +86,33 @@ const ConditionDetail = () => {
       </div>
 
       {/* Hero Section */}
-      <section className="section-padding bg-gradient-to-br from-background to-teal-light">
-        <div className="container-medical">
-          <div className="max-w-4xl">
-            <span className="text-4xl mb-4 block">{condition.icon}</span>
-            <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-sm rounded-full mb-4">
-              {condition.category}
-            </span>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-semibold text-foreground mb-6">
-              {condition.name}
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8">
-              {condition.overview}
+      <section className="relative">
+        {/* Hero Image Background */}
+        {condition.imageUrl && (
+          <div className="absolute inset-0 h-80 overflow-hidden">
+            <img 
+              src={condition.imageUrl} 
+              alt={condition.name}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-charcoal/70 via-charcoal/50 to-background" />
+          </div>
+        )}
+        
+        <div className={`section-padding relative ${condition.imageUrl ? 'pt-20' : 'bg-gradient-to-br from-background to-teal-light'}`}>
+          <div className="container-medical">
+            <div className="max-w-4xl">
+              <div className={`flex items-center gap-3 mb-4 ${condition.imageUrl ? 'text-white' : ''}`}>
+                <span className="text-4xl">{condition.icon}</span>
+                <span className={`inline-block px-3 py-1 ${condition.imageUrl ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'} text-sm rounded-full`}>
+                  {condition.category}
+                </span>
+              </div>
+              <h1 className={`text-3xl md:text-4xl lg:text-5xl font-serif font-semibold mb-6 ${condition.imageUrl ? 'text-white' : 'text-foreground'}`}>
+                {condition.name}
+              </h1>
+              <p className={`text-lg mb-8 ${condition.imageUrl ? 'text-white/90' : 'text-muted-foreground'}`}>
+                {condition.overview}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/contact">
