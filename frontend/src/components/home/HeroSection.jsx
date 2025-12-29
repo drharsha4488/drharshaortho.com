@@ -45,9 +45,9 @@ const HeroSection = () => {
             </h1>
 
             <p className="text-lg text-muted-foreground mb-8 max-w-xl">
-              Dr. B Harsha Vardhana Reddy brings over 13 years of expertise in joint
+              Dr. B Harsha Vardhana Reddy brings over 15 years of expertise in joint
               replacement, sports medicine, and trauma surgery. Currently Associate Consultant
-              at Yashoda Hospital Hi-Tech City, Hyderabad.
+              at Yashoda Hospital Hi-Tech City, Hyderabad, and Founder of AgileOrtho Healthcare.
             </p>
 
             {/* Credentials */}
