@@ -81,9 +81,9 @@ const Testimonials = () => {
   return (
     <Layout>
       <SEO 
-        title=\"Patient Testimonials - Success Stories | Dr. B Harsha Vardhana Reddy\"
-        description=\"Read real patient success stories and reviews. See how Dr. B Harsha Vardhana Reddy has helped 8,000+ patients recover from knee pain, hip problems, ACL tears, and sports injuries in Hyderabad.\"
-        keywords=\"orthopedic surgeon reviews Hyderabad, patient testimonials, knee replacement success stories, ACL surgery reviews, hip replacement patient experience, best doctor reviews\"
+        title="Patient Testimonials - Success Stories | Dr. B Harsha Vardhana Reddy"
+        description="Read real patient success stories and reviews. See how Dr. B Harsha Vardhana Reddy has helped 8,000+ patients recover from knee pain, hip problems, ACL tears, and sports injuries in Hyderabad."
+        keywords="orthopedic surgeon reviews Hyderabad, patient testimonials, knee replacement success stories, ACL surgery reviews, hip replacement patient experience, best doctor reviews"
       />
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="testimonials-page">
         <div className="container-medical">
