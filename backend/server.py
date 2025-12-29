@@ -107,6 +107,12 @@ class Contact(BaseModel):
 
 # ============ Routes ============
 
+# Health check endpoint for Kubernetes (at root level, not under /api)
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for Kubernetes liveness/readiness probes"""
+    return {"status": "healthy", "service": "careconnect-backend"}
+
 @api_router.get("/")
 async def root():
     return {"message": "CareConnect API - Dr. B Harsha Vardhana Reddy"}
