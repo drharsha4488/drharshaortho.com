@@ -3,18 +3,63 @@ import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
-import { Hospital, Stethoscope, Activity, Users, Award, Building2 } from 'lucide-react';
+import { Building2, Award } from 'lucide-react';
 
 const galleryItems = [
-  { id: 1, title: 'Advanced Operation Theater', icon: Hospital, color: 'bg-blue-100', iconColor: 'text-blue-600' },
-  { id: 2, title: 'Robotic Surgery System', icon: Activity, color: 'bg-purple-100', iconColor: 'text-purple-600' },
-  { id: 3, title: 'Patient Consultation Room', icon: Users, color: 'bg-green-100', iconColor: 'text-green-600' },
-  { id: 4, title: 'Arthroscopy Equipment', icon: Stethoscope, color: 'bg-teal-100', iconColor: 'text-teal-600' },
-  { id: 5, title: 'Recovery & Physiotherapy', icon: Activity, color: 'bg-orange-100', iconColor: 'text-orange-600' },
-  { id: 6, title: 'Modern Diagnostic Center', icon: Hospital, color: 'bg-red-100', iconColor: 'text-red-600' },
-  { id: 7, title: 'Yashoda Hospital Facade', icon: Building2, color: 'bg-indigo-100', iconColor: 'text-indigo-600' },
-  { id: 8, title: 'Award Winning Care', icon: Award, color: 'bg-yellow-100', iconColor: 'text-yellow-600' },
-  { id: 9, title: 'Medical Team', icon: Users, color: 'bg-pink-100', iconColor: 'text-pink-600' },
+  {
+    id: 1,
+    title: 'Modern Operation Theater',
+    imageUrl: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
+    category: 'Surgical Facility'
+  },
+  {
+    id: 2,
+    title: 'Advanced Robotic Surgery System',
+    imageUrl: 'https://images.unsplash.com/photo-1581594549595-35f6edc7b762?w=800&q=80',
+    category: 'Technology'
+  },
+  {
+    id: 3,
+    title: 'Patient Consultation Room',
+    imageUrl: 'https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?w=800&q=80',
+    category: 'Consultation'
+  },
+  {
+    id: 4,
+    title: 'Orthopedic Surgery Equipment',
+    imageUrl: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=800&q=80',
+    category: 'Medical Equipment'
+  },
+  {
+    id: 5,
+    title: 'Physiotherapy & Recovery Center',
+    imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+    category: 'Rehabilitation'
+  },
+  {
+    id: 6,
+    title: 'Advanced Diagnostic Imaging',
+    imageUrl: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80',
+    category: 'Diagnostics'
+  },
+  {
+    id: 7,
+    title: 'Yashoda Hospital Exterior',
+    imageUrl: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=800&q=80',
+    category: 'Hospital'
+  },
+  {
+    id: 8,
+    title: 'Patient Care Excellence',
+    imageUrl: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800&q=80',
+    category: 'Patient Care'
+  },
+  {
+    id: 9,
+    title: 'Expert Medical Team',
+    imageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80',
+    category: 'Team'
+  },
 ];
 
 const Gallery = () => {
@@ -35,26 +80,31 @@ const Gallery = () => {
           />
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {galleryItems.map((item, i) => {
-              const IconComponent = item.icon;
-              return (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`group relative ${item.color} rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border aspect-video flex flex-col items-center justify-center p-6`}
-                  data-testid={`gallery-item-${i}`}
-                >
-                  <IconComponent className={`w-16 h-16 ${item.iconColor} mb-4`} />
-                  <p className="text-center font-semibold text-foreground">{item.title}</p>
-                  <div className="mt-2 px-3 py-1 bg-white/80 rounded-full">
-                    <span className="text-xs text-muted-foreground">Yashoda Hospital</span>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {galleryItems.map((item, i) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="group relative bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border aspect-video"
+                data-testid={`gallery-item-${i}`}
+              >
+                <img 
+                  src={item.imageUrl} 
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/50 to-transparent opacity-70 group-hover:opacity-80 transition-opacity" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                  <p className="font-semibold text-lg mb-1">{item.title}</p>
+                  <span className="inline-block px-2 py-1 bg-primary/80 text-white text-xs rounded-full">
+                    {item.category}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
           </div>
 
           {/* Hospital Features */}
@@ -62,36 +112,70 @@ const Gallery = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mt-16 grid md:grid-cols-3 gap-8"
+            className="mt-16 grid md:grid-cols-4 gap-6"
           >
             <div className="bg-card rounded-xl p-6 shadow-md border border-border text-center">
-              <Hospital className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h3 className="font-serif font-semibold text-xl text-foreground mb-2">
-                Advanced Infrastructure
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Modern operation theaters equipped with latest technology for minimally invasive surgeries
-              </p>
+              <div className="text-4xl font-serif font-bold text-primary mb-2">500+</div>
+              <p className="text-sm text-muted-foreground">Successful Joint Replacements</p>
             </div>
 
             <div className="bg-card rounded-xl p-6 shadow-md border border-border text-center">
-              <Activity className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h3 className="font-serif font-semibold text-xl text-foreground mb-2">
-                Robotic Surgery
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                State-of-the-art robotic systems for precision knee and hip replacements with better outcomes
-              </p>
+              <div className="text-4xl font-serif font-bold text-primary mb-2">95%</div>
+              <p className="text-sm text-muted-foreground">Surgery Success Rate</p>
             </div>
 
             <div className="bg-card rounded-xl p-6 shadow-md border border-border text-center">
-              <Users className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h3 className="font-serif font-semibold text-xl text-foreground mb-2">
-                Expert Team
+              <div className="text-4xl font-serif font-bold text-primary mb-2">24/7</div>
+              <p className="text-sm text-muted-foreground">Emergency Care Available</p>
+            </div>
+
+            <div className="bg-card rounded-xl p-6 shadow-md border border-border text-center">
+              <div className="text-4xl font-serif font-bold text-primary mb-2">15+</div>
+              <p className="text-sm text-muted-foreground">Years of Experience</p>
+            </div>
+          </motion.div>
+
+          {/* Why Choose Yashoda Hospital */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-16 bg-card rounded-xl p-8 shadow-md border border-border"
+          >
+            <div className="max-w-3xl mx-auto">
+              <h3 className="text-2xl font-serif font-semibold text-foreground mb-6 text-center">
+                Why Choose Yashoda Hospital Hi-Tech City?
               </h3>
-              <p className="text-sm text-muted-foreground">
-                Experienced medical professionals dedicated to providing exceptional orthopedic care
-              </p>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="flex items-start gap-3">
+                  <Award className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-1">JCI Accredited</h4>
+                    <p className="text-sm text-muted-foreground">International quality standards and patient safety protocols</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Award className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-1">Advanced Technology</h4>
+                    <p className="text-sm text-muted-foreground">Robotic surgery systems and latest medical equipment</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Award className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-1">Expert Surgeons</h4>
+                    <p className="text-sm text-muted-foreground">Highly qualified orthopedic specialists with international training</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Award className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-1">Comprehensive Care</h4>
+                    <p className="text-sm text-muted-foreground">From diagnosis to recovery, complete orthopedic solutions</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
 
@@ -104,20 +188,34 @@ const Gallery = () => {
           >
             <Building2 className="w-16 h-16 mx-auto mb-4 text-gold" />
             <h3 className="text-2xl md:text-3xl font-serif font-semibold mb-4">
-              Yashoda Hospital Hi-Tech City
+              Yashoda Hospital Hi-Tech City, Hyderabad
             </h3>
             <p className="text-lg mb-6 text-ivory/90 max-w-2xl mx-auto">
               A premier multi-specialty hospital in Hyderabad with over 600 beds, advanced diagnostic facilities, 
               and a dedicated orthopedic department led by Dr. B Harsha Vardhana Reddy.
             </p>
+            <div className="grid md:grid-cols-3 gap-6 mb-8 max-w-3xl mx-auto">
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold text-gold mb-1">600+</div>
+                <div className="text-sm">Hospital Beds</div>
+              </div>
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold text-gold mb-1">30+</div>
+                <div className="text-sm">Medical Specialties</div>
+              </div>
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold text-gold mb-1">500+</div>
+                <div className="text-sm">Expert Doctors</div>
+              </div>
+            </div>
             <div className="flex flex-wrap gap-4 justify-center">
               <a href="/contact">
-                <button className="px-6 py-3 bg-accent text-accent-foreground rounded-lg hover:brightness-110 transition-all font-medium">
+                <button className="px-8 py-3 bg-accent text-accent-foreground rounded-lg hover:brightness-110 transition-all font-medium">
                   Visit Us
                 </button>
               </a>
               <a href="tel:+919959964567">
-                <button className="px-6 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all font-medium border border-white/30">
+                <button className="px-8 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all font-medium border border-white/30">
                   Call +91 99599 64567
                 </button>
               </a>
