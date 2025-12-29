@@ -407,6 +407,7 @@ async def get_admin_stats():
         pending_appointments = await db.appointments.count_documents({"status": "pending"})
         confirmed_appointments = await db.appointments.count_documents({"status": "confirmed"})
         completed_appointments = await db.appointments.count_documents({"status": "completed"})
+        total_blog_posts = await db.blog_posts.count_documents({})
         
         # Get recent appointments
         recent = await db.appointments.find({}, {"_id": 0}).sort("created_at", -1).to_list(5)
@@ -416,11 +417,126 @@ async def get_admin_stats():
             "pending": pending_appointments,
             "confirmed": confirmed_appointments,
             "completed": completed_appointments,
+            "blog_posts": total_blog_posts,
             "recent": recent
         }
     except Exception as e:
         logger.error(f"Error fetching stats: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch statistics")
+
+
+# ============ Blog Management Endpoints ============
+
+class BlogPostCreate(BaseModel):
+    title: str
+    content: str
+    excerpt: str
+    tags: List[str] = []
+    image_url: Optional[str] = None
+
+class BlogPostUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    excerpt: Optional[str] = None
+    tags: Optional[List[str]] = None
+    image_url: Optional[str] = None
+
+def generate_slug(title: str) -> str:
+    """Generate URL-friendly slug from title"""
+    import re
+    slug = title.lower()
+    slug = re.sub(r'[^a-z0-9\s-]', '', slug)
+    slug = re.sub(r'[\s_]+', '-', slug)
+    slug = re.sub(r'-+', '-', slug)
+    return slug.strip('-')
+
+@api_router.get("/admin/blog")
+async def get_admin_blog_posts():
+    """Get all blog posts for admin"""
+    try:
+        posts = await db.blog_posts.find({}, {"_id": 0}).sort("published_date", -1).to_list(100)
+        
+        for post in posts:
+            if isinstance(post.get('published_date'), str):
+                post['published_date'] = datetime.fromisoformat(post['published_date'])
+        
+        return posts
+    except Exception as e:
+        logger.error(f"Error fetching admin blog posts: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch blog posts")
+
+@api_router.post("/admin/blog")
+async def create_blog_post(post_data: BlogPostCreate):
+    """Create a new blog post"""
+    try:
+        slug = generate_slug(post_data.title)
+        
+        # Check if slug exists
+        existing = await db.blog_posts.find_one({"slug": slug})
+        if existing:
+            slug = f"{slug}-{str(uuid.uuid4())[:8]}"
+        
+        post = BlogPost(
+            title=post_data.title,
+            slug=slug,
+            content=post_data.content,
+            excerpt=post_data.excerpt,
+            tags=post_data.tags,
+            image_url=post_data.image_url
+        )
+        
+        doc = post.model_dump()
+        doc['published_date'] = doc['published_date'].isoformat()
+        
+        await db.blog_posts.insert_one(doc)
+        
+        logger.info(f"New blog post created: {post.title}")
+        return {"success": True, "id": post.id, "slug": post.slug}
+    except Exception as e:
+        logger.error(f"Error creating blog post: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to create blog post")
+
+@api_router.put("/admin/blog/{post_id}")
+async def update_blog_post(post_id: str, post_data: BlogPostUpdate):
+    """Update a blog post"""
+    try:
+        update_data = {k: v for k, v in post_data.model_dump().items() if v is not None}
+        
+        if 'title' in update_data:
+            update_data['slug'] = generate_slug(update_data['title'])
+        
+        result = await db.blog_posts.update_one(
+            {"id": post_id},
+            {"$set": update_data}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Blog post not found")
+        
+        logger.info(f"Blog post {post_id} updated")
+        return {"success": True, "message": "Blog post updated"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating blog post: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to update blog post")
+
+@api_router.delete("/admin/blog/{post_id}")
+async def delete_blog_post(post_id: str):
+    """Delete a blog post"""
+    try:
+        result = await db.blog_posts.delete_one({"id": post_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Blog post not found")
+        
+        logger.info(f"Blog post {post_id} deleted")
+        return {"success": True, "message": "Blog post deleted"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting blog post: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to delete blog post")
 
 
 # Include the router in the main app
