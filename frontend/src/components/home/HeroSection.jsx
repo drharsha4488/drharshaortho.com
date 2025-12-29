@@ -34,7 +34,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-teal-light text-primary text-sm font-medium rounded-full mb-6" data-testid="accepting-patients-badge">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary font-semibold text-sm rounded-full mb-6" data-testid="accepting-patients-badge">
               <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
               Accepting New Patients
             </span>
