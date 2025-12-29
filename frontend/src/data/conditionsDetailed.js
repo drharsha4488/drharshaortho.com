@@ -1112,6 +1112,7 @@ export const conditionsDetailed = [
   
   {
     id: 'carpal-tunnel',
+    imageUrl: conditionImages['carpal-tunnel'],
     name: 'Carpal Tunnel Syndrome',
     slug: 'carpal-tunnel-syndrome',
     category: 'Hand & Wrist',
@@ -1243,6 +1244,7 @@ export const conditionsDetailed = [
   
   {
     id: 'ankle-sprain',
+    imageUrl: conditionImages['ankle-sprain'],
     name: 'Chronic Ankle Instability',
     slug: 'ankle-instability',
     category: 'Foot & Ankle',
@@ -1349,6 +1351,7 @@ export const conditionsDetailed = [
   
   {
     id: 'plantar-fasciitis',
+    imageUrl: conditionImages['plantar-fasciitis'],
     name: 'Plantar Fasciitis & Heel Pain',
     slug: 'plantar-fasciitis',
     category: 'Foot & Ankle',
@@ -1484,6 +1487,7 @@ export const conditionsDetailed = [
   
   {
     id: 'spinal-fracture',
+    imageUrl: conditionImages['spinal-fracture'],
     name: 'Vertebral Compression Fractures',
     slug: 'spinal-fracture',
     category: 'Spine',
@@ -1581,6 +1585,7 @@ export const conditionsDetailed = [
   
   {
     id: 'pcl-injury',
+    imageUrl: conditionImages['pcl-injury'],
     name: 'PCL Injury & Multi-Ligament Knee',
     slug: 'pcl-injury',
     category: 'Sports Injury',
@@ -1667,6 +1672,7 @@ export const conditionsDetailed = [
   
   {
     id: 'fracture-trauma',
+    imageUrl: conditionImages['fracture-trauma'],
     name: 'Complex Fractures & Trauma',
     slug: 'complex-fractures',
     category: 'Trauma',
@@ -1744,6 +1750,7 @@ export const conditionsDetailed = [
   
   {
     id: 'bursitis',
+    imageUrl: conditionImages['bursitis'],
     name: 'Hip & Shoulder Bursitis',
     slug: 'bursitis',
     category: 'Hip',
@@ -1832,6 +1839,7 @@ export const conditionsDetailed = [
   
   {
     id: 'patella-dislocation',
+    imageUrl: conditionImages['patella-dislocation'],
     name: 'Patellar Dislocation & Instability',
     slug: 'patellar-dislocation',
     category: 'Knee',
