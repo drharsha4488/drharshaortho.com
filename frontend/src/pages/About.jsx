@@ -86,8 +86,8 @@ const About = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { icon: GraduationCap, title: 'DNB Orthopedics', desc: 'Continental Hospital' },
-              { icon: Award, title: 'D.Ortho', desc: 'MUHS, Maharashtra' },
-              { icon: Stethoscope, title: '13+ Years', desc: 'Clinical Experience' },
+              { icon: Award, title: 'MBA Healthcare', desc: 'ICFAI Business School' },
+              { icon: Stethoscope, title: '15+ Years', desc: 'Clinical Experience' },
               { icon: Users, title: '8,000+', desc: 'Patients Treated' },
             ].map((item, i) => (
               <motion.div
