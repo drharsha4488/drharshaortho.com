@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
+import SEO from '@/components/SEO';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { Button } from '@/components/ui/button';
@@ -57,12 +58,17 @@ const Contact = () => {
 
   return (
     <Layout>
+      <SEO 
+        title="Book Appointment - Best Orthopedic Surgeon Hyderabad | Dr. B Harsha Vardhana Reddy"
+        description="Book appointment with Dr. B Harsha Vardhana Reddy at Yashoda Hospital Hitec City, Hyderabad. Expert orthopedic consultation for knee, hip, shoulder, and sports injuries. Call +91 99599 64567"
+        keywords="book orthopedic appointment Hyderabad, orthopedic consultation, Yashoda Hospital Hitec City, knee pain doctor appointment, hip replacement consultation, sports injury appointment"
+      />
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="contact-page">
         <div className="container-medical">
           <SectionHeading
             badge="Contact Us"
-            title="Book Your Appointment"
-            subtitle="Schedule a consultation with Dr. B Harsha Vardhana Reddy. We're here to help you on your journey to better orthopedic health."
+            title="Book Your Appointment with Best Orthopedic Surgeon in Hyderabad"
+            subtitle="Schedule a consultation with Dr. B Harsha Vardhana Reddy at Yashoda Hospital, Hitec City. Expert treatment for all orthopedic conditions."
           />
 
           <div className="grid lg:grid-cols-2 gap-12">
