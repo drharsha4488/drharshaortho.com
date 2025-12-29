@@ -21,6 +21,11 @@ const Gallery = () => {
 
   return (
     <Layout>
+      <SEO 
+        title=\"Orthopedic Surgery Gallery - Facilities & Equipment | Dr. B Harsha Vardhana Reddy\"
+        description=\"View our state-of-the-art orthopedic surgery facilities at Yashoda Hospital Hitec City. Advanced operation theaters, modern equipment, and patient care facilities in Hyderabad.\"
+        keywords=\"orthopedic surgery facilities, Yashoda Hospital Hitec City, modern operation theater, orthopedic equipment, surgical facilities Hyderabad\"
+      />
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="gallery-page">
         <div className="container-medical">
           <SectionHeading
