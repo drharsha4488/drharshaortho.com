@@ -113,3 +113,22 @@ code {
         border-bottom-color: inherit;
     }
 }
+
+/* Medical Theme Custom Utilities */
+@layer utilities {
+    .container-medical {
+        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+    
+    .section-padding {
+        @apply py-16 md:py-24;
+    }
+    
+    .shadow-gold {
+        box-shadow: 0 4px 6px -1px rgba(212, 175, 55, 0.1), 0 2px 4px -1px rgba(212, 175, 55, 0.06);
+    }
+}
+
+.font-serif {
+    font-family: Georgia, 'Times New Roman', serif;
+}
