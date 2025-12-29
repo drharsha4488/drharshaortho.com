@@ -34,6 +34,7 @@ function App() {
     <HelmetProvider>
       <div className="App">
         <BrowserRouter>
+          <ScrollToTop />
           <Toaster />
           <Sonner />
           <Suspense fallback={<PageLoader />}>
