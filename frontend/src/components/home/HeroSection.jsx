@@ -6,14 +6,14 @@ import { ArrowRight, Award, Users, Calendar, CheckCircle } from 'lucide-react';
 
 const HeroSection = () => {
   const stats = [
-    { icon: Award, value: '13+', label: 'Years Experience' },
+    { icon: Award, value: '15+', label: 'Years Experience' },
     { icon: Users, value: '8,000+', label: 'Happy Patients' },
     { icon: Calendar, value: '4,000+', label: 'Surgeries' },
   ];
 
   const credentials = [
     'DNB Orthopedics',
-    'D.Ortho (MUHS)',
+    'MBA Hospital Administration',
     'Fellowship in Arthroplasty',
     'Fellowship in Arthroscopy',
   ];
