@@ -19,7 +19,9 @@ const PageLoader = () => (
 const Index = lazy(() => import('./pages/Index'));
 const About = lazy(() => import('./pages/About'));
 const Conditions = lazy(() => import('./pages/Conditions'));
+const ConditionDetail = lazy(() => import('./pages/ConditionDetail'));
 const Treatments = lazy(() => import('./pages/Treatments'));
+const TreatmentDetail = lazy(() => import('./pages/TreatmentDetail'));
 const Blog = lazy(() => import('./pages/Blog'));
 const Testimonials = lazy(() => import('./pages/Testimonials'));
 const Gallery = lazy(() => import('./pages/Gallery'));
@@ -38,7 +40,9 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/conditions" element={<Conditions />} />
+              <Route path="/conditions/:slug" element={<ConditionDetail />} />
               <Route path="/treatments" element={<Treatments />} />
+              <Route path="/treatments/:slug" element={<TreatmentDetail />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/testimonials" element={<Testimonials />} />
               <Route path="/gallery" element={<Gallery />} />
