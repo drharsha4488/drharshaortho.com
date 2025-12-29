@@ -193,6 +193,7 @@ export const conditionsDetailed = [
     slug: 'rotator-cuff-tear',
     category: 'Shoulder',
     icon: '💪',
+    imageUrl: conditionImages['rotator-cuff'],
     shortDescription: 'Tear in shoulder tendons causing pain and weakness. Can occur from injury or age-related degeneration.',
     
     overview: `A rotator cuff tear is a common cause of shoulder pain and disability. The rotator cuff consists of four muscles (supraspinatus, infraspinatus, teres minor, subscapularis) that stabilize and move the shoulder. Tears can be partial or full-thickness, and may result from acute injury or chronic degeneration. Dr. B Harsha Vardhana Reddy provides advanced arthroscopic rotator cuff repair at Yashoda Hospital, Hyderabad.`,
