@@ -119,27 +119,33 @@ backend:
 
   - task: "Testimonials API endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "GET /api/testimonials endpoint - needs verification"
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: GET /api/testimonials working correctly. Returns 3 testimonials with proper data structure (patient_name, rating, etc.). API responding with 200 OK status."
 
   - task: "Blog posts API endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "GET /api/blog_posts endpoint - needs verification"
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: GET /api/blog working correctly (note: endpoint is /api/blog not /api/blog_posts). Returns 2 blog posts with proper structure (title, author, etc.). API responding with 200 OK status."
 
 frontend:
   - task: "Gallery page with hospital images"
