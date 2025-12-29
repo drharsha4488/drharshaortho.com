@@ -1,0 +1,128 @@
+import React, { useEffect, useState } from 'react';
+import Layout from '@/components/layout/Layout';
+import { motion } from 'framer-motion';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { Calendar, User } from 'lucide-react';
+import { getBlogPosts } from '@/lib/api';
+
+const fallbackBlogPosts = [
+  {
+    id: '1',
+    title: 'Understanding Knee Replacement Surgery',
+    slug: 'understanding-knee-replacement-surgery',
+    excerpt: 'Learn about the latest advances in knee replacement surgery and what to expect during recovery.',
+    author: 'Dr. B Harsha Vardhana Reddy',
+    published_date: '2024-12-15T00:00:00Z',
+    tags: ['Knee', 'Surgery', 'Recovery'],
+  },
+  {
+    id: '2',
+    title: 'Sports Injury Prevention Tips',
+    slug: 'sports-injury-prevention-tips',
+    excerpt: 'Essential tips for athletes to prevent common sports injuries and maintain peak performance.',
+    author: 'Dr. B Harsha Vardhana Reddy',
+    published_date: '2024-12-10T00:00:00Z',
+    tags: ['Sports', 'Prevention', 'Health'],
+  },
+  {
+    id: '3',
+    title: 'When to Consider Hip Replacement',
+    slug: 'when-to-consider-hip-replacement',
+    excerpt: 'Signs that indicate you might benefit from hip replacement surgery and what the procedure involves.',
+    author: 'Dr. B Harsha Vardhana Reddy',
+    published_date: '2024-12-05T00:00:00Z',
+    tags: ['Hip', 'Surgery', 'Arthritis'],
+  },
+];
+
+const Blog = () => {
+  const [posts, setPosts] = useState(fallbackBlogPosts);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await getBlogPosts();
+        if (data && data.length > 0) {
+          setPosts(data);
+        }
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  };
+
+  return (
+    <Layout>
+      <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="blog-page">
+        <div className="container-medical">
+          <SectionHeading
+            badge="Medical Blog"
+            title="Orthopedic Health Insights"
+            subtitle="Stay informed with the latest articles on orthopedic health, treatments, and recovery tips from Dr. B Harsha Vardhana Reddy."
+          />
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map((post, i) => (
+              <motion.article
+                key={post.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-border"
+                data-testid={`blog-post-${i}`}
+              >
+                <div className="p-6">
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {post.tags && post.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-teal-light text-primary text-xs rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="font-serif font-semibold text-xl text-foreground mb-3 line-clamp-2">
+                    {post.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                    {post.excerpt}
+                  </p>
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <User className="w-3 h-3" />
+                      <span>{post.author}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      <span>{formatDate(post.published_date)}</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+
+          {posts.length === 0 && !loading && (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No blog posts available at the moment. Check back soon!</p>
+            </div>
+          )}
+        </div>
+      </section>
+    </Layout>
+  );
+};
+
+export default Blog;
