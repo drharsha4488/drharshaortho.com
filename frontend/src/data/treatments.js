@@ -5,6 +5,7 @@ export const treatments = [
     id: 'total-knee-replacement',
     name: 'Total Knee Replacement (TKR)',
     category: 'Joint Replacement',
+    imageUrl: 'https://images.pexels.com/photos/263337/pexels-photo-263337.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Complete knee joint replacement surgery for severe arthritis. Gold standard treatment for end-stage knee arthritis with excellent outcomes.',
     detailedDescription: 'Total knee replacement involves replacing the damaged knee joint surfaces with metal and plastic components. The procedure is performed through a minimally invasive approach, typically lasting 1-2 hours. Patients usually stay in hospital for 2-3 days and can walk with assistance on the first day post-surgery.',
     benefits: [
@@ -32,6 +33,7 @@ export const treatments = [
     id: 'total-hip-replacement',
     name: 'Total Hip Replacement (THR)',
     category: 'Joint Replacement',
+    imageUrl: 'https://images.pexels.com/photos/2324837/pexels-photo-2324837.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Hip joint replacement for severe arthritis or avascular necrosis (AVN). Restores pain-free hip function and mobility.',
     detailedDescription: 'Total hip replacement replaces the ball and socket of the hip joint with prosthetic components. Modern techniques include anterior approach for faster recovery, ceramic bearings for longevity, and computer-assisted surgery for precision.',
     benefits: [
@@ -59,6 +61,7 @@ export const treatments = [
     id: 'acl-reconstruction',
     name: 'ACL Reconstruction Surgery',
     category: 'Sports Medicine',
+    imageUrl: 'https://images.pexels.com/photos/4506160/pexels-photo-4506160.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Arthroscopic ACL ligament reconstruction using hamstring or patellar tendon graft. Returns athletes to competitive sports.',
     detailedDescription: 'ACL reconstruction is performed arthroscopically with minimal incisions. A tendon graft (hamstring or patellar tendon) is used to reconstruct the torn ACL. The procedure includes meniscus evaluation and repair if needed.',
     benefits: [
@@ -86,6 +89,7 @@ export const treatments = [
     id: 'shoulder-arthroscopy',
     name: 'Shoulder Arthroscopy & Rotator Cuff Repair',
     category: 'Sports Medicine',
+    imageUrl: 'https://images.pexels.com/photos/6076136/pexels-photo-6076136.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Minimally invasive keyhole surgery for rotator cuff tears, shoulder impingement, and labral tears.',
     detailedDescription: 'Arthroscopic shoulder surgery uses small incisions and a camera to repair rotator cuff tears, remove bone spurs, and stabilize the shoulder. The procedure preserves muscle and allows faster recovery compared to open surgery.',
     benefits: [
@@ -113,6 +117,7 @@ export const treatments = [
     id: 'knee-arthroscopy',
     name: 'Knee Arthroscopy & Meniscus Repair',
     category: 'Sports Medicine',
+    imageUrl: 'https://images.pexels.com/photos/30964506/pexels-photo-30964506.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Arthroscopic surgery for meniscus tears, cartilage damage, and loose bodies. Preserves knee cartilage when possible.',
     detailedDescription: 'Knee arthroscopy is performed through two small incisions. The procedure can treat meniscus tears, cartilage defects, ACL tears, and remove loose bodies. Meniscus preservation is prioritized over removal.',
     benefits: [
@@ -140,6 +145,7 @@ export const treatments = [
     id: 'fracture-fixation',
     name: 'Fracture Fixation Surgery (ORIF)',
     category: 'Trauma Surgery',
+    imageUrl: 'https://images.pexels.com/photos/30798553/pexels-photo-30798553.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Surgical treatment of complex fractures using plates, screws, and nails. Ensures anatomic alignment and stable fixation.',
     detailedDescription: 'Open reduction and internal fixation (ORIF) involves aligning bone fragments and securing them with metal implants. The technique varies based on fracture location - plates for forearm/ankle, nails for long bones, and screws for joint fractures.',
     benefits: [
@@ -167,6 +173,7 @@ export const treatments = [
     id: 'hip-arthroscopy',
     name: 'Hip Arthroscopy',
     category: 'Sports Medicine',
+    imageUrl: 'https://images.pexels.com/photos/5793694/pexels-photo-5793694.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Minimally invasive hip surgery for labral tears, FAI (femoroacetabular impingement), and loose bodies.',
     detailedDescription: 'Hip arthroscopy treats hip pain in young active patients. It addresses labral tears, removes bone spurs causing impingement, and repairs cartilage damage. The procedure can delay or prevent hip arthritis.',
     benefits: [
@@ -194,6 +201,7 @@ export const treatments = [
     id: 'shoulder-replacement',
     name: 'Shoulder Replacement Surgery',
     category: 'Joint Replacement',
+    imageUrl: 'https://images.pexels.com/photos/263337/pexels-photo-263337.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Total or reverse shoulder replacement for severe arthritis and rotator cuff arthropathy. Restores pain-free shoulder function.',
     detailedDescription: 'Shoulder replacement replaces the ball and socket with metal and plastic components. Reverse shoulder replacement is used when the rotator cuff is irreparable, providing excellent pain relief and function.',
     benefits: [
@@ -221,6 +229,7 @@ export const treatments = [
     id: 'ankle-ligament-reconstruction',
     name: 'Ankle Ligament Reconstruction',
     category: 'Sports Medicine',
+    imageUrl: 'https://images.pexels.com/photos/4506160/pexels-photo-4506160.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Surgical repair or reconstruction of torn ankle ligaments for chronic instability and recurrent sprains.',
     detailedDescription: 'Ankle ligament reconstruction uses the patient\'s own tendon or allograft to rebuild torn lateral ligaments. The Brostrom procedure is most common, with internal bracing for augmentation.',
     benefits: [
@@ -248,6 +257,7 @@ export const treatments = [
     id: 'carpal-tunnel-release',
     name: 'Carpal Tunnel Release Surgery',
     category: 'Hand & Wrist',
+    imageUrl: 'https://images.pexels.com/photos/6153067/pexels-photo-6153067.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Surgical decompression of median nerve in wrist for carpal tunnel syndrome. Relieves numbness and hand weakness.',
     detailedDescription: 'Carpal tunnel release is performed through a small incision in the palm. The transverse carpal ligament is cut to relieve pressure on the median nerve. Endoscopic technique uses even smaller incision.',
     benefits: [
@@ -275,6 +285,7 @@ export const treatments = [
     id: 'bankart-repair',
     name: 'Arthroscopic Bankart Repair',
     category: 'Sports Medicine',
+    imageUrl: 'https://images.pexels.com/photos/6076136/pexels-photo-6076136.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Keyhole surgery for recurrent shoulder dislocation. Repairs torn labrum and stabilizes shoulder joint.',
     detailedDescription: 'Bankart repair reattaches the torn labrum (cartilage rim) to the shoulder socket using suture anchors. The procedure is performed arthroscopically through 3-4 small incisions, allowing athletes to return to contact sports.',
     benefits: [
@@ -302,6 +313,7 @@ export const treatments = [
     id: 'spinal-decompression',
     name: 'Spinal Decompression Surgery',
     category: 'Spine Surgery',
+    imageUrl: 'https://images.pexels.com/photos/2324837/pexels-photo-2324837.jpeg?auto=compress&cs=tinysrgb&w=800',
     description: 'Surgical treatment for spinal stenosis and nerve compression. Relieves back and leg pain from pinched nerves.',
     detailedDescription: 'Spinal decompression removes bone spurs and thickened ligaments pressing on spinal nerves. Microdiscectomy removes herniated disc fragments. Minimally invasive techniques reduce muscle damage and speed recovery.',
     benefits: [
