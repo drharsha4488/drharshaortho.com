@@ -1,6 +1,26 @@
 // Comprehensive orthopedic conditions with detailed scientific treatment protocols
 // SEO-optimized for Google ranking with internal linking structure
 
+// Condition images - high quality medical stock photos
+const conditionImages = {
+  'knee-arthritis': 'https://images.pexels.com/photos/8436924/pexels-photo-8436924.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'rotator-cuff': 'https://images.pexels.com/photos/8093240/pexels-photo-8093240.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'acl-tear': 'https://images.pexels.com/photos/9623436/pexels-photo-9623436.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'hip-arthritis': 'https://images.pexels.com/photos/7089401/pexels-photo-7089401.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'frozen-shoulder': 'https://images.pexels.com/photos/5473182/pexels-photo-5473182.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'meniscus-tear': 'https://images.pexels.com/photos/4506105/pexels-photo-4506105.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'tennis-elbow': 'https://images.pexels.com/photos/5473215/pexels-photo-5473215.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'shoulder-dislocation': 'https://images.pexels.com/photos/7298902/pexels-photo-7298902.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'carpal-tunnel': 'https://images.pexels.com/photos/5723885/pexels-photo-5723885.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'ankle-sprain': 'https://images.pexels.com/photos/7298878/pexels-photo-7298878.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'plantar-fasciitis': 'https://images.pexels.com/photos/5473177/pexels-photo-5473177.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'spinal-fracture': 'https://images.pexels.com/photos/2678059/pexels-photo-2678059.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'pcl-injury': 'https://images.pexels.com/photos/6111609/pexels-photo-6111609.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'fracture-trauma': 'https://images.pexels.com/photos/207496/pexels-photo-207496.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'bursitis': 'https://images.pexels.com/photos/5473186/pexels-photo-5473186.jpeg?auto=compress&cs=tinysrgb&w=800',
+  'patella-dislocation': 'https://images.pexels.com/photos/6111616/pexels-photo-6111616.jpeg?auto=compress&cs=tinysrgb&w=800'
+};
+
 export const conditionsDetailed = [
   {
     id: 'knee-arthritis',
@@ -8,6 +28,7 @@ export const conditionsDetailed = [
     slug: 'knee-arthritis',
     category: 'Knee',
     icon: '🦵',
+    imageUrl: conditionImages['knee-arthritis'],
     shortDescription: 'Degenerative joint disease causing pain, stiffness, and reduced mobility in the knee.',
     
     // Detailed content for individual page
