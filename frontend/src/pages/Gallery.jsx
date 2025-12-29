@@ -8,57 +8,75 @@ import { Building2, Award } from 'lucide-react';
 const galleryItems = [
   {
     id: 1,
-    title: 'Modern Operation Theater',
-    imageUrl: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
-    category: 'Surgical Facility'
+    title: 'Yashoda Hospital Hitec City',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2025/01/Yashoda-Hospitals-Hitec-City.jpg',
+    category: 'Hospital Building'
   },
   {
     id: 2,
-    title: 'Advanced Robotic Surgery System',
-    imageUrl: 'https://images.unsplash.com/photo-1581594549595-35f6edc7b762?w=800&q=80',
-    category: 'Technology'
+    title: 'Modern Operation Theater',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Operation-Theater.jpg',
+    category: 'Surgical Facility'
   },
   {
     id: 3,
-    title: 'Patient Consultation Room',
-    imageUrl: 'https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?w=800&q=80',
-    category: 'Consultation'
+    title: 'Hospital Lobby',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Lobby-2.jpg',
+    category: 'Reception'
   },
   {
     id: 4,
-    title: 'Orthopedic Surgery Equipment',
-    imageUrl: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=800&q=80',
-    category: 'Medical Equipment'
+    title: 'Advanced OT Suite',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/O-T-3.jpg',
+    category: 'Operating Theater'
   },
   {
     id: 5,
-    title: 'Physiotherapy & Recovery Center',
-    imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
-    category: 'Rehabilitation'
+    title: 'CT Scan Facility',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/CT-Scan.jpg',
+    category: 'Diagnostics'
   },
   {
     id: 6,
-    title: 'Advanced Diagnostic Imaging',
-    imageUrl: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80',
+    title: 'MRI Suite',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/MRI-2.jpg',
     category: 'Diagnostics'
   },
   {
     id: 7,
-    title: 'Yashoda Hospital Exterior',
-    imageUrl: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=800&q=80',
-    category: 'Hospital'
+    title: 'VIP Patient Room',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/VIP-Room-1.jpg',
+    category: 'Patient Care'
   },
   {
     id: 8,
-    title: 'Patient Care Excellence',
-    imageUrl: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800&q=80',
+    title: 'Patient Care Facilities',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Patient-Care-Facilities.jpg',
     category: 'Patient Care'
   },
   {
     id: 9,
-    title: 'Expert Medical Team',
-    imageUrl: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80',
-    category: 'Team'
+    title: 'Hospital Lobby & Reception',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Lobby-5.jpg',
+    category: 'Reception'
+  },
+  {
+    id: 10,
+    title: 'Diagnostics Infrastructure',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Diagnostics-infrastructure.jpg',
+    category: 'Diagnostics'
+  },
+  {
+    id: 11,
+    title: 'Cath Lab',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Cath-lab.jpg',
+    category: 'Medical Equipment'
+  },
+  {
+    id: 12,
+    title: 'Laboratory',
+    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Lab3.jpg',
+    category: 'Diagnostics'
   },
 ];
 
