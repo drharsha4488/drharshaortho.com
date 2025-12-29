@@ -7,9 +7,11 @@ import { Award, GraduationCap, Stethoscope, Users } from 'lucide-react';
 const milestones = [
   { year: '2012', event: 'Completed MBBS from K.V.G Medical College, Bangalore' },
   { year: '2015', event: 'D.Ortho from Dr. G.S. Kulkarni Orthopedic Institute, Miraj' },
-  { year: '2017', event: 'Fellowship in Arthroplasty at Continental Hospitals, Hyderabad' },
-  { year: '2018', event: 'Fellowship in Arthroscopy at Continental Hospitals, Hyderabad' },
+  { year: '2016', event: 'Fellowship in Arthroplasty at Continental Hospitals, Hyderabad' },
+  { year: '2017', event: 'Fellowship in Arthroscopy at Continental Hospitals, Hyderabad' },
   { year: '2020', event: 'DNB Orthopedics from Continental Hospital, Hyderabad' },
+  { year: '2020', event: 'MBA in Hospital Administration from ICFAI Business School' },
+  { year: '2022', event: 'Founded AgileOrtho - Healthcare Startup' },
   { year: '2022', event: 'Consultant Orthopedic Surgeon at Himagiri Hospital, Gachibowli' },
   { year: '2024', event: 'Associate Consultant at Yashoda Hospital, Hi-Tech City' },
 ];
