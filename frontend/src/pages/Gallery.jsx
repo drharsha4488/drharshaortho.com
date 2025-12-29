@@ -8,75 +8,75 @@ import { Building2, Award } from 'lucide-react';
 const galleryItems = [
   {
     id: 1,
-    title: 'Yashoda Hospital Hitec City',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2025/01/Yashoda-Hospitals-Hitec-City.jpg',
+    title: 'Modern Hospital Building',
+    imageUrl: 'https://images.unsplash.com/photo-1626315869436-d6781ba69d6e?w=800&q=80',
     category: 'Hospital Building'
   },
   {
     id: 2,
-    title: 'Modern Operation Theater',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Operation-Theater.jpg',
+    title: 'Advanced Operation Theater',
+    imageUrl: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80',
     category: 'Surgical Facility'
   },
   {
     id: 3,
-    title: 'Hospital Lobby',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Lobby-2.jpg',
+    title: 'Hospital Reception & Lobby',
+    imageUrl: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80',
     category: 'Reception'
   },
   {
     id: 4,
-    title: 'Advanced OT Suite',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/O-T-3.jpg',
+    title: 'Surgical Suite',
+    imageUrl: 'https://images.unsplash.com/photo-1551076805-e1869033e561?w=800&q=80',
     category: 'Operating Theater'
   },
   {
     id: 5,
-    title: 'CT Scan Facility',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/CT-Scan.jpg',
-    category: 'Diagnostics'
+    title: 'Expert Surgical Team',
+    imageUrl: 'https://images.unsplash.com/photo-1640876777002-badf6aee5bcc?w=800&q=80',
+    category: 'Surgery'
   },
   {
     id: 6,
-    title: 'MRI Suite',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/MRI-2.jpg',
+    title: 'MRI Diagnostics Center',
+    imageUrl: 'https://images.pexels.com/photos/7089619/pexels-photo-7089619.jpeg?auto=compress&cs=tinysrgb&w=800',
     category: 'Diagnostics'
   },
   {
     id: 7,
-    title: 'VIP Patient Room',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/VIP-Room-1.jpg',
+    title: 'Modern Patient Room',
+    imageUrl: 'https://images.unsplash.com/photo-1710074213379-2a9c2653046a?w=800&q=80',
     category: 'Patient Care'
   },
   {
     id: 8,
-    title: 'Patient Care Facilities',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Patient-Care-Facilities.jpg',
-    category: 'Patient Care'
-  },
-  {
-    id: 9,
-    title: 'Hospital Lobby & Reception',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Lobby-5.jpg',
+    title: 'Spacious Hospital Lobby',
+    imageUrl: 'https://images.unsplash.com/photo-1586773860363-8ec8703e6aa5?w=800&q=80',
     category: 'Reception'
   },
   {
+    id: 9,
+    title: 'Hospital Exterior View',
+    imageUrl: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=800&q=80',
+    category: 'Hospital Building'
+  },
+  {
     id: 10,
-    title: 'Diagnostics Infrastructure',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Diagnostics-infrastructure.jpg',
+    title: 'MRI Scan Analysis',
+    imageUrl: 'https://images.pexels.com/photos/4226264/pexels-photo-4226264.jpeg?auto=compress&cs=tinysrgb&w=800',
     category: 'Diagnostics'
   },
   {
     id: 11,
-    title: 'Cath Lab',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Cath-lab.jpg',
-    category: 'Medical Equipment'
+    title: 'Patient Care Facilities',
+    imageUrl: 'https://images.pexels.com/photos/3844581/pexels-photo-3844581.jpeg?auto=compress&cs=tinysrgb&w=800',
+    category: 'Patient Care'
   },
   {
     id: 12,
-    title: 'Laboratory',
-    imageUrl: 'https://d3upjtc0wh66ez.cloudfront.net/wp-content/uploads/2024/07/Lab3.jpg',
-    category: 'Diagnostics'
+    title: 'Reception Area',
+    imageUrl: 'https://images.pexels.com/photos/7108325/pexels-photo-7108325.jpeg?auto=compress&cs=tinysrgb&w=800',
+    category: 'Reception'
   },
 ];
 
