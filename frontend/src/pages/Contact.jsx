@@ -141,9 +141,9 @@ const Contact = () => {
               <div className="bg-card rounded-xl overflow-hidden shadow-md border border-border">
                 <iframe
                   title="Yashoda Hospitals Hi-Tech City Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.542985842266!2d78.38568731487766!3d17.447701588042895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9158f201b205%3A0x11bbe7be7792411b!2sYashoda%20Hospital%20Hi-Tech%20City!5e0!3m2!1sen!2sin!4v1703699200000!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.1558644792896!2d78.38491237487853!3d17.462313701625256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb917df77e5ba9%3A0xa47221c5deef3da2!2sYashoda%20Hospitals%20%7C%20Best%20Hospital%20in%20Hitech%20City!5e0!3m2!1sen!2sin!4v1735469000000!5m2!1sen!2sin"
                   width="100%"
-                  height="300"
+                  height="350"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
