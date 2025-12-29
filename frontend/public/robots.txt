@@ -1,22 +1,12 @@
+# Robots.txt for Dr. Harsha Orthopedic Centre
 # https://www.robotstxt.org/robotstxt.html
+
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: https://drharshaortho.com/sitemap.xml
-
-# Disallow admin and private paths
+# Disallow admin and API paths
 Disallow: /admin/
 Disallow: /api/
 
-# Allow all pages for indexing
-Allow: /
-Allow: /about
-Allow: /conditions
-Allow: /conditions/*
-Allow: /treatments
-Allow: /treatments/*
-Allow: /blog
-Allow: /testimonials
-Allow: /gallery
-Allow: /contact
+# Sitemap location
+Sitemap: https://drharshaortho.com/sitemap.xml
