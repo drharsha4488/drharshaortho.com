@@ -134,6 +134,71 @@ async def root():
     return {"message": "CareConnect API - Dr. B Harsha Vardhana Reddy"}
 
 
+# Email notification helper function
+async def send_appointment_notification(appointment: Appointment):
+    """Send email notification for new appointment"""
+    if not RESEND_AVAILABLE or not RESEND_API_KEY or RESEND_API_KEY == 're_placeholder':
+        logger.info("Email notifications not configured, skipping email")
+        return False
+    
+    try:
+        html_content = f"""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background-color: #0d9488; padding: 20px; text-align: center;">
+                <h1 style="color: white; margin: 0;">New Appointment Request</h1>
+            </div>
+            <div style="padding: 20px; background-color: #f9fafb;">
+                <h2 style="color: #1f2937;">Patient Details</h2>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; font-weight: bold;">Name:</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">{appointment.name}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; font-weight: bold;">Email:</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">{appointment.email}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; font-weight: bold;">Phone:</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">{appointment.phone}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; font-weight: bold;">Preferred Date:</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">{appointment.preferred_date}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; font-weight: bold;">Message:</td>
+                        <td style="padding: 10px; border-bottom: 1px solid #e5e7eb;">{appointment.message or 'No message provided'}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; font-weight: bold;">Submitted At:</td>
+                        <td style="padding: 10px;">{appointment.created_at.strftime('%B %d, %Y at %I:%M %p')}</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="padding: 20px; background-color: #0d9488; text-align: center;">
+                <p style="color: white; margin: 0;">Dr. B Harsha Vardhana Reddy - Orthopedic Surgeon</p>
+                <p style="color: white; margin: 5px 0 0 0; font-size: 12px;">Yashoda Hospital, Hi-Tech City, Hyderabad</p>
+            </div>
+        </div>
+        """
+        
+        params = {
+            "from": SENDER_EMAIL,
+            "to": [NOTIFICATION_EMAIL],
+            "subject": f"New Appointment Request from {appointment.name}",
+            "html": html_content
+        }
+        
+        # Run sync SDK in thread to keep FastAPI non-blocking
+        email_response = await asyncio.to_thread(resend.Emails.send, params)
+        logger.info(f"Appointment notification email sent to {NOTIFICATION_EMAIL}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to send appointment notification email: {str(e)}")
+        return False
+
+
 # Appointment Endpoints
 @api_router.post("/appointments", response_model=Appointment)
 async def create_appointment(appointment_data: AppointmentCreate):
@@ -146,6 +211,10 @@ async def create_appointment(appointment_data: AppointmentCreate):
         await db.appointments.insert_one(doc)
         
         logger.info(f"New appointment created: {appointment.name} - {appointment.email}")
+        
+        # Send email notification (non-blocking)
+        asyncio.create_task(send_appointment_notification(appointment))
+        
         return appointment
     except Exception as e:
         logger.error(f"Error creating appointment: {str(e)}")
