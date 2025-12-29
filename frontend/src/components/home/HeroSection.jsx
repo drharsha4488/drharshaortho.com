@@ -99,21 +99,20 @@ const HeroSection = () => {
             </div>
           </motion.div>
 
-          {/* Image Placeholder */}
+          {/* Doctor Image */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative"
           >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-teal-light">
-              <div className="w-full aspect-[4/5] flex items-center justify-center">
-                <div className="text-center p-8">
-                  <Award className="w-20 h-20 text-primary mx-auto mb-4" />
-                  <p className="text-lg font-serif font-semibold text-foreground">Dr. B Harsha Vardhana Reddy</p>
-                  <p className="text-sm text-muted-foreground mt-2">Orthopedic Surgeon</p>
-                </div>
-              </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <img
+                src="/images/dr-harsha-profile.png"
+                alt="Dr. B Harsha Vardhana Reddy - Best Orthopedic Surgeon in Hyderabad"
+                className="w-full aspect-[4/5] object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/40 via-transparent to-transparent" />
             </div>
 
             {/* Floating Card */}
