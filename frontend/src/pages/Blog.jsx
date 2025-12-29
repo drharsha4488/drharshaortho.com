@@ -61,6 +61,12 @@ const Blog = () => {
             subtitle="Stay informed with the latest articles on orthopedic health, treatments, recovery tips, and trending surgical techniques from Dr. B Harsha Vardhana Reddy."
           />
 
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              <span className="ml-3 text-muted-foreground">Loading articles...</span>
+            </div>
+          ) : (
           <div className="max-w-4xl mx-auto space-y-8">
             {blogPosts.map((post, i) => (
               <motion.article
