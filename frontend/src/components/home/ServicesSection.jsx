@@ -9,21 +9,25 @@ const services = [
     title: 'Joint Replacement',
     description: 'Total and partial knee, hip, and shoulder replacement with minimally invasive techniques.',
     icon: '🦴',
+    link: '/treatments/total-knee-replacement',
   },
   {
     title: 'Sports Medicine',
     description: 'ACL reconstruction, rotator cuff repair, and sports injury rehabilitation.',
     icon: '🏃',
+    link: '/treatments/acl-reconstruction',
   },
   {
     title: 'Trauma Care',
     description: 'Expert treatment for fractures, dislocations, and complex orthopedic injuries.',
     icon: '🏥',
+    link: '/treatments/fracture-fixation',
   },
   {
     title: 'Arthroscopy',
     description: 'Minimally invasive keyhole surgery for joint problems with faster recovery.',
     icon: '🔬',
+    link: '/treatments/knee-arthroscopy',
   },
 ];
 
@@ -56,7 +60,7 @@ const ServicesSection = () => {
                 {service.description}
               </p>
               <Link
-                to="/treatments"
+                to={service.link}
                 className="inline-flex items-center gap-1 text-sm font-medium text-primary group-hover:gap-2 transition-all"
                 aria-label={`Learn more about ${service.title} treatment options`}
               >
