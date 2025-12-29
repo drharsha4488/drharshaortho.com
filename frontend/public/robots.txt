@@ -3,9 +3,9 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://ortho-caresite.preview.emergentagent.com/sitemap.xml
+Sitemap: https://drharshaortho.com/sitemap.xml
 
-# Disallow admin and private paths (if any in future)
+# Disallow admin and private paths
 Disallow: /admin/
 Disallow: /api/
 
@@ -13,7 +13,9 @@ Disallow: /api/
 Allow: /
 Allow: /about
 Allow: /conditions
+Allow: /conditions/*
 Allow: /treatments
+Allow: /treatments/*
 Allow: /blog
 Allow: /testimonials
 Allow: /gallery
