@@ -64,6 +64,11 @@ const Blog = () => {
 
   return (
     <Layout>
+      <SEO 
+        title=\"Orthopedic Health Blog - Expert Tips & Advice | Dr. B Harsha Vardhana Reddy\"
+        description=\"Read expert articles on knee health, hip replacement recovery, ACL injury prevention, sports medicine, and orthopedic care by Dr. B Harsha Vardhana Reddy, Hyderabad's leading orthopedic surgeon.\"
+        keywords=\"orthopedic blog, knee pain tips, hip replacement recovery, ACL injury prevention, sports medicine articles, bone health, joint care tips, orthopedic health Hyderabad\"
+      />
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="blog-page">
         <div className="container-medical">
           <SectionHeading
