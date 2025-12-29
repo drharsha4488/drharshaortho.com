@@ -329,6 +329,100 @@ async def create_contact(contact_data: ContactCreate):
         raise HTTPException(status_code=500, detail="Failed to submit contact form")
 
 
+# ============ Admin Endpoints ============
+
+# Simple password check (in production, use proper auth)
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'drharsha2025')
+
+class AdminLogin(BaseModel):
+    password: str
+
+class StatusUpdate(BaseModel):
+    status: str  # pending, confirmed, completed, cancelled
+
+@api_router.post("/admin/login")
+async def admin_login(login: AdminLogin):
+    """Simple admin authentication"""
+    if login.password == ADMIN_PASSWORD:
+        return {"success": True, "message": "Login successful"}
+    raise HTTPException(status_code=401, detail="Invalid password")
+
+@api_router.get("/admin/appointments")
+async def get_admin_appointments():
+    """Get all appointments for admin"""
+    try:
+        appointments = await db.appointments.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
+        
+        for appointment in appointments:
+            if isinstance(appointment.get('created_at'), str):
+                appointment['created_at'] = datetime.fromisoformat(appointment['created_at'])
+        
+        return appointments
+    except Exception as e:
+        logger.error(f"Error fetching admin appointments: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch appointments")
+
+@api_router.put("/admin/appointments/{appointment_id}")
+async def update_appointment_status(appointment_id: str, status_update: StatusUpdate):
+    """Update appointment status"""
+    try:
+        result = await db.appointments.update_one(
+            {"id": appointment_id},
+            {"$set": {"status": status_update.status}}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Appointment not found")
+        
+        logger.info(f"Appointment {appointment_id} status updated to {status_update.status}")
+        return {"success": True, "message": f"Status updated to {status_update.status}"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating appointment: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to update appointment")
+
+@api_router.delete("/admin/appointments/{appointment_id}")
+async def delete_appointment(appointment_id: str):
+    """Delete an appointment"""
+    try:
+        result = await db.appointments.delete_one({"id": appointment_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Appointment not found")
+        
+        logger.info(f"Appointment {appointment_id} deleted")
+        return {"success": True, "message": "Appointment deleted"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting appointment: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to delete appointment")
+
+@api_router.get("/admin/stats")
+async def get_admin_stats():
+    """Get dashboard statistics"""
+    try:
+        total_appointments = await db.appointments.count_documents({})
+        pending_appointments = await db.appointments.count_documents({"status": "pending"})
+        confirmed_appointments = await db.appointments.count_documents({"status": "confirmed"})
+        completed_appointments = await db.appointments.count_documents({"status": "completed"})
+        
+        # Get recent appointments
+        recent = await db.appointments.find({}, {"_id": 0}).sort("created_at", -1).to_list(5)
+        
+        return {
+            "total": total_appointments,
+            "pending": pending_appointments,
+            "confirmed": confirmed_appointments,
+            "completed": completed_appointments,
+            "recent": recent
+        }
+    except Exception as e:
+        logger.error(f"Error fetching stats: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch statistics")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
