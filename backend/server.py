@@ -188,7 +188,7 @@ async def create_testimonial(testimonial_data: TestimonialCreate):
 async def get_blog_posts():
     """Get all blog posts"""
     try:
-        posts = await db.blog_posts.find({}, {"_id": 0}).sort("published_date", -1).to_list(100)
+        posts = await db.blog_posts.find({}, {"_id": 0}).sort("published_date", -1).to_list(50)
         
         for post in posts:
             if isinstance(post.get('published_date'), str):
