@@ -134,7 +134,7 @@ async def create_appointment(appointment_data: AppointmentCreate):
 async def get_appointments():
     """Get all appointments (admin endpoint)"""
     try:
-        appointments = await db.appointments.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+        appointments = await db.appointments.find({}, {"_id": 0}).sort("created_at", -1).to_list(100)
         
         for appointment in appointments:
             if isinstance(appointment.get('created_at'), str):
