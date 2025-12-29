@@ -26,6 +26,11 @@ const memberships = [
 const About = () => {
   return (
     <Layout>
+      <SEO 
+        title="About Dr. B Harsha Vardhana Reddy - Orthopedic Surgeon Hyderabad | 15+ Years Experience"
+        description="Meet Dr. B Harsha Vardhana Reddy - DNB Orthopedics, MBA Hospital Administration, 15+ years experience, Founder of AgileOrtho. Expert in joint replacement & sports medicine at Yashoda Hospital."
+        keywords="Dr Harsha Reddy orthopedic surgeon, best orthopedic doctor Hyderabad, joint replacement surgeon, sports medicine doctor, Yashoda Hospital orthopedic, AgileOrtho founder"
+      />
       {/* Hero */}
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="about-hero">
         <div className="container-medical">
