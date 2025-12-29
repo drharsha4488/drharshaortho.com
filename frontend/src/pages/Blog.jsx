@@ -6,35 +6,9 @@ import { SectionHeading } from '@/components/ui/section-heading';
 import { Calendar, User } from 'lucide-react';
 import { getBlogPosts } from '@/lib/api';
 
-const fallbackBlogPosts = [
-  {
-    id: '1',
-    title: 'Understanding Knee Replacement Surgery',
-    slug: 'understanding-knee-replacement-surgery',
-    excerpt: 'Learn about the latest advances in knee replacement surgery and what to expect during recovery.',
-    author: 'Dr. B Harsha Vardhana Reddy',
-    published_date: '2024-12-15T00:00:00Z',
-    tags: ['Knee', 'Surgery', 'Recovery'],
-  },
-  {
-    id: '2',
-    title: 'Sports Injury Prevention Tips',
-    slug: 'sports-injury-prevention-tips',
-    excerpt: 'Essential tips for athletes to prevent common sports injuries and maintain peak performance.',
-    author: 'Dr. B Harsha Vardhana Reddy',
-    published_date: '2024-12-10T00:00:00Z',
-    tags: ['Sports', 'Prevention', 'Health'],
-  },
-  {
-    id: '3',
-    title: 'When to Consider Hip Replacement',
-    slug: 'when-to-consider-hip-replacement',
-    excerpt: 'Signs that indicate you might benefit from hip replacement surgery and what the procedure involves.',
-    author: 'Dr. B Harsha Vardhana Reddy',
-    published_date: '2024-12-05T00:00:00Z',
-    tags: ['Hip', 'Surgery', 'Arthritis'],
-  },
-];
+import blogPosts from '@/data/blogPosts';
+
+const fallbackBlogPosts = blogPosts.slice(0, 3);
 
 const Blog = () => {
   const [posts, setPosts] = useState(fallbackBlogPosts);
