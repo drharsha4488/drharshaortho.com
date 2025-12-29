@@ -3,17 +3,18 @@ import Layout from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import SEO from '@/components/SEO';
-import { conditions, conditionCategories } from '@/data/conditions';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import { conditionsDetailed, conditionCategories } from '@/data/conditionsDetailed';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 
 const Conditions = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [expandedCondition, setExpandedCondition] = useState(null);
 
   const filteredConditions = selectedCategory === 'All' 
-    ? conditions 
-    : conditions.filter(c => c.category === selectedCategory);
+    ? conditionsDetailed 
+    : conditionsDetailed.filter(c => c.category === selectedCategory);
 
   return (
     <Layout>
@@ -22,6 +23,18 @@ const Conditions = () => {
         description="Expert treatment for knee arthritis, hip AVN, ACL tears, rotator cuff injuries, meniscus tears, shoulder pain, and all orthopedic conditions in Hyderabad. 15+ years experience."
         keywords="orthopedic conditions Hyderabad, knee arthritis treatment, hip pain doctor, ACL tear Hyderabad, shoulder pain treatment, sports injury doctor, joint pain specialist Hyderabad"
       />
+      <SchemaMarkup type="MedicalClinic" />
+      
+      {/* Breadcrumb */}
+      <div className="bg-secondary py-3">
+        <div className="container-medical">
+          <nav className="flex items-center gap-2 text-sm">
+            <Link to="/" className="text-muted-foreground hover:text-primary">Home</Link>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground font-medium">Conditions</span>
+          </nav>
+        </div>
+      </div>
       
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="conditions-page">
         <div className="container-medical">
@@ -32,14 +45,15 @@ const Conditions = () => {
           />
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-2 mb-12">
             {conditionCategories.map((category) => (
               <Button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 variant={selectedCategory === category ? 'default' : 'outline'}
+                size="sm"
                 className={selectedCategory === category ? 'bg-primary text-white' : ''}
-                data-testid={`filter-${category.toLowerCase()}`}
+                data-testid={`filter-${category.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 {category}
               </Button>
@@ -55,49 +69,51 @@ const Conditions = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="bg-card rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-border cursor-pointer"
-                onClick={() => setExpandedCondition(expandedCondition === condition.id ? null : condition.id)}
-                data-testid={`condition-${condition.id}`}
               >
-                <div className="text-4xl mb-4">{condition.icon}</div>
-                <h3 className="font-serif font-semibold text-xl text-foreground mb-2">
-                  {condition.name}
-                </h3>
-                <p className="text-sm text-primary mb-2">{condition.category}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  {condition.description}
-                </p>
+                <Link
+                  to={`/conditions/${condition.slug}`}
+                  className="block bg-card rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-border hover:border-primary group h-full"
+                  data-testid={`condition-${condition.id}`}
+                >
+                  <div className="text-4xl mb-4">{condition.icon}</div>
+                  <h3 className="font-serif font-semibold text-xl text-foreground mb-2 group-hover:text-primary transition-colors">
+                    {condition.name}
+                  </h3>
+                  <p className="text-sm text-primary mb-2">{condition.category}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    {condition.shortDescription}
+                  </p>
 
-                {expandedCondition === condition.id && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="mt-4 pt-4 border-t border-border"
-                  >
-                    <div className="mb-3">
-                      <p className="font-semibold text-sm text-foreground mb-2">Common Symptoms:</p>
-                      <ul className="space-y-1">
-                        {condition.symptoms?.map((symptom, idx) => (
-                          <li key={idx} className="text-xs text-muted-foreground flex items-start">
-                            <span className="text-primary mr-2">•</span>
-                            {symptom}
-                          </li>
-                        ))}
-                      </ul>
+                  {/* Quick symptoms preview */}
+                  <div className="mb-4">
+                    <p className="font-semibold text-xs text-foreground mb-2">Common Symptoms:</p>
+                    <ul className="space-y-1">
+                      {condition.symptoms?.slice(0, 3).map((symptom, idx) => (
+                        <li key={idx} className="text-xs text-muted-foreground flex items-start">
+                          <span className="text-primary mr-2">•</span>
+                          {symptom.name}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Treatment tags */}
+                  <div className="mb-4">
+                    <p className="font-semibold text-xs text-foreground mb-2">Treatment Options:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {condition.surgicalTreatments?.slice(0, 2).map((treatment, idx) => (
+                        <span key={idx} className="text-xs bg-teal-light text-primary px-2 py-1 rounded-full">
+                          {treatment.name.length > 25 ? treatment.name.substring(0, 25) + '...' : treatment.name}
+                        </span>
+                      ))}
                     </div>
-                    <div>
-                      <p className="font-semibold text-sm text-foreground mb-2">Treatment Options:</p>
-                      <div className="flex flex-wrap gap-1">
-                        {condition.treatments?.map((treatment, idx) => (
-                          <span key={idx} className="text-xs bg-teal-light text-primary px-2 py-1 rounded-full">
-                            {treatment}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
+                  </div>
+
+                  {/* Read more link */}
+                  <div className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
+                    Learn More <ArrowRight className="w-4 h-4 ml-1" />
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
