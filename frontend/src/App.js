@@ -23,6 +23,7 @@ const Conditions = lazy(() => import('./pages/Conditions'));
 const ConditionDetail = lazy(() => import('./pages/ConditionDetail'));
 const Treatments = lazy(() => import('./pages/Treatments'));
 const TreatmentDetail = lazy(() => import('./pages/TreatmentDetailEnhanced'));
+const Admin = lazy(() => import('./pages/Admin'));
 const Blog = lazy(() => import('./pages/Blog'));
 const Testimonials = lazy(() => import('./pages/Testimonials'));
 const Gallery = lazy(() => import('./pages/Gallery'));
@@ -49,6 +50,7 @@ function App() {
               <Route path="/testimonials" element={<Testimonials />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
