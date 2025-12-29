@@ -72,22 +72,34 @@ const Conditions = () => {
               >
                 <Link
                   to={`/conditions/${condition.slug}`}
-                  className="block bg-card rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-border hover:border-primary group h-full"
+                  className="block bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border hover:border-primary group h-full"
                   data-testid={`condition-${condition.id}`}
                 >
-                  <div className="text-4xl mb-4">{condition.icon}</div>
-                  <h3 className="font-serif font-semibold text-xl text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {condition.name}
-                  </h3>
-                  <p className="text-sm text-primary mb-2">{condition.category}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    {condition.shortDescription}
-                  </p>
-
-                  {/* Quick symptoms preview */}
-                  <div className="mb-4">
-                    <p className="font-semibold text-xs text-foreground mb-2">Common Symptoms:</p>
-                    <ul className="space-y-1">
+                  {/* Condition Image */}
+                  {condition.imageUrl && (
+                    <div className="relative h-40 overflow-hidden">
+                      <img 
+                        src={condition.imageUrl} 
+                        alt={condition.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <span className="absolute bottom-3 left-3 px-2 py-1 bg-white/90 text-primary text-xs font-medium rounded">
+                        {condition.category}
+                      </span>
+                    </div>
+                  )}
+                  
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">{condition.icon}</span>
+                      <h3 className="font-serif font-semibold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                        {condition.name}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                      {condition.shortDescription}
+                    </p>
                       {condition.symptoms?.slice(0, 3).map((symptom, idx) => (
                         <li key={idx} className="text-xs text-muted-foreground flex items-start">
                           <span className="text-primary mr-2">•</span>
