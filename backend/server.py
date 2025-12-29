@@ -154,7 +154,7 @@ async def get_testimonials():
         testimonials = await db.testimonials.find(
             {"approved": True}, 
             {"_id": 0}
-        ).sort("created_at", -1).to_list(100)
+        ).sort("created_at", -1).to_list(50)
         
         for testimonial in testimonials:
             if isinstance(testimonial.get('created_at'), str):
