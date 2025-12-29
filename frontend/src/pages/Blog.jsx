@@ -370,6 +370,7 @@ const Blog = () => {
               </motion.article>
             ))}
           </div>
+          )}
 
           {/* Bottom CTA */}
           <div className="mt-16 text-center">
