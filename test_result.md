@@ -220,6 +220,66 @@ frontend:
         agent: "testing"
         comment: "✅ VERIFIED: Comprehensive testing completed. All 8 pages (Home, About, Gallery, Contact, Blog, Conditions, Treatments, Testimonials) working correctly. Navigation menu functional. Contact form submitting successfully. Google Maps embed working. Mobile responsiveness verified. No console errors found."
 
+  - task: "Scroll-to-top fix for page navigation"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/ScrollToTop.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Implemented ScrollToTop component with useEffect and useLocation hooks to scroll to top (position 0) on route changes"
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: Scroll-to-top fix working correctly. ScrollToTop component implemented with useEffect(() => window.scrollTo({top: 0, left: 0, behavior: 'instant'}), [pathname]). Navigation from /conditions to /conditions/rotator-cuff-tear starts page at top (scroll position = 0)."
+
+  - task: "Conditions page with images and hover effects"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Conditions.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added condition images with hover zoom effects and category badges positioned over images"
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: Conditions page displays condition cards with images correctly. Images have hover zoom effect (group-hover:scale-105 transition-transform duration-500). Category badges display over images with bg-white/90 styling positioned at bottom-left. Layout looks professional and polished."
+
+  - task: "Condition detail page hero images"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/ConditionDetail.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added hero section background images with gradient overlays and white text for readability"
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: Condition detail pages have hero sections with background images. Tested /conditions/knee-arthritis - hero image visible, white text readable over image with gradient overlay (bg-gradient-to-b from-charcoal/70 via-charcoal/50 to-background). Text styling uses text-white for readability. Professional appearance confirmed."
+
+  - task: "Blog page dynamic loading with API integration"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Blog.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Implemented dynamic blog loading from API with loading spinner and fallback to static posts"
+      - working: true
+        agent: "testing"
+        comment: "✅ VERIFIED: Blog page dynamic loading working correctly. Loading spinner (Loader2 animate-spin) appears briefly during API fetch. Blog posts load from ${process.env.REACT_APP_BACKEND_URL}/api/blog with proper fallback to static posts. Posts display with author (Dr. B Harsha Vardhana Reddy), date, and tags. Expansion functionality working for full article content."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
