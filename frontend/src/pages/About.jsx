@@ -59,9 +59,6 @@ const About = () => {
                   to precision joint replacements and sports injury reconstructions.
                 </p>
               </div>
-                  to precision joint replacements and sports injury reconstructions.
-                </p>
-              </div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 30 }}
