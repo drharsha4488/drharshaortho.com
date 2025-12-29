@@ -36,20 +36,29 @@ const About = () => {
               <SectionHeading
                 badge="About"
                 title="Dr. B Harsha Vardhana Reddy"
-                subtitle="Associate Consultant Orthopedic Surgeon at Yashoda Hospital Hi-Tech City with over 13 years of experience in joint replacement, sports medicine, and trauma surgery."
+                subtitle="Associate Consultant Orthopedic Surgeon at Yashoda Hospital Hi-Tech City with over 15 years of experience in joint replacement, sports medicine, and trauma surgery. Founder of AgileOrtho Healthcare."
                 centered={false}
               />
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Dr. B Harsha Vardhana Reddy is one of Hyderabad's trusted orthopedic surgeons,
+                  Dr. B Harsha Vardhana Reddy is one of Hyderabad's most trusted orthopedic surgeons and healthcare entrepreneur,
                   known for his patient-centric approach and surgical excellence. After completing
                   his D.Ortho from the prestigious Dr. G.S. Kulkarni Institute, Miraj, he pursued
                   advanced fellowship training in Arthroplasty and Arthroscopy at Continental Hospitals, Hyderabad.
                 </p>
                 <p>
+                  Beyond his medical qualifications, Dr. Reddy holds an MBA in Hospital Administration from 
+                  ICFAI Business School (2020), combining clinical expertise with healthcare management excellence. 
+                  He is the founder and managing director of AgileOrtho, a successful healthcare startup specializing 
+                  in innovative orthopedic solutions.
+                </p>
+                <p>
                   With a commitment to using the latest minimally invasive techniques, Dr. Reddy
                   ensures faster recovery times and better outcomes for his patients. He has
                   successfully performed thousands of surgeries, ranging from complex trauma cases
+                  to precision joint replacements and sports injury reconstructions.
+                </p>
+              </div>
                   to precision joint replacements and sports injury reconstructions.
                 </p>
               </div>
