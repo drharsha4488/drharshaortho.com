@@ -61,7 +61,7 @@ const Treatments = () => {
           </div>
 
           {/* Treatments Grid */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTreatments.map((treatment, i) => (
               <motion.div
                 key={treatment.id}
@@ -72,50 +72,58 @@ const Treatments = () => {
               >
                 <Link
                   to={`/treatments/${treatment.id}`}
-                  className="block bg-card rounded-xl p-6 shadow-md border border-border hover:border-primary hover:shadow-xl transition-all group h-full"
+                  className="block bg-card rounded-xl overflow-hidden shadow-md border border-border hover:border-primary hover:shadow-xl transition-all group h-full"
                   data-testid={`treatment-${treatment.id}`}
                 >
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="text-4xl flex-shrink-0">{treatment.icon}</div>
-                    <div className="flex-1">
-                      <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <h3 className="font-serif font-semibold text-xl text-foreground group-hover:text-primary transition-colors">
-                          {treatment.name}
-                        </h3>
+                  {/* Image Section */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img 
+                      src={treatment.imageUrl} 
+                      alt={treatment.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 to-transparent" />
+                    <span className="absolute top-3 left-3 px-3 py-1 bg-white/90 text-primary text-xs font-medium rounded-full">
+                      {treatment.category}
+                    </span>
+                    <div className="absolute bottom-3 left-3 text-4xl">{treatment.icon}</div>
+                  </div>
+                  
+                  {/* Content Section */}
+                  <div className="p-5">
+                    <h3 className="font-serif font-semibold text-lg text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2">
+                      {treatment.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                      {treatment.description}
+                    </p>
+                    
+                    {/* Quick Info */}
+                    <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-4">
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3.5 h-3.5 text-primary" />
+                        <span>{treatment.recovery}</span>
                       </div>
-                      <span className="inline-block px-2 py-0.5 bg-teal-light text-primary text-xs rounded-full mb-3">
-                        {treatment.category}
-                      </span>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        {treatment.description}
-                      </p>
-                      
-                      {/* Quick Info */}
-                      <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mb-4">
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4 text-primary" />
-                          <span>Recovery: {treatment.recovery}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4 text-primary" />
-                          <span>Hospital: {treatment.hospitalStay}</span>
-                        </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5 text-primary" />
+                        <span>{treatment.hospitalStay}</span>
                       </div>
+                    </div>
 
-                      {/* Key Benefits Preview */}
-                      <div className="space-y-1 mb-4">
-                        {treatment.benefits?.slice(0, 3).map((benefit, idx) => (
-                          <div key={idx} className="flex items-start gap-2 text-xs text-muted-foreground">
-                            <CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0 mt-0.5" />
-                            <span className="line-clamp-1">{benefit}</span>
-                          </div>
-                        ))}
-                      </div>
+                    {/* Key Benefits Preview */}
+                    <div className="space-y-1.5 mb-4">
+                      {treatment.benefits?.slice(0, 2).map((benefit, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-xs text-muted-foreground">
+                          <CheckCircle className="w-3.5 h-3.5 text-green-500 flex-shrink-0 mt-0.5" />
+                          <span className="line-clamp-1">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
 
-                      {/* Learn More Link */}
-                      <div className="flex items-center text-primary text-sm font-medium">
-                        View Details <ArrowRight className="w-4 h-4 ml-1 group-hover:ml-2 transition-all" />
-                      </div>
+                    {/* Learn More Link */}
+                    <div className="flex items-center text-primary text-sm font-medium pt-2 border-t border-border/50">
+                      View Details <ArrowRight className="w-4 h-4 ml-1 group-hover:ml-2 transition-all" />
                     </div>
                   </div>
                 </Link>
