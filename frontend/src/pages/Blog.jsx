@@ -3,12 +3,42 @@ import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
-import { Calendar, User, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import { Calendar, User, Clock, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import blogPosts from '@/data/blogPosts';
+import staticBlogPosts from '@/data/blogPosts';
 
 const Blog = () => {
   const [expandedPost, setExpandedPost] = useState(null);
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch blog posts from API
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/blog`);
+        if (response.ok) {
+          const data = await response.json();
+          // Merge API data with static data for comprehensive content
+          const apiPostIds = data.map(p => p.id);
+          const uniqueStaticPosts = staticBlogPosts.filter(p => !apiPostIds.includes(p.id));
+          setBlogPosts([...data, ...uniqueStaticPosts]);
+        } else {
+          // Fallback to static posts
+          setBlogPosts(staticBlogPosts);
+        }
+      } catch (err) {
+        console.error('Error fetching blog posts:', err);
+        // Fallback to static posts on error
+        setBlogPosts(staticBlogPosts);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchBlogPosts();
+  }, []);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
