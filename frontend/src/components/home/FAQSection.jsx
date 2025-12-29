@@ -50,12 +50,12 @@ const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
-    <section className=\"section-padding bg-secondary\" data-testid=\"faq-section\">
-      <div className=\"container-medical\">
+    <section className="section-padding bg-secondary" data-testid="faq-section">
+      <div className="container-medical">
         <SectionHeading
-          badge=\"FAQs\"
-          title=\"Frequently Asked Questions\"
-          subtitle=\"Get answers to common questions about orthopedic surgery, recovery, costs, and treatments.\"
+          badge="FAQs"
+          title="Frequently Asked Questions"
+          subtitle="Get answers to common questions about orthopedic surgery, recovery, costs, and treatments."
         />
 
         <div className=\"max-w-3xl mx-auto space-y-4\">
