@@ -52,7 +52,11 @@ module.exports = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+  			'teal-light': '#E8F5F3',
+  			'gold': '#D4AF37',
+  			'charcoal': '#2C3E50',
+  			'ivory': '#FFFFF0'
   		},
   		keyframes: {
   			'accordion-down': {
