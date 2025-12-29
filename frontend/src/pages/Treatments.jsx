@@ -3,14 +3,14 @@ import Layout from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import SEO from '@/components/SEO';
+import SchemaMarkup from '@/components/SchemaMarkup';
 import { treatments, treatmentCategories } from '@/data/treatments';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Clock, Calendar } from 'lucide-react';
+import { CheckCircle, Clock, Calendar, ArrowRight, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Treatments = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [expandedTreatment, setExpandedTreatment] = useState(null);
 
   const filteredTreatments = selectedCategory === 'All' 
     ? treatments 
@@ -23,6 +23,18 @@ const Treatments = () => {
         description="Expert knee replacement, hip replacement, ACL reconstruction, shoulder arthroscopy, and all orthopedic surgeries in Hyderabad. Minimally invasive techniques, 15+ years experience."
         keywords="knee replacement Hyderabad, hip replacement surgery, ACL reconstruction, arthroscopy Hyderabad, joint replacement surgeon, sports surgery, fracture treatment, orthopedic surgery Hyderabad"
       />
+      <SchemaMarkup type="MedicalClinic" />
+      
+      {/* Breadcrumb */}
+      <div className="bg-secondary py-3">
+        <div className="container-medical">
+          <nav className="flex items-center gap-2 text-sm">
+            <Link to="/" className="text-muted-foreground hover:text-primary">Home</Link>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground font-medium">Treatments</span>
+          </nav>
+        </div>
+      </div>
       
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="treatments-page">
         <div className="container-medical">
@@ -33,22 +45,23 @@ const Treatments = () => {
           />
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-2 mb-12">
             {treatmentCategories.map((category) => (
               <Button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 variant={selectedCategory === category ? 'default' : 'outline'}
+                size="sm"
                 className={selectedCategory === category ? 'bg-primary text-white' : ''}
-                data-testid={`filter-${category.toLowerCase()}`}
+                data-testid={`filter-${category.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 {category}
               </Button>
             ))}
           </div>
 
-          {/* Treatments List */}
-          <div className="space-y-6">
+          {/* Treatments Grid */}
+          <div className="grid md:grid-cols-2 gap-6">
             {filteredTreatments.map((treatment, i) => (
               <motion.div
                 key={treatment.id}
@@ -56,106 +69,56 @@ const Treatments = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className="bg-card rounded-xl p-6 md:p-8 shadow-md border border-border"
-                data-testid={`treatment-${treatment.id}`}
               >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="text-5xl flex-shrink-0">{treatment.icon}</div>
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-3 mb-2">
-                      <h3 className="font-serif font-semibold text-2xl text-foreground">
-                        {treatment.name}
-                      </h3>
-                      <span className="px-3 py-1 bg-teal-light text-primary text-xs rounded-full">
+                <Link
+                  to={`/treatments/${treatment.id}`}
+                  className="block bg-card rounded-xl p-6 shadow-md border border-border hover:border-primary hover:shadow-xl transition-all group h-full"
+                  data-testid={`treatment-${treatment.id}`}
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="text-4xl flex-shrink-0">{treatment.icon}</div>
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <h3 className="font-serif font-semibold text-xl text-foreground group-hover:text-primary transition-colors">
+                          {treatment.name}
+                        </h3>
+                      </div>
+                      <span className="inline-block px-2 py-0.5 bg-teal-light text-primary text-xs rounded-full mb-3">
                         {treatment.category}
                       </span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {treatment.description}
-                    </p>
-                    
-                    {/* Quick Info */}
-                    <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mb-4">
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4 text-primary" />
-                        <span>Recovery: {treatment.recovery}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4 text-primary" />
-                        <span>Hospital: {treatment.hospitalStay}</span>
-                      </div>
-                    </div>
-
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setExpandedTreatment(expandedTreatment === treatment.id ? null : treatment.id)}
-                      data-testid={`expand-${treatment.id}`}
-                    >
-                      {expandedTreatment === treatment.id ? 'Show Less' : 'Learn More'}
-                    </Button>
-                  </div>
-                </div>
-
-                {expandedTreatment === treatment.id && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="mt-6 pt-6 border-t border-border space-y-6"
-                  >
-                    {/* Detailed Description */}
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-2">About the Procedure:</h4>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {treatment.detailedDescription}
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {treatment.description}
                       </p>
-                    </div>
+                      
+                      {/* Quick Info */}
+                      <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mb-4">
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4 text-primary" />
+                          <span>Recovery: {treatment.recovery}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4 text-primary" />
+                          <span>Hospital: {treatment.hospitalStay}</span>
+                        </div>
+                      </div>
 
-                    {/* Benefits */}
-                    <div>
-                      <h4 className="font-semibold text-foreground mb-3">Key Benefits:</h4>
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        {treatment.benefits?.map((benefit, idx) => (
-                          <div key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                            <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                            <span>{benefit}</span>
+                      {/* Key Benefits Preview */}
+                      <div className="space-y-1 mb-4">
+                        {treatment.benefits?.slice(0, 3).map((benefit, idx) => (
+                          <div key={idx} className="flex items-start gap-2 text-xs text-muted-foreground">
+                            <CheckCircle className="w-3 h-3 text-green-500 flex-shrink-0 mt-0.5" />
+                            <span className="line-clamp-1">{benefit}</span>
                           </div>
                         ))}
                       </div>
-                    </div>
 
-                    {/* Procedure Steps */}
-                    {treatment.procedure && (
-                      <div>
-                        <h4 className="font-semibold text-foreground mb-3">Procedure Overview:</h4>
-                        <ol className="space-y-2">
-                          {treatment.procedure.map((step, idx) => (
-                            <li key={idx} className="flex items-start gap-3 text-sm text-muted-foreground">
-                              <span className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-semibold">
-                                {idx + 1}
-                              </span>
-                              <span className="pt-0.5">{step}</span>
-                            </li>
-                          ))}
-                        </ol>
+                      {/* Learn More Link */}
+                      <div className="flex items-center text-primary text-sm font-medium">
+                        View Details <ArrowRight className="w-4 h-4 ml-1 group-hover:ml-2 transition-all" />
                       </div>
-                    )}
-
-                    {/* CTA */}
-                    <div className="bg-teal-light rounded-lg p-4 flex flex-wrap items-center justify-between gap-4">
-                      <div>
-                        <p className="font-semibold text-foreground">Interested in this treatment?</p>
-                        <p className="text-sm text-muted-foreground">Book a consultation with Dr. Reddy</p>
-                      </div>
-                      <Link to="/contact">
-                        <Button className="bg-primary text-white">
-                          Book Appointment
-                        </Button>
-                      </Link>
                     </div>
-                  </motion.div>
-                )}
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
