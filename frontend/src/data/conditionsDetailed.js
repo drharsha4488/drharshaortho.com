@@ -349,6 +349,7 @@ export const conditionsDetailed = [
   
   {
     id: 'acl-tear',
+    imageUrl: conditionImages['acl-tear'],
     name: 'ACL Tear & Knee Ligament Injuries',
     slug: 'acl-tear',
     category: 'Sports Injury',
@@ -466,6 +467,7 @@ export const conditionsDetailed = [
   
   {
     id: 'hip-arthritis',
+    imageUrl: conditionImages['hip-arthritis'],
     name: 'Hip Arthritis & AVN',
     slug: 'hip-arthritis',
     category: 'Hip',
@@ -594,6 +596,7 @@ export const conditionsDetailed = [
   
   {
     id: 'frozen-shoulder',
+    imageUrl: conditionImages['frozen-shoulder'],
     name: 'Frozen Shoulder (Adhesive Capsulitis)',
     slug: 'frozen-shoulder',
     category: 'Shoulder',
@@ -723,6 +726,7 @@ export const conditionsDetailed = [
   
   {
     id: 'meniscus-tear',
+    imageUrl: conditionImages['meniscus-tear'],
     name: 'Meniscus Tear',
     slug: 'meniscus-tear',
     category: 'Knee',
@@ -852,6 +856,7 @@ export const conditionsDetailed = [
   
   {
     id: 'tennis-elbow',
+    imageUrl: conditionImages['tennis-elbow'],
     name: 'Tennis Elbow & Golfers Elbow',
     slug: 'tennis-elbow',
     category: 'Elbow',
@@ -991,6 +996,7 @@ export const conditionsDetailed = [
   
   {
     id: 'shoulder-dislocation',
+    imageUrl: conditionImages['shoulder-dislocation'],
     name: 'Recurrent Shoulder Dislocation',
     slug: 'shoulder-dislocation',
     category: 'Shoulder',
