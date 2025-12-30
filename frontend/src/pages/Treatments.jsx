@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import SEO from '@/components/SEO';
 import SchemaMarkup from '@/components/SchemaMarkup';
-import { treatments, treatmentCategories } from '@/data/treatments';
+import { allTreatments, treatmentCategories } from '@/data/treatments';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Clock, Calendar, ArrowRight, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -13,8 +13,8 @@ const Treatments = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredTreatments = selectedCategory === 'All' 
-    ? treatments 
-    : treatments.filter(t => t.category === selectedCategory);
+    ? allTreatments 
+    : allTreatments.filter(t => t.category === selectedCategory);
 
   return (
     <Layout>
