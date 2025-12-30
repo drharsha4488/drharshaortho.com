@@ -1238,10 +1238,23 @@ const Admin = () => {
                   <h2 className="text-xl font-semibold">Content Management</h2>
                   <p className="text-sm text-muted-foreground">{cmsPages.length} pages total</p>
                 </div>
-                <Button onClick={() => setShowCmsForm(true)} className="gap-2">
-                  <Plus className="w-4 h-4" />
-                  Create Page
-                </Button>
+                <div className="flex gap-2">
+                  {cmsPages.length === 0 && (
+                    <Button 
+                      onClick={seedCmsContent} 
+                      variant="outline" 
+                      className="gap-2"
+                      disabled={seedingContent}
+                    >
+                      <RefreshCw className={`w-4 h-4 ${seedingContent ? 'animate-spin' : ''}`} />
+                      {seedingContent ? 'Seeding...' : 'Seed Content'}
+                    </Button>
+                  )}
+                  <Button onClick={() => setShowCmsForm(true)} className="gap-2">
+                    <Plus className="w-4 h-4" />
+                    Create Page
+                  </Button>
+                </div>
               </div>
 
               {/* Search and Filter */}
