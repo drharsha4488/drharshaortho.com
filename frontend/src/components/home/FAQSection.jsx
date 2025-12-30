@@ -103,7 +103,7 @@ const FAQSection = () => {
           <p className="text-muted-foreground mb-4">Still have questions?</p>
           <a
             href="tel:+919959964567"
-            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:brightness-110 transition-all font-medium"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg hover:brightness-110 transition-all font-medium"
             data-testid="call-faq-btn"
           >
             Call +91 99599 64567
