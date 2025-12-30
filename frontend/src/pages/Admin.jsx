@@ -79,6 +79,7 @@ const Admin = () => {
       fetchAppointments();
       fetchStats();
       fetchBlogPosts();
+      fetchAnalytics();
     }
   }, [isAuthenticated]);
 
