@@ -1005,10 +1005,10 @@ const Admin = () => {
                       <p className="text-sm text-muted-foreground text-center py-8">No referrer data yet</p>
                     ) : (
                       <div className="space-y-2">
-                        {analytics.top_referrers.map((ref, i) => (
+                        {analytics.top_referrers.filter(ref => ref.referrer).map((ref, i) => (
                           <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                             <span className="text-sm text-muted-foreground truncate max-w-[200px]">
-                              {ref.referrer.replace(/^https?:\/\//, '').split('/')[0]}
+                              {(ref.referrer || 'Direct').replace(/^https?:\/\//, '').split('/')[0]}
                             </span>
                             <span className="text-sm font-medium bg-secondary px-2 py-1 rounded">{ref.count}</span>
                           </div>
