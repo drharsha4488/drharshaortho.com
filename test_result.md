@@ -638,11 +638,7 @@ frontend:
         comment: "Updated sitemap.xml with all 6 new SEO landing pages and additional treatment pages. High priority (0.95) assigned to SEO pages."
 
 test_plan:
-  current_focus:
-    - "AI Chat Widget component"
-    - "AI Chat Agent API endpoint"
-    - "SEO Landing Pages (6 high-value keyword pages)"
-    - "Treatment page mobile CTA fix"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
