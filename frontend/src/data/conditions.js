@@ -163,14 +163,20 @@ export const conditions = [
   },
 ];
 
+// Import additional conditions for SEO expansion
+import additionalConditions from './additionalConditions';
+
+// Merge all conditions
+export const allConditions = [...conditions, ...additionalConditions];
+
 export const conditionCategories = [
   'All',
   'Knee',
   'Hip',
   'Shoulder',
   'Elbow',
-  'Hand & Wrist',
-  'Foot & Ankle',
+  'Hand',
+  'Foot',
   'Sports Injury',
   'Trauma',
   'Spine',
