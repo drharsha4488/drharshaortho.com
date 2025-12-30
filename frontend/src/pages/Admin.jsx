@@ -67,6 +67,28 @@ const Admin = () => {
   const [analytics, setAnalytics] = useState(null);
   const [analyticsLoading, setAnalyticsLoading] = useState(false);
   
+  // CMS Pages state
+  const [cmsPages, setCmsPages] = useState([]);
+  const [cmsLoading, setCmsLoading] = useState(false);
+  const [showCmsForm, setShowCmsForm] = useState(false);
+  const [editingCmsPage, setEditingCmsPage] = useState(null);
+  const [cmsFilter, setCmsFilter] = useState('all');
+  const [cmsSearch, setCmsSearch] = useState('');
+  const [cmsForm, setCmsForm] = useState({
+    slug: '',
+    type: 'general',
+    title: '',
+    meta_title: '',
+    meta_description: '',
+    keywords: '',
+    content: {
+      hero: { title: '', subtitle: '' },
+      introduction: '',
+      sections: []
+    },
+    status: 'draft'
+  });
+  
   const { toast } = useToast();
   const navigate = useNavigate();
 
