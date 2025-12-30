@@ -25,6 +25,7 @@ const Treatments = lazy(() => import('./pages/Treatments'));
 const TreatmentDetail = lazy(() => import('./pages/TreatmentDetailEnhanced'));
 const Admin = lazy(() => import('./pages/Admin'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Testimonials = lazy(() => import('./pages/Testimonials'));
 const Gallery = lazy(() => import('./pages/Gallery'));
 const Contact = lazy(() => import('./pages/Contact'));
@@ -48,17 +49,50 @@ function App() {
               <Route path="/treatments" element={<Treatments />} />
               <Route path="/treatments/:slug" element={<TreatmentDetail />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/testimonials" element={<Testimonials />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/admin" element={<Admin />} />
-              {/* SEO Landing Pages */}
+              
+              {/* SEO Landing Pages - High Volume Keywords */}
               <Route path="/best-orthopedic-surgeon-hyderabad" element={<SEOLandingPage />} />
               <Route path="/robotic-knee-replacement-hyderabad" element={<SEOLandingPage />} />
               <Route path="/knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
               <Route path="/hip-replacement-cost-hyderabad" element={<SEOLandingPage />} />
               <Route path="/sports-injury-treatment-hyderabad" element={<SEOLandingPage />} />
               <Route path="/orthopedic-doctor-near-me-hyderabad" element={<SEOLandingPage />} />
+              
+              {/* Location-Based SEO Pages */}
+              <Route path="/knee-replacement-surgeon-madhapur" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-doctor-gachibowli" element={<SEOLandingPage />} />
+              <Route path="/hip-replacement-surgeon-kondapur" element={<SEOLandingPage />} />
+              <Route path="/sports-injury-doctor-kukatpally" element={<SEOLandingPage />} />
+              <Route path="/joint-replacement-jubilee-hills" element={<SEOLandingPage />} />
+              <Route path="/knee-pain-treatment-secunderabad" element={<SEOLandingPage />} />
+              <Route path="/shoulder-specialist-begumpet" element={<SEOLandingPage />} />
+              <Route path="/arthritis-treatment-miyapur" element={<SEOLandingPage />} />
+              <Route path="/fracture-treatment-ameerpet" element={<SEOLandingPage />} />
+              <Route path="/acl-surgery-sr-nagar" element={<SEOLandingPage />} />
+              
+              {/* Procedure Cost Pages */}
+              <Route path="/partial-knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/acl-surgery-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/shoulder-arthroscopy-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/knee-arthroscopy-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/hip-arthroscopy-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/spine-surgery-cost-hyderabad" element={<SEOLandingPage />} />
+              
+              {/* Condition-Specific SEO Pages */}
+              <Route path="/knee-pain-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/back-pain-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/shoulder-pain-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/hip-pain-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/ligament-injury-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/meniscus-tear-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/rotator-cuff-tear-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/cartilage-injury-treatment-hyderabad" element={<SEOLandingPage />} />
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
