@@ -239,6 +239,42 @@ const Admin = () => {
     }
   };
 
+  // Seed CMS content for production
+  const seedCmsContent = async () => {
+    if (!window.confirm('This will seed initial CMS content to the database. Existing pages with the same slugs will be skipped. Continue?')) {
+      return;
+    }
+    
+    setSeedingContent(true);
+    try {
+      const res = await fetch(`${API_URL}/api/admin/cms/seed-content`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok) {
+        toast({ 
+          title: 'Content Seeded!', 
+          description: `Created ${data.created} pages. Total: ${data.total_pages} pages.`
+        });
+        fetchCmsPages(); // Refresh the list
+      } else {
+        throw new Error(data.detail || 'Failed to seed content');
+      }
+    } catch (err) {
+      console.error('Failed to seed CMS content:', err);
+      toast({ 
+        title: 'Error', 
+        description: err.message || 'Failed to seed content', 
+        variant: 'destructive' 
+      });
+    } finally {
+      setSeedingContent(false);
+    }
+  };
+
   const handleCmsSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
