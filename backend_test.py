@@ -346,6 +346,101 @@ def test_admin_blog_api():
         print(f"   ❌ Error: {str(e)}")
         return False
 
+def test_specific_condition_pages():
+    """Test specific condition pages mentioned in review request"""
+    print("🔍 Testing Specific Condition Pages...")
+    
+    # Test for Osgood-Schlatter Disease
+    print("   Testing Osgood-Schlatter Disease page...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/pages/osgood-schlatter", timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Osgood-Schlatter page found: {data.get('title', 'N/A')}")
+            # Check if symptoms section exists
+            symptoms = data.get('content', {}).get('symptoms', [])
+            if symptoms:
+                print(f"   ✅ Symptoms section contains {len(symptoms)} items")
+            else:
+                print(f"   ⚠️  No symptoms section found in content")
+            osgood_result = True
+        elif response.status_code == 404:
+            print(f"   ❌ Osgood-Schlatter page not found (404)")
+            osgood_result = False
+        else:
+            print(f"   ❌ Error fetching Osgood-Schlatter page: {response.status_code}")
+            osgood_result = False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        osgood_result = False
+    
+    # Test for Patellofemoral Syndrome
+    print("   Testing Patellofemoral Syndrome page...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/pages/patellofemoral-syndrome", timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Patellofemoral Syndrome page found: {data.get('title', 'N/A')}")
+            # Check if symptoms section exists
+            symptoms = data.get('content', {}).get('symptoms', [])
+            if symptoms:
+                print(f"   ✅ Symptoms section contains {len(symptoms)} items")
+            else:
+                print(f"   ⚠️  No symptoms section found in content")
+            patello_result = True
+        elif response.status_code == 404:
+            print(f"   ❌ Patellofemoral Syndrome page not found (404)")
+            patello_result = False
+        else:
+            print(f"   ❌ Error fetching Patellofemoral Syndrome page: {response.status_code}")
+            patello_result = False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        patello_result = False
+    
+    return osgood_result and patello_result
+
+def test_backend_health_check():
+    """Test backend API health check as mentioned in review request"""
+    print("🔍 Testing Backend API Health Check...")
+    
+    # Test GET /api/appointments - Should return list
+    print("   Testing GET /api/appointments for health check...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/appointments", timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Appointments API healthy - returned {len(data)} appointments")
+            appointments_healthy = True
+        else:
+            print(f"   ❌ Appointments API unhealthy: {response.status_code}")
+            appointments_healthy = False
+    except Exception as e:
+        print(f"   ❌ Appointments API error: {str(e)}")
+        appointments_healthy = False
+    
+    # Test GET /api/admin/cms/pages - Should return 7+ pages
+    print("   Testing GET /api/admin/cms/pages for health check...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/admin/cms/pages", timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            page_count = len(data)
+            if page_count >= 7:
+                print(f"   ✅ CMS Pages API healthy - returned {page_count} pages (≥7 required)")
+                cms_healthy = True
+            else:
+                print(f"   ❌ CMS Pages API unhealthy - returned {page_count} pages (<7 required)")
+                cms_healthy = False
+        else:
+            print(f"   ❌ CMS Pages API unhealthy: {response.status_code}")
+            cms_healthy = False
+    except Exception as e:
+        print(f"   ❌ CMS Pages API error: {str(e)}")
+        cms_healthy = False
+    
+    return appointments_healthy and cms_healthy
+
 def main():
     """Run all backend API tests"""
     print("=" * 60)
@@ -383,6 +478,10 @@ def main():
     
     # Admin Blog API Test
     test_results.append(("Admin Blog API", test_admin_blog_api()))
+    
+    # Review Request Specific Tests
+    test_results.append(("Specific Condition Pages", test_specific_condition_pages()))
+    test_results.append(("Backend Health Check", test_backend_health_check()))
     
     print("\n" + "=" * 60)
     print("📊 TEST RESULTS SUMMARY")
