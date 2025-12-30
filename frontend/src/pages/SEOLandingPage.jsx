@@ -148,7 +148,7 @@ const SEOLandingPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-3xl md:text-4xl lg:text-5xl font-serif font-semibold mb-4"
             >
-              {page.heroTitle}
+              {heroTitle}
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -156,8 +156,22 @@ const SEOLandingPage = () => {
               transition={{ delay: 0.1 }}
               className="text-lg md:text-xl text-white/90 mb-8"
             >
-              {page.heroSubtitle}
+              {heroSubtitle}
             </motion.p>
+            
+            {/* Location badge for location-based pages */}
+            {pageLocation && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.15 }}
+                className="flex items-center gap-2 text-accent mb-6"
+              >
+                <MapPin className="w-5 h-5" />
+                <span>{pageLocation}</span>
+                {pageDistance && <span className="text-white/70">• {pageDistance} from clinic</span>}
+              </motion.div>
+            )}
             
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
