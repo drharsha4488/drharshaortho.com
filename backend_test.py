@@ -159,6 +159,193 @@ def test_contact_api():
         print(f"   ❌ Error: {str(e)}")
         return False
 
+def test_cms_pages_list():
+    """Test GET /api/admin/cms/pages endpoint"""
+    print("🔍 Testing GET /api/admin/cms/pages...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/admin/cms/pages", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   Found {len(data)} CMS pages")
+            if len(data) > 0:
+                print(f"   Sample page: {data[0].get('title', 'N/A')} ({data[0].get('slug', 'N/A')})")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_page_create():
+    """Test POST /api/admin/cms/pages endpoint"""
+    print("🔍 Testing POST /api/admin/cms/pages...")
+    
+    test_page = {
+        "slug": "test-sports-page",
+        "type": "sports",
+        "title": "Test Sports Page",
+        "status": "published",
+        "meta_title": "Sports Injury Treatment in Hyderabad",
+        "meta_description": "Expert sports injury treatment and rehabilitation services",
+        "keywords": ["sports injury", "treatment", "hyderabad"],
+        "content": {
+            "hero": {
+                "title": "Sports Injury Treatment",
+                "subtitle": "Get back to your game with expert care"
+            },
+            "sections": [
+                {
+                    "type": "text",
+                    "content": "Our specialized sports medicine team provides comprehensive treatment for all types of sports injuries."
+                }
+            ]
+        }
+    }
+    
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/admin/cms/pages", 
+            json=test_page,
+            headers={"Content-Type": "application/json"},
+            timeout=10
+        )
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ CMS page created successfully")
+            print(f"   Page ID: {data.get('id', 'N/A')}")
+            print(f"   Slug: {data.get('slug', 'N/A')}")
+            return data.get('id')  # Return ID for cleanup
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_page_get_public(slug):
+    """Test GET /api/cms/pages/{slug} endpoint"""
+    print(f"🔍 Testing GET /api/cms/pages/{slug}...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/pages/{slug}", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Public CMS page retrieved successfully")
+            print(f"   Title: {data.get('title', 'N/A')}")
+            print(f"   Type: {data.get('type', 'N/A')}")
+            print(f"   Status: {data.get('status', 'N/A')}")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_page_delete(page_id):
+    """Test DELETE /api/admin/cms/pages/{id} endpoint"""
+    if not page_id:
+        print("🔍 Skipping DELETE test - no page ID available")
+        return True
+        
+    print(f"🔍 Testing DELETE /api/admin/cms/pages/{page_id}...")
+    try:
+        response = requests.delete(f"{BACKEND_URL}/admin/cms/pages/{page_id}", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ CMS page deleted successfully")
+            print(f"   Message: {data.get('message', 'N/A')}")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_analytics_api():
+    """Test GET /api/admin/analytics endpoint"""
+    print("🔍 Testing GET /api/admin/analytics...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/admin/analytics", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Analytics data retrieved successfully")
+            overview = data.get('overview', {})
+            print(f"   Total views: {overview.get('total_views', 'N/A')}")
+            print(f"   Today views: {overview.get('today_views', 'N/A')}")
+            print(f"   Top pages: {len(data.get('top_pages', []))}")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_analytics_pageview():
+    """Test POST /api/analytics/pageview endpoint"""
+    print("🔍 Testing POST /api/analytics/pageview...")
+    
+    test_pageview = {
+        "page_path": "/test-page",
+        "page_title": "Test Page",
+        "referrer": "https://google.com",
+        "user_agent": "Mozilla/5.0 (Test Browser)",
+        "session_id": "test-session-123"
+    }
+    
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/analytics/pageview", 
+            json=test_pageview,
+            headers={"Content-Type": "application/json"},
+            timeout=10
+        )
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Page view tracked successfully")
+            print(f"   Success: {data.get('success', 'N/A')}")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_admin_blog_api():
+    """Test GET /api/admin/blog endpoint"""
+    print("🔍 Testing GET /api/admin/blog...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/admin/blog", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   Found {len(data)} blog posts (admin view)")
+            if len(data) > 0:
+                print(f"   Sample post: {data[0].get('title', 'N/A')} by {data[0].get('author', 'N/A')}")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
 def main():
     """Run all backend API tests"""
     print("=" * 60)
