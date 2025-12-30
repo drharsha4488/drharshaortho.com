@@ -31,6 +31,7 @@ const Gallery = lazy(() => import('./pages/Gallery'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const SEOLandingPage = lazy(() => import('./pages/SEOLandingPage'));
+const CMSPage = lazy(() => import('./pages/CMSPage'));
 
 function App() {
   return (
