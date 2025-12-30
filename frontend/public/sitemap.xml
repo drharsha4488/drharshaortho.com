@@ -3,147 +3,185 @@
   <!-- Main Pages -->
   <url>
     <loc>https://drharshaortho.com/</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/about</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/treatments</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/blog</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/testimonials</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/gallery</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/contact</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+
+  <!-- HIGH-PRIORITY SEO LANDING PAGES (High Search Volume) -->
+  <url>
+    <loc>https://drharshaortho.com/best-orthopedic-surgeon-hyderabad</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/robotic-knee-replacement-hyderabad</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/knee-replacement-cost-hyderabad</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/hip-replacement-cost-hyderabad</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/sports-injury-treatment-hyderabad</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/orthopedic-doctor-near-me-hyderabad</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
   </url>
 
   <!-- Condition Detail Pages -->
   <url>
     <loc>https://drharshaortho.com/conditions/knee-arthritis</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/rotator-cuff-tear</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/acl-tear</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/hip-arthritis</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/frozen-shoulder</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/meniscus-tear</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/tennis-elbow</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/shoulder-dislocation</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/carpal-tunnel-syndrome</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/ankle-instability</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/plantar-fasciitis</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/spinal-fracture</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/pcl-injury</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/complex-fractures</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/bursitis</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/conditions/patellar-dislocation</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -151,74 +189,74 @@
   <!-- Treatment Detail Pages -->
   <url>
     <loc>https://drharshaortho.com/treatments/total-knee-replacement</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/treatments/total-hip-replacement</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/treatments/acl-reconstruction</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/treatments/knee-arthroscopy</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/treatments/shoulder-arthroscopy</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://drharshaortho.com/treatments/rotator-cuff-repair</loc>
-    <lastmod>2025-12-29</lastmod>
+    <loc>https://drharshaortho.com/treatments/hip-arthroscopy</loc>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://drharshaortho.com/treatments/fracture-fixation</loc>
-    <lastmod>2025-12-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://drharshaortho.com/treatments/prp-injections</loc>
-    <lastmod>2025-12-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://drharshaortho.com/treatments/partial-knee-replacement</loc>
-    <lastmod>2025-12-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://drharshaortho.com/treatments/shoulder-replacement</loc>
-    <lastmod>2025-12-29</lastmod>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://drharshaortho.com/treatments/spine-surgery</loc>
-    <lastmod>2025-12-29</lastmod>
+    <loc>https://drharshaortho.com/treatments/ankle-ligament-reconstruction</loc>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://drharshaortho.com/treatments/sports-medicine</loc>
-    <lastmod>2025-12-29</lastmod>
+    <loc>https://drharshaortho.com/treatments/fracture-fixation</loc>
+    <lastmod>2025-12-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/treatments/carpal-tunnel-release</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/treatments/bankart-repair</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/treatments/spinal-decompression</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
 </urlset>
