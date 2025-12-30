@@ -107,6 +107,7 @@ const Admin = () => {
       fetchStats();
       fetchBlogPosts();
       fetchAnalytics();
+      fetchCmsPages();
     }
   }, [isAuthenticated]);
 
