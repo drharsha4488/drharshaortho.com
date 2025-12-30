@@ -940,25 +940,38 @@ async def get_analytics():
         ]
         top_pages = await db.page_views.aggregate(top_pages_pipeline).to_list(10)
         
-        # Daily views for last 7 days
+        # Daily views for last 7 days - optimized with single aggregation query
         daily_views = []
-        for i in range(7):
+        for i in range(6, -1, -1):  # 6 to 0 for oldest first
             day = now - timedelta(days=i)
             day_start = day.replace(hour=0, minute=0, second=0, microsecond=0)
-            day_end = day_start + timedelta(days=1)
-            
-            count = await db.page_views.count_documents({
-                "timestamp": {
-                    "$gte": day_start.isoformat(),
-                    "$lt": day_end.isoformat()
-                }
-            })
             daily_views.append({
                 "date": day_start.strftime("%b %d"),
-                "views": count
+                "day_start": day_start.isoformat(),
+                "day_end": (day_start + timedelta(days=1)).isoformat(),
+                "views": 0
             })
         
-        daily_views.reverse()  # Oldest first
+        # Get counts in single query
+        if daily_views:
+            week_start = (now - timedelta(days=6)).replace(hour=0, minute=0, second=0, microsecond=0)
+            daily_counts_pipeline = [
+                {"$match": {"timestamp": {"$gte": week_start.isoformat()}}},
+                {"$group": {
+                    "_id": {"$substr": ["$timestamp", 0, 10]},  # Group by date part
+                    "count": {"$sum": 1}
+                }}
+            ]
+            daily_counts = await db.page_views.aggregate(daily_counts_pipeline).to_list(10)
+            
+            # Map counts to daily_views
+            count_map = {d["_id"]: d["count"] for d in daily_counts}
+            for dv in daily_views:
+                date_key = dv["day_start"][:10]
+                dv["views"] = count_map.get(date_key, 0)
+        
+        # Clean up internal fields
+        daily_views = [{"date": d["date"], "views": d["views"]} for d in daily_views]
         
         # Top referrers
         referrers_pipeline = [
