@@ -113,11 +113,16 @@ const Treatments = () => {
 
                     {/* Key Benefits Preview */}
                     <div className="space-y-1.5 mb-4">
-                      {treatment.benefits?.slice(0, 2).map((benefit, idx) => (
-                        <div key={idx} className="flex items-start gap-2 text-xs text-muted-foreground">
-                          <CheckCircle className="w-3.5 h-3.5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="line-clamp-1">{benefit}</span>
-                        </div>
+                      {treatment.benefits?.slice(0, 2).map((benefit, idx) => {
+                        // Handle both string and object benefit formats
+                        const benefitText = typeof benefit === 'string' ? benefit : benefit.title || benefit.description;
+                        return (
+                          <div key={idx} className="flex items-start gap-2 text-xs text-muted-foreground">
+                            <CheckCircle className="w-3.5 h-3.5 text-green-500 flex-shrink-0 mt-0.5" />
+                            <span className="line-clamp-1">{benefitText}</span>
+                          </div>
+                        );
+                      })}
                       ))}
                     </div>
 
