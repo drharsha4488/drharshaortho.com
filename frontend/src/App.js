@@ -93,6 +93,49 @@ function App() {
               <Route path="/rotator-cuff-tear-treatment-hyderabad" element={<SEOLandingPage />} />
               <Route path="/cartilage-injury-treatment-hyderabad" element={<SEOLandingPage />} />
               
+              {/* Extended Location-Based SEO Pages */}
+              <Route path="/orthopedic-surgeon-banjara-hills" element={<SEOLandingPage />} />
+              <Route path="/knee-doctor-somajiguda" element={<SEOLandingPage />} />
+              <Route path="/hip-surgery-ameerpet" element={<SEOLandingPage />} />
+              <Route path="/sports-injury-treatment-punjagutta" element={<SEOLandingPage />} />
+              <Route path="/knee-replacement-kompally" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-doctor-bowenpally" element={<SEOLandingPage />} />
+              <Route path="/joint-pain-malkajgiri" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-uppal" element={<SEOLandingPage />} />
+              <Route path="/knee-pain-lb-nagar" element={<SEOLandingPage />} />
+              <Route path="/hip-replacement-dilsukhnagar" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-doctor-mehdipatnam" element={<SEOLandingPage />} />
+              <Route path="/knee-surgery-tolichowki" element={<SEOLandingPage />} />
+              <Route path="/sports-medicine-attapur" element={<SEOLandingPage />} />
+              <Route path="/joint-replacement-shamshabad" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-charminar" element={<SEOLandingPage />} />
+              <Route path="/knee-doctor-nampally" element={<SEOLandingPage />} />
+              
+              {/* Additional Procedure Cost Pages */}
+              <Route path="/revision-knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/bilateral-knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/unicompartmental-knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/meniscus-surgery-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/rotator-cuff-surgery-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/bankart-repair-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/pcl-reconstruction-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/total-shoulder-replacement-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/ankle-arthroscopy-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/cartilage-restoration-cost-hyderabad" element={<SEOLandingPage />} />
+              
+              {/* Sports-Specific Injury Pages */}
+              <Route path="/cricket-injuries-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/football-injuries-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/badminton-injuries-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/tennis-injuries-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/running-injuries-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/gym-injuries-treatment-hyderabad" element={<SEOLandingPage />} />
+              
+              {/* Age-Specific Orthopedic Pages */}
+              <Route path="/pediatric-orthopedic-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/young-athlete-orthopedic-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/senior-citizen-orthopedic-hyderabad" element={<SEOLandingPage />} />
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
