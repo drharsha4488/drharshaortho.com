@@ -640,6 +640,17 @@ const Admin = () => {
             <BarChart3 className="w-4 h-4 inline mr-2" />
             Analytics
           </button>
+          <button
+            onClick={() => setActiveTab('cms')}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
+              activeTab === 'cms'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Layers className="w-4 h-4 inline mr-2" />
+            CMS Pages
+          </button>
         </div>
 
         {/* Appointments Tab */}
