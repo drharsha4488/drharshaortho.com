@@ -30,8 +30,10 @@ const Header = () => {
 
   // Close menu on route change
   useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location]);
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <motion.header 
