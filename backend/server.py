@@ -758,7 +758,7 @@ async def get_analytics():
         
         # Top referrers
         referrers_pipeline = [
-            {"$match": {"timestamp": {"$gte": month_ago.isoformat()}, "referrer": {"$ne": None, "$ne": ""}}},
+            {"$match": {"timestamp": {"$gte": month_ago.isoformat()}, "referrer": {"$ne": None, "$ne": "", "$exists": True}}},
             {"$group": {"_id": "$referrer", "count": {"$sum": 1}}},
             {"$sort": {"count": -1}},
             {"$limit": 5}
