@@ -62,11 +62,11 @@ const SEOLandingPage = () => {
   // Get slug from current path (remove leading slash)
   const slug = location.pathname.substring(1);
   
-  // Import additional SEO pages
+  // Import additional SEO pages from moreSEOPages
   const { locationSEOPages, procedureSEOPages, conditionSEOPages } = require('@/data/moreSEOPages').default || {};
   
-  // Find page from any of the sources
-  let page = seoLandingPages.find(p => p.slug === slug);
+  // Find page from any of the sources (check allSEOPages first, then moreSEOPages)
+  let page = allSEOPages.find(p => p.slug === slug);
   if (!page && locationSEOPages) page = locationSEOPages.find(p => p.slug === slug);
   if (!page && procedureSEOPages) page = procedureSEOPages.find(p => p.slug === slug);
   if (!page && conditionSEOPages) page = conditionSEOPages.find(p => p.slug === slug);
