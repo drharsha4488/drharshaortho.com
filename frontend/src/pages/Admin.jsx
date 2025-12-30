@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -23,7 +23,14 @@ import {
   Edit,
   Save,
   X,
-  Tag
+  Tag,
+  BarChart3,
+  TrendingUp,
+  Eye,
+  Globe,
+  MousePointerClick,
+  ArrowUp,
+  ArrowDown
 } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
