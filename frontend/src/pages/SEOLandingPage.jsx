@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
 import SchemaMarkup from '@/components/SchemaMarkup';
@@ -46,8 +46,11 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
 );
 
 const SEOLandingPage = () => {
-  const { slug } = useParams();
+  const location = useLocation();
   const [openFAQ, setOpenFAQ] = useState(0);
+  
+  // Get slug from current path (remove leading slash)
+  const slug = location.pathname.substring(1);
   
   const page = seoLandingPages.find(p => p.slug === slug);
   
