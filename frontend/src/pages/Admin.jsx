@@ -182,6 +182,20 @@ const Admin = () => {
     }
   };
 
+  // Analytics functions
+  const fetchAnalytics = async () => {
+    setAnalyticsLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/admin/analytics`);
+      const data = await res.json();
+      setAnalytics(data);
+    } catch (err) {
+      console.error('Failed to fetch analytics:', err);
+    } finally {
+      setAnalyticsLoading(false);
+    }
+  };
+
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
