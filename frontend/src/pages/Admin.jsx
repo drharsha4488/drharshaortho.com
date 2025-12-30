@@ -30,7 +30,12 @@ import {
   Globe,
   MousePointerClick,
   ArrowUp,
-  ArrowDown
+  ArrowDown,
+  Layers,
+  Search,
+  Filter,
+  ExternalLink,
+  Copy
 } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
