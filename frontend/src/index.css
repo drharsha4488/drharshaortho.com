@@ -26,11 +26,12 @@ code {
         --popover: 0 0% 100%;
         --popover-foreground: 210 24% 16%;
         --primary: 174 72% 30%;
+        --primary-dark: 174 72% 22%;
         --primary-foreground: 0 0% 98%;
         --secondary: 210 14% 97%;
         --secondary-foreground: 210 24% 16%;
         --muted: 210 14% 97%;
-        --muted-foreground: 215 20% 38%;
+        --muted-foreground: 215 20% 35%;
         --accent: 43 93% 53%;
         --accent-foreground: 210 24% 16%;
         --destructive: 0 84.2% 60.2%;
