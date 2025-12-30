@@ -473,10 +473,10 @@ const Admin = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-2 mb-6 border-b border-border">
+        <div className="flex gap-2 mb-6 border-b border-border overflow-x-auto">
           <button
             onClick={() => setActiveTab('appointments')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'appointments'
                 ? 'border-primary text-primary'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
@@ -487,7 +487,7 @@ const Admin = () => {
           </button>
           <button
             onClick={() => setActiveTab('blog')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors ${
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
               activeTab === 'blog'
                 ? 'border-primary text-primary'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
@@ -495,6 +495,17 @@ const Admin = () => {
           >
             <FileText className="w-4 h-4 inline mr-2" />
             Blog Posts
+          </button>
+          <button
+            onClick={() => setActiveTab('analytics')}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
+              activeTab === 'analytics'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <BarChart3 className="w-4 h-4 inline mr-2" />
+            Analytics
           </button>
         </div>
 
