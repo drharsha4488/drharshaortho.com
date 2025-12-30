@@ -137,6 +137,9 @@ function App() {
               <Route path="/young-athlete-orthopedic-hyderabad" element={<SEOLandingPage />} />
               <Route path="/senior-citizen-orthopedic-hyderabad" element={<SEOLandingPage />} />
               
+              {/* Dynamic CMS Pages */}
+              <Route path="/cms/:slug" element={<CMSPage />} />
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
