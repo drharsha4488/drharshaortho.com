@@ -21,7 +21,17 @@ import {
   Building2
 } from 'lucide-react';
 import { seoLandingPages } from '@/data/seoPages';
+import { extendedLocationPages, additionalCostPages, sportsInjuryPages, ageSpecificPages } from '@/data/extendedSEOPages';
 import { useState } from 'react';
+
+// Combine all SEO pages
+const allSEOPages = [
+  ...seoLandingPages,
+  ...extendedLocationPages,
+  ...additionalCostPages,
+  ...sportsInjuryPages,
+  ...ageSpecificPages
+];
 
 // FAQ Accordion Component
 const FAQItem = ({ question, answer, isOpen, onClick }) => (
