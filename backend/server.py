@@ -654,6 +654,144 @@ async def get_chat_history(session_id: str):
         raise HTTPException(status_code=500, detail="Failed to fetch chat history")
 
 
+# ============ Analytics Endpoints ============
+
+class PageViewCreate(BaseModel):
+    page_path: str
+    page_title: Optional[str] = None
+    referrer: Optional[str] = None
+    user_agent: Optional[str] = None
+    session_id: Optional[str] = None
+
+class PageView(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    page_path: str
+    page_title: Optional[str] = None
+    referrer: Optional[str] = None
+    user_agent: Optional[str] = None
+    session_id: Optional[str] = None
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+@api_router.post("/analytics/pageview")
+async def track_pageview(pageview_data: PageViewCreate):
+    """Track a page view"""
+    try:
+        pageview = PageView(**pageview_data.model_dump())
+        doc = pageview.model_dump()
+        doc['timestamp'] = doc['timestamp'].isoformat()
+        
+        await db.page_views.insert_one(doc)
+        return {"success": True, "id": pageview.id}
+    except Exception as e:
+        logger.error(f"Error tracking pageview: {str(e)}")
+        # Return success anyway to not block frontend
+        return {"success": False}
+
+@api_router.get("/admin/analytics")
+async def get_analytics():
+    """Get analytics data for admin dashboard"""
+    try:
+        from datetime import timedelta
+        
+        now = datetime.now(timezone.utc)
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        week_ago = now - timedelta(days=7)
+        month_ago = now - timedelta(days=30)
+        
+        # Total page views
+        total_views = await db.page_views.count_documents({})
+        
+        # Today's views
+        today_views = await db.page_views.count_documents({
+            "timestamp": {"$gte": today_start.isoformat()}
+        })
+        
+        # This week's views
+        week_views = await db.page_views.count_documents({
+            "timestamp": {"$gte": week_ago.isoformat()}
+        })
+        
+        # This month's views
+        month_views = await db.page_views.count_documents({
+            "timestamp": {"$gte": month_ago.isoformat()}
+        })
+        
+        # Unique sessions this month
+        unique_sessions_pipeline = [
+            {"$match": {"timestamp": {"$gte": month_ago.isoformat()}}},
+            {"$group": {"_id": "$session_id"}},
+            {"$count": "count"}
+        ]
+        unique_sessions_result = await db.page_views.aggregate(unique_sessions_pipeline).to_list(1)
+        unique_sessions = unique_sessions_result[0]["count"] if unique_sessions_result else 0
+        
+        # Top pages (last 30 days)
+        top_pages_pipeline = [
+            {"$match": {"timestamp": {"$gte": month_ago.isoformat()}}},
+            {"$group": {"_id": "$page_path", "views": {"$sum": 1}}},
+            {"$sort": {"views": -1}},
+            {"$limit": 10}
+        ]
+        top_pages = await db.page_views.aggregate(top_pages_pipeline).to_list(10)
+        
+        # Daily views for last 7 days
+        daily_views = []
+        for i in range(7):
+            day = now - timedelta(days=i)
+            day_start = day.replace(hour=0, minute=0, second=0, microsecond=0)
+            day_end = day_start + timedelta(days=1)
+            
+            count = await db.page_views.count_documents({
+                "timestamp": {
+                    "$gte": day_start.isoformat(),
+                    "$lt": day_end.isoformat()
+                }
+            })
+            daily_views.append({
+                "date": day_start.strftime("%b %d"),
+                "views": count
+            })
+        
+        daily_views.reverse()  # Oldest first
+        
+        # Top referrers
+        referrers_pipeline = [
+            {"$match": {"timestamp": {"$gte": month_ago.isoformat()}, "referrer": {"$ne": None, "$ne": ""}}},
+            {"$group": {"_id": "$referrer", "count": {"$sum": 1}}},
+            {"$sort": {"count": -1}},
+            {"$limit": 5}
+        ]
+        top_referrers = await db.page_views.aggregate(referrers_pipeline).to_list(5)
+        
+        # Chat interactions
+        total_chats = await db.chat_history.count_documents({})
+        recent_chats = await db.chat_history.count_documents({
+            "timestamp": {"$gte": week_ago.isoformat()}
+        })
+        
+        return {
+            "overview": {
+                "total_views": total_views,
+                "today_views": today_views,
+                "week_views": week_views,
+                "month_views": month_views,
+                "unique_visitors": unique_sessions
+            },
+            "top_pages": [{"page": p["_id"], "views": p["views"]} for p in top_pages],
+            "daily_views": daily_views,
+            "top_referrers": [{"referrer": r["_id"], "count": r["count"]} for r in top_referrers],
+            "engagement": {
+                "total_chats": total_chats,
+                "recent_chats": recent_chats
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error fetching analytics: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch analytics")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
