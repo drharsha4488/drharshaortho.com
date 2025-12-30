@@ -1018,7 +1018,7 @@ try:
     AI_CHAT_AVAILABLE = True
 except ImportError:
     AI_CHAT_AVAILABLE = False
-    logger.warning("emergentintegrations not installed - AI chat will be unavailable")
+    print("Warning: emergentintegrations not installed - AI chat will be unavailable")
 
 # AI Chat configuration
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
