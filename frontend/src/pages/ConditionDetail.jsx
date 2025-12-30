@@ -18,8 +18,8 @@ import {
   Phone,
   Calendar
 } from 'lucide-react';
-import { getConditionBySlug, getRelatedConditions, conditionsDetailed } from '@/data/conditionsDetailed';
-import { treatments } from '@/data/treatments';
+import { getConditionBySlug, getRelatedConditions, allConditionsDetailed } from '@/data/conditionsDetailed';
+import { treatments, allTreatments } from '@/data/treatments';
 
 const ConditionDetail = () => {
   const { slug } = useParams();
