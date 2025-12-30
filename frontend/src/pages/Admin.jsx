@@ -1239,7 +1239,7 @@ const Admin = () => {
                   <p className="text-sm text-muted-foreground">{cmsPages.length} pages total</p>
                 </div>
                 <div className="flex gap-2">
-                  {cmsPages.length === 0 && (
+                  {cmsPages.length < 5 && (
                     <Button 
                       onClick={seedCmsContent} 
                       variant="outline" 
