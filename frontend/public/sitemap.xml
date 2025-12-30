@@ -649,4 +649,54 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+
+  <!-- ADDITIONAL BLOG POSTS -->
+  <url>
+    <loc>https://drharshaortho.com/blog/how-long-knee-replacement-last</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/sleeping-after-knee-replacement</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/when-can-drive-after-knee-replacement</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/arthritis-vs-injury-knee-pain</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/foods-good-for-joints</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/prehab-before-knee-surgery</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/sports-after-knee-replacement</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/minimally-invasive-vs-traditional-knee-replacement</loc>
+    <lastmod>2025-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
