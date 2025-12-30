@@ -224,6 +224,111 @@ const Admin = () => {
     }
   };
 
+  // CMS Pages functions
+  const fetchCmsPages = async () => {
+    setCmsLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/admin/cms/pages`);
+      const data = await res.json();
+      setCmsPages(data);
+    } catch (err) {
+      console.error('Failed to fetch CMS pages:', err);
+    } finally {
+      setCmsLoading(false);
+    }
+  };
+
+  const handleCmsSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      const payload = {
+        ...cmsForm,
+        keywords: cmsForm.keywords.split(',').map(k => k.trim()).filter(Boolean)
+      };
+      
+      const url = editingCmsPage 
+        ? `${API_URL}/api/admin/cms/pages/${editingCmsPage.id}`
+        : `${API_URL}/api/admin/cms/pages`;
+      
+      const method = editingCmsPage ? 'PUT' : 'POST';
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      
+      if (res.ok) {
+        toast({ title: 'Success', description: `Page ${editingCmsPage ? 'updated' : 'created'} successfully` });
+        fetchCmsPages();
+        resetCmsForm();
+      } else {
+        const error = await res.json();
+        throw new Error(error.detail || 'Failed to save page');
+      }
+    } catch (err) {
+      toast({ title: 'Error', description: err.message, variant: 'destructive' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEditCmsPage = (page) => {
+    setEditingCmsPage(page);
+    setCmsForm({
+      slug: page.slug,
+      type: page.type,
+      title: page.title,
+      meta_title: page.meta_title || '',
+      meta_description: page.meta_description || '',
+      keywords: (page.keywords || []).join(', '),
+      content: page.content || { hero: { title: '', subtitle: '' }, introduction: '', sections: [] },
+      status: page.status
+    });
+    setShowCmsForm(true);
+  };
+
+  const handleDeleteCmsPage = async (pageId) => {
+    if (!window.confirm('Are you sure you want to delete this page?')) return;
+    
+    try {
+      const res = await fetch(`${API_URL}/api/admin/cms/pages/${pageId}`, {
+        method: 'DELETE'
+      });
+      
+      if (res.ok) {
+        toast({ title: 'Success', description: 'Page deleted successfully' });
+        fetchCmsPages();
+      }
+    } catch (err) {
+      toast({ title: 'Error', description: 'Failed to delete page', variant: 'destructive' });
+    }
+  };
+
+  const resetCmsForm = () => {
+    setShowCmsForm(false);
+    setEditingCmsPage(null);
+    setCmsForm({
+      slug: '',
+      type: 'general',
+      title: '',
+      meta_title: '',
+      meta_description: '',
+      keywords: '',
+      content: { hero: { title: '', subtitle: '' }, introduction: '', sections: [] },
+      status: 'draft'
+    });
+  };
+
+  const filteredCmsPages = cmsPages.filter(page => {
+    const matchesFilter = cmsFilter === 'all' || page.type === cmsFilter || page.status === cmsFilter;
+    const matchesSearch = page.title.toLowerCase().includes(cmsSearch.toLowerCase()) ||
+                         page.slug.toLowerCase().includes(cmsSearch.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
+
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
