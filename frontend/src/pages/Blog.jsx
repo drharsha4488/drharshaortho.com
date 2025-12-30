@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
-import { Calendar, User, Clock, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
+import { Calendar, User, Clock, ChevronDown, ChevronUp, Loader2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import staticBlogPosts from '@/data/blogPosts';
+import { seoBlogPosts } from '@/data/seoBlogPosts';
 
 const Blog = () => {
   const [expandedPost, setExpandedPost] = useState(null);
@@ -13,25 +15,26 @@ const Blog = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch blog posts from API
+  // Fetch blog posts from API and merge with SEO posts
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/blog`);
         if (response.ok) {
           const data = await response.json();
-          // Merge API data with static data for comprehensive content
+          // Merge API data with static data and SEO posts
           const apiPostIds = data.map(p => p.id);
           const uniqueStaticPosts = staticBlogPosts.filter(p => !apiPostIds.includes(p.id));
-          setBlogPosts([...data, ...uniqueStaticPosts]);
+          const uniqueSEOPosts = seoBlogPosts.filter(p => !apiPostIds.includes(p.id));
+          setBlogPosts([...data, ...uniqueSEOPosts, ...uniqueStaticPosts]);
         } else {
-          // Fallback to static posts
-          setBlogPosts(staticBlogPosts);
+          // Fallback to static + SEO posts
+          setBlogPosts([...seoBlogPosts, ...staticBlogPosts]);
         }
       } catch (err) {
         console.error('Error fetching blog posts:', err);
-        // Fallback to static posts on error
-        setBlogPosts(staticBlogPosts);
+        // Fallback to static + SEO posts on error
+        setBlogPosts([...seoBlogPosts, ...staticBlogPosts]);
       } finally {
         setLoading(false);
       }
