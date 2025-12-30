@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import SEO from '@/components/SEO';
 import SchemaMarkup from '@/components/SchemaMarkup';
-import { conditionsDetailed, conditionCategories } from '@/data/conditionsDetailed';
+import { allConditionsDetailed, conditionCategories } from '@/data/conditionsDetailed';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight } from 'lucide-react';
@@ -13,8 +13,8 @@ const Conditions = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredConditions = selectedCategory === 'All' 
-    ? conditionsDetailed 
-    : conditionsDetailed.filter(c => c.category === selectedCategory);
+    ? allConditionsDetailed 
+    : allConditionsDetailed.filter(c => c.category === selectedCategory);
 
   return (
     <Layout>
