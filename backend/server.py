@@ -539,6 +539,121 @@ async def delete_blog_post(post_id: str):
         raise HTTPException(status_code=500, detail="Failed to delete blog post")
 
 
+# ============ AI Chat Agent ============
+
+# Try to import emergentintegrations for AI chat
+try:
+    from emergentintegrations.llm.chat import LlmChat, UserMessage
+    AI_CHAT_AVAILABLE = True
+except ImportError:
+    AI_CHAT_AVAILABLE = False
+    logger.warning("emergentintegrations not installed - AI chat will be unavailable")
+
+# AI Chat configuration
+EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
+
+# Store for active chat sessions (in production, use Redis or similar)
+chat_sessions = {}
+
+# System prompt for the AI assistant
+AI_SYSTEM_PROMPT = """You are Dr. Harsha's AI Assistant at CareConnect Orthopedic Center. You help patients with:
+
+**About Dr. B Harsha Vardhana Reddy:**
+- Senior Consultant Orthopedic Surgeon at Yashoda Hospital, Hi-Tech City, Hyderabad
+- DNB Orthopedics with Fellowship in Joint Replacement Surgery
+- MBA in Hospital Administration
+- 15+ years of experience, 8,000+ successful surgeries
+- Specializes in: Knee & Hip Replacement, Sports Medicine, Arthroscopy, Trauma Surgery
+
+**Hospital Location:**
+Yashoda Hospital, Hi-Tech City, Hyderabad, Telangana, India
+Contact: +91 99599 64567
+
+**Your Responsibilities:**
+1. Answer orthopedic questions (knee pain, hip problems, sports injuries, arthritis, fractures)
+2. Explain treatments (knee replacement, hip replacement, arthroscopy, ligament reconstruction)
+3. Help with appointment booking inquiries
+4. Provide general guidance on recovery, exercises, and post-surgery care
+
+**Guidelines:**
+- Be warm, professional, and empathetic
+- For specific medical advice, always recommend consulting Dr. Harsha in person
+- Provide accurate information about procedures and recovery times
+- If asked about costs, give general ranges and suggest contacting the hospital for exact quotes
+- Encourage booking appointments for detailed consultations
+- Keep responses concise but helpful (2-3 paragraphs max)
+- Use simple language patients can understand
+
+**Appointment Booking:**
+To book an appointment, patients can:
+1. Call: +91 99599 64567
+2. Visit: /contact page on the website
+3. WhatsApp: +91 99599 64567"""
+
+class ChatMessage(BaseModel):
+    message: str
+    session_id: Optional[str] = None
+
+class ChatResponse(BaseModel):
+    response: str
+    session_id: str
+
+@api_router.post("/chat", response_model=ChatResponse)
+async def chat_with_ai(chat_message: ChatMessage):
+    """Chat with AI assistant"""
+    if not AI_CHAT_AVAILABLE:
+        raise HTTPException(status_code=503, detail="AI chat service unavailable")
+    
+    if not EMERGENT_LLM_KEY:
+        raise HTTPException(status_code=503, detail="AI chat not configured")
+    
+    try:
+        # Generate or use existing session ID
+        session_id = chat_message.session_id or str(uuid.uuid4())
+        
+        # Get or create chat instance for this session
+        if session_id not in chat_sessions:
+            chat_sessions[session_id] = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=session_id,
+                system_message=AI_SYSTEM_PROMPT
+            ).with_model("openai", "gpt-4o")
+        
+        chat = chat_sessions[session_id]
+        
+        # Create user message and get response
+        user_msg = UserMessage(text=chat_message.message)
+        response = await chat.send_message(user_msg)
+        
+        # Store chat in database for history
+        chat_doc = {
+            "session_id": session_id,
+            "user_message": chat_message.message,
+            "ai_response": response,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.chat_history.insert_one(chat_doc)
+        
+        return ChatResponse(response=response, session_id=session_id)
+    
+    except Exception as e:
+        logger.error(f"AI chat error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Chat error: {str(e)}")
+
+@api_router.get("/chat/history/{session_id}")
+async def get_chat_history(session_id: str):
+    """Get chat history for a session"""
+    try:
+        history = await db.chat_history.find(
+            {"session_id": session_id},
+            {"_id": 0}
+        ).sort("timestamp", 1).to_list(100)
+        return {"history": history}
+    except Exception as e:
+        logger.error(f"Error fetching chat history: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch chat history")
+
+
 # Include the router in the main app
 app.include_router(api_router)
 
