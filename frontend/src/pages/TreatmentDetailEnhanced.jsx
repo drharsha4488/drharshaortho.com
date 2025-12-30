@@ -149,15 +149,15 @@ const TreatmentDetailEnhanced = () => {
               {hasDetailedContent ? treatment.heroSubtitle : (treatment.detailedDescription || treatment.description)}
             </p>
             
-            <div className="flex flex-wrap gap-4">
-              <Link to="/contact">
-                <Button size="lg" className="bg-accent hover:brightness-110 text-accent-foreground gap-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <Link to="/contact" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto bg-accent hover:brightness-110 text-accent-foreground gap-2">
                   <Calendar className="w-5 h-5" />
                   Book Consultation
                 </Button>
               </Link>
-              <a href="tel:+919959964567">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 gap-2">
+              <a href="tel:+919959964567" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto border-white text-white hover:bg-white/10 gap-2">
                   <Phone className="w-5 h-5" />
                   Call +91 99599 64567
                 </Button>
