@@ -1185,6 +1185,309 @@ const Admin = () => {
             )}
           </AnimatePresence>
         )}
+
+        {/* CMS Pages Tab */}
+        {activeTab === 'cms' && (
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-6"
+            >
+              {/* CMS Header */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h2 className="text-xl font-semibold">Content Management</h2>
+                  <p className="text-sm text-muted-foreground">{cmsPages.length} pages total</p>
+                </div>
+                <Button onClick={() => setShowCmsForm(true)} className="gap-2">
+                  <Plus className="w-4 h-4" />
+                  Create Page
+                </Button>
+              </div>
+
+              {/* Search and Filter */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search pages..."
+                    value={cmsSearch}
+                    onChange={(e) => setCmsSearch(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {['all', 'published', 'draft', 'condition', 'treatment', 'seo_landing', 'blog', 'general'].map((filterOption) => (
+                    <button
+                      key={filterOption}
+                      onClick={() => setCmsFilter(filterOption)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize whitespace-nowrap transition-colors ${
+                        cmsFilter === filterOption
+                          ? 'bg-primary text-white'
+                          : 'bg-white text-muted-foreground hover:bg-secondary border border-border'
+                      }`}
+                    >
+                      {filterOption}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* CMS Form Modal */}
+              {showCmsForm && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+                  onClick={() => resetCmsForm()}
+                >
+                  <motion.div
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="p-6 border-b border-border flex items-center justify-between">
+                      <h3 className="text-lg font-semibold">
+                        {editingCmsPage ? 'Edit Page' : 'Create New Page'}
+                      </h3>
+                      <button onClick={resetCmsForm} className="text-muted-foreground hover:text-foreground">
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+                    
+                    <form onSubmit={handleCmsSubmit} className="p-6 space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Title *</label>
+                          <Input
+                            value={cmsForm.title}
+                            onChange={(e) => setCmsForm({ ...cmsForm, title: e.target.value })}
+                            placeholder="Page title"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Slug *</label>
+                          <Input
+                            value={cmsForm.slug}
+                            onChange={(e) => setCmsForm({ ...cmsForm, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+                            placeholder="url-friendly-slug"
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Type</label>
+                          <select
+                            value={cmsForm.type}
+                            onChange={(e) => setCmsForm({ ...cmsForm, type: e.target.value })}
+                            className="w-full h-10 px-3 rounded-md border border-input bg-background"
+                          >
+                            <option value="general">General</option>
+                            <option value="condition">Condition</option>
+                            <option value="treatment">Treatment</option>
+                            <option value="seo_landing">SEO Landing</option>
+                            <option value="blog">Blog Post</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Status</label>
+                          <select
+                            value={cmsForm.status}
+                            onChange={(e) => setCmsForm({ ...cmsForm, status: e.target.value })}
+                            className="w-full h-10 px-3 rounded-md border border-input bg-background"
+                          >
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Meta Title</label>
+                        <Input
+                          value={cmsForm.meta_title}
+                          onChange={(e) => setCmsForm({ ...cmsForm, meta_title: e.target.value })}
+                          placeholder="SEO title (60 characters recommended)"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Meta Description</label>
+                        <textarea
+                          value={cmsForm.meta_description}
+                          onChange={(e) => setCmsForm({ ...cmsForm, meta_description: e.target.value })}
+                          placeholder="SEO description (160 characters recommended)"
+                          className="w-full px-3 py-2 rounded-md border border-input bg-background min-h-[80px]"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Keywords (comma separated)</label>
+                        <Input
+                          value={cmsForm.keywords}
+                          onChange={(e) => setCmsForm({ ...cmsForm, keywords: e.target.value })}
+                          placeholder="keyword1, keyword2, keyword3"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Hero Title</label>
+                        <Input
+                          value={cmsForm.content.hero?.title || ''}
+                          onChange={(e) => setCmsForm({ 
+                            ...cmsForm, 
+                            content: { ...cmsForm.content, hero: { ...cmsForm.content.hero, title: e.target.value } }
+                          })}
+                          placeholder="Main heading on the page"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Hero Subtitle</label>
+                        <Input
+                          value={cmsForm.content.hero?.subtitle || ''}
+                          onChange={(e) => setCmsForm({ 
+                            ...cmsForm, 
+                            content: { ...cmsForm.content, hero: { ...cmsForm.content.hero, subtitle: e.target.value } }
+                          })}
+                          placeholder="Subheading or tagline"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Introduction</label>
+                        <textarea
+                          value={cmsForm.content.introduction || ''}
+                          onChange={(e) => setCmsForm({ 
+                            ...cmsForm, 
+                            content: { ...cmsForm.content, introduction: e.target.value }
+                          })}
+                          placeholder="Opening paragraph for the page..."
+                          className="w-full px-3 py-2 rounded-md border border-input bg-background min-h-[120px]"
+                        />
+                      </div>
+                      
+                      <div className="flex justify-end gap-3 pt-4 border-t border-border">
+                        <Button type="button" variant="outline" onClick={resetCmsForm}>
+                          Cancel
+                        </Button>
+                        <Button type="submit" disabled={loading}>
+                          {loading ? 'Saving...' : (editingCmsPage ? 'Update Page' : 'Create Page')}
+                        </Button>
+                      </div>
+                    </form>
+                  </motion.div>
+                </motion.div>
+              )}
+
+              {/* CMS Pages List */}
+              {cmsLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              ) : filteredCmsPages.length === 0 ? (
+                <div className="bg-white rounded-xl border border-border p-12 text-center">
+                  <Layers className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-30" />
+                  <p className="text-muted-foreground">No pages found</p>
+                  <Button onClick={() => setShowCmsForm(true)} variant="outline" className="mt-4">
+                    Create Your First Page
+                  </Button>
+                </div>
+              ) : (
+                <div className="bg-white rounded-xl border border-border overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-secondary/50">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Title</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Type</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Status</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">Updated</th>
+                          <th className="px-4 py-3 text-right text-xs font-medium text-muted-foreground uppercase">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                        {filteredCmsPages.map((page) => (
+                          <tr key={page.id} className="hover:bg-secondary/30 transition-colors">
+                            <td className="px-4 py-3">
+                              <div>
+                                <p className="font-medium text-foreground">{page.title}</p>
+                                <p className="text-xs text-muted-foreground">/{page.slug}</p>
+                              </div>
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                page.type === 'condition' ? 'bg-blue-100 text-blue-700' :
+                                page.type === 'treatment' ? 'bg-green-100 text-green-700' :
+                                page.type === 'seo_landing' ? 'bg-purple-100 text-purple-700' :
+                                page.type === 'blog' ? 'bg-orange-100 text-orange-700' :
+                                'bg-gray-100 text-gray-700'
+                              }`}>
+                                {page.type}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                page.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                              }`}>
+                                {page.status}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-sm text-muted-foreground">
+                              {formatDate(page.updated_at)}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex items-center justify-end gap-2">
+                                {page.status === 'published' && (
+                                  <a
+                                    href={`/${page.slug}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="p-1.5 text-muted-foreground hover:text-primary transition-colors"
+                                    title="View page"
+                                  >
+                                    <ExternalLink className="w-4 h-4" />
+                                  </a>
+                                )}
+                                <button
+                                  onClick={() => handleEditCmsPage(page)}
+                                  className="p-1.5 text-muted-foreground hover:text-primary transition-colors"
+                                  title="Edit"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteCmsPage(page.id)}
+                                  className="p-1.5 text-muted-foreground hover:text-red-500 transition-colors"
+                                  title="Delete"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* Info Banner */}
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <p className="text-sm text-blue-700">
+                  <strong>💡 Tip:</strong> Pages created here are stored in the database. Future updates will allow frontend pages to fetch content dynamically from this CMS.
+                </p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        )}
       </main>
     </div>
   );
