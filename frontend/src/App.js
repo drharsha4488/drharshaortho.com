@@ -29,6 +29,7 @@ const Testimonials = lazy(() => import('./pages/Testimonials'));
 const Gallery = lazy(() => import('./pages/Gallery'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const SEOLandingPage = lazy(() => import('./pages/SEOLandingPage'));
 
 function App() {
   return (
@@ -51,6 +52,13 @@ function App() {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/admin" element={<Admin />} />
+              {/* SEO Landing Pages */}
+              <Route path="/best-orthopedic-surgeon-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/robotic-knee-replacement-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/hip-replacement-cost-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/sports-injury-treatment-hyderabad" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-doctor-near-me-hyderabad" element={<SEOLandingPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
