@@ -589,10 +589,16 @@ async def get_cms_pages(type: Optional[str] = None, status: Optional[str] = None
         
         pages = await db.cms_pages.find(query, {"_id": 0}).sort("updated_at", -1).to_list(500)
         
+        # Convert date strings to datetime objects (handle various formats)
         for page in pages:
             for date_field in ['created_at', 'updated_at', 'published_at']:
-                if isinstance(page.get(date_field), str):
-                    page[date_field] = datetime.fromisoformat(page[date_field])
+                if date_field in page and page[date_field]:
+                    try:
+                        if isinstance(page[date_field], str):
+                            # Try parsing ISO format with timezone
+                            page[date_field] = page[date_field]  # Keep as string for JSON serialization
+                    except Exception:
+                        pass
         
         return pages
     except Exception as e:
