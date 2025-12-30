@@ -74,6 +74,7 @@ const Admin = () => {
   const [editingCmsPage, setEditingCmsPage] = useState(null);
   const [cmsFilter, setCmsFilter] = useState('all');
   const [cmsSearch, setCmsSearch] = useState('');
+  const [seedingContent, setSeedingContent] = useState(false);
   const [cmsForm, setCmsForm] = useState({
     slug: '',
     type: 'general',
