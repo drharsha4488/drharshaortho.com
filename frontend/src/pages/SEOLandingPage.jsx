@@ -86,9 +86,17 @@ const SEOLandingPage = () => {
     );
   }
 
-  const content = page.content;
+  // Handle both full content pages and simple location-based pages
+  const content = page.content || {};
+  const isSimplePage = !page.content; // Extended pages without full content structure
+  
+  // For simple pages, create basic content structure
+  const heroTitle = content.hero?.title || page.heroTitle || page.title;
+  const heroSubtitle = content.hero?.subtitle || page.heroSubtitle || page.metaDescription;
+  const pageLocation = page.location || '';
+  const pageDistance = page.distance || '';
 
-  // FAQ Schema
+  // FAQ Schema (only for pages with FAQs)
   const faqSchema = content.faqs ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
