@@ -179,22 +179,29 @@ const ConditionDetail = () => {
               Signs & Symptoms
             </h2>
             <div className="space-y-4">
-              {condition.symptoms.map((symptom, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex items-start gap-4 p-4 bg-card rounded-lg border border-border"
-                >
-                  <CheckCircle className="w-6 h-6 text-primary flex-shrink-0" />
-                  <div>
-                    <h3 className="font-semibold text-foreground">{symptom.name}</h3>
-                    <p className="text-sm text-muted-foreground">{symptom.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+              {condition.symptoms && condition.symptoms.map((symptom, i) => {
+                // Handle both string and object symptom formats
+                const isString = typeof symptom === 'string';
+                const symptomName = isString ? symptom : symptom.name;
+                const symptomDesc = isString ? null : symptom.description;
+                
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-start gap-4 p-4 bg-card rounded-lg border border-border"
+                  >
+                    <CheckCircle className="w-6 h-6 text-primary flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold text-foreground">{symptomName}</h3>
+                      {symptomDesc && <p className="text-sm text-muted-foreground">{symptomDesc}</p>}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
