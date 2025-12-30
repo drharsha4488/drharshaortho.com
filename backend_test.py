@@ -355,6 +355,7 @@ def main():
     print()
     
     test_results = []
+    created_page_id = None
     
     # Test all endpoints
     test_results.append(("API Root", test_api_root()))
@@ -363,6 +364,25 @@ def main():
     test_results.append(("Create Appointment API", test_appointments_api()))
     test_results.append(("Get Appointments API", test_get_appointments_api()))
     test_results.append(("Contact Form API", test_contact_api()))
+    
+    # New CMS API Tests
+    test_results.append(("CMS Pages List API", test_cms_pages_list()))
+    created_page_id = test_cms_page_create()
+    test_results.append(("CMS Page Create API", bool(created_page_id)))
+    
+    if created_page_id:
+        test_results.append(("CMS Page Get Public API", test_cms_page_get_public("test-sports-page")))
+        test_results.append(("CMS Page Delete API", test_cms_page_delete(created_page_id)))
+    else:
+        test_results.append(("CMS Page Get Public API", False))
+        test_results.append(("CMS Page Delete API", False))
+    
+    # Analytics API Tests
+    test_results.append(("Analytics API", test_analytics_api()))
+    test_results.append(("Analytics Pageview API", test_analytics_pageview()))
+    
+    # Admin Blog API Test
+    test_results.append(("Admin Blog API", test_admin_blog_api()))
     
     print("\n" + "=" * 60)
     print("📊 TEST RESULTS SUMMARY")
@@ -373,7 +393,7 @@ def main():
     
     for test_name, result in test_results:
         status = "✅ PASS" if result else "❌ FAIL"
-        print(f"{test_name:<25} {status}")
+        print(f"{test_name:<30} {status}")
         if result:
             passed += 1
         else:
