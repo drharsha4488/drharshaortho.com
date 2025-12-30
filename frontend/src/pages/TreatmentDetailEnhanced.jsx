@@ -128,7 +128,7 @@ const TreatmentDetailEnhanced = () => {
 
       {/* Hero Section with Image */}
       <section className="relative">
-        <div className="absolute inset-0 h-[400px]">
+        <div className="absolute inset-0 min-h-[450px] md:h-[400px]">
           <img 
             src={treatment.imageUrl} 
             alt={treatment.name}
@@ -136,16 +136,16 @@ const TreatmentDetailEnhanced = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-charcoal/90 to-charcoal/70" />
         </div>
-        <div className="relative container-medical py-16 md:py-24">
+        <div className="relative container-medical py-12 md:py-24 min-h-[450px] md:min-h-0">
           <div className="max-w-3xl text-white">
-            <span className="text-5xl mb-4 block">{treatment.icon}</span>
-            <span className="inline-block px-3 py-1 bg-white/20 text-white text-sm rounded-full mb-4">
+            <span className="text-4xl md:text-5xl mb-3 md:mb-4 block">{treatment.icon}</span>
+            <span className="inline-block px-3 py-1 bg-white/20 text-white text-sm rounded-full mb-3 md:mb-4">
               {treatment.category}
             </span>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-semibold mb-4">
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-serif font-semibold mb-3 md:mb-4">
               {hasDetailedContent ? treatment.heroTitle : treatment.name}
             </h1>
-            <p className="text-lg text-white/90 mb-8">
+            <p className="text-base md:text-lg text-white/90 mb-6 md:mb-8">
               {hasDetailedContent ? treatment.heroSubtitle : (treatment.detailedDescription || treatment.description)}
             </p>
             
