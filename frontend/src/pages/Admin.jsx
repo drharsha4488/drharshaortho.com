@@ -371,7 +371,7 @@ const Admin = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm" onClick={() => { fetchAppointments(); fetchStats(); fetchBlogPosts(); }}>
+              <Button variant="outline" size="sm" onClick={() => { fetchAppointments(); fetchStats(); fetchBlogPosts(); fetchAnalytics(); }}>
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Refresh
               </Button>
