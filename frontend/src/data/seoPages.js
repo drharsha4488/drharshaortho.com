@@ -617,4 +617,10 @@ export const additionalTreatments = [
   }
 ];
 
-export default { seoLandingPages, additionalConditions, additionalTreatments };
+// Import additional SEO pages
+import { locationSEOPages, procedureSEOPages, conditionSEOPages } from './moreSEOPages';
+
+// Combine all SEO landing pages
+export const allSEOPages = [...seoLandingPages, ...locationSEOPages, ...procedureSEOPages, ...conditionSEOPages];
+
+export default { seoLandingPages, additionalConditions, additionalTreatments, allSEOPages };
