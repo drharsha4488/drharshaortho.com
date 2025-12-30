@@ -1944,6 +1944,12 @@ export const conditionsDetailed = [
   }
 ];
 
+// Import additional conditions for SEO expansion
+import additionalConditions from './additionalConditions';
+
+// Merge all conditions for display
+export const allConditionsDetailed = [...conditionsDetailed, ...additionalConditions];
+
 // Export categories for filtering
 export const conditionCategories = [
   'All',
@@ -1951,8 +1957,8 @@ export const conditionCategories = [
   'Hip',
   'Shoulder',
   'Elbow',
-  'Hand & Wrist',
-  'Foot & Ankle',
+  'Hand',
+  'Foot',
   'Sports Injury',
   'Trauma',
   'Spine'
@@ -1960,12 +1966,12 @@ export const conditionCategories = [
 
 // Helper function to get condition by slug
 export const getConditionBySlug = (slug) => {
-  return conditionsDetailed.find(c => c.slug === slug || c.id === slug);
+  return allConditionsDetailed.find(c => c.slug === slug || c.id === slug);
 };
 
 // Helper function to get related conditions
 export const getRelatedConditions = (conditionId) => {
-  const condition = conditionsDetailed.find(c => c.id === conditionId);
-  if (!condition) return [];
-  return condition.relatedConditions.map(id => conditionsDetailed.find(c => c.id === id)).filter(Boolean);
+  const condition = allConditionsDetailed.find(c => c.id === conditionId);
+  if (!condition?.relatedConditions) return [];
+  return condition.relatedConditions.map(id => allConditionsDetailed.find(c => c.id === id)).filter(Boolean);
 };
