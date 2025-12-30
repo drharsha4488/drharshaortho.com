@@ -58,6 +58,10 @@ const Admin = () => {
     image_url: ''
   });
   
+  // Analytics state
+  const [analytics, setAnalytics] = useState(null);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
+  
   const { toast } = useToast();
   const navigate = useNavigate();
 
