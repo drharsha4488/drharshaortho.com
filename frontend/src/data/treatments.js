@@ -350,8 +350,7 @@ export const treatmentCategories = [
   'Joint Replacement',
   'Sports Medicine',
   'Arthroscopy',
-  'Regenerative Medicine',
-  'Conservative Treatment',
-  'Trauma',
-  'Pediatrics',
+  'Trauma Surgery',
+  'Hand & Wrist',
+  'Spine Surgery',
 ];
