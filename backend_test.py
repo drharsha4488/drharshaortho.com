@@ -400,6 +400,176 @@ def test_specific_condition_pages():
     
     return osgood_result and patello_result
 
+def test_cms_seed_content():
+    """Test POST /api/admin/cms/seed-content endpoint"""
+    print("🔍 Testing POST /api/admin/cms/seed-content...")
+    
+    # First, get current page count
+    try:
+        response = requests.get(f"{BACKEND_URL}/admin/cms/pages", timeout=10)
+        if response.status_code == 200:
+            initial_pages = len(response.json())
+            print(f"   Initial page count: {initial_pages}")
+        else:
+            print(f"   ⚠️  Could not get initial page count: {response.status_code}")
+            initial_pages = 0
+    except Exception as e:
+        print(f"   ⚠️  Error getting initial page count: {str(e)}")
+        initial_pages = 0
+    
+    # Test the seeding endpoint
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/admin/cms/seed-content",
+            headers={"Content-Type": "application/json"},
+            timeout=15
+        )
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Seeding completed successfully")
+            print(f"   Created: {data.get('created', 'N/A')} pages")
+            print(f"   Skipped: {data.get('skipped', 'N/A')} pages")
+            print(f"   Total pages: {data.get('total_pages', 'N/A')}")
+            print(f"   Message: {data.get('message', 'N/A')}")
+            
+            # Verify expected pages were created/exist
+            expected_slugs = [
+                "osteoarthritis", "acl-injury", "meniscus-tear",
+                "total-knee-replacement", "hip-replacement", 
+                "arthroscopic-surgery", "sports-injury-treatment"
+            ]
+            
+            # Check if all expected pages exist now
+            print("   Verifying seeded pages exist...")
+            all_pages_exist = True
+            for slug in expected_slugs:
+                try:
+                    page_response = requests.get(f"{BACKEND_URL}/cms/pages/{slug}", timeout=10)
+                    if page_response.status_code == 200:
+                        page_data = page_response.json()
+                        print(f"   ✅ {slug}: {page_data.get('title', 'N/A')}")
+                    else:
+                        print(f"   ❌ {slug}: Not found (status {page_response.status_code})")
+                        all_pages_exist = False
+                except Exception as e:
+                    print(f"   ❌ {slug}: Error checking - {str(e)}")
+                    all_pages_exist = False
+            
+            return all_pages_exist
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_seed_idempotent():
+    """Test that seeding is idempotent (skips existing pages)"""
+    print("🔍 Testing CMS Seeding Idempotent Behavior...")
+    
+    # Run seeding twice to test idempotent behavior
+    print("   Running first seeding...")
+    try:
+        response1 = requests.post(
+            f"{BACKEND_URL}/admin/cms/seed-content",
+            headers={"Content-Type": "application/json"},
+            timeout=15
+        )
+        
+        if response1.status_code != 200:
+            print(f"   ❌ First seeding failed: {response1.status_code}")
+            return False
+            
+        data1 = response1.json()
+        print(f"   First run - Created: {data1.get('created', 0)}, Skipped: {data1.get('skipped', 0)}")
+        
+    except Exception as e:
+        print(f"   ❌ Error in first seeding: {str(e)}")
+        return False
+    
+    # Run seeding again
+    print("   Running second seeding...")
+    try:
+        response2 = requests.post(
+            f"{BACKEND_URL}/admin/cms/seed-content",
+            headers={"Content-Type": "application/json"},
+            timeout=15
+        )
+        
+        if response2.status_code != 200:
+            print(f"   ❌ Second seeding failed: {response2.status_code}")
+            return False
+            
+        data2 = response2.json()
+        print(f"   Second run - Created: {data2.get('created', 0)}, Skipped: {data2.get('skipped', 0)}")
+        
+        # Second run should create 0 and skip 7 (if all pages exist)
+        if data2.get('created', -1) == 0 and data2.get('skipped', -1) >= 7:
+            print(f"   ✅ Idempotent behavior confirmed - no duplicates created")
+            return True
+        else:
+            print(f"   ❌ Idempotent behavior failed - unexpected created/skipped counts")
+            return False
+            
+    except Exception as e:
+        print(f"   ❌ Error in second seeding: {str(e)}")
+        return False
+
+def test_cms_pages_after_seeding():
+    """Test GET /api/admin/cms/pages returns correct count after seeding"""
+    print("🔍 Testing CMS Pages Count After Seeding...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/admin/cms/pages", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            page_count = len(data)
+            print(f"   Total pages found: {page_count}")
+            
+            # Check for expected page types
+            conditions = [p for p in data if p.get('type') == 'condition']
+            treatments = [p for p in data if p.get('type') == 'treatment']
+            
+            print(f"   Condition pages: {len(conditions)}")
+            print(f"   Treatment pages: {len(treatments)}")
+            
+            # Should have at least 3 conditions and 4 treatments from seeding
+            if len(conditions) >= 3 and len(treatments) >= 4:
+                print(f"   ✅ Expected page types found")
+                
+                # Check specific pages exist
+                expected_conditions = ["osteoarthritis", "acl-injury", "meniscus-tear"]
+                expected_treatments = ["total-knee-replacement", "hip-replacement", "arthroscopic-surgery", "sports-injury-treatment"]
+                
+                found_conditions = [p['slug'] for p in conditions]
+                found_treatments = [p['slug'] for p in treatments]
+                
+                conditions_ok = all(slug in found_conditions for slug in expected_conditions)
+                treatments_ok = all(slug in found_treatments for slug in expected_treatments)
+                
+                if conditions_ok and treatments_ok:
+                    print(f"   ✅ All expected seeded pages found")
+                    return True
+                else:
+                    print(f"   ❌ Missing expected pages")
+                    print(f"   Expected conditions: {expected_conditions}")
+                    print(f"   Found conditions: {found_conditions}")
+                    print(f"   Expected treatments: {expected_treatments}")
+                    print(f"   Found treatments: {found_treatments}")
+                    return False
+            else:
+                print(f"   ❌ Insufficient pages - need ≥3 conditions and ≥4 treatments")
+                return False
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
 def test_backend_health_check():
     """Test backend API health check as mentioned in review request"""
     print("🔍 Testing Backend API Health Check...")
