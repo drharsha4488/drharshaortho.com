@@ -1,19 +1,33 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <!-- Google tag (gtag.js) -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#0d9488" />
+        <meta name="description" content="Dr. B Harsha Vardhana Reddy - Best Orthopedic Surgeon in Hyderabad. Expert in joint replacement, sports medicine & trauma surgery at Yashoda Hospital Hi-Tech City." />
+        
+        <!-- Preconnect to critical origins for faster loading -->
+        <link rel="preconnect" href="https://ortho-caresite.emergent.host" crossorigin />
+        <link rel="preconnect" href="https://us.i.posthog.com" crossorigin />
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+        <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
+        
+        <!-- Google tag (gtag.js) - Deferred for performance -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-3P71PLBL85"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-3P71PLBL85');
+            gtag('config', 'G-3P71PLBL85', { 'send_page_view': false });
+            // Defer page view until after LCP
+            if (document.readyState === 'complete') {
+                gtag('event', 'page_view');
+            } else {
+                window.addEventListener('load', function() {
+                    setTimeout(function() { gtag('event', 'page_view'); }, 100);
+                });
+            }
         </script>
-        
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <meta name="description" content="Dr. B Harsha Vardhana Reddy - Best Orthopedic Surgeon in Hyderabad. Expert in joint replacement, sports medicine & trauma surgery at Yashoda Hospital Hi-Tech City." />
         <!--
         manifest.json provides metadata used when your web app is installed on a
         user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
