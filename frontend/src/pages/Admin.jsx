@@ -1444,10 +1444,23 @@ const Admin = () => {
               ) : filteredCmsPages.length === 0 ? (
                 <div className="bg-white rounded-xl border border-border p-12 text-center">
                   <Layers className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-30" />
-                  <p className="text-muted-foreground">No pages found</p>
-                  <Button onClick={() => setShowCmsForm(true)} variant="outline" className="mt-4">
-                    Create Your First Page
-                  </Button>
+                  <p className="text-muted-foreground mb-2">No pages found</p>
+                  <p className="text-sm text-muted-foreground mb-4">Get started by seeding default content or creating your first page.</p>
+                  <div className="flex gap-3 justify-center">
+                    <Button 
+                      onClick={seedCmsContent} 
+                      variant="default" 
+                      className="gap-2"
+                      disabled={seedingContent}
+                    >
+                      <RefreshCw className={`w-4 h-4 ${seedingContent ? 'animate-spin' : ''}`} />
+                      {seedingContent ? 'Seeding...' : 'Seed Default Content'}
+                    </Button>
+                    <Button onClick={() => setShowCmsForm(true)} variant="outline" className="gap-2">
+                      <Plus className="w-4 h-4" />
+                      Create Page
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <div className="bg-white rounded-xl border border-border overflow-hidden">
