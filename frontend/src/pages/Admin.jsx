@@ -778,6 +778,269 @@ const Admin = () => {
             </div>
           </>
         )}
+
+        {/* Analytics Tab */}
+        {activeTab === 'analytics' && (
+          <AnimatePresence>
+            {analyticsLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            ) : analytics ? (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6"
+              >
+                {/* Overview Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-white rounded-xl p-4 border border-border"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-muted-foreground">Total Views</p>
+                        <p className="text-2xl font-bold text-charcoal">{analytics.overview.total_views}</p>
+                      </div>
+                      <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                        <Eye className="w-5 h-5 text-indigo-600" />
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.05 }}
+                    className="bg-white rounded-xl p-4 border border-border"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-muted-foreground">Today</p>
+                        <p className="text-2xl font-bold text-green-600">{analytics.overview.today_views}</p>
+                      </div>
+                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <TrendingUp className="w-5 h-5 text-green-600" />
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="bg-white rounded-xl p-4 border border-border"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-muted-foreground">This Week</p>
+                        <p className="text-2xl font-bold text-blue-600">{analytics.overview.week_views}</p>
+                      </div>
+                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <BarChart3 className="w-5 h-5 text-blue-600" />
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15 }}
+                    className="bg-white rounded-xl p-4 border border-border"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-muted-foreground">This Month</p>
+                        <p className="text-2xl font-bold text-purple-600">{analytics.overview.month_views}</p>
+                      </div>
+                      <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                        <Calendar className="w-5 h-5 text-purple-600" />
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="bg-white rounded-xl p-4 border border-border"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-muted-foreground">Unique Visitors</p>
+                        <p className="text-2xl font-bold text-orange-600">{analytics.overview.unique_visitors}</p>
+                      </div>
+                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                        <Users className="w-5 h-5 text-orange-600" />
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Charts Row */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Daily Views Chart */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.25 }}
+                    className="bg-white rounded-xl p-6 border border-border"
+                  >
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-primary" />
+                      Daily Views (Last 7 Days)
+                    </h3>
+                    <div className="h-48 flex items-end gap-2">
+                      {analytics.daily_views.map((day, i) => {
+                        const maxViews = Math.max(...analytics.daily_views.map(d => d.views), 1);
+                        const height = (day.views / maxViews) * 100;
+                        return (
+                          <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                            <div className="w-full bg-secondary rounded-t-lg relative group" style={{ height: '160px' }}>
+                              <motion.div
+                                initial={{ height: 0 }}
+                                animate={{ height: `${height}%` }}
+                                transition={{ delay: 0.3 + i * 0.05, duration: 0.5 }}
+                                className="absolute bottom-0 w-full bg-gradient-to-t from-primary to-primary/70 rounded-t-lg"
+                              />
+                              <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-charcoal text-white text-xs px-2 py-1 rounded">
+                                {day.views}
+                              </div>
+                            </div>
+                            <span className="text-xs text-muted-foreground">{day.date}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+
+                  {/* Top Pages */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="bg-white rounded-xl p-6 border border-border"
+                  >
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <Globe className="w-5 h-5 text-primary" />
+                      Top Pages
+                    </h3>
+                    {analytics.top_pages.length === 0 ? (
+                      <p className="text-sm text-muted-foreground text-center py-8">No page data yet</p>
+                    ) : (
+                      <div className="space-y-3">
+                        {analytics.top_pages.slice(0, 5).map((page, i) => {
+                          const maxViews = analytics.top_pages[0]?.views || 1;
+                          const percentage = (page.views / maxViews) * 100;
+                          return (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.35 + i * 0.05 }}
+                              className="group"
+                            >
+                              <div className="flex items-center justify-between text-sm mb-1">
+                                <span className="truncate max-w-[200px] text-muted-foreground group-hover:text-foreground transition-colors">
+                                  {page.page || '/'}
+                                </span>
+                                <span className="font-medium text-foreground">{page.views}</span>
+                              </div>
+                              <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${percentage}%` }}
+                                  transition={{ delay: 0.4 + i * 0.05, duration: 0.5 }}
+                                  className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
+                                />
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </motion.div>
+                </div>
+
+                {/* Engagement Stats */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Chat Engagement */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="bg-white rounded-xl p-6 border border-border"
+                  >
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <MessageSquare className="w-5 h-5 text-primary" />
+                      AI Chat Engagement
+                    </h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-4 text-center">
+                        <p className="text-3xl font-bold text-primary">{analytics.engagement.total_chats}</p>
+                        <p className="text-sm text-muted-foreground">Total Conversations</p>
+                      </div>
+                      <div className="bg-gradient-to-br from-accent/10 to-accent/5 rounded-lg p-4 text-center">
+                        <p className="text-3xl font-bold text-accent">{analytics.engagement.recent_chats}</p>
+                        <p className="text-sm text-muted-foreground">This Week</p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Top Referrers */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.45 }}
+                    className="bg-white rounded-xl p-6 border border-border"
+                  >
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <MousePointerClick className="w-5 h-5 text-primary" />
+                      Top Referrers
+                    </h3>
+                    {analytics.top_referrers.length === 0 ? (
+                      <p className="text-sm text-muted-foreground text-center py-8">No referrer data yet</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {analytics.top_referrers.map((ref, i) => (
+                          <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+                            <span className="text-sm text-muted-foreground truncate max-w-[200px]">
+                              {ref.referrer.replace(/^https?:\/\//, '').split('/')[0]}
+                            </span>
+                            <span className="text-sm font-medium bg-secondary px-2 py-1 rounded">{ref.count}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                </div>
+
+                {/* Note about tracking */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center"
+                >
+                  <p className="text-sm text-blue-700">
+                    📊 Analytics tracking is now active! Page views will start accumulating as visitors browse your website.
+                  </p>
+                </motion.div>
+              </motion.div>
+            ) : (
+              <div className="text-center py-12 text-muted-foreground">
+                <BarChart3 className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                <p>Unable to load analytics data</p>
+                <Button onClick={fetchAnalytics} variant="outline" className="mt-4">
+                  Try Again
+                </Button>
+              </div>
+            )}
+          </AnimatePresence>
+        )}
       </main>
     </div>
   );
