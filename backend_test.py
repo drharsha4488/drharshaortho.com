@@ -642,6 +642,11 @@ def main():
         test_results.append(("CMS Page Get Public API", False))
         test_results.append(("CMS Page Delete API", False))
     
+    # CMS Content Seeding Tests (NEW)
+    test_results.append(("CMS Content Seeding", test_cms_seed_content()))
+    test_results.append(("CMS Seeding Idempotent", test_cms_seed_idempotent()))
+    test_results.append(("CMS Pages After Seeding", test_cms_pages_after_seeding()))
+    
     # Analytics API Tests
     test_results.append(("Analytics API", test_analytics_api()))
     test_results.append(("Analytics Pageview API", test_analytics_pageview()))
