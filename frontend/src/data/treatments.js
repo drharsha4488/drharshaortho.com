@@ -339,11 +339,19 @@ export const treatments = [
   },
 ];
 
+// Import additional treatments for SEO expansion
+import additionalTreatments from './additionalTreatments';
+
+// Merge all treatments
+export const allTreatments = [...treatments, ...additionalTreatments];
+
 export const treatmentCategories = [
   'All',
   'Joint Replacement',
   'Sports Medicine',
-  'Trauma Surgery',
-  'Hand & Wrist',
-  'Spine Surgery',
+  'Arthroscopy',
+  'Regenerative Medicine',
+  'Conservative Treatment',
+  'Trauma',
+  'Pediatrics',
 ];
