@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Get backend URL from frontend .env
-BACKEND_URL = "https://orthoclinic.preview.emergentagent.com/api"
+BACKEND_URL = "https://careconnect-ortho.preview.emergentagent.com/api"
 
 def test_api_root():
     """Test the API root endpoint"""

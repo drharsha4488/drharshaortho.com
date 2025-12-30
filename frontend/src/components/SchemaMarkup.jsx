@@ -12,9 +12,9 @@ const SchemaMarkup = ({ type, data, faqs }) => {
     "@type": "MedicalClinic",
     "name": "Dr. Harsha Orthopedic Centre",
     "alternateName": "Dr. B Harsha Vardhana Reddy Orthopedic Clinic",
-    "url": "https://orthoclinic.preview.emergentagent.com",
-    "logo": "https://orthoclinic.preview.emergentagent.com/images/dr-harsha-logo.png",
-    "image": "https://orthoclinic.preview.emergentagent.com/images/dr-harsha-profile-optimized.jpg",
+    "url": "https://careconnect-ortho.preview.emergentagent.com",
+    "logo": "https://careconnect-ortho.preview.emergentagent.com/images/dr-harsha-logo.png",
+    "image": "https://careconnect-ortho.preview.emergentagent.com/images/dr-harsha-profile-optimized.jpg",
     "description": "Expert orthopedic care in Hyderabad. Specializing in joint replacement, sports medicine, arthroscopy, and trauma surgery.",
     "telephone": "+91-99599-64567",
     "email": "contact@drharshareddy.com",
@@ -53,8 +53,8 @@ const SchemaMarkup = ({ type, data, faqs }) => {
     "@context": "https://schema.org",
     "@type": "Physician",
     "name": "Dr. B Harsha Vardhana Reddy",
-    "image": "https://orthoclinic.preview.emergentagent.com/images/dr-harsha-profile-optimized.jpg",
-    "url": "https://orthoclinic.preview.emergentagent.com/about",
+    "image": "https://careconnect-ortho.preview.emergentagent.com/images/dr-harsha-profile-optimized.jpg",
+    "url": "https://careconnect-ortho.preview.emergentagent.com/about",
     "telephone": "+91-99599-64567",
     "description": "Dr. B Harsha Vardhana Reddy is a leading orthopedic surgeon in Hyderabad with 15+ years of experience. Specializes in joint replacement, sports medicine, and arthroscopy. Currently Associate Consultant at Yashoda Hospital Hi-Tech City.",
     "medicalSpecialty": [
@@ -181,7 +181,7 @@ const SchemaMarkup = ({ type, data, faqs }) => {
       "name": "Dr. Harsha Orthopedic Centre",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://orthoclinic.preview.emergentagent.com/images/dr-harsha-logo.png"
+        "url": "https://careconnect-ortho.preview.emergentagent.com/images/dr-harsha-logo.png"
       }
     },
     "datePublished": data.datePublished,
