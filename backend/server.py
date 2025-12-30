@@ -539,6 +539,193 @@ async def delete_blog_post(post_id: str):
         raise HTTPException(status_code=500, detail="Failed to delete blog post")
 
 
+# ============ CMS Pages Endpoints ============
+
+class CMSPageCreate(BaseModel):
+    slug: str
+    type: str  # condition, treatment, seo_landing, blog, general
+    title: str
+    meta_title: Optional[str] = None
+    meta_description: Optional[str] = None
+    keywords: List[str] = []
+    content: dict = {}  # Flexible content structure
+    status: str = "draft"  # draft, published
+
+class CMSPageUpdate(BaseModel):
+    slug: Optional[str] = None
+    type: Optional[str] = None
+    title: Optional[str] = None
+    meta_title: Optional[str] = None
+    meta_description: Optional[str] = None
+    keywords: Optional[List[str]] = None
+    content: Optional[dict] = None
+    status: Optional[str] = None
+
+class CMSPage(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    slug: str
+    type: str
+    title: str
+    meta_title: Optional[str] = None
+    meta_description: Optional[str] = None
+    keywords: List[str] = []
+    content: dict = {}
+    status: str = "draft"
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    published_at: Optional[datetime] = None
+
+@api_router.get("/admin/cms/pages")
+async def get_cms_pages(type: Optional[str] = None, status: Optional[str] = None):
+    """Get all CMS pages (admin)"""
+    try:
+        query = {}
+        if type:
+            query["type"] = type
+        if status:
+            query["status"] = status
+        
+        pages = await db.cms_pages.find(query, {"_id": 0}).sort("updated_at", -1).to_list(500)
+        
+        for page in pages:
+            for date_field in ['created_at', 'updated_at', 'published_at']:
+                if isinstance(page.get(date_field), str):
+                    page[date_field] = datetime.fromisoformat(page[date_field])
+        
+        return pages
+    except Exception as e:
+        logger.error(f"Error fetching CMS pages: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch pages")
+
+@api_router.post("/admin/cms/pages")
+async def create_cms_page(page_data: CMSPageCreate):
+    """Create a new CMS page"""
+    try:
+        # Check if slug exists
+        existing = await db.cms_pages.find_one({"slug": page_data.slug})
+        if existing:
+            raise HTTPException(status_code=400, detail="Page with this slug already exists")
+        
+        page = CMSPage(**page_data.model_dump())
+        
+        if page_data.status == "published":
+            page.published_at = datetime.now(timezone.utc)
+        
+        doc = page.model_dump()
+        doc['created_at'] = doc['created_at'].isoformat()
+        doc['updated_at'] = doc['updated_at'].isoformat()
+        if doc['published_at']:
+            doc['published_at'] = doc['published_at'].isoformat()
+        
+        await db.cms_pages.insert_one(doc)
+        
+        logger.info(f"CMS page created: {page.title} ({page.slug})")
+        return {"success": True, "id": page.id, "slug": page.slug}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating CMS page: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to create page")
+
+@api_router.get("/admin/cms/pages/{page_id}")
+async def get_cms_page_by_id(page_id: str):
+    """Get a CMS page by ID (admin)"""
+    try:
+        page = await db.cms_pages.find_one({"id": page_id}, {"_id": 0})
+        
+        if not page:
+            raise HTTPException(status_code=404, detail="Page not found")
+        
+        return page
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching CMS page: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch page")
+
+@api_router.put("/admin/cms/pages/{page_id}")
+async def update_cms_page(page_id: str, page_data: CMSPageUpdate):
+    """Update a CMS page"""
+    try:
+        update_data = {k: v for k, v in page_data.model_dump().items() if v is not None}
+        update_data['updated_at'] = datetime.now(timezone.utc).isoformat()
+        
+        # If publishing, set published_at
+        if update_data.get('status') == 'published':
+            existing = await db.cms_pages.find_one({"id": page_id})
+            if existing and not existing.get('published_at'):
+                update_data['published_at'] = datetime.now(timezone.utc).isoformat()
+        
+        result = await db.cms_pages.update_one(
+            {"id": page_id},
+            {"$set": update_data}
+        )
+        
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail="Page not found")
+        
+        logger.info(f"CMS page updated: {page_id}")
+        return {"success": True, "message": "Page updated"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating CMS page: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to update page")
+
+@api_router.delete("/admin/cms/pages/{page_id}")
+async def delete_cms_page(page_id: str):
+    """Delete a CMS page"""
+    try:
+        result = await db.cms_pages.delete_one({"id": page_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Page not found")
+        
+        logger.info(f"CMS page deleted: {page_id}")
+        return {"success": True, "message": "Page deleted"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting CMS page: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to delete page")
+
+# Public CMS endpoints
+@api_router.get("/cms/pages/{slug}")
+async def get_public_cms_page(slug: str):
+    """Get a published CMS page by slug (public)"""
+    try:
+        page = await db.cms_pages.find_one(
+            {"slug": slug, "status": "published"}, 
+            {"_id": 0}
+        )
+        
+        if not page:
+            raise HTTPException(status_code=404, detail="Page not found")
+        
+        return page
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching public CMS page: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch page")
+
+@api_router.get("/cms/pages/type/{page_type}")
+async def get_public_cms_pages_by_type(page_type: str):
+    """Get all published CMS pages of a specific type (public)"""
+    try:
+        pages = await db.cms_pages.find(
+            {"type": page_type, "status": "published"},
+            {"_id": 0, "content": 0}  # Exclude full content for listing
+        ).sort("title", 1).to_list(100)
+        
+        return pages
+    except Exception as e:
+        logger.error(f"Error fetching public CMS pages: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch pages")
+
+
 # ============ AI Chat Agent ============
 
 # Try to import emergentintegrations for AI chat
