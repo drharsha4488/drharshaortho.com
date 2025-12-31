@@ -181,7 +181,7 @@ const SchemaMarkup = ({ type, data, faqs }) => {
       "name": "Dr. Harsha Orthopedic Centre",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://medconnect-159.preview.emergentagent.com/images/dr-harsha-logo.png"
+        "url": "https://drharshaortho.com/images/dr-harsha-logo.png"
       }
     },
     "datePublished": data.datePublished,
