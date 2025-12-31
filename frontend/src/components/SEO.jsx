@@ -118,7 +118,7 @@ const SEO = ({
       <meta property="twitter:image" content={ogImage} />
 
       {/* Additional Meta Tags for SEO */}
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
       <meta name="googlebot" content="index, follow" />
       <meta name="bingbot" content="index, follow" />
       <meta name="author" content="Dr. B Harsha Vardhana Reddy" />
