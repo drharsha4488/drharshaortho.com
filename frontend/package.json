@@ -59,7 +59,44 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "postbuild": "react-snap",
     "test": "craco test"
+  },
+  "reactSnap": {
+    "source": "build",
+    "minifyHtml": {
+      "collapseWhitespace": true,
+      "removeComments": true
+    },
+    "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
+    "skipThirdPartyRequests": true,
+    "inlineCss": true,
+    "include": [
+      "/",
+      "/about",
+      "/conditions",
+      "/treatments",
+      "/blog",
+      "/contact",
+      "/testimonials",
+      "/gallery",
+      "/conditions/knee-osteoarthritis",
+      "/conditions/acl-injury",
+      "/conditions/meniscus-tear",
+      "/conditions/rotator-cuff-tear",
+      "/conditions/hip-arthritis",
+      "/conditions/frozen-shoulder",
+      "/conditions/tennis-elbow",
+      "/conditions/carpal-tunnel-syndrome",
+      "/treatments/total-knee-replacement",
+      "/treatments/total-hip-replacement",
+      "/treatments/acl-reconstruction",
+      "/treatments/arthroscopy",
+      "/treatments/shoulder-surgery",
+      "/treatments/sports-injury-treatment",
+      "/treatments/fracture-care",
+      "/treatments/prp-therapy"
+    ]
   },
   "browserslist": {
     "production": [
