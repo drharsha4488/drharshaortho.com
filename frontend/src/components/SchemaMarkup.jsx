@@ -53,8 +53,8 @@ const SchemaMarkup = ({ type, data, faqs }) => {
     "@context": "https://schema.org",
     "@type": "Physician",
     "name": "Dr. B Harsha Vardhana Reddy",
-    "image": "https://medconnect-159.preview.emergentagent.com/images/dr-harsha-profile-optimized.jpg",
-    "url": "https://medconnect-159.preview.emergentagent.com/about",
+    "image": "https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg",
+    "url": "https://drharshaortho.com/about",
     "telephone": "+91-99599-64567",
     "description": "Dr. B Harsha Vardhana Reddy is a leading orthopedic surgeon in Hyderabad with 15+ years of experience. Specializes in joint replacement, sports medicine, and arthroscopy. Currently Associate Consultant at Yashoda Hospital Hi-Tech City.",
     "medicalSpecialty": [
