@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { seoLandingPages } from '@/data/seoPages';
 import { extendedLocationPages, additionalCostPages, sportsInjuryPages, ageSpecificPages } from '@/data/extendedSEOPages';
+import { locationLandingPages } from '@/data/locationPages';
 import { useState } from 'react';
 
 // Combine all SEO pages
@@ -30,7 +31,8 @@ const allSEOPages = [
   ...extendedLocationPages,
   ...additionalCostPages,
   ...sportsInjuryPages,
-  ...ageSpecificPages
+  ...ageSpecificPages,
+  ...locationLandingPages
 ];
 
 // FAQ Accordion Component
