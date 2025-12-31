@@ -4,9 +4,10 @@ const SEO = ({
   title = 'Dr. B Harsha Vardhana Reddy - Best Orthopedic Surgeon in Hyderabad',
   description = 'Leading orthopedic surgeon in Hyderabad with 15+ years experience. Specializing in joint replacement, ACL surgery, arthroscopy, sports injuries & trauma. Book appointment at Yashoda Hospital.',
   keywords = 'orthopedic surgeon Hyderabad, knee replacement Hyderabad, hip replacement surgery, ACL surgery, sports injury doctor, joint replacement surgeon, best orthopedic doctor Hyderabad, arthroscopy Hyderabad, rotator cuff repair',
-  canonicalUrl = 'https://medconnect-159.preview.emergentagent.com',
-  ogImage = 'https://medconnect-159.preview.emergentagent.com/og-image.jpg',
+  canonicalUrl = 'https://drharshaortho.com',
+  ogImage = 'https://drharshaortho.com/images/dr-harsha-og.jpg',
   structuredData,
+  noindex = false,
 }) => {
   const defaultStructuredData = {
     '@context': 'https://schema.org',
