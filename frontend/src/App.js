@@ -112,6 +112,16 @@ function App() {
               <Route path="/orthopedic-surgeon-charminar" element={<SEOLandingPage />} />
               <Route path="/knee-doctor-nampally" element={<SEOLandingPage />} />
               
+              {/* NEW: Primary Location Landing Pages */}
+              <Route path="/orthopedic-surgeon-hitec-city" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-doctor-madhapur" element={<SEOLandingPage />} />
+              <Route path="/knee-specialist-gachibowli" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-hospital-kondapur" element={<SEOLandingPage />} />
+              <Route path="/joint-replacement-surgeon-kukatpally" element={<SEOLandingPage />} />
+              <Route path="/sports-injury-doctor-jubilee-hills" element={<SEOLandingPage />} />
+              <Route path="/bone-doctor-secunderabad" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-miyapur" element={<SEOLandingPage />} />
+              
               {/* Additional Procedure Cost Pages */}
               <Route path="/revision-knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
               <Route path="/bilateral-knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
