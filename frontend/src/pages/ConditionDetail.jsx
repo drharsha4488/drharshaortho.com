@@ -506,6 +506,15 @@ const ConditionDetail = () => {
         </div>
       </section>
 
+      {/* Internal Linking - Related Content */}
+      <section className="section-padding">
+        <div className="container-medical">
+          <div className="max-w-4xl">
+            <RelatedContent currentSlug={slug} type="condition" />
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="section-padding bg-charcoal text-ivory">
         <div className="container-medical text-center">
