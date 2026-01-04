@@ -1277,6 +1277,99 @@ async def get_analytics():
 
 
 # Include the router in the main app
+# ============ Public CMS Content Endpoints ============
+
+@api_router.get("/cms/conditions")
+async def get_all_conditions():
+    """Get all published conditions from CMS"""
+    try:
+        conditions = await db.cms_pages.find(
+            {"type": "condition", "status": "published"},
+            {"_id": 0}
+        ).sort("title", 1).to_list(100)
+        return conditions
+    except Exception as e:
+        logger.error(f"Error fetching conditions: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch conditions")
+
+@api_router.get("/cms/conditions/{slug}")
+async def get_condition_by_slug(slug: str):
+    """Get a single condition by slug"""
+    try:
+        condition = await db.cms_pages.find_one(
+            {"slug": slug, "type": "condition", "status": "published"},
+            {"_id": 0}
+        )
+        if not condition:
+            raise HTTPException(status_code=404, detail="Condition not found")
+        return condition
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching condition: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch condition")
+
+@api_router.get("/cms/treatments")
+async def get_all_treatments():
+    """Get all published treatments from CMS"""
+    try:
+        treatments = await db.cms_pages.find(
+            {"type": "treatment", "status": "published"},
+            {"_id": 0}
+        ).sort("title", 1).to_list(100)
+        return treatments
+    except Exception as e:
+        logger.error(f"Error fetching treatments: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch treatments")
+
+@api_router.get("/cms/treatments/{slug}")
+async def get_treatment_by_slug(slug: str):
+    """Get a single treatment by slug"""
+    try:
+        treatment = await db.cms_pages.find_one(
+            {"slug": slug, "type": "treatment", "status": "published"},
+            {"_id": 0}
+        )
+        if not treatment:
+            raise HTTPException(status_code=404, detail="Treatment not found")
+        return treatment
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching treatment: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch treatment")
+
+@api_router.get("/cms/blogs")
+async def get_all_cms_blogs():
+    """Get all published blog posts from CMS"""
+    try:
+        blogs = await db.cms_pages.find(
+            {"type": "blog", "status": "published"},
+            {"_id": 0}
+        ).sort("created_at", -1).to_list(100)
+        return blogs
+    except Exception as e:
+        logger.error(f"Error fetching blogs: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch blogs")
+
+@api_router.get("/cms/blogs/{slug}")
+async def get_blog_by_slug(slug: str):
+    """Get a single blog post by slug"""
+    try:
+        blog = await db.cms_pages.find_one(
+            {"slug": slug, "type": "blog", "status": "published"},
+            {"_id": 0}
+        )
+        if not blog:
+            raise HTTPException(status_code=404, detail="Blog post not found")
+        return blog
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching blog: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch blog")
+
+
 app.include_router(api_router)
 
 app.add_middleware(
