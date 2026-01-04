@@ -44,6 +44,30 @@ const faqs = [
     question: 'What makes Dr. Harsha Reddy different from other orthopedic surgeons?',
     answer: 'Dr. Reddy combines 15+ years clinical experience with MBA in Hospital Administration, offering both surgical excellence and comprehensive patient care. He is AgileOrtho founder, has performed 4,000+ surgeries, uses latest robotic and minimally invasive techniques, provides 24/7 post-surgery support, and maintains 98% patient satisfaction rate.',
   },
+  {
+    question: 'How do I book an appointment with Dr. Harsha?',
+    answer: 'You can book an appointment by: 1) Calling +91-99599-64567, 2) WhatsApp message to the same number, 3) Using the Book Appointment form on this website, or 4) Walking in to Yashoda Hospital Hi-Tech City (OPD timings: Mon-Sat, 9AM-6PM). Emergency consultations available 24/7.',
+  },
+  {
+    question: 'What should I bring for my first consultation?',
+    answer: 'Please bring: Previous medical records and X-rays/MRI scans if any, list of current medications, insurance card (if applicable), and a family member or friend for support. Wear comfortable clothes that allow easy examination of the affected joint.',
+  },
+  {
+    question: 'Is physiotherapy included in treatment?',
+    answer: 'Yes, physiotherapy is an integral part of our treatment approach. Yashoda Hospital has an in-house physiotherapy department. For surgical patients, rehabilitation starts from day 1 post-surgery. We provide personalized exercise programs and follow-up physio sessions as needed.',
+  },
+  {
+    question: 'What is the success rate of joint replacement surgery?',
+    answer: 'Dr. Harsha has a 98% success rate in joint replacement surgeries. Modern implants typically last 20+ years. Success depends on factors like patient health, implant quality, surgical technique, and post-operative rehabilitation. We use only US FDA-approved implants from top manufacturers.',
+  },
+  {
+    question: 'Do you treat sports injuries in children?',
+    answer: 'Yes, we treat pediatric sports injuries with special care. Children\'s bones are still growing, so treatment approaches differ from adults. Common pediatric sports injuries we treat include growth plate injuries, ligament sprains, and overuse injuries. We focus on safe return to sports.',
+  },
+  {
+    question: 'What are the hospital visiting hours?',
+    answer: 'Yashoda Hospital visiting hours: Morning 10AM-12PM, Evening 5PM-8PM. ICU has restricted visiting with specific timings. Post-surgery patients can have one attendant stay overnight. OPD consultation: Mon-Sat, 9AM-6PM. Emergency services available 24/7.',
+  },
 ];
 
 const FAQSection = () => {
