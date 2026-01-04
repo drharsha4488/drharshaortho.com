@@ -239,7 +239,7 @@ async def send_appointment_notification(appointment: Appointment):
         }
         
         # Run sync SDK in thread to keep FastAPI non-blocking
-        email_response = await asyncio.to_thread(resend.Emails.send, params)
+        await asyncio.to_thread(resend.Emails.send, params)
         logger.info(f"Appointment notification email sent to {NOTIFICATION_EMAIL}")
         return True
     except Exception as e:
@@ -1498,7 +1498,7 @@ async def get_keyword_suggestions(seed_keyword: str):
                                         "difficulty": "Medium",
                                         "source": "google_autocomplete"
                                     })
-                except:
+                except Exception:
                     pass
                 await asyncio.sleep(0.2)  # Small delay to avoid rate limiting
         
@@ -1538,7 +1538,7 @@ async def get_trending_orthopedic_keywords():
                                         "category": seed,
                                         "source": "google_autocomplete"
                                     })
-                except:
+                except Exception:
                     pass
                 await asyncio.sleep(0.1)
         
@@ -1578,9 +1578,9 @@ async def generate_blog_topics(keywords: List[str]):
                     f"What is {clean_kw}?",
                     f"Who Needs {clean_kw}?",
                     f"{clean_kw} Procedure Explained",
-                    f"Recovery Timeline",
-                    f"Cost and Insurance",
-                    f"Why Choose Dr. Harsha?",
+                    "Recovery Timeline",
+                    "Cost and Insurance",
+                    "Why Choose Dr. Harsha?",
                     f"FAQs About {clean_kw}"
                 ]
                 
