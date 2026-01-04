@@ -270,6 +270,11 @@ const Contact = () => {
                   </p>
                 </div>
               </form>
+
+              {/* Cost Calculator */}
+              <div className="mt-8">
+                <CostCalculator />
+              </div>
             </motion.div>
           </div>
         </div>
