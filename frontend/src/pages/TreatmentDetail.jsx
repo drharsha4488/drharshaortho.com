@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
@@ -13,14 +13,81 @@ import {
   Phone,
   ArrowRight,
   Building2,
-  Award
+  Award,
+  Loader2
 } from 'lucide-react';
 import { treatments } from '@/data/treatments';
 import { conditionsDetailed } from '@/data/conditionsDetailed';
 
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+
 const TreatmentDetail = () => {
   const { slug } = useParams();
-  const treatment = treatments.find(t => t.id === slug);
+  const [treatment, setTreatment] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isCms, setIsCms] = useState(false);
+
+  useEffect(() => {
+    const fetchTreatment = async () => {
+      setLoading(true);
+      try {
+        // Try to fetch from CMS first
+        const response = await fetch(`${API_URL}/api/cms/treatments/${slug}`);
+        if (response.ok) {
+          const cmsData = await response.json();
+          const transformedData = transformCmsTreatment(cmsData);
+          if (transformedData) {
+            setTreatment(transformedData);
+            setIsCms(true);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('CMS fetch failed, using static data:', err.message);
+      }
+      
+      // Fallback to static data
+      const staticTreatment = treatments.find(t => t.id === slug);
+      setTreatment(staticTreatment);
+      setIsCms(false);
+      setLoading(false);
+    };
+
+    fetchTreatment();
+  }, [slug]);
+
+  // Transform CMS treatment data to match static data format
+  const transformCmsTreatment = (cmsData) => {
+    if (!cmsData || !cmsData.content) return null;
+    const content = cmsData.content;
+    
+    return {
+      id: cmsData.slug,
+      slug: cmsData.slug,
+      name: cmsData.title,
+      category: content.category || 'General',
+      icon: content.icon || '🏥',
+      imageUrl: content.imageUrl || null,
+      description: cmsData.meta_description,
+      detailedDescription: content.detailedDescription || content.introduction || content.overview,
+      benefits: content.benefits || [],
+      procedure: content.procedure_steps?.map(s => typeof s === 'string' ? s : (s.description || s.title)) || content.procedure || [],
+      recovery: content.recovery,
+      hospitalStay: content.hospitalStay,
+      seoKeywords: cmsData.keywords?.join(', ') || ''
+    };
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </Layout>
+    );
+  }
   
   if (!treatment) {
     return (
