@@ -5,64 +5,111 @@ import { ArrowRight, FileText, Stethoscope, Syringe } from 'lucide-react';
 // Related content suggestions for internal linking
 const relatedContentMap = {
   // Knee related
-  'knee-osteoarthritis': {
-    conditions: ['meniscus-tear', 'acl-injury', 'patellofemoral-syndrome'],
+  'knee-arthritis': {
+    conditions: ['meniscus-tear', 'acl-tear', 'patella-dislocation'],
     treatments: ['total-knee-replacement', 'arthroscopy', 'prp-therapy'],
     blogs: ['best-exercises-for-knee-pain-relief', 'how-to-avoid-knee-replacement-surgery']
   },
-  'acl-injury': {
-    conditions: ['meniscus-tear', 'knee-osteoarthritis', 'pcl-injury'],
+  'acl-tear': {
+    conditions: ['meniscus-tear', 'knee-arthritis', 'pcl-injury'],
     treatments: ['acl-reconstruction', 'arthroscopy', 'sports-injury-treatment'],
     blogs: ['can-acl-tear-heal-without-surgery']
   },
   'meniscus-tear': {
-    conditions: ['acl-injury', 'knee-osteoarthritis'],
+    conditions: ['acl-tear', 'knee-arthritis'],
     treatments: ['arthroscopy', 'prp-therapy'],
     blogs: ['best-exercises-for-knee-pain-relief']
   },
   
   // Hip related
   'hip-arthritis': {
-    conditions: ['avascular-necrosis', 'hip-bursitis'],
-    treatments: ['total-hip-replacement', 'hip-resurfacing'],
+    conditions: ['bursitis'],
+    treatments: ['total-hip-replacement'],
     blogs: ['knee-replacement-age-limit-when-too-young-too-old']
   },
   
   // Shoulder related
-  'rotator-cuff-tear': {
-    conditions: ['frozen-shoulder', 'shoulder-impingement'],
+  'rotator-cuff': {
+    conditions: ['frozen-shoulder', 'shoulder-dislocation'],
     treatments: ['shoulder-surgery', 'arthroscopy', 'prp-therapy'],
     blogs: []
   },
   'frozen-shoulder': {
-    conditions: ['rotator-cuff-tear', 'shoulder-impingement'],
-    treatments: ['shoulder-surgery', 'physiotherapy'],
+    conditions: ['rotator-cuff', 'shoulder-dislocation'],
+    treatments: ['shoulder-surgery'],
     blogs: []
+  },
+  'shoulder-dislocation': {
+    conditions: ['rotator-cuff', 'frozen-shoulder'],
+    treatments: ['shoulder-surgery', 'arthroscopy'],
+    blogs: []
+  },
+  
+  // Other conditions
+  'tennis-elbow': {
+    conditions: ['carpal-tunnel', 'bursitis'],
+    treatments: ['prp-therapy', 'sports-injury-treatment'],
+    blogs: []
+  },
+  'carpal-tunnel': {
+    conditions: ['tennis-elbow'],
+    treatments: [],
+    blogs: []
+  },
+  'ankle-sprain': {
+    conditions: ['plantar-fasciitis'],
+    treatments: ['sports-injury-treatment', 'fracture-care'],
+    blogs: []
+  },
+  'plantar-fasciitis': {
+    conditions: ['ankle-sprain'],
+    treatments: ['prp-therapy'],
+    blogs: []
+  },
+  'pcl-injury': {
+    conditions: ['acl-tear', 'meniscus-tear'],
+    treatments: ['arthroscopy', 'sports-injury-treatment'],
+    blogs: ['can-acl-tear-heal-without-surgery']
+  },
+  'fracture-trauma': {
+    conditions: ['spinal-fracture'],
+    treatments: ['fracture-care'],
+    blogs: []
+  },
+  'bursitis': {
+    conditions: ['tennis-elbow', 'frozen-shoulder'],
+    treatments: ['prp-therapy'],
+    blogs: []
+  },
+  'patella-dislocation': {
+    conditions: ['knee-arthritis', 'acl-tear'],
+    treatments: ['arthroscopy'],
+    blogs: ['best-exercises-for-knee-pain-relief']
   },
   
   // Treatment related
   'total-knee-replacement': {
-    conditions: ['knee-osteoarthritis', 'rheumatoid-arthritis'],
+    conditions: ['knee-arthritis'],
     treatments: ['arthroscopy', 'prp-therapy'],
     blogs: ['knee-replacement-age-limit-when-too-young-too-old', 'robotic-knee-replacement-benefits-cost-hyderabad', 'how-to-avoid-knee-replacement-surgery']
   },
   'total-hip-replacement': {
-    conditions: ['hip-arthritis', 'avascular-necrosis'],
-    treatments: ['hip-resurfacing'],
+    conditions: ['hip-arthritis'],
+    treatments: [],
     blogs: ['knee-replacement-age-limit-when-too-young-too-old']
   },
   'acl-reconstruction': {
-    conditions: ['acl-injury', 'meniscus-tear'],
+    conditions: ['acl-tear', 'meniscus-tear'],
     treatments: ['arthroscopy', 'sports-injury-treatment'],
     blogs: ['can-acl-tear-heal-without-surgery']
   },
   'arthroscopy': {
-    conditions: ['meniscus-tear', 'acl-injury', 'rotator-cuff-tear'],
+    conditions: ['meniscus-tear', 'acl-tear', 'rotator-cuff'],
     treatments: ['acl-reconstruction', 'shoulder-surgery'],
     blogs: []
   },
   'sports-injury-treatment': {
-    conditions: ['acl-injury', 'meniscus-tear', 'tennis-elbow'],
+    conditions: ['acl-tear', 'meniscus-tear', 'tennis-elbow'],
     treatments: ['acl-reconstruction', 'arthroscopy', 'prp-therapy'],
     blogs: ['can-acl-tear-heal-without-surgery', 'best-exercises-for-knee-pain-relief']
   }
