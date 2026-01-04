@@ -160,16 +160,17 @@ frontend:
 
 metadata:
   created_by: "testing_agent"
-  version: "1.0"
-  test_sequence: 2
+  version: "1.1"
+  test_sequence: 3
   run_ui: true
 
 test_plan:
   current_focus:
-    - "Condition Detail Page Integration"
-    - "Treatment Detail Page Integration"
-    - "Blog Post Page Integration"
-    - "Loading States"
+    - "AI Chatbot Widget Functionality"
+    - "WhatsApp Button Integration"
+    - "SEO Breadcrumbs - Condition Pages"
+    - "SEO Breadcrumbs - Treatment Pages"
+    - "SEO Breadcrumbs - Blog Pages"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
