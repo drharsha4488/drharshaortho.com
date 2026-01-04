@@ -79,13 +79,17 @@ const ConditionDetail = () => {
   useEffect(() => {
     const fetchCondition = async () => {
       setLoading(true);
+      
+      // Always get static data first as a fallback source
+      const staticCondition = getConditionBySlug(slug);
+      
       try {
         // Try to fetch from CMS first
         const response = await fetch(`${API_URL}/api/cms/conditions/${slug}`);
         if (response.ok) {
           const cmsData = await response.json();
-          // Transform CMS data to match expected format
-          const transformedData = transformCmsCondition(cmsData);
+          // Transform CMS data, using static data as fallback for detailed fields
+          const transformedData = transformCmsCondition(cmsData, staticCondition);
           if (transformedData) {
             setCondition(transformedData);
             setIsCms(true);
@@ -98,7 +102,6 @@ const ConditionDetail = () => {
       }
       
       // Fallback to static data
-      const staticCondition = getConditionBySlug(slug);
       setCondition(staticCondition);
       setIsCms(false);
       setLoading(false);
