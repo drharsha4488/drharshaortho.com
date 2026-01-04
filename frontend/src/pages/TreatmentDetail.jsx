@@ -119,19 +119,23 @@ const TreatmentDetail = () => {
       />
       <SchemaMarkup type="MedicalTherapy" data={{
         name: treatment.name,
-        description: treatment.detailedDescription
+        description: treatment.detailedDescription,
+        breadcrumbs: [
+          { name: 'Home', url: 'https://drharshaortho.com/' },
+          { name: 'Treatments', url: 'https://drharshaortho.com/treatments' },
+          { name: treatment.name, url: `https://drharshaortho.com/treatments/${slug}` }
+        ]
       }} />
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb with Schema */}
       <div className="bg-secondary py-3">
         <div className="container-medical">
-          <nav className="flex items-center gap-2 text-sm">
-            <Link to="/" className="text-muted-foreground hover:text-primary">Home</Link>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            <Link to="/treatments" className="text-muted-foreground hover:text-primary">Treatments</Link>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            <span className="text-foreground font-medium">{treatment.name}</span>
-          </nav>
+          <Breadcrumbs 
+            items={[
+              { name: 'Treatments', path: '/treatments' },
+              { name: treatment.name, path: `/treatments/${slug}` }
+            ]}
+          />
         </div>
       </div>
 
