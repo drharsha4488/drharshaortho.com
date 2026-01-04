@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import KeywordResearchTool from '@/components/admin/KeywordResearchTool';
+import AutoSEODashboard from '@/components/admin/AutoSEODashboard';
 import {
   Lock,
   LogOut,
