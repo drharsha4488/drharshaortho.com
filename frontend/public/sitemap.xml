@@ -1075,4 +1075,37 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
+
+  <!-- New SEO Blog Posts -->
+  <url>
+    <loc>https://drharshaortho.com/blog/knee-replacement-age-limit-when-too-young-too-old</loc>
+    <lastmod>2025-01-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/can-acl-tear-heal-without-surgery</loc>
+    <lastmod>2025-01-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/best-exercises-for-knee-pain-relief</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/robotic-knee-replacement-benefits-cost-hyderabad</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://drharshaortho.com/blog/how-to-avoid-knee-replacement-surgery</loc>
+    <lastmod>2024-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
