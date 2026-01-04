@@ -60,8 +60,6 @@ const Treatments = () => {
           <Breadcrumbs items={[{ name: 'Treatments', path: '/treatments' }]} />
         </div>
       </div>
-        </div>
-      </div>
       
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="treatments-page">
         <div className="container-medical">
