@@ -145,21 +145,25 @@ const ConditionDetail = () => {
         data={{
           name: condition.name,
           description: condition.overview,
-          possibleTreatment: condition.surgicalTreatments?.map(t => t.name)
+          possibleTreatment: condition.surgicalTreatments?.map(t => t.name),
+          breadcrumbs: [
+            { name: 'Home', url: 'https://drharshaortho.com/' },
+            { name: 'Conditions', url: 'https://drharshaortho.com/conditions' },
+            { name: condition.name, url: `https://drharshaortho.com/conditions/${slug}` }
+          ]
         }}
         faqs={faqSchema}
       />
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb with Schema */}
       <div className="bg-secondary py-3">
         <div className="container-medical">
-          <nav className="flex items-center gap-2 text-sm">
-            <Link to="/" className="text-muted-foreground hover:text-primary">Home</Link>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            <Link to="/conditions" className="text-muted-foreground hover:text-primary">Conditions</Link>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            <span className="text-foreground font-medium">{condition.name}</span>
-          </nav>
+          <Breadcrumbs 
+            items={[
+              { name: 'Conditions', path: '/conditions' },
+              { name: condition.name, path: `/conditions/${slug}` }
+            ]}
+          />
         </div>
       </div>
 
