@@ -68,10 +68,15 @@ const AutoSEODashboard = () => {
     setLoading(false);
   }, []);
 
+  // Load data on mount
   useEffect(() => {
-    fetchDashboard();
-    fetchSuggestions();
-  }, [fetchDashboard, fetchSuggestions]);
+    const loadInitialData = async () => {
+      await fetchDashboard();
+      await fetchSuggestions();
+    };
+    loadInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Auto-generate suggestions
   const runAutoGenerate = async () => {
