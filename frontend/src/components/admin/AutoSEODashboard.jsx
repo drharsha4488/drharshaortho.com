@@ -16,11 +16,13 @@ import {
   BarChart3,
   Calendar,
   Eye,
+  EyeOff,
   Trash2,
   ExternalLink,
   AlertCircle,
   CheckCircle,
-  Star
+  Star,
+  Lock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
