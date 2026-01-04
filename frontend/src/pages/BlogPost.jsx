@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
@@ -12,13 +12,81 @@ import {
   ArrowLeft,
   Phone,
   Share2,
-  Tag
+  Tag,
+  Loader2
 } from 'lucide-react';
 import { seoBlogPosts } from '@/data/seoBlogPosts';
 
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+
 const BlogPost = () => {
   const { slug } = useParams();
-  const post = seoBlogPosts.find(p => p.slug === slug);
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isCms, setIsCms] = useState(false);
+
+  useEffect(() => {
+    const fetchBlog = async () => {
+      setLoading(true);
+      try {
+        // Try to fetch from CMS first
+        const response = await fetch(`${API_URL}/api/cms/blogs/${slug}`);
+        if (response.ok) {
+          const cmsData = await response.json();
+          const transformedData = transformCmsBlog(cmsData);
+          if (transformedData) {
+            setPost(transformedData);
+            setIsCms(true);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('CMS fetch failed, using static data:', err.message);
+      }
+      
+      // Fallback to static data
+      const staticPost = seoBlogPosts.find(p => p.slug === slug);
+      setPost(staticPost);
+      setIsCms(false);
+      setLoading(false);
+    };
+
+    fetchBlog();
+  }, [slug]);
+
+  // Transform CMS blog data to match static data format
+  const transformCmsBlog = (cmsData) => {
+    if (!cmsData || !cmsData.content) return null;
+    const content = cmsData.content;
+    
+    return {
+      id: cmsData.slug,
+      slug: cmsData.slug,
+      title: cmsData.title,
+      metaTitle: cmsData.meta_title,
+      metaDescription: cmsData.meta_description,
+      keywords: cmsData.keywords?.join(', '),
+      author: content.author || 'Dr. B Harsha Vardhana Reddy',
+      publishedDate: cmsData.published_at || cmsData.created_at,
+      category: content.category || 'General',
+      readTime: content.readTime || '5 min',
+      imageUrl: content.imageUrl,
+      excerpt: content.excerpt,
+      content: content.body || content.content,
+      tags: cmsData.keywords || []
+    };
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </Layout>
+    );
+  }
   
   if (!post) {
     return (
