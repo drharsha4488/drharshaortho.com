@@ -1787,16 +1787,29 @@ async def auto_generate_seo_suggestions():
         priority_order = {"high": 0, "medium": 1, "low": 2}
         prioritized_keywords.sort(key=lambda x: priority_order.get(x["priority"], 1))
         
-        # Step 4: Check which keywords we already have topics for
+        # Step 4: Check which keywords we already have topics for (prevent duplicates)
+        # Check auto_seo_suggestions
         existing_topics = await db.auto_seo_suggestions.find({}, {"target_keyword": 1}).to_list(500)
         existing_keywords = set(t.get("target_keyword", "").lower() for t in existing_topics)
         
-        # Step 5: Generate topics for new keywords
+        # Also check published blogs in CMS
+        published_blogs = await db.cms_pages.find({"type": "blog"}, {"keywords": 1, "slug": 1}).to_list(500)
+        for blog in published_blogs:
+            if blog.get("keywords"):
+                for kw in blog.get("keywords", []):
+                    existing_keywords.add(kw.lower())
+            if blog.get("slug"):
+                existing_keywords.add(blog.get("slug", "").lower().replace("-", " "))
+        
+        logger.info(f"🔍 Auto SEO: {len(existing_keywords)} existing keywords to skip")
+        
+        # Step 5: Generate topics for new keywords only
         new_topics = []
         for item in prioritized_keywords[:30]:  # Generate top 30
             kw = item["keyword"]
             if kw.lower() not in existing_keywords:
                 topic = await generate_auto_blog_topic(kw, item["priority"])
+                topic["is_hidden"] = True  # Mark as hidden SEO page by default
                 new_topics.append(topic)
                 generated_topics.append(topic)
         
