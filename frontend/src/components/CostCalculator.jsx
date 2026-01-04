@@ -230,29 +230,38 @@ const CostCalculator = () => {
             <h4 className="font-semibold text-lg text-foreground mb-4">{result.procedure}</h4>
             
             <div className="space-y-3 mb-4">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Surgery & Implant</span>
-                <span className="font-medium">{formatCurrency(result.surgeryCost)}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Implant Type</span>
+                <span className="font-medium text-primary">{result.implantType}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Room ({result.hospitalDays} days)</span>
-                <span className="font-medium">{formatCurrency(result.roomCost)}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Room Type</span>
+                <span className="font-medium">{result.roomName}</span>
               </div>
-              <div className="border-t border-border pt-3 flex justify-between">
-                <span className="font-semibold">Estimated Total</span>
-                <span className="font-bold text-primary text-lg">{formatCurrency(result.total)}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-muted-foreground">Hospital Stay</span>
+                <span className="font-medium">{result.hospitalDays} days</span>
               </div>
+              {result.roomUpgrade > 0 && (
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-muted-foreground">Room Upgrade Cost</span>
+                  <span className="font-medium">+{formatCurrency(result.roomUpgrade)}</span>
+                </div>
+              )}
             </div>
 
-            <div className="bg-primary/5 rounded-lg p-3 mb-4">
-              <p className="text-sm text-muted-foreground">
-                <strong>Range:</strong> {formatCurrency(result.lowEstimate)} - {formatCurrency(result.highEstimate)}
-              </p>
+            <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-4 mb-4">
+              <p className="text-sm text-muted-foreground mb-2">Estimated Cost Range:</p>
+              <div className="flex items-center justify-center gap-3">
+                <span className="text-2xl font-bold text-primary">{formatCurrency(result.lowTotal)}</span>
+                <span className="text-muted-foreground">to</span>
+                <span className="text-2xl font-bold text-primary">{formatCurrency(result.highTotal)}</span>
+              </div>
             </div>
 
             <div className="mb-4">
               <p className="text-sm font-medium text-foreground mb-2">Package Includes:</p>
-              <ul className="space-y-1">
+              <ul className="grid grid-cols-2 gap-1">
                 {result.includes.map((item, index) => (
                   <li key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
                     <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
@@ -265,9 +274,9 @@ const CostCalculator = () => {
             <div className="flex items-start gap-2 p-3 bg-amber-50 rounded-lg">
               <Info className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
               <p className="text-xs text-amber-800">
-                This is an estimate only. Actual costs may vary based on your specific condition, 
-                complications, and additional requirements. Insurance may cover 80-100% of costs.
-                Contact us for an accurate quote.
+                This is an estimate based on typical cases. Actual costs may vary based on your specific condition, 
+                complexity, and additional requirements. Most insurance policies cover 80-100% of costs.
+                Contact us for an accurate personalized quote.
               </p>
             </div>
           </div>
