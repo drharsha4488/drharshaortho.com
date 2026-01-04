@@ -24,6 +24,7 @@ import { seoLandingPages } from '@/data/seoPages';
 import { extendedLocationPages, additionalCostPages, sportsInjuryPages, ageSpecificPages } from '@/data/extendedSEOPages';
 import { locationLandingPages } from '@/data/locationPages';
 import { extendedLocationPages2 } from '@/data/locationPages2';
+import { additionalLocationPages } from '@/data/locationPages3';
 import { useState } from 'react';
 
 // Combine all SEO pages
@@ -34,7 +35,8 @@ const allSEOPages = [
   ...sportsInjuryPages,
   ...ageSpecificPages,
   ...locationLandingPages,
-  ...extendedLocationPages2
+  ...extendedLocationPages2,
+  ...additionalLocationPages
 ];
 
 // FAQ Accordion Component
