@@ -1577,6 +1577,314 @@ async def generate_blog_topics(keywords: List[str]):
         logger.error(f"Error generating blog topics: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+# ============ AUTOMATED SEO ENGINE ============
+
+# High-value seed keywords for orthopedic practice
+AUTO_SEO_SEEDS = [
+    # Core treatments
+    "knee replacement", "hip replacement", "ACL surgery", "meniscus surgery",
+    "shoulder surgery", "arthroscopy", "joint replacement",
+    # Pain conditions
+    "knee pain", "hip pain", "back pain", "shoulder pain", "joint pain",
+    # Local keywords
+    "orthopedic surgeon hyderabad", "bone doctor hyderabad", "joint specialist hyderabad",
+    # Long-tail
+    "knee replacement cost", "knee replacement recovery", "best orthopedic doctor",
+    "sports injury treatment", "fracture treatment"
+]
+
+# Priority scoring based on keyword patterns
+PRIORITY_PATTERNS = {
+    "high": ["cost", "price", "best", "top", "near me", "hyderabad", "2025", "how much"],
+    "medium": ["recovery", "surgery", "treatment", "doctor", "hospital", "time"],
+    "low": ["what is", "meaning", "define", "wikipedia"]
+}
+
+async def calculate_keyword_priority(keyword: str) -> str:
+    """Calculate priority based on keyword patterns"""
+    keyword_lower = keyword.lower()
+    for priority, patterns in PRIORITY_PATTERNS.items():
+        for pattern in patterns:
+            if pattern in keyword_lower:
+                return priority
+    return "medium"
+
+async def fetch_autocomplete_suggestions(keyword: str) -> List[str]:
+    """Fetch suggestions from Google Autocomplete"""
+    suggestions = []
+    try:
+        async with httpx.AsyncClient() as client:
+            url = f"http://suggestqueries.google.com/complete/search?client=firefox&q={keyword}"
+            response = await client.get(url, timeout=10.0)
+            if response.status_code == 200:
+                data = response.json()
+                if len(data) > 1 and isinstance(data[1], list):
+                    suggestions = data[1][:15]
+    except Exception as e:
+        logger.error(f"Error fetching autocomplete: {e}")
+    return suggestions
+
+async def generate_auto_blog_topic(keyword: str, priority: str) -> dict:
+    """Generate a blog topic from a keyword"""
+    clean_kw = keyword.strip().title()
+    
+    # Determine best template based on keyword
+    if "cost" in keyword.lower() or "price" in keyword.lower():
+        title = f"{clean_kw} in Hyderabad 2025: Complete Price Guide"
+        outline = [
+            f"Overview of {clean_kw}",
+            "Cost Breakdown by Hospital Type",
+            "Factors Affecting Price",
+            "Insurance Coverage Options",
+            "EMI and Payment Plans",
+            "Why Choose Dr. Harsha at Yashoda Hospital",
+            "FAQs"
+        ]
+    elif "recovery" in keyword.lower() or "time" in keyword.lower():
+        title = f"{clean_kw}: Day-by-Day Timeline & Tips"
+        outline = [
+            "What to Expect After Surgery",
+            "Week 1: Initial Recovery",
+            "Week 2-4: Building Strength",
+            "Month 2-3: Returning to Normal",
+            "Tips for Faster Recovery",
+            "When to Call Your Doctor",
+            "FAQs"
+        ]
+    elif "best" in keyword.lower() or "top" in keyword.lower():
+        title = f"{clean_kw}: How to Choose the Right One"
+        outline = [
+            "Key Factors to Consider",
+            "Qualifications to Look For",
+            "Questions to Ask",
+            "Red Flags to Avoid",
+            "Why Patients Choose Dr. Harsha",
+            "Patient Success Stories",
+            "Book Your Consultation"
+        ]
+    elif "symptom" in keyword.lower() or "sign" in keyword.lower():
+        title = f"{clean_kw}: When to See a Doctor"
+        outline = [
+            "Common Signs and Symptoms",
+            "When It's Serious",
+            "Self-Care Tips",
+            "Treatment Options",
+            "Prevention Strategies",
+            "Expert Consultation"
+        ]
+    else:
+        title = f"{clean_kw}: Complete Guide by Dr. Harsha"
+        outline = [
+            f"What is {clean_kw}?",
+            "Causes and Risk Factors",
+            "Symptoms to Watch For",
+            "Diagnosis Process",
+            "Treatment Options",
+            "Recovery and Outcomes",
+            "Why Choose Dr. Harsha",
+            "FAQs"
+        ]
+    
+    slug = re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')
+    meta_desc = f"Expert guide on {keyword.lower()} by Dr. B Harsha Vardhana Reddy, Hyderabad's leading orthopedic surgeon. Learn about treatment options, costs, and recovery."
+    
+    return {
+        "id": str(uuid.uuid4()),
+        "title": title,
+        "slug": slug,
+        "target_keyword": keyword,
+        "meta_description": meta_desc[:160],
+        "outline": outline,
+        "estimated_word_count": 1500,
+        "priority": priority,
+        "status": "auto_suggested",
+        "source": "automated_seo_engine",
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+
+@api_router.post("/admin/seo/auto-generate")
+async def auto_generate_seo_suggestions():
+    """
+    AUTOMATED SEO ENGINE
+    Automatically researches keywords and generates blog topic suggestions.
+    No manual input needed!
+    """
+    try:
+        all_keywords = set()
+        generated_topics = []
+        
+        # Step 1: Fetch trending keywords from multiple seeds
+        logger.info("🔍 Auto SEO: Starting keyword research...")
+        for seed in AUTO_SEO_SEEDS[:10]:  # Limit to avoid timeout
+            suggestions = await fetch_autocomplete_suggestions(seed)
+            all_keywords.update(suggestions)
+            await asyncio.sleep(0.2)  # Rate limiting
+        
+        # Step 2: Fetch with location modifiers
+        location_modifiers = ["hyderabad", "near me", "cost in india"]
+        for seed in ["knee replacement", "hip replacement", "orthopedic"]:
+            for loc in location_modifiers:
+                suggestions = await fetch_autocomplete_suggestions(f"{seed} {loc}")
+                all_keywords.update(suggestions)
+                await asyncio.sleep(0.2)
+        
+        logger.info(f"🔍 Auto SEO: Found {len(all_keywords)} unique keywords")
+        
+        # Step 3: Filter and prioritize keywords
+        prioritized_keywords = []
+        for kw in all_keywords:
+            if len(kw) > 10 and len(kw) < 80:  # Filter by length
+                priority = await calculate_keyword_priority(kw)
+                prioritized_keywords.append({"keyword": kw, "priority": priority})
+        
+        # Sort by priority
+        priority_order = {"high": 0, "medium": 1, "low": 2}
+        prioritized_keywords.sort(key=lambda x: priority_order.get(x["priority"], 1))
+        
+        # Step 4: Check which keywords we already have topics for
+        existing_topics = await db.auto_seo_suggestions.find({}, {"target_keyword": 1}).to_list(500)
+        existing_keywords = set(t.get("target_keyword", "").lower() for t in existing_topics)
+        
+        # Step 5: Generate topics for new keywords
+        new_topics = []
+        for item in prioritized_keywords[:30]:  # Generate top 30
+            kw = item["keyword"]
+            if kw.lower() not in existing_keywords:
+                topic = await generate_auto_blog_topic(kw, item["priority"])
+                new_topics.append(topic)
+                generated_topics.append(topic)
+        
+        # Step 6: Save to database
+        if new_topics:
+            await db.auto_seo_suggestions.insert_many(new_topics)
+            logger.info(f"✅ Auto SEO: Generated {len(new_topics)} new topic suggestions")
+        
+        # Step 7: Update last run timestamp
+        await db.seo_settings.update_one(
+            {"type": "auto_seo"},
+            {"$set": {
+                "last_run": datetime.now(timezone.utc).isoformat(),
+                "keywords_found": len(all_keywords),
+                "topics_generated": len(new_topics)
+            }},
+            upsert=True
+        )
+        
+        return {
+            "success": True,
+            "keywords_researched": len(all_keywords),
+            "new_topics_generated": len(new_topics),
+            "total_suggestions": len(generated_topics),
+            "message": f"Auto SEO complete! Generated {len(new_topics)} new blog topic suggestions."
+        }
+    except Exception as e:
+        logger.error(f"Auto SEO error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/admin/seo/suggestions")
+async def get_auto_seo_suggestions(status: str = None, priority: str = None, limit: int = 50):
+    """Get automated SEO suggestions with optional filters"""
+    try:
+        query = {}
+        if status:
+            query["status"] = status
+        if priority:
+            query["priority"] = priority
+        
+        suggestions = await db.auto_seo_suggestions.find(
+            query, 
+            {"_id": 0}
+        ).sort([("priority", 1), ("created_at", -1)]).to_list(limit)
+        
+        # Get stats
+        total = await db.auto_seo_suggestions.count_documents({})
+        high_priority = await db.auto_seo_suggestions.count_documents({"priority": "high"})
+        pending = await db.auto_seo_suggestions.count_documents({"status": "auto_suggested"})
+        
+        return {
+            "suggestions": suggestions,
+            "stats": {
+                "total": total,
+                "high_priority": high_priority,
+                "pending": pending
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error fetching suggestions: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.put("/admin/seo/suggestions/{suggestion_id}/status")
+async def update_seo_suggestion_status(suggestion_id: str, status: str):
+    """Update suggestion status (approved, rejected, published)"""
+    try:
+        update_data = {"status": status}
+        if status == "published":
+            update_data["published_at"] = datetime.now(timezone.utc).isoformat()
+        
+        result = await db.auto_seo_suggestions.update_one(
+            {"id": suggestion_id},
+            {"$set": update_data}
+        )
+        return {"success": result.modified_count > 0}
+    except Exception as e:
+        logger.error(f"Error updating suggestion: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.delete("/admin/seo/suggestions/{suggestion_id}")
+async def delete_seo_suggestion(suggestion_id: str):
+    """Delete a suggestion"""
+    try:
+        result = await db.auto_seo_suggestions.delete_one({"id": suggestion_id})
+        return {"success": result.deleted_count > 0}
+    except Exception as e:
+        logger.error(f"Error deleting suggestion: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/admin/seo/dashboard")
+async def get_seo_dashboard():
+    """Get SEO dashboard with stats and recent suggestions"""
+    try:
+        # Get last run info
+        settings = await db.seo_settings.find_one({"type": "auto_seo"}, {"_id": 0})
+        
+        # Get suggestion stats by priority
+        high_count = await db.auto_seo_suggestions.count_documents({"priority": "high"})
+        medium_count = await db.auto_seo_suggestions.count_documents({"priority": "medium"})
+        low_count = await db.auto_seo_suggestions.count_documents({"priority": "low"})
+        
+        # Get status breakdown
+        pending = await db.auto_seo_suggestions.count_documents({"status": "auto_suggested"})
+        approved = await db.auto_seo_suggestions.count_documents({"status": "approved"})
+        published = await db.auto_seo_suggestions.count_documents({"status": "published"})
+        
+        # Get top 5 high priority suggestions
+        top_suggestions = await db.auto_seo_suggestions.find(
+            {"priority": "high", "status": "auto_suggested"},
+            {"_id": 0}
+        ).sort("created_at", -1).to_list(5)
+        
+        return {
+            "last_run": settings.get("last_run") if settings else None,
+            "stats": {
+                "by_priority": {
+                    "high": high_count,
+                    "medium": medium_count,
+                    "low": low_count
+                },
+                "by_status": {
+                    "pending": pending,
+                    "approved": approved,
+                    "published": published
+                },
+                "total": high_count + medium_count + low_count
+            },
+            "top_suggestions": top_suggestions
+        }
+    except Exception as e:
+        logger.error(f"Error fetching SEO dashboard: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @api_router.post("/admin/content-ideas")
 async def save_content_idea(idea: ContentIdea):
     """Save a content idea for later"""
