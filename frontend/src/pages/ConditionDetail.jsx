@@ -4,6 +4,7 @@ import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import RelatedContent from '@/components/RelatedContent';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { Button } from '@/components/ui/button';
