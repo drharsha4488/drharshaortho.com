@@ -159,6 +159,15 @@ function App() {
               <Route path="/young-athlete-orthopedic-hyderabad" element={<SEOLandingPage />} />
               <Route path="/senior-citizen-orthopedic-hyderabad" element={<SEOLandingPage />} />
               
+              {/* NEW: Additional Premium Location Pages */}
+              <Route path="/orthopedic-surgeon-jubilee-hills" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-banjara-hills" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-kukatpally" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-nallagandla" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-financial-district" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-secunderabad" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-lb-nagar" element={<SEOLandingPage />} />
+              
               {/* Dynamic CMS Pages */}
               <Route path="/cms/:slug" element={<CMSPage />} />
               
