@@ -116,19 +116,22 @@ const relatedContentMap = {
 };
 
 const conditionNames = {
-  'knee-osteoarthritis': 'Knee Osteoarthritis',
-  'acl-injury': 'ACL Injury',
+  'knee-arthritis': 'Knee Arthritis',
+  'acl-tear': 'ACL Tear',
   'meniscus-tear': 'Meniscus Tear',
   'hip-arthritis': 'Hip Arthritis',
-  'rotator-cuff-tear': 'Rotator Cuff Tear',
+  'rotator-cuff': 'Rotator Cuff Injury',
   'frozen-shoulder': 'Frozen Shoulder',
   'tennis-elbow': 'Tennis Elbow',
-  'avascular-necrosis': 'Avascular Necrosis',
+  'shoulder-dislocation': 'Shoulder Dislocation',
   'pcl-injury': 'PCL Injury',
-  'patellofemoral-syndrome': 'Patellofemoral Syndrome',
-  'shoulder-impingement': 'Shoulder Impingement',
-  'hip-bursitis': 'Hip Bursitis',
-  'rheumatoid-arthritis': 'Rheumatoid Arthritis'
+  'patella-dislocation': 'Patella Dislocation',
+  'carpal-tunnel': 'Carpal Tunnel Syndrome',
+  'bursitis': 'Bursitis',
+  'ankle-sprain': 'Ankle Sprain',
+  'plantar-fasciitis': 'Plantar Fasciitis',
+  'fracture-trauma': 'Fracture & Trauma',
+  'spinal-fracture': 'Spinal Fracture'
 };
 
 const treatmentNames = {
