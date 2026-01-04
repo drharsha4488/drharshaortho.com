@@ -47,7 +47,7 @@ const About = () => {
               />
               <div className="space-y-4 text-muted-foreground">
                 <p>
-                  Dr. B Harsha Vardhana Reddy is one of Hyderabad's most trusted orthopedic surgeons and healthcare entrepreneur,
+                  Dr. B Harsha Vardhana Reddy is one of Hyderabad&apos;s most trusted orthopedic surgeons and healthcare entrepreneur,
                   known for his patient-centric approach and surgical excellence. After completing
                   his D.Ortho from the prestigious Dr. G.S. Kulkarni Institute, Miraj, he pursued
                   advanced fellowship training in Arthroplasty and Arthroscopy at Continental Hospitals, Hyderabad.
