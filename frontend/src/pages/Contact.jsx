@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Phone, Mail, MapPin, Clock, Send, Calendar } from 'lucide-react';
 import { createAppointment } from '@/lib/api';
+import CostCalculator from '@/components/CostCalculator';
 
 const Contact = () => {
   const { toast } = useToast();
