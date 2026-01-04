@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
@@ -17,14 +17,88 @@ import {
   Clock,
   ArrowRight,
   Phone,
-  Calendar
+  Calendar,
+  Loader2
 } from 'lucide-react';
 import { getConditionBySlug, getRelatedConditions, allConditionsDetailed } from '@/data/conditionsDetailed';
 import { treatments, allTreatments } from '@/data/treatments';
 
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+
 const ConditionDetail = () => {
   const { slug } = useParams();
-  const condition = getConditionBySlug(slug);
+  const [condition, setCondition] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isCms, setIsCms] = useState(false);
+
+  useEffect(() => {
+    const fetchCondition = async () => {
+      setLoading(true);
+      try {
+        // Try to fetch from CMS first
+        const response = await fetch(`${API_URL}/api/cms/conditions/${slug}`);
+        if (response.ok) {
+          const cmsData = await response.json();
+          // Transform CMS data to match expected format
+          const transformedData = transformCmsCondition(cmsData);
+          if (transformedData) {
+            setCondition(transformedData);
+            setIsCms(true);
+            setLoading(false);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('CMS fetch failed, using static data:', err.message);
+      }
+      
+      // Fallback to static data
+      const staticCondition = getConditionBySlug(slug);
+      setCondition(staticCondition);
+      setIsCms(false);
+      setLoading(false);
+    };
+
+    fetchCondition();
+  }, [slug]);
+
+  // Transform CMS condition data to match static data format
+  const transformCmsCondition = (cmsData) => {
+    if (!cmsData || !cmsData.content) return null;
+    const content = cmsData.content;
+    
+    return {
+      id: cmsData.slug,
+      slug: cmsData.slug,
+      name: cmsData.title,
+      category: content.category || 'General',
+      icon: content.icon || '🏥',
+      imageUrl: content.imageUrl || null,
+      shortDescription: cmsData.meta_description,
+      overview: content.overview || content.introduction,
+      causes: content.causes || [],
+      symptoms: content.symptoms || [],
+      diagnosis: content.diagnosis || [],
+      nonSurgicalTreatments: content.nonSurgicalTreatments || content.treatments?.filter(t => !t.surgical) || [],
+      surgicalTreatments: content.surgicalTreatments || content.treatments?.filter(t => t.surgical) || [],
+      recoveryTimeline: content.recoveryTimeline || [],
+      faqs: content.faqs || [],
+      relatedConditions: content.relatedConditions || [],
+      relatedTreatments: content.relatedTreatments || [],
+      seoKeywords: cmsData.keywords?.join(', ') || '',
+      metaDescription: cmsData.meta_description
+    };
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </Layout>
+    );
+  }
   
   if (!condition) {
     return (
@@ -41,8 +115,10 @@ const ConditionDetail = () => {
     );
   }
 
-  const relatedConditions = getRelatedConditions(condition.id);
-  const relatedTreatmentsList = condition.relatedTreatments
+  const relatedConditions = isCms 
+    ? (condition.relatedConditions || []).map(id => allConditionsDetailed.find(c => c.id === id || c.slug === id)).filter(Boolean)
+    : getRelatedConditions(condition.id);
+  const relatedTreatmentsList = (condition.relatedTreatments || [])
     .map(id => treatments.find(t => t.id === id))
     .filter(Boolean);
 
