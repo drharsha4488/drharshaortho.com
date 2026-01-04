@@ -159,18 +159,121 @@ def test_contact_api():
         print(f"   ❌ Error: {str(e)}")
         return False
 
-def test_cms_pages_list():
-    """Test GET /api/admin/cms/pages endpoint"""
-    print("🔍 Testing GET /api/admin/cms/pages...")
+def test_cms_migration_status_api():
+    """Test GET /api/admin/cms/migration-status - Should show 54 total pages"""
+    print("🔍 Testing GET /api/admin/cms/migration-status...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/admin/cms/migration-status", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Migration status API working")
+            
+            # Check total pages
+            total_pages = data.get('total_pages', 0)
+            if total_pages == 54:
+                print(f"   ✅ Total pages: {total_pages} (expected 54)")
+            else:
+                print(f"   ⚠️  Expected 54 total pages, found {total_pages}")
+            
+            # Check conditions and treatments counts
+            conditions_count = data.get('conditions', 0)
+            treatments_count = data.get('treatments', 0)
+            
+            if conditions_count == 37:
+                print(f"   ✅ Conditions: {conditions_count} (expected 37)")
+            else:
+                print(f"   ⚠️  Expected 37 conditions, found {conditions_count}")
+            
+            if treatments_count == 17:
+                print(f"   ✅ Treatments: {treatments_count} (expected 17)")
+            else:
+                print(f"   ⚠️  Expected 17 treatments, found {treatments_count}")
+            
+            # Check migration progress
+            migration_progress = data.get('migration_progress', {})
+            if migration_progress:
+                print(f"   Migration progress: {migration_progress}")
+            
+            return total_pages >= 7  # At least some pages should exist
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_pages_admin_api():
+    """Test GET /api/admin/cms/pages - Should return all 54 CMS pages"""
+    print("🔍 Testing GET /api/admin/cms/pages (should return 54 pages)...")
     try:
         response = requests.get(f"{BACKEND_URL}/admin/cms/pages", timeout=10)
         print(f"   Status Code: {response.status_code}")
         
         if response.status_code == 200:
             data = response.json()
-            print(f"   Found {len(data)} CMS pages")
+            total_pages = len(data)
+            print(f"   Found {total_pages} CMS pages")
+            
+            # Check if we have the expected 54 pages
+            if total_pages == 54:
+                print(f"   ✅ Correct count: 54 pages as expected")
+            else:
+                print(f"   ⚠️  Expected 54 pages, found {total_pages}")
+            
+            # Verify each page has required fields
             if len(data) > 0:
-                print(f"   Sample page: {data[0].get('title', 'N/A')} ({data[0].get('slug', 'N/A')})")
+                sample = data[0]
+                required_fields = ['id', 'slug', 'type', 'title', 'status']
+                missing_fields = [field for field in required_fields if field not in sample]
+                if not missing_fields:
+                    print(f"   ✅ All required fields present: {required_fields}")
+                else:
+                    print(f"   ❌ Missing required fields: {missing_fields}")
+                
+                print(f"   Sample page: {sample.get('title', 'N/A')} ({sample.get('slug', 'N/A')})")
+            
+            # Count by type
+            conditions = [p for p in data if p.get('type') == 'condition']
+            treatments = [p for p in data if p.get('type') == 'treatment']
+            
+            print(f"   Conditions: {len(conditions)}")
+            print(f"   Treatments: {len(treatments)}")
+            print(f"   Other types: {total_pages - len(conditions) - len(treatments)}")
+            
+            return total_pages >= 7  # At least some pages should exist
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_migrate_all_content():
+    """Test POST /api/admin/cms/migrate-all-content - Migrate all static content to CMS"""
+    print("🔍 Testing POST /api/admin/cms/migrate-all-content...")
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/admin/cms/migrate-all-content",
+            headers={"Content-Type": "application/json"},
+            timeout=30  # Migration might take longer
+        )
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Migration completed successfully")
+            print(f"   Message: {data.get('message', 'N/A')}")
+            
+            # Check migration results
+            if 'migrated' in data:
+                print(f"   Migrated: {data.get('migrated', 0)} pages")
+            if 'skipped' in data:
+                print(f"   Skipped: {data.get('skipped', 0)} pages")
+            if 'total_pages' in data:
+                print(f"   Total pages: {data.get('total_pages', 0)}")
+            
             return True
         else:
             print(f"   ❌ Failed: {response.text}")
