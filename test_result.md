@@ -292,12 +292,12 @@ frontend:
 
 metadata:
   created_by: "testing_agent"
-  version: "1.2"
-  test_sequence: 4
+  version: "1.3"
+  test_sequence: 5
   run_ui: true
 
 test_plan:
-  current_focus: ["CMS Content Migration", "About.jsx Linting Fix"]
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
