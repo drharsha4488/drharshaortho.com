@@ -1292,20 +1292,85 @@ async def get_analytics():
             "timestamp": {"$gte": week_ago.isoformat()}
         })
         
+        # Appointments analytics
+        total_appointments = await db.appointments.count_documents({})
+        pending_appointments = await db.appointments.count_documents({"status": "pending"})
+        confirmed_appointments = await db.appointments.count_documents({"status": "confirmed"})
+        completed_appointments = await db.appointments.count_documents({"status": "completed"})
+        recent_appointments = await db.appointments.count_documents({
+            "created_at": {"$gte": week_ago.isoformat()}
+        })
+        
+        # Content analytics - Popular conditions and treatments
+        condition_views_pipeline = [
+            {"$match": {"timestamp": {"$gte": month_ago.isoformat()}, "page_path": {"$regex": "^/conditions/"}}},
+            {"$group": {"_id": "$page_path", "views": {"$sum": 1}}},
+            {"$sort": {"views": -1}},
+            {"$limit": 5}
+        ]
+        top_conditions = await db.page_views.aggregate(condition_views_pipeline).to_list(5)
+        
+        treatment_views_pipeline = [
+            {"$match": {"timestamp": {"$gte": month_ago.isoformat()}, "page_path": {"$regex": "^/treatments/"}}},
+            {"$group": {"_id": "$page_path", "views": {"$sum": 1}}},
+            {"$sort": {"views": -1}},
+            {"$limit": 5}
+        ]
+        top_treatments = await db.page_views.aggregate(treatment_views_pipeline).to_list(5)
+        
+        # CMS Stats
+        total_cms_pages = await db.cms_pages.count_documents({})
+        published_pages = await db.cms_pages.count_documents({"status": "published"})
+        draft_pages = await db.cms_pages.count_documents({"status": "draft"})
+        
+        # Blog stats
+        total_blogs = await db.blogs.count_documents({})
+        
+        # SEO suggestions stats
+        total_seo_suggestions = await db.auto_seo_suggestions.count_documents({})
+        approved_suggestions = await db.auto_seo_suggestions.count_documents({"status": "approved"})
+        
+        # Calculate conversion rate (appointments / unique visitors)
+        conversion_rate = round((total_appointments / max(unique_sessions, 1)) * 100, 2)
+        
+        # Calculate average views per day this week
+        avg_daily_views = round(week_views / 7, 1) if week_views else 0
+        
         return {
             "overview": {
                 "total_views": total_views,
                 "today_views": today_views,
                 "week_views": week_views,
                 "month_views": month_views,
-                "unique_visitors": unique_sessions
+                "unique_visitors": unique_sessions,
+                "avg_daily_views": avg_daily_views
             },
             "top_pages": [{"page": p["_id"], "views": p["views"]} for p in top_pages],
             "daily_views": daily_views,
             "top_referrers": [{"referrer": r["_id"], "count": r["count"]} for r in top_referrers],
             "engagement": {
                 "total_chats": total_chats,
-                "recent_chats": recent_chats
+                "recent_chats": recent_chats,
+                "conversion_rate": conversion_rate
+            },
+            "appointments": {
+                "total": total_appointments,
+                "pending": pending_appointments,
+                "confirmed": confirmed_appointments,
+                "completed": completed_appointments,
+                "this_week": recent_appointments
+            },
+            "content_performance": {
+                "top_conditions": [{"path": c["_id"], "views": c["views"]} for c in top_conditions],
+                "top_treatments": [{"path": t["_id"], "views": t["views"]} for t in top_treatments]
+            },
+            "content_stats": {
+                "total_cms_pages": total_cms_pages,
+                "published_pages": published_pages,
+                "draft_pages": draft_pages,
+                "total_blogs": total_blogs,
+                "seo_suggestions": total_seo_suggestions,
+                "approved_seo": approved_suggestions
             }
         }
     except Exception as e:
