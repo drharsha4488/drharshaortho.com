@@ -122,6 +122,18 @@ function App() {
               <Route path="/bone-doctor-secunderabad" element={<SEOLandingPage />} />
               <Route path="/orthopedic-surgeon-miyapur" element={<SEOLandingPage />} />
               
+              {/* Extended Location Pages - Batch 2 */}
+              <Route path="/orthopedic-doctor-dilsukhnagar" element={<SEOLandingPage />} />
+              <Route path="/knee-doctor-ameerpet" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-surgeon-begumpet" element={<SEOLandingPage />} />
+              <Route path="/joint-pain-doctor-lb-nagar" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-doctor-uppal" element={<SEOLandingPage />} />
+              <Route path="/hip-specialist-manikonda" element={<SEOLandingPage />} />
+              <Route path="/sports-medicine-narsingi" element={<SEOLandingPage />} />
+              <Route path="/orthopedic-clinic-kompally" element={<SEOLandingPage />} />
+              <Route path="/fracture-specialist-attapur" element={<SEOLandingPage />} />
+              <Route path="/arthritis-doctor-shamshabad" element={<SEOLandingPage />} />
+              
               {/* Additional Procedure Cost Pages */}
               <Route path="/revision-knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
               <Route path="/bilateral-knee-replacement-cost-hyderabad" element={<SEOLandingPage />} />
