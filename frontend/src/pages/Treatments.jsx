@@ -52,16 +52,14 @@ const Treatments = () => {
         description="Expert knee replacement, hip replacement, ACL reconstruction, shoulder arthroscopy, and all orthopedic surgeries in Hyderabad. Minimally invasive techniques, 15+ years experience."
         keywords="knee replacement Hyderabad, hip replacement surgery, ACL reconstruction, arthroscopy Hyderabad, joint replacement surgeon, sports surgery, fracture treatment, orthopedic surgery Hyderabad"
       />
-      <SchemaMarkup type="MedicalClinic" />
+      <SchemaMarkup type="MedicalClinic" faqs={treatmentsFAQs} />
       
-      {/* Breadcrumb */}
+      {/* Breadcrumb with Schema */}
       <div className="bg-secondary py-3">
         <div className="container-medical">
-          <nav className="flex items-center gap-2 text-sm">
-            <Link to="/" className="text-muted-foreground hover:text-primary">Home</Link>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            <span className="text-foreground font-medium">Treatments</span>
-          </nav>
+          <Breadcrumbs items={[{ name: 'Treatments', path: '/treatments' }]} />
+        </div>
+      </div>
         </div>
       </div>
       
