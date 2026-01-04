@@ -725,7 +725,7 @@ def test_cms_treatments_api():
         return False
 
 def test_cms_treatment_total_knee_replacement():
-    """Test GET /api/cms/treatments/total-knee-replacement - Should exist in CMS"""
+    """Test GET /api/cms/treatments/total-knee-replacement - Should exist with specific title and benefits"""
     print("🔍 Testing GET /api/cms/treatments/total-knee-replacement...")
     try:
         response = requests.get(f"{BACKEND_URL}/cms/treatments/total-knee-replacement", timeout=10)
@@ -733,15 +733,32 @@ def test_cms_treatment_total_knee_replacement():
         
         if response.status_code == 200:
             data = response.json()
-            print(f"   ✅ Total knee replacement treatment found: {data.get('title', 'N/A')}")
+            title = data.get('title', '')
+            print(f"   ✅ Total knee replacement treatment found: {title}")
+            
+            # Check for expected title
+            expected_title = "Total Knee Replacement (TKR) in Hyderabad"
+            if expected_title in title:
+                print(f"   ✅ Title matches expected: {expected_title}")
+            else:
+                print(f"   ⚠️  Title doesn't match expected. Got: {title}")
+            
             print(f"   Type: {data.get('type', 'N/A')}")
             print(f"   Status: {data.get('status', 'N/A')}")
+            
             # Check content structure
             content = data.get('content', {})
-            if content.get('benefits'):
-                print(f"   ✅ Benefits section found with {len(content['benefits'])} items")
+            benefits = content.get('benefits', [])
+            if len(benefits) >= 5:
+                print(f"   ✅ Benefits array has {len(benefits)} items (≥5 expected)")
+            else:
+                print(f"   ⚠️  Expected ≥5 benefits, found {len(benefits)}")
+            
             if content.get('procedure_steps'):
                 print(f"   ✅ Procedure steps found with {len(content['procedure_steps'])} steps")
+            else:
+                print(f"   ⚠️  No procedure steps found")
+            
             return True
         else:
             print(f"   ❌ Failed: {response.text}")
