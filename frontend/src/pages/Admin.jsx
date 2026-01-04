@@ -1564,6 +1564,114 @@ const Admin = () => {
             </motion.div>
           </AnimatePresence>
         )}
+
+        {/* SEO & Keywords Tab */}
+        {activeTab === 'seo' && (
+          <AnimatePresence mode="wait">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-6"
+            >
+              <KeywordResearchTool />
+              
+              {/* SEO Quick Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                      <FileText className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">190</p>
+                      <p className="text-sm text-gray-500">Total Pages</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Globe className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">25+</p>
+                      <p className="text-sm text-gray-500">Blog Posts</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Layers className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">26</p>
+                      <p className="text-sm text-gray-500">Location Pages</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                      <Target className="w-5 h-5 text-orange-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold">50+</p>
+                      <p className="text-sm text-gray-500">Target Keywords</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Links */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 className="font-semibold mb-4">Quick SEO Links</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <a 
+                    href="https://search.google.com/search-console" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <img src="https://www.google.com/favicon.ico" alt="Google" className="w-6 h-6" />
+                    <div>
+                      <p className="font-medium">Google Search Console</p>
+                      <p className="text-sm text-gray-500">Monitor search performance</p>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-gray-400 ml-auto" />
+                  </a>
+                  <a 
+                    href="https://analytics.google.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <img src="https://www.google.com/favicon.ico" alt="Google" className="w-6 h-6" />
+                    <div>
+                      <p className="font-medium">Google Analytics</p>
+                      <p className="text-sm text-gray-500">Track website traffic</p>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-gray-400 ml-auto" />
+                  </a>
+                  <a 
+                    href="/sitemap.xml" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <FileText className="w-6 h-6 text-primary" />
+                    <div>
+                      <p className="font-medium">View Sitemap</p>
+                      <p className="text-sm text-gray-500">190 pages indexed</p>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-gray-400 ml-auto" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        )}
       </main>
     </div>
   );
