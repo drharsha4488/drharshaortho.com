@@ -1886,6 +1886,16 @@ async def delete_seo_suggestion(suggestion_id: str):
         logger.error(f"Error deleting suggestion: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@api_router.delete("/admin/seo/suggestions-clear-all")
+async def clear_all_seo_suggestions():
+    """Clear all SEO suggestions to start fresh"""
+    try:
+        result = await db.auto_seo_suggestions.delete_many({})
+        return {"success": True, "deleted_count": result.deleted_count}
+    except Exception as e:
+        logger.error(f"Error clearing suggestions: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @api_router.get("/admin/seo/dashboard")
 async def get_seo_dashboard():
     """Get SEO dashboard with stats and recent suggestions"""
