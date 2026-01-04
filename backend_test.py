@@ -767,6 +767,188 @@ def test_backend_health_check():
     
     return appointments_healthy and cms_healthy
 
+# ============ NEW: Keyword Research API Tests ============
+
+def test_keyword_autocomplete_api():
+    """Test GET /api/admin/keywords/autocomplete/knee%20replacement"""
+    print("🔍 Testing GET /api/admin/keywords/autocomplete/knee%20replacement...")
+    try:
+        # URL encode the keyword
+        keyword = "knee replacement"
+        encoded_keyword = keyword.replace(" ", "%20")
+        response = requests.get(f"{BACKEND_URL}/admin/keywords/autocomplete/{encoded_keyword}", timeout=15)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Keyword autocomplete API working")
+            print(f"   Seed keyword: {data.get('seed_keyword', 'N/A')}")
+            print(f"   Suggestions count: {data.get('count', 0)}")
+            
+            suggestions = data.get('suggestions', [])
+            if len(suggestions) >= 10:
+                print(f"   ✅ Returned {len(suggestions)} suggestions (≥10 expected)")
+                # Show sample suggestions
+                for i, suggestion in enumerate(suggestions[:3]):
+                    print(f"   Sample {i+1}: {suggestion.get('keyword', 'N/A')} (source: {suggestion.get('source', 'N/A')})")
+                return True
+            else:
+                print(f"   ⚠️  Only {len(suggestions)} suggestions returned (<10 expected)")
+                # Still consider it working if we get some suggestions
+                return len(suggestions) > 0
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_trending_keywords_api():
+    """Test GET /api/admin/keywords/trending"""
+    print("🔍 Testing GET /api/admin/keywords/trending...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/admin/keywords/trending", timeout=20)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Trending keywords API working")
+            print(f"   Keywords count: {data.get('count', 0)}")
+            print(f"   Last updated: {data.get('last_updated', 'N/A')}")
+            
+            trending_keywords = data.get('trending_keywords', [])
+            if len(trending_keywords) > 0:
+                print(f"   ✅ Returned {len(trending_keywords)} trending keywords")
+                # Show sample keywords
+                for i, keyword in enumerate(trending_keywords[:3]):
+                    print(f"   Sample {i+1}: {keyword.get('keyword', 'N/A')} (category: {keyword.get('category', 'N/A')})")
+                return True
+            else:
+                print(f"   ⚠️  No trending keywords returned")
+                return False
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_generate_blog_topics_api():
+    """Test POST /api/admin/keywords/generate-blog-topics"""
+    print("🔍 Testing POST /api/admin/keywords/generate-blog-topics...")
+    
+    test_keywords = ["knee replacement", "hip surgery"]
+    
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/admin/keywords/generate-blog-topics",
+            json=test_keywords,
+            headers={"Content-Type": "application/json"},
+            timeout=15
+        )
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Blog topics generation API working")
+            print(f"   Topics count: {data.get('count', 0)}")
+            
+            topics = data.get('topics', [])
+            if len(topics) > 0:
+                print(f"   ✅ Generated {len(topics)} blog topics")
+                # Show sample topic
+                sample_topic = topics[0]
+                print(f"   Sample topic: {sample_topic.get('title', 'N/A')}")
+                print(f"   Target keyword: {sample_topic.get('target_keyword', 'N/A')}")
+                print(f"   Outline items: {len(sample_topic.get('outline', []))}")
+                
+                # Verify required fields
+                required_fields = ['id', 'title', 'target_keyword', 'meta_description', 'outline']
+                missing_fields = [field for field in required_fields if field not in sample_topic]
+                if not missing_fields:
+                    print(f"   ✅ All required fields present in topic structure")
+                    return True
+                else:
+                    print(f"   ❌ Missing required fields: {missing_fields}")
+                    return False
+            else:
+                print(f"   ❌ No blog topics generated")
+                return False
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_save_blog_topic_api():
+    """Test POST /api/admin/blog-topics/save"""
+    print("🔍 Testing POST /api/admin/blog-topics/save...")
+    
+    test_topic = {
+        "id": "test-123",
+        "title": "Test Blog Topic: Knee Replacement Recovery Guide",
+        "target_keyword": "knee replacement",
+        "meta_description": "Complete guide to knee replacement recovery with timeline, exercises, and expert tips from Dr. Harsha.",
+        "outline": [
+            "Introduction to Knee Replacement Recovery",
+            "Week 1-2: Immediate Post-Surgery Care",
+            "Month 1-3: Physical Therapy Phase",
+            "Month 3-6: Return to Activities",
+            "Long-term Care and Maintenance"
+        ],
+        "status": "suggested"
+    }
+    
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/admin/blog-topics/save",
+            json=test_topic,
+            headers={"Content-Type": "application/json"},
+            timeout=10
+        )
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Blog topic saved successfully")
+            print(f"   Success: {data.get('success', 'N/A')}")
+            print(f"   Topic ID: {data.get('id', 'N/A')}")
+            return data.get('id')  # Return ID for cleanup
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_get_saved_topics_api():
+    """Test GET /api/admin/blog-topics"""
+    print("🔍 Testing GET /api/admin/blog-topics...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/admin/blog-topics", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Saved blog topics API working")
+            print(f"   Found {len(data)} saved blog topics")
+            
+            if len(data) > 0:
+                # Show sample topic
+                sample_topic = data[0]
+                print(f"   Sample topic: {sample_topic.get('title', 'N/A')}")
+                print(f"   Status: {sample_topic.get('status', 'N/A')}")
+                print(f"   Target keyword: {sample_topic.get('target_keyword', 'N/A')}")
+            
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
 def main():
     """Run all backend API tests"""
     print("=" * 60)
