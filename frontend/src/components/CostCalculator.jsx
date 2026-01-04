@@ -99,22 +99,35 @@ const CostCalculator = () => {
     const procedure = procedures.find(p => p.id === selectedProcedure);
     if (!procedure) return null;
 
-    const baseCost = procedure.basePrice;
-    const implantMultiplier = implantOptions[selectedImplant].multiplier;
+    let minPrice, maxPrice;
+    
+    if (selectedImplant === 'standard') {
+      minPrice = procedure.standardMin;
+      maxPrice = procedure.standardMax;
+    } else if (selectedImplant === 'premium') {
+      minPrice = procedure.premiumMin;
+      maxPrice = procedure.premiumMax;
+    } else {
+      minPrice = procedure.roboticMin;
+      maxPrice = procedure.roboticMax;
+    }
+
     const roomCost = roomOptions[roomType].pricePerDay * procedure.hospitalDays;
     
-    const surgeryCost = baseCost * implantMultiplier;
-    const totalEstimate = surgeryCost + roomCost;
+    // Room cost is typically included in package, but add for upgrades
+    const roomUpgrade = roomType === 'general' ? 0 : roomCost - (roomOptions['general'].pricePerDay * procedure.hospitalDays);
     
     return {
       procedure: procedure.name,
-      surgeryCost: Math.round(surgeryCost),
-      roomCost,
+      minEstimate: minPrice,
+      maxEstimate: maxPrice,
+      roomUpgrade: roomUpgrade,
       hospitalDays: procedure.hospitalDays,
       includes: procedure.includes,
-      lowEstimate: Math.round(totalEstimate * 0.9),
-      highEstimate: Math.round(totalEstimate * 1.15),
-      total: Math.round(totalEstimate)
+      lowTotal: minPrice + (roomUpgrade > 0 ? roomUpgrade : 0),
+      highTotal: maxPrice + (roomUpgrade > 0 ? roomUpgrade : 0),
+      implantType: implantOptions[selectedImplant].name,
+      roomName: roomOptions[roomType].name
     };
   };
 
