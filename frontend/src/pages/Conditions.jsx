@@ -52,16 +52,12 @@ const Conditions = () => {
         description="Expert treatment for knee arthritis, hip AVN, ACL tears, rotator cuff injuries, meniscus tears, shoulder pain, and all orthopedic conditions in Hyderabad. 15+ years experience."
         keywords="orthopedic conditions Hyderabad, knee arthritis treatment, hip pain doctor, ACL tear Hyderabad, shoulder pain treatment, sports injury doctor, joint pain specialist Hyderabad"
       />
-      <SchemaMarkup type="MedicalClinic" />
+      <SchemaMarkup type="MedicalClinic" faqs={conditionsFAQs} />
       
-      {/* Breadcrumb */}
+      {/* Breadcrumb with Schema */}
       <div className="bg-secondary py-3">
         <div className="container-medical">
-          <nav className="flex items-center gap-2 text-sm">
-            <Link to="/" className="text-muted-foreground hover:text-primary">Home</Link>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            <span className="text-foreground font-medium">Conditions</span>
-          </nav>
+          <Breadcrumbs items={[{ name: 'Conditions', path: '/conditions' }]} />
         </div>
       </div>
       
