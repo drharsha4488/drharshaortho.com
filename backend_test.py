@@ -641,22 +641,39 @@ def test_cms_condition_osteoarthritis():
         print(f"   ❌ Error: {str(e)}")
         return False
 
-def test_cms_condition_not_found():
-    """Test GET /api/cms/conditions/knee-arthritis - Should return 404 (not in CMS)"""
-    print("🔍 Testing GET /api/cms/conditions/knee-arthritis (should be 404)...")
+def test_cms_condition_knee_arthritis():
+    """Test GET /api/cms/conditions/knee-arthritis - Should exist with specific title"""
+    print("🔍 Testing GET /api/cms/conditions/knee-arthritis...")
     try:
         response = requests.get(f"{BACKEND_URL}/cms/conditions/knee-arthritis", timeout=10)
         print(f"   Status Code: {response.status_code}")
         
-        if response.status_code == 404:
-            print(f"   ✅ Correctly returned 404 for non-existent condition")
-            return True
-        elif response.status_code == 200:
+        if response.status_code == 200:
             data = response.json()
-            print(f"   ⚠️  Unexpected: Found condition that should not exist: {data.get('title', 'N/A')}")
+            title = data.get('title', '')
+            print(f"   ✅ Knee arthritis condition found: {title}")
+            
+            # Check for expected title
+            expected_title = "Knee Arthritis & Osteoarthritis Treatment in Hyderabad"
+            if expected_title in title:
+                print(f"   ✅ Title matches expected: {expected_title}")
+            else:
+                print(f"   ⚠️  Title doesn't match expected. Got: {title}")
+            
+            # Check for symptoms array with 5 items
+            content = data.get('content', {})
+            symptoms = content.get('symptoms', [])
+            if len(symptoms) == 5:
+                print(f"   ✅ Symptoms array has 5 items as expected")
+            else:
+                print(f"   ⚠️  Expected 5 symptoms, found {len(symptoms)}")
+            
+            return True
+        elif response.status_code == 404:
+            print(f"   ❌ Knee arthritis condition not found (404)")
             return False
         else:
-            print(f"   ❌ Unexpected status code: {response.status_code}")
+            print(f"   ❌ Failed: {response.text}")
             return False
     except Exception as e:
         print(f"   ❌ Error: {str(e)}")
