@@ -1601,6 +1601,43 @@ PRIORITY_PATTERNS = {
     "low": ["what is", "meaning", "define", "wikipedia"]
 }
 
+# Keywords to EXCLUDE (not relevant to human orthopedics)
+EXCLUDED_KEYWORDS = [
+    "dog", "dogs", "cat", "cats", "pet", "pets", "veterinary", "vet",
+    "ortho k", "ortho-k", "contact lens", "eye", "eyes", "vision",
+    "dental", "teeth", "tooth", "dentist",
+    "car", "bike", "vehicle", "auto",
+    "plant", "garden", "furniture",
+    "iphone", "android", "laptop", "computer",
+    "game", "gaming", "movie", "film",
+    "recipe", "food", "cooking",
+    "baby", "infant", "pregnancy"
+]
+
+# Keywords that MUST be present (at least one)
+REQUIRED_KEYWORDS = [
+    "knee", "hip", "shoulder", "joint", "bone", "orthopedic", "orthopaedic",
+    "surgery", "surgeon", "doctor", "hospital", "replacement", "arthroscopy",
+    "pain", "injury", "fracture", "acl", "meniscus", "rotator", "spine",
+    "back", "neck", "ligament", "cartilage", "arthritis", "sports"
+]
+
+def is_relevant_keyword(keyword: str) -> bool:
+    """Check if keyword is relevant to orthopedic practice"""
+    keyword_lower = keyword.lower()
+    
+    # Check for excluded terms
+    for excluded in EXCLUDED_KEYWORDS:
+        if excluded in keyword_lower:
+            return False
+    
+    # Check for at least one required term
+    for required in REQUIRED_KEYWORDS:
+        if required in keyword_lower:
+            return True
+    
+    return False
+
 async def calculate_keyword_priority(keyword: str) -> str:
     """Calculate priority based on keyword patterns"""
     keyword_lower = keyword.lower()
