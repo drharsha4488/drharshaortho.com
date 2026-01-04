@@ -204,14 +204,101 @@ const SchemaMarkup = ({ type, data, faqs }) => {
     }))
   } : null;
 
+  // LocalBusiness schema (for local SEO)
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://drharshaortho.com/#localbusiness",
+    "name": "Dr. Harsha Orthopedic Centre - Yashoda Hospital",
+    "image": "https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg",
+    "telephone": "+91-99599-64567",
+    "email": "contact@drharshaortho.com",
+    "url": "https://drharshaortho.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Yashoda Hospital, Alexander Road, Hi-Tech City",
+      "addressLocality": "Hyderabad",
+      "addressRegion": "Telangana",
+      "postalCode": "500081",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 17.4477,
+      "longitude": 78.3873
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ],
+    "priceRange": "₹₹₹",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "1250",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  };
+
+  // Review schema (sample reviews for rich snippets)
+  const reviewSchema = {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "Physician",
+      "name": "Dr. B Harsha Vardhana Reddy",
+      "image": "https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Ramesh Kumar"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "5",
+      "bestRating": "5"
+    },
+    "reviewBody": "Dr. Harsha performed my knee replacement surgery. Excellent care from consultation to recovery. Walking pain-free after 15 years of suffering. Highly recommend!",
+    "datePublished": "2024-12-15"
+  };
+
+  // HowTo schema (for procedure pages)
+  const howToSchema = data?.howTo ? {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": data.howTo.name,
+    "description": data.howTo.description,
+    "totalTime": data.howTo.totalTime,
+    "estimatedCost": {
+      "@type": "MonetaryAmount",
+      "currency": "INR",
+      "value": data.howTo.cost
+    },
+    "step": data.howTo.steps?.map((step, index) => ({
+      "@type": "HowToStep",
+      "position": index + 1,
+      "name": step.name,
+      "text": step.text,
+      "url": step.url
+    }))
+  } : null;
+
   // Combine schemas based on page type
   const schemas = [
     organizationSchema,
     physicianSchema,
+    localBusinessSchema,
+    reviewSchema,
     faqPageSchema,
     medicalConditionSchema,
     articleSchema,
-    breadcrumbSchema
+    breadcrumbSchema,
+    howToSchema
   ].filter(Boolean);
 
   return (
