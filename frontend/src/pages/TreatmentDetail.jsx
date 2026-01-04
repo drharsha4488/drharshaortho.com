@@ -57,12 +57,17 @@ const TreatmentDetail = () => {
   useEffect(() => {
     const fetchTreatment = async () => {
       setLoading(true);
+      
+      // Always get static data first as a fallback source
+      const staticTreatment = treatments.find(t => t.id === slug);
+      
       try {
         // Try to fetch from CMS first
         const response = await fetch(`${API_URL}/api/cms/treatments/${slug}`);
         if (response.ok) {
           const cmsData = await response.json();
-          const transformedData = transformCmsTreatment(cmsData);
+          // Transform CMS data, using static data as fallback for detailed fields
+          const transformedData = transformCmsTreatment(cmsData, staticTreatment);
           if (transformedData) {
             setTreatment(transformedData);
             setIsCms(true);
@@ -75,7 +80,6 @@ const TreatmentDetail = () => {
       }
       
       // Fallback to static data
-      const staticTreatment = treatments.find(t => t.id === slug);
       setTreatment(staticTreatment);
       setIsCms(false);
       setLoading(false);
