@@ -690,6 +690,17 @@ const Admin = () => {
             <Layers className="w-4 h-4 inline mr-2" />
             CMS Pages
           </button>
+          <button
+            onClick={() => setActiveTab('seo')}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
+              activeTab === 'seo'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Target className="w-4 h-4 inline mr-2" />
+            SEO & Keywords
+          </button>
         </div>
 
         {/* Appointments Tab */}
