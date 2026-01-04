@@ -1161,7 +1161,24 @@ const Admin = () => {
                 </div>
 
                 {/* Engagement Stats */}
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-3 gap-6">
+                  {/* Conversion Rate */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 }}
+                    className="bg-white rounded-xl p-6 border border-border"
+                  >
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <Target className="w-5 h-5 text-green-600" />
+                      Conversion Rate
+                    </h3>
+                    <div className="text-center py-4">
+                      <p className="text-4xl font-bold text-green-600">{analytics.engagement?.conversion_rate || 0}%</p>
+                      <p className="text-sm text-muted-foreground mt-2">Visitors → Appointments</p>
+                    </div>
+                  </motion.div>
+
                   {/* Chat Engagement */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -1176,7 +1193,7 @@ const Admin = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-4 text-center">
                         <p className="text-3xl font-bold text-primary">{analytics.engagement.total_chats}</p>
-                        <p className="text-sm text-muted-foreground">Total Conversations</p>
+                        <p className="text-sm text-muted-foreground">Total Chats</p>
                       </div>
                       <div className="bg-gradient-to-br from-accent/10 to-accent/5 rounded-lg p-4 text-center">
                         <p className="text-3xl font-bold text-accent">{analytics.engagement.recent_chats}</p>
@@ -1213,11 +1230,148 @@ const Admin = () => {
                   </motion.div>
                 </div>
 
+                {/* Content Performance */}
+                {analytics.content_performance && (
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Top Conditions */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="bg-white rounded-xl p-6 border border-border"
+                    >
+                      <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                        <Activity className="w-5 h-5 text-blue-600" />
+                        Top Conditions (Views)
+                      </h3>
+                      {analytics.content_performance.top_conditions?.length === 0 ? (
+                        <p className="text-sm text-muted-foreground text-center py-8">No condition page views yet</p>
+                      ) : (
+                        <div className="space-y-3">
+                          {analytics.content_performance.top_conditions?.map((item, i) => (
+                            <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+                              <span className="text-sm text-muted-foreground truncate max-w-[200px]">
+                                {item.path?.replace('/conditions/', '') || 'Unknown'}
+                              </span>
+                              <span className="text-sm font-medium bg-blue-100 text-blue-700 px-2 py-1 rounded">{item.views}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </motion.div>
+
+                    {/* Top Treatments */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.55 }}
+                      className="bg-white rounded-xl p-6 border border-border"
+                    >
+                      <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-purple-600" />
+                        Top Treatments (Views)
+                      </h3>
+                      {analytics.content_performance.top_treatments?.length === 0 ? (
+                        <p className="text-sm text-muted-foreground text-center py-8">No treatment page views yet</p>
+                      ) : (
+                        <div className="space-y-3">
+                          {analytics.content_performance.top_treatments?.map((item, i) => (
+                            <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+                              <span className="text-sm text-muted-foreground truncate max-w-[200px]">
+                                {item.path?.replace('/treatments/', '') || 'Unknown'}
+                              </span>
+                              <span className="text-sm font-medium bg-purple-100 text-purple-700 px-2 py-1 rounded">{item.views}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </motion.div>
+                  </div>
+                )}
+
+                {/* Content Stats Overview */}
+                {analytics.content_stats && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="bg-gradient-to-r from-charcoal to-charcoal/90 rounded-xl p-6 text-white"
+                  >
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <Layers className="w-5 h-5" />
+                      Content Overview
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+                      <div className="text-center">
+                        <p className="text-2xl font-bold">{analytics.content_stats.total_cms_pages}</p>
+                        <p className="text-xs text-gray-300">CMS Pages</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-green-400">{analytics.content_stats.published_pages}</p>
+                        <p className="text-xs text-gray-300">Published</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-yellow-400">{analytics.content_stats.draft_pages}</p>
+                        <p className="text-xs text-gray-300">Drafts</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold">{analytics.content_stats.total_blogs}</p>
+                        <p className="text-xs text-gray-300">Blog Posts</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold">{analytics.content_stats.seo_suggestions}</p>
+                        <p className="text-xs text-gray-300">SEO Topics</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-green-400">{analytics.content_stats.approved_seo}</p>
+                        <p className="text-xs text-gray-300">Approved</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Appointment Stats */}
+                {analytics.appointments && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.65 }}
+                    className="bg-white rounded-xl p-6 border border-border"
+                  >
+                    <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                      <Calendar className="w-5 h-5 text-primary" />
+                      Appointment Overview
+                    </h3>
+                    <div className="grid grid-cols-5 gap-4">
+                      <div className="text-center p-4 bg-secondary rounded-lg">
+                        <p className="text-2xl font-bold text-charcoal">{analytics.appointments.total}</p>
+                        <p className="text-xs text-muted-foreground">Total</p>
+                      </div>
+                      <div className="text-center p-4 bg-yellow-50 rounded-lg">
+                        <p className="text-2xl font-bold text-yellow-600">{analytics.appointments.pending}</p>
+                        <p className="text-xs text-muted-foreground">Pending</p>
+                      </div>
+                      <div className="text-center p-4 bg-blue-50 rounded-lg">
+                        <p className="text-2xl font-bold text-blue-600">{analytics.appointments.confirmed}</p>
+                        <p className="text-xs text-muted-foreground">Confirmed</p>
+                      </div>
+                      <div className="text-center p-4 bg-green-50 rounded-lg">
+                        <p className="text-2xl font-bold text-green-600">{analytics.appointments.completed}</p>
+                        <p className="text-xs text-muted-foreground">Completed</p>
+                      </div>
+                      <div className="text-center p-4 bg-primary/10 rounded-lg">
+                        <p className="text-2xl font-bold text-primary">{analytics.appointments.this_week}</p>
+                        <p className="text-xs text-muted-foreground">This Week</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
                 {/* Note about tracking */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
+                  transition={{ delay: 0.7 }}
                   className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center"
                 >
                   <p className="text-sm text-blue-700">
