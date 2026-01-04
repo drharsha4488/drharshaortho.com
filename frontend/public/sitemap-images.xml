@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Homepage Images -->
+  <url>
+    <loc>https://drharshaortho.com/</loc>
+    <image:image>
+      <image:loc>https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg</image:loc>
+      <image:title>Dr. B Harsha Vardhana Reddy - Orthopedic Surgeon Hyderabad</image:title>
+      <image:caption>Dr. Harsha Reddy, Associate Consultant Orthopedic Surgeon at Yashoda Hospital Hi-Tech City, Hyderabad</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://drharshaortho.com/images/dr-harsha-logo.png</image:loc>
+      <image:title>Dr. Harsha Orthopedic Centre Logo</image:title>
+    </image:image>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://drharshaortho.com/about</loc>
+    <image:image>
+      <image:loc>https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg</image:loc>
+      <image:title>Dr. B Harsha Vardhana Reddy - Best Orthopedic Surgeon</image:title>
+      <image:caption>15+ years experience in joint replacement and sports medicine</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Treatment Pages -->
+  <url>
+    <loc>https://drharshaortho.com/treatments/total-knee-replacement</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/7446985/pexels-photo-7446985.jpeg</image:loc>
+      <image:title>Total Knee Replacement Surgery Hyderabad</image:title>
+      <image:caption>Computer-navigated knee replacement surgery at Yashoda Hospital</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://drharshaortho.com/treatments/total-hip-replacement</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/40568/pexels-photo-40568.jpeg</image:loc>
+      <image:title>Hip Replacement Surgery Hyderabad</image:title>
+      <image:caption>Total hip arthroplasty by Dr. Harsha at Yashoda Hospital</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://drharshaortho.com/treatments/acl-reconstruction</loc>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1649751361457-01d3a696c7e6</image:loc>
+      <image:title>ACL Reconstruction Surgery Hyderabad</image:title>
+      <image:caption>Arthroscopic ACL surgery for athletes and sports injuries</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://drharshaortho.com/treatments/arthroscopy</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/339619/pexels-photo-339619.jpeg</image:loc>
+      <image:title>Arthroscopic Surgery Hyderabad</image:title>
+      <image:caption>Minimally invasive keyhole surgery for knee and shoulder</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://drharshaortho.com/treatments/sports-injury-treatment</loc>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1581595219618-375a1a48d324</image:loc>
+      <image:title>Sports Injury Treatment Hyderabad</image:title>
+      <image:caption>Comprehensive sports medicine care for athletes</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Condition Pages -->
+  <url>
+    <loc>https://drharshaortho.com/conditions/knee-osteoarthritis</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/7446985/pexels-photo-7446985.jpeg</image:loc>
+      <image:title>Knee Osteoarthritis Treatment Hyderabad</image:title>
+      <image:caption>Treatment for knee arthritis and joint pain</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://drharshaortho.com/conditions/acl-injury</loc>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1649751361457-01d3a696c7e6</image:loc>
+      <image:title>ACL Injury Treatment Hyderabad</image:title>
+      <image:caption>ACL tear diagnosis and treatment options</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://drharshaortho.com/conditions/meniscus-tear</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/339619/pexels-photo-339619.jpeg</image:loc>
+      <image:title>Meniscus Tear Treatment Hyderabad</image:title>
+      <image:caption>Arthroscopic meniscus repair and surgery</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://drharshaortho.com/conditions/rotator-cuff-tear</loc>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1581056771107-24ca5f033842</image:loc>
+      <image:title>Rotator Cuff Tear Treatment Hyderabad</image:title>
+      <image:caption>Shoulder rotator cuff repair surgery</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://drharshaortho.com/conditions/frozen-shoulder</loc>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1631217871099-88310a909a32</image:loc>
+      <image:title>Frozen Shoulder Treatment Hyderabad</image:title>
+      <image:caption>Adhesive capsulitis treatment and therapy</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://drharshaortho.com/conditions/tennis-elbow</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/1350560/pexels-photo-1350560.jpeg</image:loc>
+      <image:title>Tennis Elbow Treatment Hyderabad</image:title>
+      <image:caption>Lateral epicondylitis treatment and PRP therapy</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Blog Posts -->
+  <url>
+    <loc>https://drharshaortho.com/blog</loc>
+    <image:image>
+      <image:loc>https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg</image:loc>
+      <image:title>Orthopedic Health Blog by Dr. Harsha</image:title>
+      <image:caption>Expert orthopedic advice and medical insights</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Gallery -->
+  <url>
+    <loc>https://drharshaortho.com/gallery</loc>
+    <image:image>
+      <image:loc>https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg</image:loc>
+      <image:title>Dr. Harsha Gallery - Orthopedic Surgeon</image:title>
+    </image:image>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc>https://drharshaortho.com/contact</loc>
+    <image:image>
+      <image:loc>https://drharshaortho.com/images/dr-harsha-logo.png</image:loc>
+      <image:title>Contact Dr. Harsha - Yashoda Hospital Hi-Tech City</image:title>
+    </image:image>
+  </url>
+
+</urlset>
