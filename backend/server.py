@@ -1771,9 +1771,12 @@ async def auto_generate_seo_suggestions():
         # Step 3: Filter and prioritize keywords
         prioritized_keywords = []
         for kw in all_keywords:
-            if len(kw) > 10 and len(kw) < 80:  # Filter by length
+            # Check length and relevance
+            if len(kw) > 10 and len(kw) < 80 and is_relevant_keyword(kw):
                 priority = await calculate_keyword_priority(kw)
                 prioritized_keywords.append({"keyword": kw, "priority": priority})
+        
+        logger.info(f"🔍 Auto SEO: {len(prioritized_keywords)} relevant keywords after filtering")
         
         # Sort by priority
         priority_order = {"high": 0, "medium": 1, "low": 2}
