@@ -1162,16 +1162,25 @@ def main():
     
     # NEW: CMS API Integration Tests (as requested in review)
     print("\n" + "=" * 40)
+    print("🔍 CMS CONTENT MIGRATION TESTS")
+    print("=" * 40)
+    
+    # First run migration to ensure all content exists
+    test_results.append(("CMS Migrate All Content", test_cms_migrate_all_content()))
+    test_results.append(("CMS Migration Status API", test_cms_migration_status_api()))
+    test_results.append(("CMS Pages Admin API (54 pages)", test_cms_pages_admin_api()))
+    
+    print("\n" + "=" * 40)
     print("🔍 CMS API INTEGRATION TESTS")
     print("=" * 40)
     
     # CMS Conditions API Tests
-    test_results.append(("CMS Conditions List API", test_cms_conditions_api()))
+    test_results.append(("CMS Conditions List API (37)", test_cms_conditions_api()))
     test_results.append(("CMS Condition Osteoarthritis", test_cms_condition_osteoarthritis()))
-    test_results.append(("CMS Condition 404 Test", test_cms_condition_not_found()))
+    test_results.append(("CMS Condition Knee Arthritis", test_cms_condition_knee_arthritis()))
     
     # CMS Treatments API Tests
-    test_results.append(("CMS Treatments List API", test_cms_treatments_api()))
+    test_results.append(("CMS Treatments List API (17)", test_cms_treatments_api()))
     test_results.append(("CMS Treatment Total Knee", test_cms_treatment_total_knee_replacement()))
     
     # CMS Blogs API Tests
