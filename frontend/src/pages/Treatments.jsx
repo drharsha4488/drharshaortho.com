@@ -4,10 +4,39 @@ import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import SEO from '@/components/SEO';
 import SchemaMarkup from '@/components/SchemaMarkup';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { allTreatments, treatmentCategories } from '@/data/treatments';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Clock, Calendar, ArrowRight, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+// FAQ Schema for rich snippets
+const treatmentsFAQs = [
+  {
+    "@type": "Question",
+    "name": "What is the best treatment for knee arthritis?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Treatment for knee arthritis starts with conservative options like physical therapy, weight management, and medications. If these fail, injections (steroid, hyaluronic acid, PRP) may help. For severe arthritis, total knee replacement is the gold standard with 95%+ success rate and 15-20 year implant life."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "How long does knee replacement surgery take?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Knee replacement surgery typically takes 1-2 hours. With Dr. Harsha's minimally invasive technique, patients walk within 24 hours and are discharged in 2-3 days. Full recovery takes 3-6 months."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "Is knee replacement surgery painful?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Modern knee replacement uses advanced pain management techniques including nerve blocks and multi-modal analgesia. Most patients report manageable discomfort, not severe pain. By week 2-3, most patients need only mild pain medications."
+    }
+  }
+];
 
 const Treatments = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
