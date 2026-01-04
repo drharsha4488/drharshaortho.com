@@ -1407,6 +1407,261 @@ async def get_blog_by_slug(slug: str):
         raise HTTPException(status_code=500, detail="Failed to fetch blog")
 
 
+# ============ Keyword Research & Blog Suggestion Endpoints ============
+
+# Orthopedic seed keywords for suggestions
+ORTHO_SEED_KEYWORDS = [
+    "knee replacement", "hip replacement", "ACL surgery", "arthroscopy",
+    "knee pain", "hip pain", "shoulder pain", "back pain", "joint pain",
+    "orthopedic surgeon", "bone doctor", "sports injury", "fracture treatment",
+    "meniscus tear", "rotator cuff", "knee arthritis", "hip arthritis"
+]
+
+# Blog title templates
+BLOG_TEMPLATES = [
+    "{keyword} Cost in Hyderabad 2025: Complete Guide",
+    "{keyword}: Symptoms, Causes, and Treatment Options",
+    "How Long Does {keyword} Recovery Take? Timeline Guide",
+    "{keyword} vs {alt_keyword}: Which is Right for You?",
+    "Best {keyword} Doctor in Hyderabad: How to Choose",
+    "{keyword} Age Limit: Am I Too Old or Young?",
+    "Life After {keyword}: What to Expect",
+    "{keyword} Success Rate: Facts and Statistics",
+    "Preparing for {keyword}: Complete Checklist",
+    "{keyword} Complications: Risks and How to Avoid Them"
+]
+
+@api_router.get("/admin/keywords/autocomplete/{seed_keyword}")
+async def get_keyword_suggestions(seed_keyword: str):
+    """Get keyword suggestions from Google Autocomplete"""
+    try:
+        suggestions = []
+        
+        # Google Autocomplete API (unofficial but free)
+        async with httpx.AsyncClient() as client:
+            # Get suggestions for the seed keyword
+            url = f"http://suggestqueries.google.com/complete/search?client=firefox&q={seed_keyword}"
+            response = await client.get(url, timeout=10.0)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if len(data) > 1 and isinstance(data[1], list):
+                    for kw in data[1][:20]:
+                        suggestions.append({
+                            "keyword": kw,
+                            "search_volume": "Unknown",
+                            "difficulty": "Medium",
+                            "source": "google_autocomplete"
+                        })
+            
+            # Also get suggestions with common modifiers
+            modifiers = ["cost", "treatment", "surgery", "doctor", "hospital", "recovery", "best"]
+            for mod in modifiers[:3]:  # Limit to avoid rate limiting
+                mod_url = f"http://suggestqueries.google.com/complete/search?client=firefox&q={seed_keyword} {mod}"
+                try:
+                    mod_response = await client.get(mod_url, timeout=5.0)
+                    if mod_response.status_code == 200:
+                        mod_data = mod_response.json()
+                        if len(mod_data) > 1 and isinstance(mod_data[1], list):
+                            for kw in mod_data[1][:5]:
+                                if kw not in [s["keyword"] for s in suggestions]:
+                                    suggestions.append({
+                                        "keyword": kw,
+                                        "search_volume": "Unknown",
+                                        "difficulty": "Medium",
+                                        "source": "google_autocomplete"
+                                    })
+                except:
+                    pass
+                await asyncio.sleep(0.2)  # Small delay to avoid rate limiting
+        
+        return {
+            "seed_keyword": seed_keyword,
+            "suggestions": suggestions[:30],
+            "count": len(suggestions[:30])
+        }
+    except Exception as e:
+        logger.error(f"Error fetching keyword suggestions: {str(e)}")
+        return {
+            "seed_keyword": seed_keyword,
+            "suggestions": [],
+            "count": 0,
+            "error": str(e)
+        }
+
+@api_router.get("/admin/keywords/trending")
+async def get_trending_orthopedic_keywords():
+    """Get trending orthopedic keywords and topics"""
+    try:
+        trending = []
+        
+        # Fetch suggestions for each seed keyword
+        async with httpx.AsyncClient() as client:
+            for seed in ORTHO_SEED_KEYWORDS[:8]:  # Limit to avoid timeout
+                url = f"http://suggestqueries.google.com/complete/search?client=firefox&q={seed} hyderabad"
+                try:
+                    response = await client.get(url, timeout=5.0)
+                    if response.status_code == 200:
+                        data = response.json()
+                        if len(data) > 1 and isinstance(data[1], list):
+                            for kw in data[1][:3]:
+                                if kw not in [t["keyword"] for t in trending]:
+                                    trending.append({
+                                        "keyword": kw,
+                                        "category": seed,
+                                        "source": "google_autocomplete"
+                                    })
+                except:
+                    pass
+                await asyncio.sleep(0.1)
+        
+        return {
+            "trending_keywords": trending[:25],
+            "count": len(trending[:25]),
+            "last_updated": datetime.now(timezone.utc).isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Error fetching trending keywords: {str(e)}")
+        return {"trending_keywords": [], "count": 0, "error": str(e)}
+
+@api_router.post("/admin/keywords/generate-blog-topics")
+async def generate_blog_topics(keywords: List[str]):
+    """Generate blog topic suggestions from keywords"""
+    try:
+        topics = []
+        
+        for keyword in keywords[:10]:  # Limit to 10 keywords
+            # Clean the keyword
+            clean_kw = keyword.strip().title()
+            
+            # Generate topics using templates
+            for template in BLOG_TEMPLATES[:5]:
+                if "{alt_keyword}" in template:
+                    # Skip comparison templates for now
+                    continue
+                
+                title = template.format(keyword=clean_kw)
+                slug = re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')
+                
+                # Generate meta description
+                meta_desc = f"Complete guide to {clean_kw.lower()} in Hyderabad. Learn about costs, procedures, recovery time, and find the best treatment options with Dr. B Harsha Vardhana Reddy."
+                
+                # Generate outline
+                outline = [
+                    f"What is {clean_kw}?",
+                    f"Who Needs {clean_kw}?",
+                    f"{clean_kw} Procedure Explained",
+                    f"Recovery Timeline",
+                    f"Cost and Insurance",
+                    f"Why Choose Dr. Harsha?",
+                    f"FAQs About {clean_kw}"
+                ]
+                
+                topics.append({
+                    "id": str(uuid.uuid4()),
+                    "title": title,
+                    "slug": slug,
+                    "target_keyword": keyword,
+                    "meta_description": meta_desc[:160],
+                    "outline": outline,
+                    "estimated_word_count": 1500,
+                    "priority": "medium",
+                    "status": "suggested"
+                })
+        
+        return {
+            "topics": topics,
+            "count": len(topics)
+        }
+    except Exception as e:
+        logger.error(f"Error generating blog topics: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/admin/content-ideas")
+async def save_content_idea(idea: ContentIdea):
+    """Save a content idea for later"""
+    try:
+        idea_dict = idea.model_dump()
+        idea_dict["created_at"] = datetime.now(timezone.utc).isoformat()
+        await db.content_ideas.insert_one(idea_dict)
+        return {"success": True, "id": idea.id}
+    except Exception as e:
+        logger.error(f"Error saving content idea: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/admin/content-ideas")
+async def get_content_ideas():
+    """Get all saved content ideas"""
+    try:
+        ideas = await db.content_ideas.find({}, {"_id": 0}).sort("created_at", -1).to_list(100)
+        return ideas
+    except Exception as e:
+        logger.error(f"Error fetching content ideas: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.put("/admin/content-ideas/{idea_id}")
+async def update_content_idea(idea_id: str, status: str):
+    """Update content idea status"""
+    try:
+        result = await db.content_ideas.update_one(
+            {"id": idea_id},
+            {"$set": {"status": status}}
+        )
+        return {"success": result.modified_count > 0}
+    except Exception as e:
+        logger.error(f"Error updating content idea: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.delete("/admin/content-ideas/{idea_id}")
+async def delete_content_idea(idea_id: str):
+    """Delete a content idea"""
+    try:
+        result = await db.content_ideas.delete_one({"id": idea_id})
+        return {"success": result.deleted_count > 0}
+    except Exception as e:
+        logger.error(f"Error deleting content idea: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/admin/blog-topics/save")
+async def save_blog_topic(topic: BlogTopicSuggestion):
+    """Save a blog topic suggestion"""
+    try:
+        topic_dict = topic.model_dump()
+        topic_dict["created_at"] = datetime.now(timezone.utc).isoformat()
+        await db.blog_topics.insert_one(topic_dict)
+        return {"success": True, "id": topic.id}
+    except Exception as e:
+        logger.error(f"Error saving blog topic: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/admin/blog-topics")
+async def get_saved_blog_topics():
+    """Get all saved blog topics"""
+    try:
+        topics = await db.blog_topics.find({}, {"_id": 0}).sort("created_at", -1).to_list(100)
+        return topics
+    except Exception as e:
+        logger.error(f"Error fetching blog topics: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.put("/admin/blog-topics/{topic_id}/status")
+async def update_blog_topic_status(topic_id: str, status: str):
+    """Update blog topic status"""
+    try:
+        update_data = {"status": status}
+        if status == "published":
+            update_data["published_at"] = datetime.now(timezone.utc).isoformat()
+        
+        result = await db.blog_topics.update_one(
+            {"id": topic_id},
+            {"$set": update_data}
+        )
+        return {"success": result.modified_count > 0}
+    except Exception as e:
+        logger.error(f"Error updating blog topic: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 app.include_router(api_router)
 
 app.add_middleware(
