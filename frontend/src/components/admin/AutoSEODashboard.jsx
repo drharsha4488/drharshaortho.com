@@ -340,7 +340,7 @@ const AutoSEODashboard = () => {
             <div className="text-center py-12 text-gray-500">
               <Lightbulb className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p>No suggestions yet.</p>
-              <p className="text-sm">Click "Generate New Suggestions" to start!</p>
+              <p className="text-sm">Click the Generate New Suggestions button to start!</p>
             </div>
           ) : (
             <div className="divide-y divide-gray-100">
