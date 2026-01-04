@@ -65,8 +65,10 @@ const Index = () => {
       />
       <SchemaMarkup faqs={homepageFAQs} />
       <HeroSection />
+      <TrustSignals variant="compact" />
       <ServicesSection />
       <WhyChooseSection />
+      <TrustSignals variant="full" />
       <TestimonialsSection />
       <FAQSection />
       <CTASection />
