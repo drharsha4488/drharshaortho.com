@@ -73,8 +73,8 @@ const BlogPost = () => {
         console.warn('CMS fetch failed, using static data:', err.message);
       }
       
-      // Fallback to static data
-      const staticPost = seoBlogPosts.find(p => p.slug === slug);
+      // Fallback to static data (check all blog sources)
+      const staticPost = allBlogPosts.find(p => p.slug === slug);
       setPost(staticPost);
       setIsCms(false);
       setLoading(false);
