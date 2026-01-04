@@ -27,30 +27,46 @@ import { treatments, allTreatments } from '@/data/treatments';
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 // Transform CMS condition data to match static data format
-const transformCmsCondition = (cmsData) => {
+// Falls back to static data for detailed treatment information
+const transformCmsCondition = (cmsData, staticFallback) => {
   if (!cmsData || !cmsData.content) return null;
   const content = cmsData.content;
+  
+  // Use static data for detailed fields if CMS data is simplified
+  const hasDetailedTreatments = content.nonSurgicalTreatments?.length > 0 && 
+    content.nonSurgicalTreatments[0]?.name;
   
   return {
     id: cmsData.slug,
     slug: cmsData.slug,
-    name: cmsData.title,
+    name: content.name || cmsData.title,
     category: content.category || 'General',
     icon: content.icon || '🏥',
-    imageUrl: content.imageUrl || null,
+    imageUrl: content.imageUrl || staticFallback?.imageUrl || null,
     shortDescription: cmsData.meta_description,
-    overview: content.overview || content.introduction,
-    causes: content.causes || [],
-    symptoms: content.symptoms || [],
-    diagnosis: content.diagnosis || [],
-    nonSurgicalTreatments: content.nonSurgicalTreatments || content.treatments?.filter(t => !t.surgical) || [],
-    surgicalTreatments: content.surgicalTreatments || content.treatments?.filter(t => t.surgical) || [],
-    recoveryTimeline: content.recoveryTimeline || [],
-    faqs: content.faqs || [],
-    relatedConditions: content.relatedConditions || [],
-    relatedTreatments: content.relatedTreatments || [],
-    seoKeywords: cmsData.keywords?.join(', ') || '',
-    metaDescription: cmsData.meta_description
+    overview: content.overview || content.description || staticFallback?.overview,
+    causes: content.causes?.length > 0 ? content.causes : (staticFallback?.causes || []),
+    symptoms: content.symptoms?.length > 0 ? content.symptoms : (staticFallback?.symptoms || []),
+    diagnosis: content.diagnosis?.length > 0 ? content.diagnosis : (staticFallback?.diagnosis || []),
+    // Use static data for detailed treatments if CMS only has simple strings
+    nonSurgicalTreatments: hasDetailedTreatments 
+      ? content.nonSurgicalTreatments 
+      : (staticFallback?.nonSurgicalTreatments || []),
+    surgicalTreatments: hasDetailedTreatments 
+      ? content.surgicalTreatments 
+      : (staticFallback?.surgicalTreatments || []),
+    recoveryTimeline: content.recoveryTimeline?.length > 0 
+      ? content.recoveryTimeline 
+      : (staticFallback?.recoveryTimeline || staticFallback?.rehabilitationProtocol || []),
+    faqs: content.faqs?.length > 0 ? content.faqs : (staticFallback?.faqs || []),
+    relatedConditions: content.relatedConditions?.length > 0 
+      ? content.relatedConditions 
+      : (staticFallback?.relatedConditions || []),
+    relatedTreatments: content.relatedTreatments?.length > 0 
+      ? content.relatedTreatments 
+      : (staticFallback?.relatedTreatments || []),
+    seoKeywords: cmsData.keywords?.join(', ') || staticFallback?.seoKeywords || '',
+    metaDescription: cmsData.meta_description || staticFallback?.metaDescription
   };
 };
 
