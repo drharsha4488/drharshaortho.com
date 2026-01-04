@@ -157,7 +157,7 @@ const AutoSEODashboard = () => {
             <ul className="text-sm text-purple-600 mt-2 space-y-1">
               <li>✅ Google can find and index these pages via sitemap</li>
               <li>✅ Users can access them via direct links from search results</li>
-              <li>✅ Competitors can't easily scan/copy your SEO strategy</li>
+              <li>✅ Competitors cannot easily scan/copy your SEO strategy</li>
               <li>✅ Your main website stays clean and professional</li>
             </ul>
           </div>
