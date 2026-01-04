@@ -570,6 +570,162 @@ def test_cms_pages_after_seeding():
         print(f"   ❌ Error: {str(e)}")
         return False
 
+def test_cms_conditions_api():
+    """Test GET /api/cms/conditions - List all published conditions"""
+    print("🔍 Testing GET /api/cms/conditions...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/conditions", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Found {len(data)} published conditions")
+            if len(data) > 0:
+                print(f"   Sample condition: {data[0].get('title', 'N/A')} ({data[0].get('slug', 'N/A')})")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_condition_osteoarthritis():
+    """Test GET /api/cms/conditions/osteoarthritis - Should exist in CMS"""
+    print("🔍 Testing GET /api/cms/conditions/osteoarthritis...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/conditions/osteoarthritis", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Osteoarthritis condition found: {data.get('title', 'N/A')}")
+            print(f"   Type: {data.get('type', 'N/A')}")
+            print(f"   Status: {data.get('status', 'N/A')}")
+            # Check content structure
+            content = data.get('content', {})
+            if content.get('symptoms'):
+                print(f"   ✅ Symptoms section found with {len(content['symptoms'])} items")
+            if content.get('treatments'):
+                print(f"   ✅ Treatments section found with {len(content['treatments'])} items")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_condition_not_found():
+    """Test GET /api/cms/conditions/knee-arthritis - Should return 404 (not in CMS)"""
+    print("🔍 Testing GET /api/cms/conditions/knee-arthritis (should be 404)...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/conditions/knee-arthritis", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 404:
+            print(f"   ✅ Correctly returned 404 for non-existent condition")
+            return True
+        elif response.status_code == 200:
+            data = response.json()
+            print(f"   ⚠️  Unexpected: Found condition that should not exist: {data.get('title', 'N/A')}")
+            return False
+        else:
+            print(f"   ❌ Unexpected status code: {response.status_code}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_treatments_api():
+    """Test GET /api/cms/treatments - List all published treatments"""
+    print("🔍 Testing GET /api/cms/treatments...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/treatments", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Found {len(data)} published treatments")
+            if len(data) > 0:
+                print(f"   Sample treatment: {data[0].get('title', 'N/A')} ({data[0].get('slug', 'N/A')})")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_treatment_total_knee_replacement():
+    """Test GET /api/cms/treatments/total-knee-replacement - Should exist in CMS"""
+    print("🔍 Testing GET /api/cms/treatments/total-knee-replacement...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/treatments/total-knee-replacement", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Total knee replacement treatment found: {data.get('title', 'N/A')}")
+            print(f"   Type: {data.get('type', 'N/A')}")
+            print(f"   Status: {data.get('status', 'N/A')}")
+            # Check content structure
+            content = data.get('content', {})
+            if content.get('benefits'):
+                print(f"   ✅ Benefits section found with {len(content['benefits'])} items")
+            if content.get('procedure_steps'):
+                print(f"   ✅ Procedure steps found with {len(content['procedure_steps'])} steps")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_blogs_api():
+    """Test GET /api/cms/blogs - List all published blogs"""
+    print("🔍 Testing GET /api/cms/blogs...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/blogs", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Found {len(data)} published blog posts from CMS")
+            if len(data) > 0:
+                print(f"   Sample blog: {data[0].get('title', 'N/A')} ({data[0].get('slug', 'N/A')})")
+            else:
+                print(f"   ℹ️  No blog posts found in CMS (expected for new setup)")
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
+def test_cms_blog_not_found():
+    """Test GET /api/cms/blogs/test-blog - Should return 404 (no blogs in CMS yet)"""
+    print("🔍 Testing GET /api/cms/blogs/test-blog (should be 404)...")
+    try:
+        response = requests.get(f"{BACKEND_URL}/cms/blogs/test-blog", timeout=10)
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 404:
+            print(f"   ✅ Correctly returned 404 for non-existent blog post")
+            return True
+        elif response.status_code == 200:
+            data = response.json()
+            print(f"   ⚠️  Unexpected: Found blog post that should not exist: {data.get('title', 'N/A')}")
+            return False
+        else:
+            print(f"   ❌ Unexpected status code: {response.status_code}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
 def test_backend_health_check():
     """Test backend API health check as mentioned in review request"""
     print("🔍 Testing Backend API Health Check...")
