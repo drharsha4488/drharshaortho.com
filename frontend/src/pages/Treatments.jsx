@@ -123,7 +123,6 @@ const Treatments = () => {
                           </div>
                         );
                       })}
-                      ))}
                     </div>
 
                     {/* Learn More Link */}
