@@ -786,7 +786,34 @@ def main():
     test_results.append(("Get Appointments API", test_get_appointments_api()))
     test_results.append(("Contact Form API", test_contact_api()))
     
-    # New CMS API Tests
+    # CMS Content Seeding Tests (Run first to ensure data exists)
+    test_results.append(("CMS Content Seeding", test_cms_seed_content()))
+    test_results.append(("CMS Seeding Idempotent", test_cms_seed_idempotent()))
+    test_results.append(("CMS Pages After Seeding", test_cms_pages_after_seeding()))
+    
+    # NEW: CMS API Integration Tests (as requested in review)
+    print("\n" + "=" * 40)
+    print("🔍 CMS API INTEGRATION TESTS")
+    print("=" * 40)
+    
+    # CMS Conditions API Tests
+    test_results.append(("CMS Conditions List API", test_cms_conditions_api()))
+    test_results.append(("CMS Condition Osteoarthritis", test_cms_condition_osteoarthritis()))
+    test_results.append(("CMS Condition 404 Test", test_cms_condition_not_found()))
+    
+    # CMS Treatments API Tests
+    test_results.append(("CMS Treatments List API", test_cms_treatments_api()))
+    test_results.append(("CMS Treatment Total Knee", test_cms_treatment_total_knee_replacement()))
+    
+    # CMS Blogs API Tests
+    test_results.append(("CMS Blogs List API", test_cms_blogs_api()))
+    test_results.append(("CMS Blog 404 Test", test_cms_blog_not_found()))
+    
+    print("\n" + "=" * 40)
+    print("🔍 EXISTING CMS ADMIN TESTS")
+    print("=" * 40)
+    
+    # Existing CMS API Tests
     test_results.append(("CMS Pages List API", test_cms_pages_list()))
     created_page_id = test_cms_page_create()
     test_results.append(("CMS Page Create API", bool(created_page_id)))
@@ -797,11 +824,6 @@ def main():
     else:
         test_results.append(("CMS Page Get Public API", False))
         test_results.append(("CMS Page Delete API", False))
-    
-    # CMS Content Seeding Tests (NEW)
-    test_results.append(("CMS Content Seeding", test_cms_seed_content()))
-    test_results.append(("CMS Seeding Idempotent", test_cms_seed_idempotent()))
-    test_results.append(("CMS Pages After Seeding", test_cms_pages_after_seeding()))
     
     # Analytics API Tests
     test_results.append(("Analytics API", test_analytics_api()))
