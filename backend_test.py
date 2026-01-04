@@ -250,6 +250,38 @@ def test_cms_pages_admin_api():
         print(f"   ❌ Error: {str(e)}")
         return False
 
+def test_cms_migrate_all_content():
+    """Test POST /api/admin/cms/migrate-all-content - Migrate all static content to CMS"""
+    print("🔍 Testing POST /api/admin/cms/migrate-all-content...")
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/admin/cms/migrate-all-content",
+            headers={"Content-Type": "application/json"},
+            timeout=30  # Migration might take longer
+        )
+        print(f"   Status Code: {response.status_code}")
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"   ✅ Migration completed successfully")
+            print(f"   Message: {data.get('message', 'N/A')}")
+            
+            # Check migration results
+            if 'migrated' in data:
+                print(f"   Migrated: {data.get('migrated', 0)} pages")
+            if 'skipped' in data:
+                print(f"   Skipped: {data.get('skipped', 0)} pages")
+            if 'total_pages' in data:
+                print(f"   Total pages: {data.get('total_pages', 0)}")
+            
+            return True
+        else:
+            print(f"   ❌ Failed: {response.text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ Error: {str(e)}")
+        return False
+
 def test_cms_pages_list():
     """Test GET /api/admin/cms/pages endpoint (legacy test)"""
     print("🔍 Testing GET /api/admin/cms/pages (legacy)...")
