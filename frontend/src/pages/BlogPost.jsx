@@ -136,16 +136,15 @@ const BlogPost = () => {
         {JSON.stringify(articleSchema)}
       </script>
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb with Schema */}
       <div className="bg-secondary py-3">
         <div className="container-medical">
-          <nav className="flex items-center gap-2 text-sm">
-            <Link to="/" className="text-muted-foreground hover:text-primary">Home</Link>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            <Link to="/blog" className="text-muted-foreground hover:text-primary">Blog</Link>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-            <span className="text-foreground font-medium truncate max-w-[200px]">{post.title}</span>
-          </nav>
+          <Breadcrumbs 
+            items={[
+              { name: 'Blog', path: '/blog' },
+              { name: post.title, path: `/blog/${slug}` }
+            ]}
+          />
         </div>
       </div>
 
