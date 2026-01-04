@@ -165,12 +165,7 @@ metadata:
   run_ui: true
 
 test_plan:
-  current_focus:
-    - "AI Chatbot Widget Functionality"
-    - "WhatsApp Button Integration"
-    - "SEO Breadcrumbs - Condition Pages"
-    - "SEO Breadcrumbs - Treatment Pages"
-    - "SEO Breadcrumbs - Blog Pages"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
