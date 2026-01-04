@@ -23,24 +23,28 @@ import { conditionsDetailed } from '@/data/conditionsDetailed';
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 // Transform CMS treatment data to match static data format
-const transformCmsTreatment = (cmsData) => {
+// Falls back to static data for detailed fields
+const transformCmsTreatment = (cmsData, staticFallback) => {
   if (!cmsData || !cmsData.content) return null;
   const content = cmsData.content;
   
   return {
     id: cmsData.slug,
     slug: cmsData.slug,
-    name: cmsData.title,
-    category: content.category || 'General',
-    icon: content.icon || '🏥',
-    imageUrl: content.imageUrl || null,
-    description: cmsData.meta_description,
-    detailedDescription: content.detailedDescription || content.introduction || content.overview,
-    benefits: content.benefits || [],
-    procedure: content.procedure_steps?.map(s => typeof s === 'string' ? s : (s.description || s.title)) || content.procedure || [],
-    recovery: content.recovery,
-    hospitalStay: content.hospitalStay,
-    seoKeywords: cmsData.keywords?.join(', ') || ''
+    name: content.name || cmsData.title,
+    category: content.category || staticFallback?.category || 'General',
+    icon: content.icon || staticFallback?.icon || '🏥',
+    imageUrl: content.imageUrl || staticFallback?.imageUrl || null,
+    description: content.description || cmsData.meta_description || staticFallback?.description,
+    detailedDescription: content.detailedDescription || content.introduction || content.overview || staticFallback?.detailedDescription,
+    benefits: content.benefits?.length > 0 ? content.benefits : (staticFallback?.benefits || []),
+    procedure: content.procedure?.length > 0 ? content.procedure : (staticFallback?.procedure || []),
+    recovery: content.recovery || staticFallback?.recovery,
+    hospitalStay: content.hospitalStay || staticFallback?.hospitalStay,
+    successRate: content.successRate || staticFallback?.successRate,
+    implantLifespan: content.implantLifespan || staticFallback?.implantLifespan,
+    indications: content.indications || staticFallback?.indications || [],
+    seoKeywords: cmsData.keywords?.join(', ') || staticFallback?.seoKeywords || ''
   };
 };
 
