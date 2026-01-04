@@ -135,6 +135,40 @@ class Contact(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
+# ============ Keyword Research Models ============
+
+class KeywordSuggestion(BaseModel):
+    keyword: str
+    search_volume: Optional[str] = "Unknown"
+    difficulty: Optional[str] = "Medium"
+    source: str = "autocomplete"
+
+class BlogTopicSuggestion(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    target_keyword: str
+    meta_description: str
+    outline: List[str] = []
+    estimated_word_count: int = 1500
+    priority: str = "medium"  # high, medium, low
+    status: str = "suggested"  # suggested, approved, in_progress, published, rejected
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    published_at: Optional[datetime] = None
+
+class ContentIdea(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    type: str  # blog, landing_page, faq
+    title: str
+    keywords: List[str] = []
+    notes: Optional[str] = None
+    status: str = "idea"  # idea, planned, in_progress, published
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
 # ============ Routes ============
 
 # Health check endpoint for Kubernetes (at root level, not under /api)
