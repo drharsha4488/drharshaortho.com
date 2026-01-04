@@ -68,6 +68,7 @@ const Index = () => {
       <HeroSection />
       <TrustSignals variant="compact" />
       <ServicesSection />
+      <AboutDoctorSection />
       <WhyChooseSection />
       <TrustSignals variant="full" />
       <TestimonialsSection />
