@@ -4,10 +4,39 @@ import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import SEO from '@/components/SEO';
 import SchemaMarkup from '@/components/SchemaMarkup';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { allConditionsDetailed, conditionCategories } from '@/data/conditionsDetailed';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight } from 'lucide-react';
+
+// FAQ Schema for rich snippets
+const conditionsFAQs = [
+  {
+    "@type": "Question",
+    "name": "What are the most common orthopedic conditions?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The most common orthopedic conditions include knee arthritis, hip arthritis, ACL tears, meniscus tears, rotator cuff injuries, frozen shoulder, and back pain. Dr. Harsha at Yashoda Hospital Hyderabad treats all these conditions with advanced techniques."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "When should I see an orthopedic doctor?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "You should see an orthopedic doctor if you have persistent joint pain lasting more than 2 weeks, difficulty walking or climbing stairs, swelling that doesn't improve, limited range of motion, or pain that disrupts sleep. Early treatment often leads to better outcomes."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "What is the best treatment for knee pain?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Treatment for knee pain depends on the cause. Options include physical therapy, medications, injections (steroid or PRP), and surgery for severe cases. Dr. Harsha evaluates each patient individually to recommend the most appropriate treatment, starting with non-surgical options when possible."
+    }
+  }
+];
 
 const Conditions = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
