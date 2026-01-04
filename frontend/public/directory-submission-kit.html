@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Harsha - Directory Submission Kit</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #0d9488; text-align: center; }
+        h2 { color: #333; border-bottom: 2px solid #0d9488; padding-bottom: 10px; margin-top: 30px; }
+        .card { 
+            background: white; 
+            border-radius: 10px; 
+            padding: 20px; 
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .field { margin: 10px 0; }
+        .field label { 
+            display: block; 
+            font-weight: bold; 
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .field .value {
+            background: #f0f9ff;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            position: relative;
+        }
+        .field .value:hover { background: #e0f2fe; }
+        .field .value::after {
+            content: '📋 Click to copy';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: #0d9488;
+        }
+        .copy-success {
+            background: #d1fae5 !important;
+            border-color: #10b981 !important;
+        }
+        .copy-success::after {
+            content: '✅ Copied!' !important;
+            color: #10b981 !important;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            cursor: pointer;
+        }
+        textarea:hover { background: #f0f9ff; }
+        .directory-list { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .directory-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #0d9488;
+        }
+        .directory-item h4 { margin: 0 0 5px 0; color: #0d9488; }
+        .directory-item a { color: #0066cc; text-decoration: none; }
+        .directory-item a:hover { text-decoration: underline; }
+        .priority-high { border-left-color: #ef4444; }
+        .priority-medium { border-left-color: #f59e0b; }
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { 
+            padding: 10px; 
+            margin: 5px 0; 
+            background: #f9fafb;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checklist input[type="checkbox"] { 
+            width: 20px; 
+            height: 20px;
+            cursor: pointer;
+        }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .tag:hover { background: #bae6fd; }
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0d9488;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(13,148,136,0.4);
+        }
+        .print-btn:hover { background: #0f766e; }
+        @media print {
+            .print-btn { display: none; }
+            .field .value::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🏥 Dr. Harsha - Directory Submission Kit</h1>
+    <p style="text-align: center; color: #666;">Click any field to copy. Track your submissions with the checklist below.</p>
+
+    <h2>📋 Basic Information</h2>
+    <div class="card">
+        <div class="field">
+            <label>Full Name</label>
+            <div class="value" onclick="copyText(this)">Dr. B Harsha Vardhana Reddy</div>
+        </div>
+        <div class="field">
+            <label>Qualifications</label>
+            <div class="value" onclick="copyText(this)">MBBS, D.Ortho, DNB (Orthopedics), MBA (Hospital Administration)</div>
+        </div>
+        <div class="field">
+            <label>Specialization</label>
+            <div class="value" onclick="copyText(this)">Orthopedic Surgeon</div>
+        </div>
+        <div class="field">
+            <label>Experience</label>
+            <div class="value" onclick="copyText(this)">15+ Years</div>
+        </div>
+        <div class="field">
+            <label>Current Position</label>
+            <div class="value" onclick="copyText(this)">Associate Consultant - Orthopedics, Yashoda Hospital Hi-Tech City</div>
+        </div>
+    </div>
+
+    <h2>📞 Contact Information</h2>
+    <div class="card">
+        <div class="field">
+            <label>Phone</label>
+            <div class="value" onclick="copyText(this)">+91 99599 64567</div>
+        </div>
+        <div class="field">
+            <label>Email</label>
+            <div class="value" onclick="copyText(this)">contact@drharshaortho.com</div>
+        </div>
+        <div class="field">
+            <label>Website</label>
+            <div class="value" onclick="copyText(this)">https://drharshaortho.com</div>
+        </div>
+    </div>
+
+    <h2>📍 Address</h2>
+    <div class="card">
+        <div class="field">
+            <label>Full Address</label>
+            <div class="value" onclick="copyText(this)">Yashoda Hospital, Survey No. 41/14, JNTU to Hitech City Main Road, Hi-Tech City, Madhapur, Hyderabad, Telangana - 500081</div>
+        </div>
+        <div class="field">
+            <label>Landmark</label>
+            <div class="value" onclick="copyText(this)">Near Cyber Towers, Hi-Tech City</div>
+        </div>
+        <div class="field">
+            <label>City</label>
+            <div class="value" onclick="copyText(this)">Hyderabad</div>
+        </div>
+        <div class="field">
+            <label>State</label>
+            <div class="value" onclick="copyText(this)">Telangana</div>
+        </div>
+        <div class="field">
+            <label>Pincode</label>
+            <div class="value" onclick="copyText(this)">500081</div>
+        </div>
+    </div>
+
+    <h2>🕐 Consultation Timings</h2>
+    <div class="card">
+        <div class="field">
+            <label>Days</label>
+            <div class="value" onclick="copyText(this)">Monday to Saturday</div>
+        </div>
+        <div class="field">
+            <label>Timings</label>
+            <div class="value" onclick="copyText(this)">9:00 AM - 6:00 PM</div>
+        </div>
+        <div class="field">
+            <label>Consultation Fee</label>
+            <div class="value" onclick="copyText(this)">₹800 - ₹1000</div>
+        </div>
+    </div>
+
+    <h2>📝 Profile Descriptions</h2>
+    <div class="card">
+        <div class="field">
+            <label>Short Bio (150 words) - For Practo, Lybrate</label>
+            <textarea onclick="this.select(); document.execCommand('copy'); this.style.background='#d1fae5';">Dr. B Harsha Vardhana Reddy is a leading orthopedic surgeon in Hyderabad with over 15 years of experience in treating bone, joint, and muscle conditions. Currently serving as Associate Consultant at Yashoda Hospital Hi-Tech City, Dr. Harsha specializes in total knee replacement, hip replacement, ACL reconstruction, and arthroscopic surgeries. He has successfully performed 4,000+ surgeries with a 98% patient satisfaction rate. Dr. Harsha completed his fellowship training in Arthroplasty and Arthroscopy, and holds an MBA in Hospital Administration. He is a member of the Indian Orthopaedic Association and Telangana Orthopaedic Association. Known for his patient-centric approach and use of advanced computer-navigated surgical techniques, Dr. Harsha provides comprehensive orthopedic care for patients from Hyderabad and across Telangana.</textarea>
+        </div>
+        <div class="field">
+            <label>Long Bio (300 words) - For Google Business, Website</label>
+            <textarea onclick="this.select(); document.execCommand('copy'); this.style.background='#d1fae5';" style="min-height: 250px;">Dr. B Harsha Vardhana Reddy is one of Hyderabad's most trusted orthopedic surgeons, bringing over 15 years of specialized experience in treating complex bone and joint conditions. As Associate Consultant in Orthopedics at the prestigious Yashoda Hospital Hi-Tech City, he combines clinical excellence with compassionate patient care.
+
+Dr. Harsha's expertise spans the full spectrum of orthopedic treatments:
+• Total Knee Replacement (TKR) - Computer-navigated precision surgery
+• Total Hip Replacement (THR) - Minimally invasive techniques
+• ACL Reconstruction - Arthroscopic ligament repair for athletes
+• Shoulder Arthroscopy - Rotator cuff repair and stabilization
+• Sports Injury Treatment - Comprehensive care for athletes
+• Fracture Management - Emergency trauma surgery
+
+His educational journey includes MBBS, Diploma in Orthopedics (D.Ortho), and DNB in Orthopedics. He further enhanced his surgical skills through fellowship training in Joint Replacement (Arthroplasty) at Continental Hospitals and Arthroscopy & Sports Medicine. His MBA in Hospital Administration from ICFAI enables him to provide efficient, patient-focused healthcare delivery.
+
+Dr. Harsha has successfully performed over 4,000 orthopedic surgeries with outcomes matching international standards. His patients consistently praise his clear communication, minimally invasive surgical approach, personalized treatment plans, and excellent post-operative care.
+
+Professional memberships include the Indian Orthopaedic Association (IOA), Telangana Orthopaedic Association, and Indian Arthroscopy Society.
+
+Whether you're suffering from chronic knee pain, sports injuries, or need joint replacement surgery, Dr. Harsha provides expert diagnosis and treatment at Yashoda Hospital Hi-Tech City, Hyderabad.</textarea>
+        </div>
+    </div>
+
+    <h2>🏷️ Services (Copy for Tags/Checkboxes)</h2>
+    <div class="card">
+        <div class="tags">
+            <span class="tag" onclick="copyTag(this)">Total Knee Replacement</span>
+            <span class="tag" onclick="copyTag(this)">Hip Replacement</span>
+            <span class="tag" onclick="copyTag(this)">ACL Reconstruction</span>
+            <span class="tag" onclick="copyTag(this)">Knee Arthroscopy</span>
+            <span class="tag" onclick="copyTag(this)">Shoulder Arthroscopy</span>
+            <span class="tag" onclick="copyTag(this)">Rotator Cuff Repair</span>
+            <span class="tag" onclick="copyTag(this)">Meniscus Surgery</span>
+            <span class="tag" onclick="copyTag(this)">Sports Injury Treatment</span>
+            <span class="tag" onclick="copyTag(this)">Fracture Treatment</span>
+            <span class="tag" onclick="copyTag(this)">Joint Injections</span>
+            <span class="tag" onclick="copyTag(this)">PRP Therapy</span>
+            <span class="tag" onclick="copyTag(this)">Spine Surgery</span>
+        </div>
+    </div>
+
+    <h2>🎓 Education (Copy each line)</h2>
+    <div class="card">
+        <div class="field">
+            <div class="value" onclick="copyText(this)">MBBS - K.V.G Medical College, Bangalore</div>
+        </div>
+        <div class="field">
+            <div class="value" onclick="copyText(this)">D.Ortho - Dr. G.S. Kulkarni Orthopedic Institute, Miraj</div>
+        </div>
+        <div class="field">
+            <div class="value" onclick="copyText(this)">DNB (Orthopedics) - National Board of Examinations</div>
+        </div>
+        <div class="field">
+            <div class="value" onclick="copyText(this)">MBA (Hospital Administration) - ICFAI Business School</div>
+        </div>
+        <div class="field">
+            <div class="value" onclick="copyText(this)">Fellowship in Arthroplasty - Continental Hospitals, Hyderabad</div>
+        </div>
+        <div class="field">
+            <div class="value" onclick="copyText(this)">Fellowship in Arthroscopy & Sports Medicine</div>
+        </div>
+    </div>
+
+    <h2>✅ Submission Checklist</h2>
+    <div class="card">
+        <ul class="checklist">
+            <li class="priority-high"><input type="checkbox" id="google"> <label for="google"><strong>Google Business Profile</strong> - business.google.com (MOST IMPORTANT!)</label></li>
+            <li class="priority-high"><input type="checkbox" id="practo"> <label for="practo"><strong>Practo</strong> - practo.com/doctors</label></li>
+            <li class="priority-high"><input type="checkbox" id="lybrate"> <label for="lybrate"><strong>Lybrate</strong> - lybrate.com/doctors</label></li>
+            <li><input type="checkbox" id="justdial"> <label for="justdial"><strong>Justdial</strong> - justdial.com (Call 8888888888)</label></li>
+            <li><input type="checkbox" id="sulekha"> <label for="sulekha"><strong>Sulekha</strong> - sulekha.com</label></li>
+            <li><input type="checkbox" id="credihealth"> <label for="credihealth"><strong>Credihealth</strong> - credihealth.com</label></li>
+            <li><input type="checkbox" id="sehat"> <label for="sehat"><strong>Sehat</strong> - sehat.com</label></li>
+            <li><input type="checkbox" id="bing"> <label for="bing"><strong>Bing Places</strong> - bingplaces.com</label></li>
+            <li><input type="checkbox" id="apple"> <label for="apple"><strong>Apple Maps</strong> - mapsconnect.apple.com</label></li>
+        </ul>
+    </div>
+
+    <h2>🔗 Directory Links</h2>
+    <div class="directory-list">
+        <div class="directory-item priority-high">
+            <h4>⭐ Google Business</h4>
+            <a href="https://business.google.com" target="_blank">business.google.com</a>
+            <p style="font-size: 12px; color: #666; margin: 5px 0 0;">Highest impact for local SEO</p>
+        </div>
+        <div class="directory-item priority-high">
+            <h4>⭐ Practo</h4>
+            <a href="https://www.practo.com/doctors" target="_blank">practo.com/doctors</a>
+            <p style="font-size: 12px; color: #666; margin: 5px 0 0;">Most popular medical directory</p>
+        </div>
+        <div class="directory-item priority-high">
+            <h4>⭐ Lybrate</h4>
+            <a href="https://www.lybrate.com/doctors" target="_blank">lybrate.com/doctors</a>
+            <p style="font-size: 12px; color: #666; margin: 5px 0 0;">Good for patient engagement</p>
+        </div>
+        <div class="directory-item">
+            <h4>Justdial</h4>
+            <a href="https://www.justdial.com" target="_blank">justdial.com</a>
+            <p style="font-size: 12px; color: #666; margin: 5px 0 0;">Call 8888888888 for free listing</p>
+        </div>
+        <div class="directory-item">
+            <h4>Sulekha</h4>
+            <a href="https://www.sulekha.com" target="_blank">sulekha.com</a>
+        </div>
+        <div class="directory-item">
+            <h4>Credihealth</h4>
+            <a href="https://www.credihealth.com" target="_blank">credihealth.com</a>
+        </div>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Print This Page</button>
+
+    <script>
+        function copyText(element) {
+            const text = element.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                element.classList.add('copy-success');
+                setTimeout(() => element.classList.remove('copy-success'), 1500);
+            });
+        }
+        function copyTag(element) {
+            const text = element.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                element.style.background = '#d1fae5';
+                setTimeout(() => element.style.background = '', 1000);
+            });
+        }
+        // Save checkbox state
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.checked = localStorage.getItem(cb.id) === 'true';
+            cb.addEventListener('change', () => localStorage.setItem(cb.id, cb.checked));
+        });
+    </script>
+</body>
+</html>
