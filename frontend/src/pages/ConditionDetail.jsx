@@ -92,8 +92,11 @@ const ConditionDetail = () => {
           <div className="absolute inset-0 h-80 overflow-hidden">
             <img 
               src={condition.imageUrl} 
-              alt={condition.name}
+              alt={`${condition.name} Treatment by Dr. Harsha in Hyderabad`}
               className="w-full h-full object-cover"
+              loading="eager"
+              width="1920"
+              height="320"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-charcoal/70 via-charcoal/50 to-background" />
           </div>
