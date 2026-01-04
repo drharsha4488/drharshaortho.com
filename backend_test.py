@@ -1018,6 +1018,20 @@ def main():
     test_results.append(("Specific Condition Pages", test_specific_condition_pages()))
     test_results.append(("Backend Health Check", test_backend_health_check()))
     
+    # NEW: Keyword Research API Tests (as requested in review)
+    print("\n" + "=" * 40)
+    print("🔍 KEYWORD RESEARCH API TESTS")
+    print("=" * 40)
+    
+    test_results.append(("Keyword Autocomplete API", test_keyword_autocomplete_api()))
+    test_results.append(("Trending Keywords API", test_trending_keywords_api()))
+    test_results.append(("Generate Blog Topics API", test_generate_blog_topics_api()))
+    
+    # Test save and get blog topics
+    saved_topic_id = test_save_blog_topic_api()
+    test_results.append(("Save Blog Topic API", bool(saved_topic_id)))
+    test_results.append(("Get Saved Topics API", test_get_saved_topics_api()))
+    
     print("\n" + "=" * 60)
     print("📊 TEST RESULTS SUMMARY")
     print("=" * 60)
