@@ -144,6 +144,26 @@ const AutoSEODashboard = () => {
 
   return (
     <div className="space-y-6">
+      {/* Hidden Pages Info Banner */}
+      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-4">
+        <div className="flex items-start gap-3">
+          <EyeOff className="w-6 h-6 text-purple-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <h3 className="font-semibold text-purple-900">🔒 Hidden SEO Pages Strategy</h3>
+            <p className="text-sm text-purple-700 mt-1">
+              Auto-generated pages are <strong>hidden from the main website</strong> but <strong>visible to Google</strong>. 
+              This means:
+            </p>
+            <ul className="text-sm text-purple-600 mt-2 space-y-1">
+              <li>✅ Google can find and index these pages via sitemap</li>
+              <li>✅ Users can access them via direct links from search results</li>
+              <li>✅ Competitors can't easily scan/copy your SEO strategy</li>
+              <li>✅ Your main website stays clean and professional</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       {/* Header with Auto-Generate Button */}
       <div className="bg-gradient-to-r from-primary to-teal-600 rounded-xl p-6 text-white">
         <div className="flex items-center justify-between">
