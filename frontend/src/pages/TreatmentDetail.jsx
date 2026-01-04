@@ -21,6 +21,28 @@ import { conditionsDetailed } from '@/data/conditionsDetailed';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
+// Transform CMS treatment data to match static data format
+const transformCmsTreatment = (cmsData) => {
+  if (!cmsData || !cmsData.content) return null;
+  const content = cmsData.content;
+  
+  return {
+    id: cmsData.slug,
+    slug: cmsData.slug,
+    name: cmsData.title,
+    category: content.category || 'General',
+    icon: content.icon || '🏥',
+    imageUrl: content.imageUrl || null,
+    description: cmsData.meta_description,
+    detailedDescription: content.detailedDescription || content.introduction || content.overview,
+    benefits: content.benefits || [],
+    procedure: content.procedure_steps?.map(s => typeof s === 'string' ? s : (s.description || s.title)) || content.procedure || [],
+    recovery: content.recovery,
+    hospitalStay: content.hospitalStay,
+    seoKeywords: cmsData.keywords?.join(', ') || ''
+  };
+};
+
 const TreatmentDetail = () => {
   const { slug } = useParams();
   const [treatment, setTreatment] = useState(null);
@@ -56,28 +78,6 @@ const TreatmentDetail = () => {
 
     fetchTreatment();
   }, [slug]);
-
-  // Transform CMS treatment data to match static data format
-  const transformCmsTreatment = (cmsData) => {
-    if (!cmsData || !cmsData.content) return null;
-    const content = cmsData.content;
-    
-    return {
-      id: cmsData.slug,
-      slug: cmsData.slug,
-      name: cmsData.title,
-      category: content.category || 'General',
-      icon: content.icon || '🏥',
-      imageUrl: content.imageUrl || null,
-      description: cmsData.meta_description,
-      detailedDescription: content.detailedDescription || content.introduction || content.overview,
-      benefits: content.benefits || [],
-      procedure: content.procedure_steps?.map(s => typeof s === 'string' ? s : (s.description || s.title)) || content.procedure || [],
-      recovery: content.recovery,
-      hospitalStay: content.hospitalStay,
-      seoKeywords: cmsData.keywords?.join(', ') || ''
-    };
-  };
 
   if (loading) {
     return (

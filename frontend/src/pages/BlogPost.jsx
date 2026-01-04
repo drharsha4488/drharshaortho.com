@@ -19,6 +19,29 @@ import { seoBlogPosts } from '@/data/seoBlogPosts';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
+// Transform CMS blog data to match static data format
+const transformCmsBlog = (cmsData) => {
+  if (!cmsData || !cmsData.content) return null;
+  const content = cmsData.content;
+  
+  return {
+    id: cmsData.slug,
+    slug: cmsData.slug,
+    title: cmsData.title,
+    metaTitle: cmsData.meta_title,
+    metaDescription: cmsData.meta_description,
+    keywords: cmsData.keywords?.join(', '),
+    author: content.author || 'Dr. B Harsha Vardhana Reddy',
+    publishedDate: cmsData.published_at || cmsData.created_at,
+    category: content.category || 'General',
+    readTime: content.readTime || '5 min',
+    imageUrl: content.imageUrl,
+    excerpt: content.excerpt,
+    content: content.body || content.content,
+    tags: cmsData.keywords || []
+  };
+};
+
 const BlogPost = () => {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
@@ -54,29 +77,6 @@ const BlogPost = () => {
 
     fetchBlog();
   }, [slug]);
-
-  // Transform CMS blog data to match static data format
-  const transformCmsBlog = (cmsData) => {
-    if (!cmsData || !cmsData.content) return null;
-    const content = cmsData.content;
-    
-    return {
-      id: cmsData.slug,
-      slug: cmsData.slug,
-      title: cmsData.title,
-      metaTitle: cmsData.meta_title,
-      metaDescription: cmsData.meta_description,
-      keywords: cmsData.keywords?.join(', '),
-      author: content.author || 'Dr. B Harsha Vardhana Reddy',
-      publishedDate: cmsData.published_at || cmsData.created_at,
-      category: content.category || 'General',
-      readTime: content.readTime || '5 min',
-      imageUrl: content.imageUrl,
-      excerpt: content.excerpt,
-      content: content.body || content.content,
-      tags: cmsData.keywords || []
-    };
-  };
 
   if (loading) {
     return (

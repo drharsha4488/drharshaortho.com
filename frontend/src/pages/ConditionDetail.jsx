@@ -25,6 +25,34 @@ import { treatments, allTreatments } from '@/data/treatments';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
+// Transform CMS condition data to match static data format
+const transformCmsCondition = (cmsData) => {
+  if (!cmsData || !cmsData.content) return null;
+  const content = cmsData.content;
+  
+  return {
+    id: cmsData.slug,
+    slug: cmsData.slug,
+    name: cmsData.title,
+    category: content.category || 'General',
+    icon: content.icon || '🏥',
+    imageUrl: content.imageUrl || null,
+    shortDescription: cmsData.meta_description,
+    overview: content.overview || content.introduction,
+    causes: content.causes || [],
+    symptoms: content.symptoms || [],
+    diagnosis: content.diagnosis || [],
+    nonSurgicalTreatments: content.nonSurgicalTreatments || content.treatments?.filter(t => !t.surgical) || [],
+    surgicalTreatments: content.surgicalTreatments || content.treatments?.filter(t => t.surgical) || [],
+    recoveryTimeline: content.recoveryTimeline || [],
+    faqs: content.faqs || [],
+    relatedConditions: content.relatedConditions || [],
+    relatedTreatments: content.relatedTreatments || [],
+    seoKeywords: cmsData.keywords?.join(', ') || '',
+    metaDescription: cmsData.meta_description
+  };
+};
+
 const ConditionDetail = () => {
   const { slug } = useParams();
   const [condition, setCondition] = useState(null);
@@ -61,34 +89,6 @@ const ConditionDetail = () => {
 
     fetchCondition();
   }, [slug]);
-
-  // Transform CMS condition data to match static data format
-  const transformCmsCondition = (cmsData) => {
-    if (!cmsData || !cmsData.content) return null;
-    const content = cmsData.content;
-    
-    return {
-      id: cmsData.slug,
-      slug: cmsData.slug,
-      name: cmsData.title,
-      category: content.category || 'General',
-      icon: content.icon || '🏥',
-      imageUrl: content.imageUrl || null,
-      shortDescription: cmsData.meta_description,
-      overview: content.overview || content.introduction,
-      causes: content.causes || [],
-      symptoms: content.symptoms || [],
-      diagnosis: content.diagnosis || [],
-      nonSurgicalTreatments: content.nonSurgicalTreatments || content.treatments?.filter(t => !t.surgical) || [],
-      surgicalTreatments: content.surgicalTreatments || content.treatments?.filter(t => t.surgical) || [],
-      recoveryTimeline: content.recoveryTimeline || [],
-      faqs: content.faqs || [],
-      relatedConditions: content.relatedConditions || [],
-      relatedTreatments: content.relatedTreatments || [],
-      seoKeywords: cmsData.keywords?.join(', ') || '',
-      metaDescription: cmsData.meta_description
-    };
-  };
 
   if (loading) {
     return (
