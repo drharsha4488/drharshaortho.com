@@ -8,6 +8,7 @@ import { Calendar, User, Clock, ChevronDown, ChevronUp, Loader2, ArrowRight } fr
 import { Button } from '@/components/ui/button';
 import staticBlogPosts from '@/data/blogPosts';
 import { seoBlogPosts } from '@/data/seoBlogPosts';
+import newBlogPosts from '@/data/newBlogPosts';
 
 const Blog = () => {
   const [expandedPost, setExpandedPost] = useState(null);
@@ -26,7 +27,8 @@ const Blog = () => {
           const apiPostIds = data.map(p => p.id);
           const uniqueStaticPosts = staticBlogPosts.filter(p => !apiPostIds.includes(p.id));
           const uniqueSEOPosts = seoBlogPosts.filter(p => !apiPostIds.includes(p.id));
-          setBlogPosts([...data, ...uniqueSEOPosts, ...uniqueStaticPosts]);
+          const uniqueNewPosts = newBlogPosts.filter(p => !apiPostIds.includes(p.id));
+          setBlogPosts([...data, ...uniqueNewPosts, ...uniqueSEOPosts, ...uniqueStaticPosts]);
         } else {
           // Fallback to static + SEO posts
           setBlogPosts([...seoBlogPosts, ...staticBlogPosts]);
