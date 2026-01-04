@@ -78,17 +78,16 @@ const HeroSection = () => {
               transition={{ delay: 0.3 }}
               className="text-4xl md:text-5xl lg:text-6xl font-serif font-semibold text-foreground leading-tight mb-6"
             >
-              Expert Orthopedic Care,{' '}
+              Best Orthopedic Surgeon in{' '}
               <span className="relative">
-                <span className="text-primary">Personalized</span>
+                <span className="text-primary">Hyderabad</span>
                 <motion.span 
                   initial={{ width: 0 }}
                   animate={{ width: '100%' }}
                   transition={{ delay: 1, duration: 0.8 }}
                   className="absolute bottom-2 left-0 h-3 bg-accent/30 -z-10"
                 />
-              </span>{' '}
-              for You
+              </span>
             </motion.h1>
 
             <motion.p 
