@@ -663,7 +663,7 @@ def test_cms_condition_not_found():
         return False
 
 def test_cms_treatments_api():
-    """Test GET /api/cms/treatments - List all published treatments"""
+    """Test GET /api/cms/treatments - List all published treatments (should be 17)"""
     print("🔍 Testing GET /api/cms/treatments...")
     try:
         response = requests.get(f"{BACKEND_URL}/cms/treatments", timeout=10)
@@ -671,10 +671,35 @@ def test_cms_treatments_api():
         
         if response.status_code == 200:
             data = response.json()
-            print(f"   ✅ Found {len(data)} published treatments")
+            print(f"   Found {len(data)} published treatments")
+            
+            # Check if we have the expected 17 treatments
+            if len(data) == 17:
+                print(f"   ✅ Correct count: 17 treatments as expected")
+            else:
+                print(f"   ⚠️  Expected 17 treatments, found {len(data)}")
+            
+            # Verify structure of treatments
             if len(data) > 0:
-                print(f"   Sample treatment: {data[0].get('title', 'N/A')} ({data[0].get('slug', 'N/A')})")
-            return True
+                sample = data[0]
+                print(f"   Sample treatment: {sample.get('title', 'N/A')} ({sample.get('slug', 'N/A')})")
+                
+                # Check required fields
+                required_fields = ['slug', 'title', 'type', 'content', 'status']
+                missing_fields = [field for field in required_fields if field not in sample]
+                if not missing_fields:
+                    print(f"   ✅ All required fields present: {required_fields}")
+                else:
+                    print(f"   ❌ Missing required fields: {missing_fields}")
+                
+                # Check content structure
+                content = sample.get('content', {})
+                if 'benefits' in content and 'procedure_steps' in content:
+                    print(f"   ✅ Content has benefits and procedure_steps sections")
+                else:
+                    print(f"   ⚠️  Content missing benefits or procedure_steps sections")
+            
+            return len(data) >= 4  # At least 4 treatments should exist
         else:
             print(f"   ❌ Failed: {response.text}")
             return False
