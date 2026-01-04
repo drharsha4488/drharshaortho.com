@@ -11,58 +11,88 @@ const CostCalculator = () => {
     { 
       id: 'tkr', 
       name: 'Total Knee Replacement', 
-      basePrice: 180000,
+      standardMin: 280000,
+      standardMax: 320000,
+      premiumMin: 350000,
+      premiumMax: 400000,
+      roboticMin: 400000,
+      roboticMax: 450000,
       hospitalDays: 4,
-      includes: ['Surgery', 'Implant', 'Hospital stay', 'Medicines', 'Physiotherapy (initial)']
+      includes: ['Surgery', 'Implant', 'Hospital stay', 'Medicines', 'Physiotherapy (initial)', 'Follow-up visits']
     },
     { 
       id: 'thr', 
       name: 'Total Hip Replacement', 
-      basePrice: 200000,
+      standardMin: 300000,
+      standardMax: 350000,
+      premiumMin: 380000,
+      premiumMax: 420000,
+      roboticMin: 420000,
+      roboticMax: 480000,
       hospitalDays: 5,
-      includes: ['Surgery', 'Implant', 'Hospital stay', 'Medicines', 'Physiotherapy (initial)']
+      includes: ['Surgery', 'Implant', 'Hospital stay', 'Medicines', 'Physiotherapy (initial)', 'Follow-up visits']
     },
     { 
       id: 'acl', 
       name: 'ACL Reconstruction', 
-      basePrice: 120000,
+      standardMin: 150000,
+      standardMax: 180000,
+      premiumMin: 180000,
+      premiumMax: 220000,
+      roboticMin: 220000,
+      roboticMax: 280000,
       hospitalDays: 2,
-      includes: ['Arthroscopic surgery', 'Graft', 'Hospital stay', 'Brace', 'Initial physio']
+      includes: ['Arthroscopic surgery', 'Graft', 'Hospital stay', 'Knee brace', 'Initial physio', 'Follow-up']
     },
     { 
       id: 'arthroscopy', 
       name: 'Knee Arthroscopy', 
-      basePrice: 60000,
+      standardMin: 80000,
+      standardMax: 120000,
+      premiumMin: 120000,
+      premiumMax: 150000,
+      roboticMin: 150000,
+      roboticMax: 180000,
       hospitalDays: 1,
-      includes: ['Surgery', 'Hospital stay', 'Medicines', 'Follow-up']
+      includes: ['Surgery', 'Hospital stay', 'Medicines', 'Follow-up visits']
     },
     { 
       id: 'shoulder', 
       name: 'Shoulder Arthroscopy', 
-      basePrice: 90000,
+      standardMin: 120000,
+      standardMax: 150000,
+      premiumMin: 150000,
+      premiumMax: 200000,
+      roboticMin: 200000,
+      roboticMax: 250000,
       hospitalDays: 2,
-      includes: ['Surgery', 'Hospital stay', 'Sling', 'Medicines', 'Initial physio']
+      includes: ['Surgery', 'Hospital stay', 'Sling', 'Medicines', 'Initial physio', 'Follow-up']
     },
     { 
       id: 'fracture', 
       name: 'Fracture Fixation (Major)', 
-      basePrice: 80000,
+      standardMin: 200000,
+      standardMax: 280000,
+      premiumMin: 280000,
+      premiumMax: 320000,
+      roboticMin: 320000,
+      roboticMax: 350000,
       hospitalDays: 3,
-      includes: ['Surgery', 'Implants', 'Hospital stay', 'Medicines', 'Cast/support']
+      includes: ['Surgery', 'Implants/Plates', 'Hospital stay', 'Medicines', 'Cast/support', 'Follow-up']
     },
   ];
 
   const implantOptions = {
-    standard: { name: 'Standard', multiplier: 1.0, description: 'Quality Indian/imported implants' },
-    premium: { name: 'Premium', multiplier: 1.4, description: 'Premium imported implants with longer warranty' },
-    robotic: { name: 'Robotic/Navigated', multiplier: 1.8, description: 'Computer-navigated with premium implants' }
+    standard: { name: 'Standard', description: 'Quality Indian/imported implants with good longevity' },
+    premium: { name: 'Premium', description: 'Premium imported implants with extended warranty' },
+    robotic: { name: 'Robotic/Navigated', description: 'Computer-navigated surgery with premium implants' }
   };
 
   const roomOptions = {
-    'general': { name: 'General Ward', pricePerDay: 2000 },
-    'semi-private': { name: 'Semi-Private Room', pricePerDay: 5000 },
-    'private': { name: 'Private Room', pricePerDay: 8000 },
-    'deluxe': { name: 'Deluxe Suite', pricePerDay: 15000 }
+    'general': { name: 'General Ward', pricePerDay: 3000 },
+    'semi-private': { name: 'Semi-Private Room', pricePerDay: 6000 },
+    'private': { name: 'Private Room', pricePerDay: 10000 },
+    'deluxe': { name: 'Deluxe Suite', pricePerDay: 18000 }
   };
 
   const calculateCost = () => {
