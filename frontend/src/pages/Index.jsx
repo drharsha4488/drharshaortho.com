@@ -5,6 +5,7 @@ import SchemaMarkup from '@/components/SchemaMarkup';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import WhyChooseSection from '@/components/home/WhyChooseSection';
+import AboutDoctorSection from '@/components/home/AboutDoctorSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import FAQSection from '@/components/home/FAQSection';
 import CTASection from '@/components/home/CTASection';
