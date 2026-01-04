@@ -2065,6 +2065,229 @@ async def update_blog_topic_status(topic_id: str, status: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ============ COMPREHENSIVE CONTENT MIGRATION ============
+
+# All conditions for migration
+MIGRATION_CONDITIONS = [
+    # Core conditions from conditions.js
+    {"id": "knee-arthritis", "name": "Knee Arthritis & Osteoarthritis", "category": "Knee", "description": "Degenerative joint disease causing pain, stiffness, and reduced mobility in the knee.", "symptoms": ["Knee pain and stiffness", "Swelling and inflammation", "Difficulty walking or climbing stairs", "Grinding sensation", "Reduced range of motion"], "treatments": ["Total Knee Replacement", "Partial Knee Replacement", "Arthroscopy", "Injections", "Physical Therapy"], "icon": "🦵", "seoKeywords": "knee arthritis Hyderabad, osteoarthritis treatment, knee pain doctor"},
+    {"id": "hip-arthritis", "name": "Hip Arthritis & AVN", "category": "Hip", "description": "Hip joint degeneration and avascular necrosis causing severe hip pain and limited mobility.", "symptoms": ["Hip pain", "Groin pain", "Limping", "Difficulty putting on shoes", "Pain at night"], "treatments": ["Total Hip Replacement", "Hip Resurfacing", "Core Decompression", "Injections"], "icon": "🦴", "seoKeywords": "hip arthritis Hyderabad, AVN treatment, hip replacement surgeon"},
+    {"id": "acl-tear", "name": "ACL Tear & Knee Ligament Injuries", "category": "Sports Injury", "description": "Anterior cruciate ligament tear, common in athletes and active individuals.", "symptoms": ["Sudden knee pain", "Popping sensation", "Knee instability", "Swelling within hours", "Cannot bear weight"], "treatments": ["ACL Reconstruction", "Meniscus Repair", "Physical Therapy", "Bracing"], "icon": "⚽", "seoKeywords": "ACL tear treatment Hyderabad, ACL surgery, sports injury doctor"},
+    {"id": "rotator-cuff", "name": "Rotator Cuff Tear", "category": "Shoulder", "description": "Tear in shoulder tendons causing pain and weakness.", "symptoms": ["Shoulder pain at night", "Weakness lifting arm", "Crackling sensation", "Limited range of motion", "Difficulty reaching behind back"], "treatments": ["Arthroscopic Rotator Cuff Repair", "Physical Therapy", "PRP Injections", "Shoulder Replacement"], "icon": "💪", "seoKeywords": "rotator cuff tear Hyderabad, shoulder arthroscopy, shoulder pain treatment"},
+    {"id": "frozen-shoulder", "name": "Frozen Shoulder (Adhesive Capsulitis)", "category": "Shoulder", "description": "Stiffness and pain in shoulder joint, progressively limiting movement.", "symptoms": ["Gradual onset of stiffness", "Severe limitation of movement", "Pain at night", "Difficulty with daily activities"], "treatments": ["Physical Therapy", "Hydrodilatation", "Arthroscopic Capsular Release", "Manipulation Under Anesthesia"], "icon": "🥶", "seoKeywords": "frozen shoulder treatment Hyderabad, adhesive capsulitis, shoulder stiffness"},
+    {"id": "meniscus-tear", "name": "Meniscus Tear", "category": "Knee", "description": "Tear in knee cartilage causing pain, swelling, and catching sensation.", "symptoms": ["Knee pain", "Swelling", "Catching or locking", "Difficulty straightening knee", "Popping sensation"], "treatments": ["Arthroscopic Meniscus Repair", "Partial Meniscectomy", "Physical Therapy"], "icon": "🦵", "seoKeywords": "meniscus tear Hyderabad, knee arthroscopy, cartilage repair"},
+    {"id": "tennis-elbow", "name": "Tennis Elbow & Golfers Elbow", "category": "Elbow", "description": "Lateral and medial epicondylitis causing elbow pain from overuse.", "symptoms": ["Elbow pain", "Weak grip", "Pain when lifting objects", "Tenderness on outer/inner elbow"], "treatments": ["PRP Injections", "Physical Therapy", "Elbow Arthroscopy", "Lateral Epicondylar Release"], "icon": "🎾", "seoKeywords": "tennis elbow treatment Hyderabad, elbow pain doctor, lateral epicondylitis"},
+    {"id": "spinal-fracture", "name": "Vertebral Compression Fractures", "category": "Spine", "description": "Spinal compression fractures from osteoporosis or trauma.", "symptoms": ["Sudden back pain", "Loss of height", "Stooped posture", "Limited mobility", "Difficulty walking"], "treatments": ["Vertebroplasty", "Kyphoplasty", "Bracing", "Pain Management"], "icon": "🏥", "seoKeywords": "spinal fracture treatment Hyderabad, vertebroplasty, back pain doctor"},
+    {"id": "carpal-tunnel", "name": "Carpal Tunnel Syndrome", "category": "Hand & Wrist", "description": "Nerve compression in wrist causing numbness, tingling, and weakness.", "symptoms": ["Numbness in fingers", "Tingling sensation", "Hand weakness", "Difficulty gripping", "Night-time symptoms"], "treatments": ["Carpal Tunnel Release", "Wrist Splinting", "Nerve Gliding Exercises", "Corticosteroid Injections"], "icon": "✋", "seoKeywords": "carpal tunnel syndrome Hyderabad, wrist pain treatment, hand numbness"},
+    {"id": "ankle-sprain", "name": "Chronic Ankle Instability", "category": "Foot & Ankle", "description": "Recurring ankle sprains and instability from ligament damage.", "symptoms": ["Repeated ankle sprains", "Feeling of giving way", "Chronic swelling", "Pain and tenderness", "Instability on uneven surfaces"], "treatments": ["Ankle Ligament Reconstruction", "Physical Therapy", "Bracing", "Proprioceptive Training"], "icon": "👣", "seoKeywords": "ankle instability Hyderabad, ankle ligament surgery, chronic ankle sprain"},
+    {"id": "shoulder-dislocation", "name": "Recurrent Shoulder Dislocation", "category": "Shoulder", "description": "Repeated shoulder dislocations indicating joint instability.", "symptoms": ["Shoulder pops out", "Visible deformity", "Severe pain", "Arm numbness", "Fear of shoulder giving way"], "treatments": ["Arthroscopic Bankart Repair", "Latarjet Procedure", "Capsular Shift", "Physical Therapy"], "icon": "🤕", "seoKeywords": "shoulder dislocation Hyderabad, bankart repair, shoulder instability surgery"},
+    {"id": "plantar-fasciitis", "name": "Plantar Fasciitis & Heel Pain", "category": "Foot & Ankle", "description": "Inflammation of tissue on bottom of foot causing heel pain.", "symptoms": ["Heel pain in morning", "Pain after standing", "Arch pain", "Difficulty climbing stairs", "Pain improves with activity"], "treatments": ["PRP Injections", "Shockwave Therapy", "Physical Therapy", "Plantar Fascia Release"], "icon": "🦶", "seoKeywords": "plantar fasciitis Hyderabad, heel pain treatment, foot pain doctor"},
+    {"id": "pcl-injury", "name": "PCL Injury & Multi-Ligament Knee", "category": "Sports Injury", "description": "Posterior cruciate ligament injury, often from dashboard injury or sports trauma.", "symptoms": ["Knee instability", "Posterior knee pain", "Swelling", "Difficulty walking downstairs", "Feeling of knee giving way"], "treatments": ["PCL Reconstruction", "Multi-Ligament Reconstruction", "Physical Therapy"], "icon": "🏃", "seoKeywords": "PCL injury Hyderabad, knee ligament surgery, sports trauma"},
+    {"id": "fracture-trauma", "name": "Complex Fractures & Trauma", "category": "Trauma", "description": "Severe bone fractures from accidents requiring surgical fixation.", "symptoms": ["Severe pain", "Deformity", "Inability to move", "Swelling and bruising", "Bone visible through skin"], "treatments": ["ORIF (Plate Fixation)", "Intramedullary Nailing", "External Fixation", "Minimally Invasive Surgery"], "icon": "🩹", "seoKeywords": "fracture surgery Hyderabad, trauma surgeon, complex fracture treatment"},
+    {"id": "bursitis", "name": "Hip & Shoulder Bursitis", "category": "Hip", "description": "Inflammation of fluid-filled sacs around joints.", "symptoms": ["Joint pain", "Swelling", "Warmth", "Tenderness to touch", "Pain with movement"], "treatments": ["Corticosteroid Injections", "Physical Therapy", "Bursectomy", "Activity Modification"], "icon": "💊", "seoKeywords": "bursitis treatment Hyderabad, hip pain, shoulder pain doctor"},
+    {"id": "patella-dislocation", "name": "Patellar Dislocation & Instability", "category": "Knee", "description": "Kneecap dislocation or repeated subluxation causing anterior knee pain.", "symptoms": ["Kneecap slides out of place", "Visible deformity", "Anterior knee pain", "Swelling", "Apprehension with activity"], "treatments": ["MPFL Reconstruction", "Tibial Tubercle Osteotomy", "Lateral Release", "Physical Therapy"], "icon": "🦵", "seoKeywords": "patellar dislocation Hyderabad, kneecap surgery, MPFL reconstruction"},
+    # Additional detailed conditions
+    {"id": "avascular-necrosis-avn", "name": "Avascular Necrosis (AVN)", "category": "Hip", "description": "Bone death due to loss of blood supply, commonly affecting the hip joint.", "symptoms": ["Groin pain that worsens with activity", "Pain in the buttock or thigh", "Limping or difficulty walking", "Stiffness in the hip joint", "Decreased range of motion"], "treatments": ["Core Decompression", "Bone Grafting", "Hip Resurfacing", "Total Hip Replacement"], "icon": "🦴", "seoKeywords": "AVN treatment hyderabad, avascular necrosis hip, osteonecrosis treatment"},
+    {"id": "hip-labral-tear", "name": "Hip Labral Tear", "category": "Hip", "description": "Tear in the ring of cartilage surrounding the hip socket.", "symptoms": ["Deep groin pain or pain in front of hip", "Clicking, locking, or catching sensation", "Stiffness or limited range of motion", "Pain that worsens with prolonged sitting", "Pain during or after sports activities"], "treatments": ["Conservative Treatment", "Hip Arthroscopy", "Labral Reconstruction"], "icon": "🦴", "seoKeywords": "hip labral tear treatment, hip labrum surgery, hip arthroscopy hyderabad"},
+    {"id": "hip-bursitis", "name": "Hip Bursitis (Trochanteric Bursitis)", "category": "Hip", "description": "Inflammation of the bursa on the outer side of the hip.", "symptoms": ["Pain on the outer hip and thigh", "Pain when lying on affected side", "Pain climbing stairs", "Tenderness when pressing on outer hip", "Pain that worsens with prolonged walking"], "treatments": ["Rest and Ice", "Physical Therapy", "Corticosteroid Injection", "PRP Injection", "Bursectomy"], "icon": "🦴", "seoKeywords": "hip bursitis treatment, trochanteric bursitis, lateral hip pain"},
+    {"id": "shoulder-impingement", "name": "Shoulder Impingement Syndrome", "category": "Shoulder", "description": "Painful pinching of rotator cuff tendons when raising the arm overhead.", "symptoms": ["Pain when reaching overhead or behind back", "Pain at night", "Weakness when lifting or rotating arm", "Clicking or grinding sensation", "Pain radiating from front of shoulder to arm"], "treatments": ["Physical Therapy", "Corticosteroid Injection", "Arthroscopic Decompression"], "icon": "💪", "seoKeywords": "shoulder impingement hyderabad, subacromial impingement, rotator cuff impingement"},
+    {"id": "shoulder-arthritis", "name": "Shoulder Arthritis", "category": "Shoulder", "description": "Degenerative wear of the shoulder joint causing pain and stiffness.", "symptoms": ["Deep, aching shoulder pain", "Pain worsening with activity", "Stiffness, especially in morning", "Grinding or clicking sensation", "Decreased range of motion", "Night pain affecting sleep"], "treatments": ["Activity Modification", "Physical Therapy", "Corticosteroid Injection", "Shoulder Replacement"], "icon": "💪", "seoKeywords": "shoulder arthritis treatment, glenohumeral arthritis, shoulder joint pain"},
+    {"id": "slap-tear", "name": "SLAP Tear (Superior Labral Tear)", "category": "Shoulder", "description": "Tear in the top part of the shoulder labrum where the biceps tendon attaches.", "symptoms": ["Deep shoulder pain", "Pain with overhead activities", "Catching, locking, or popping", "Decreased throwing velocity", "Feeling of shoulder instability"], "treatments": ["Physical Therapy", "Arthroscopic SLAP Repair", "Biceps Tenodesis"], "icon": "💪", "seoKeywords": "SLAP tear treatment, superior labral tear, shoulder labrum tear"},
+    {"id": "trigger-finger", "name": "Trigger Finger", "category": "Hand", "description": "Finger catches or locks when bent and straightens with a snap.", "symptoms": ["Finger stiffness, especially in morning", "Clicking or popping when moving finger", "Finger locks in bent position", "Painful snapping when straightening", "Tender nodule at base of finger"], "treatments": ["Rest and Splinting", "Steroid Injection", "Percutaneous Release", "Surgical Release"], "icon": "🖐️", "seoKeywords": "trigger finger treatment, stenosing tenosynovitis, finger locking"},
+    {"id": "de-quervains-tenosynovitis", "name": "De Quervains Tenosynovitis", "category": "Hand", "description": "Painful condition affecting tendons on the thumb side of the wrist.", "symptoms": ["Pain near base of thumb", "Swelling near thumb side of wrist", "Difficulty gripping or pinching", "Pain when moving thumb"], "treatments": ["Rest and Splinting", "Corticosteroid Injection", "Surgical Release"], "icon": "🖐️", "seoKeywords": "de quervains tenosynovitis, wrist tendinitis, thumb pain, mommy thumb"},
+    {"id": "ganglion-cyst", "name": "Ganglion Cyst", "category": "Hand", "description": "Fluid-filled lump near joints or tendons, most common on the wrist.", "symptoms": ["Visible lump, usually on wrist", "May be tender or painful", "May interfere with joint movement", "Size can fluctuate", "Numbness if pressing on nerve"], "treatments": ["Observation", "Aspiration", "Surgical Excision"], "icon": "🖐️", "seoKeywords": "ganglion cyst treatment, wrist cyst, hand lump"},
+    {"id": "achilles-tendinitis", "name": "Achilles Tendinitis", "category": "Foot", "description": "Overuse injury causing pain in the heel cord at the back of the leg.", "symptoms": ["Pain above the heel, especially after activity", "Morning stiffness in the tendon", "Thickening of the tendon", "Pain climbing stairs or hills"], "treatments": ["RICE Protocol", "Eccentric Exercises", "Shockwave Therapy", "PRP Injection", "Surgery"], "icon": "🦶", "seoKeywords": "achilles tendinitis treatment, heel cord pain, achilles tendon pain"},
+    {"id": "bunions", "name": "Bunions (Hallux Valgus)", "category": "Foot", "description": "Bony bump at the base of the big toe causing it to angle inward.", "symptoms": ["Visible bump on inside of foot at big toe", "Swelling, redness, or soreness", "Pain when wearing shoes", "Corns or calluses", "Restricted big toe movement"], "treatments": ["Supportive Shoes", "Bunion Pads", "Orthotics", "Chevron Osteotomy", "Minimally Invasive Surgery"], "icon": "🦶", "seoKeywords": "bunion surgery hyderabad, hallux valgus treatment, big toe deformity"},
+    {"id": "ankle-arthritis", "name": "Ankle Arthritis", "category": "Foot", "description": "Degenerative wear of the ankle joint causing pain and stiffness.", "symptoms": ["Pain with walking, especially on uneven ground", "Swelling around the ankle", "Stiffness, especially in morning", "Decreased range of motion", "Difficulty walking or standing"], "treatments": ["Activity Modification", "Bracing", "Corticosteroid Injection", "Ankle Fusion", "Ankle Replacement"], "icon": "🦶", "seoKeywords": "ankle arthritis treatment, ankle replacement hyderabad, ankle fusion"},
+    {"id": "flat-feet", "name": "Flat Feet (Pes Planus)", "category": "Foot", "description": "Condition where the arch of the foot collapses.", "symptoms": ["Visible flattening of the arch", "Foot pain, especially in arch or heel", "Pain that worsens with activity", "Swelling along the inside of ankle", "Knee, hip, or back pain"], "treatments": ["Arch Supports/Orthotics", "Physical Therapy", "Bracing", "Tendon Transfer", "Fusion"], "icon": "🦶", "seoKeywords": "flat feet treatment, fallen arches, pes planus"},
+    {"id": "patellofemoral-syndrome", "name": "Patellofemoral Pain Syndrome", "category": "Knee", "description": "Pain around the kneecap, especially with stairs, squatting, or prolonged sitting.", "symptoms": ["Dull, aching pain around kneecap", "Pain worse with stairs", "Pain after prolonged sitting", "Pain with squatting or kneeling", "Grinding or popping sensation"], "treatments": ["Activity Modification", "Physical Therapy", "Patellar Taping/Bracing", "Orthotics", "Surgery"], "icon": "🦵", "seoKeywords": "patellofemoral syndrome, runners knee, anterior knee pain"},
+    {"id": "bakers-cyst", "name": "Bakers Cyst (Popliteal Cyst)", "category": "Knee", "description": "Fluid-filled swelling behind the knee.", "symptoms": ["Visible bulge behind the knee", "Stiffness or tightness behind knee", "Pain behind knee with activity", "Difficulty fully bending knee", "Swelling that increases with activity"], "treatments": ["Observation", "Aspiration", "Treat Underlying Cause", "Surgical Excision"], "icon": "🦵", "seoKeywords": "bakers cyst treatment, popliteal cyst, knee swelling back"},
+    {"id": "osgood-schlatter", "name": "Osgood-Schlatter Disease", "category": "Knee", "description": "Painful bump below the knee in growing adolescents.", "symptoms": ["Pain and swelling below the kneecap", "Painful bump on the shin bone", "Pain worsening with activity", "Pain with kneeling", "Limping after sports"], "treatments": ["Rest and Activity Modification", "Ice", "Stretching", "Patellar Strap", "Physical Therapy"], "icon": "🦵", "seoKeywords": "osgood schlatter treatment, knee pain children, adolescent knee pain"},
+    {"id": "herniated-disc", "name": "Herniated Disc (Slipped Disc)", "category": "Spine", "description": "Disc material pushes out and presses on spinal nerves.", "symptoms": ["Lower back pain radiating to leg", "Neck pain radiating to arm", "Numbness or tingling in affected limb", "Muscle weakness", "Pain worse with sitting or bending"], "treatments": ["Activity Modification", "Physical Therapy", "Medications", "Epidural Steroid Injection", "Microdiscectomy"], "icon": "🔙", "seoKeywords": "herniated disc treatment, slipped disc hyderabad, sciatica treatment"},
+    {"id": "spinal-stenosis", "name": "Spinal Stenosis", "category": "Spine", "description": "Narrowing of the spinal canal causing pressure on spinal cord and nerves.", "symptoms": ["Leg pain when walking", "Relief when sitting or bending forward", "Back pain", "Numbness or tingling in legs", "Weakness in legs"], "treatments": ["Physical Therapy", "Medications", "Epidural Steroid Injections", "Laminectomy", "Minimally Invasive Decompression"], "icon": "🔙", "seoKeywords": "spinal stenosis treatment, lumbar stenosis, narrowing spine"},
+    {"id": "sciatica", "name": "Sciatica", "category": "Spine", "description": "Pain radiating along the sciatic nerve from the lower back down the leg.", "symptoms": ["Pain radiating from lower back to leg", "Pain worse with sitting", "Sharp, burning, or shooting pain", "Numbness or tingling in leg or foot", "Weakness in leg"], "treatments": ["Activity Modification", "Physical Therapy", "Medications", "Epidural Steroid Injection", "Surgery"], "icon": "🔙", "seoKeywords": "sciatica treatment hyderabad, leg pain back, sciatic nerve pain"},
+    {"id": "golfers-elbow", "name": "Golfers Elbow (Medial Epicondylitis)", "category": "Elbow", "description": "Pain and inflammation on the inner side of the elbow.", "symptoms": ["Pain and tenderness on inner elbow", "Pain extending down the inner forearm", "Weakness in hands and wrists", "Stiffness in the elbow", "Pain when making a fist"], "treatments": ["Rest and Activity Modification", "Physical Therapy", "Bracing", "Corticosteroid Injection", "PRP Injection", "Surgery"], "icon": "💪", "seoKeywords": "golfers elbow treatment, medial epicondylitis, inner elbow pain"},
+    {"id": "cubital-tunnel-syndrome", "name": "Cubital Tunnel Syndrome", "category": "Elbow", "description": "Compression of the ulnar nerve at the elbow.", "symptoms": ["Numbness and tingling in ring and little fingers", "Symptoms worse when elbow is bent", "Pain on inner side of elbow", "Weakness in grip strength", "Difficulty with fine motor tasks"], "treatments": ["Activity Modification", "Night Splinting", "Ulnar Nerve Decompression", "Ulnar Nerve Transposition"], "icon": "💪", "seoKeywords": "cubital tunnel syndrome, ulnar nerve entrapment, elbow numbness"},
+]
+
+# All treatments for migration
+MIGRATION_TREATMENTS = [
+    {"id": "total-knee-replacement", "name": "Total Knee Replacement (TKR)", "category": "Joint Replacement", "description": "Complete knee joint replacement surgery for severe arthritis.", "benefits": ["Pain-free mobility and improved quality of life", "Return to daily activities and low-impact sports", "Computer-navigated precision for accurate alignment", "Minimally invasive approach with smaller incisions", "95% survival rate at 15-20 years"], "procedure": ["Pre-operative planning with X-rays", "Spinal or general anesthesia", "Precise bone cuts guided by computer navigation", "Implant placement with cement fixation", "Immediate post-op physiotherapy"], "recovery": "4-6 weeks for walking independence, 3-6 months for full recovery", "hospitalStay": "2-3 days", "icon": "🦵", "seoKeywords": "total knee replacement Hyderabad, TKR surgery, best knee surgeon"},
+    {"id": "total-hip-replacement", "name": "Total Hip Replacement (THR)", "category": "Joint Replacement", "description": "Hip joint replacement for severe arthritis or avascular necrosis.", "benefits": ["Complete pain relief from hip arthritis", "Restored hip function and walking ability", "Improved leg length equality", "Anterior approach for faster recovery", "Return to golf, cycling, swimming"], "recovery": "3-4 weeks for walking, 2-3 months for full activities", "hospitalStay": "2-3 days", "icon": "🦴", "seoKeywords": "hip replacement surgery Hyderabad, THR, AVN surgery"},
+    {"id": "acl-reconstruction", "name": "ACL Reconstruction Surgery", "category": "Sports Medicine", "description": "Arthroscopic ACL ligament reconstruction.", "benefits": ["Knee stability restored for sports", "Prevention of future knee damage", "Return to competitive sports within 9-12 months", "Minimally invasive keyhole surgery", "Same-day discharge possible"], "recovery": "2-3 weeks for walking, 6 months for jogging, 9-12 months for sports", "hospitalStay": "Day care or 1 day", "icon": "⚽", "seoKeywords": "ACL reconstruction Hyderabad, ACL surgery, sports injury treatment"},
+    {"id": "shoulder-arthroscopy", "name": "Shoulder Arthroscopy & Rotator Cuff Repair", "category": "Sports Medicine", "description": "Minimally invasive keyhole surgery for rotator cuff tears and shoulder problems.", "benefits": ["Minimal scarring with 3-4 small incisions", "Less post-operative pain", "Faster return to overhead activities", "High healing rate for cuff repairs", "Day-care surgery option"], "recovery": "6 weeks for sling, 3-4 months for daily activities, 6-9 months for sports", "hospitalStay": "Day care or 1 day", "icon": "💪", "seoKeywords": "shoulder arthroscopy Hyderabad, rotator cuff repair, keyhole surgery"},
+    {"id": "knee-arthroscopy", "name": "Knee Arthroscopy & Meniscus Repair", "category": "Sports Medicine", "description": "Arthroscopic surgery for meniscus tears, cartilage damage, and loose bodies.", "benefits": ["Keyhole surgery with tiny scars", "Quick recovery - walk same day", "Meniscus preservation when possible", "Return to sports within 4-8 weeks", "Day-care procedure"], "recovery": "1-2 weeks for walking, 4-8 weeks for sports", "hospitalStay": "Day care", "icon": "🦵", "seoKeywords": "knee arthroscopy Hyderabad, meniscus tear surgery, cartilage repair"},
+    {"id": "fracture-fixation", "name": "Fracture Fixation Surgery (ORIF)", "category": "Trauma Surgery", "description": "Surgical treatment of complex fractures using plates, screws, and nails.", "benefits": ["Precise anatomic reduction of fractures", "Stable fixation allowing early mobilization", "Reduced risk of malunion", "Minimally invasive techniques when possible", "Better functional outcomes"], "recovery": "6-12 weeks for bone healing", "hospitalStay": "2-5 days depending on injury", "icon": "🩹", "seoKeywords": "fracture surgery Hyderabad, ORIF, trauma surgery"},
+    {"id": "hip-arthroscopy", "name": "Hip Arthroscopy", "category": "Sports Medicine", "description": "Minimally invasive hip surgery for labral tears and FAI.", "benefits": ["Small incisions with faster recovery", "Hip preservation in young patients", "Treatment of FAI before arthritis develops", "Return to high-level athletics", "Less blood loss and pain"], "recovery": "4-6 weeks crutches, 3-4 months for return to sports", "hospitalStay": "1-2 days", "icon": "🦴", "seoKeywords": "hip arthroscopy Hyderabad, labral tear surgery, FAI treatment"},
+    {"id": "shoulder-replacement", "name": "Shoulder Replacement Surgery", "category": "Joint Replacement", "description": "Total or reverse shoulder replacement for severe arthritis.", "benefits": ["Complete pain relief from shoulder arthritis", "Restored overhead reach and function", "Improved quality of life", "Reverse design for cuff-deficient shoulders", "Return to daily activities and golf"], "recovery": "6 weeks sling, 3 months for daily activities, 6-12 months full recovery", "hospitalStay": "2-3 days", "icon": "💪", "seoKeywords": "shoulder replacement Hyderabad, reverse shoulder replacement"},
+    {"id": "ankle-ligament-reconstruction", "name": "Ankle Ligament Reconstruction", "category": "Sports Medicine", "description": "Surgical repair or reconstruction of torn ankle ligaments.", "benefits": ["Restored ankle stability", "Prevention of recurrent sprains", "Return to sports and activities", "Prevention of ankle arthritis", "Minimally invasive option available"], "recovery": "6 weeks boot, 3 months for sports return", "hospitalStay": "Day care or 1 day", "icon": "👣", "seoKeywords": "ankle ligament surgery Hyderabad, ankle instability treatment"},
+    {"id": "carpal-tunnel-release", "name": "Carpal Tunnel Release Surgery", "category": "Hand & Wrist", "description": "Surgical decompression of median nerve for carpal tunnel syndrome.", "benefits": ["Immediate relief of numbness and tingling", "Restored hand strength and grip", "Small scar with minimal pain", "Quick return to work (1-2 weeks)", "Day-care procedure"], "recovery": "1-2 weeks for light activities, 4-6 weeks for heavy work", "hospitalStay": "Day care", "icon": "✋", "seoKeywords": "carpal tunnel surgery Hyderabad, wrist pain treatment"},
+    {"id": "bankart-repair", "name": "Arthroscopic Bankart Repair", "category": "Sports Medicine", "description": "Keyhole surgery for recurrent shoulder dislocation.", "benefits": ["Prevents recurrent shoulder dislocations", "Return to contact sports", "Minimally invasive keyhole surgery", "95% success rate", "Day-care surgery option"], "recovery": "6 weeks sling, 4 months for return to sports", "hospitalStay": "Day care or 1 day", "icon": "🤕", "seoKeywords": "bankart repair Hyderabad, shoulder dislocation surgery"},
+    {"id": "spinal-decompression", "name": "Spinal Decompression Surgery", "category": "Spine Surgery", "description": "Surgical treatment for spinal stenosis and nerve compression.", "benefits": ["Relief from leg pain and numbness", "Improved walking distance", "Minimally invasive approach", "Faster recovery with smaller incision", "Same-day walking"], "recovery": "2-4 weeks for daily activities, 6-12 weeks for heavy work", "hospitalStay": "1-2 days", "icon": "🏥", "seoKeywords": "spinal decompression Hyderabad, back pain surgery, sciatica treatment"},
+    {"id": "prp-therapy", "name": "PRP Therapy (Platelet-Rich Plasma)", "category": "Regenerative Medicine", "description": "Injection of concentrated platelets to promote healing.", "benefits": ["Natural healing with your own blood", "Minimal downtime", "Low risk - no allergic reaction", "Outpatient procedure in 30-45 minutes", "Alternative to surgery"], "recovery": "24-48 hours rest", "hospitalStay": "Outpatient", "icon": "💉", "seoKeywords": "PRP therapy hyderabad, platelet rich plasma injection, knee PRP"},
+    {"id": "viscosupplementation", "name": "Viscosupplementation (Hyaluronic Acid)", "category": "Regenerative Medicine", "description": "Gel injections to lubricate and cushion knee joint in arthritis.", "benefits": ["Lubricates arthritic joints", "Reduces pain and improves function", "Non-surgical option", "Quick outpatient procedure", "Can delay need for surgery"], "recovery": "Immediate", "hospitalStay": "Outpatient", "icon": "💉", "seoKeywords": "viscosupplementation hyderabad, knee gel injection, joint lubrication"},
+    {"id": "joint-injections", "name": "Joint Injections (Corticosteroid)", "category": "Conservative Treatment", "description": "Steroid injections into joints for pain relief.", "benefits": ["Rapid pain relief within days", "Precise ultrasound-guided delivery", "Quick office procedure", "Diagnostic value", "Outpatient procedure"], "recovery": "Immediate", "hospitalStay": "Outpatient", "icon": "💉", "seoKeywords": "joint injection hyderabad, steroid injection knee, cortisone shot"},
+    {"id": "minimally-invasive-knee-replacement", "name": "Minimally Invasive Knee Replacement", "category": "Joint Replacement", "description": "Knee replacement through smaller incision with less tissue disruption.", "benefits": ["Smaller incision (8-10cm vs 20-25cm)", "Muscle sparing - quadriceps not cut", "Less blood loss", "Less pain after surgery", "Faster recovery - walking same day"], "recovery": "4-6 weeks to normal activities", "hospitalStay": "2-3 days", "icon": "🦵", "seoKeywords": "minimally invasive knee replacement, MIS TKR, rapid recovery"},
+    {"id": "robotic-hip-replacement", "name": "Robotic/Computer-Navigated Hip Replacement", "category": "Joint Replacement", "description": "Hip replacement with robotic assistance for precise implant positioning.", "benefits": ["Precision placement within 1-2 degrees", "Reduced dislocation risk", "Better leg length accuracy", "Personalized surgery based on your anatomy"], "recovery": "4-6 weeks", "hospitalStay": "2-3 days", "icon": "🤖", "seoKeywords": "robotic hip replacement hyderabad, computer navigated THR"},
+]
+
+@api_router.post("/admin/cms/migrate-all-content")
+async def migrate_all_content():
+    """Comprehensive content migration - imports all conditions and treatments to CMS"""
+    try:
+        created_conditions = 0
+        created_treatments = 0
+        skipped = 0
+        errors = []
+        
+        # Migrate conditions
+        for condition in MIGRATION_CONDITIONS:
+            try:
+                # Check if already exists
+                existing = await db.cms_pages.find_one({"slug": condition["id"]})
+                if existing:
+                    skipped += 1
+                    continue
+                
+                # Transform to CMS format
+                cms_page = {
+                    "id": str(uuid.uuid4()),
+                    "slug": condition["id"],
+                    "type": "condition",
+                    "title": f'{condition["name"]} Treatment in Hyderabad',
+                    "meta_title": f'{condition["name"]} Treatment Hyderabad | Dr. Harsha Reddy',
+                    "meta_description": f'Expert {condition["name"].lower()} treatment in Hyderabad by Dr. B Harsha Vardhana Reddy at Yashoda Hospital. {condition["description"][:100]}',
+                    "keywords": condition.get("seoKeywords", "").split(", ") if condition.get("seoKeywords") else [],
+                    "content": {
+                        "name": condition["name"],
+                        "category": condition["category"],
+                        "description": condition["description"],
+                        "symptoms": condition.get("symptoms", []),
+                        "treatments": condition.get("treatments", []),
+                        "icon": condition.get("icon", "🦴"),
+                        "hero": {
+                            "title": f'Expert {condition["name"]} Treatment',
+                            "subtitle": f'Comprehensive care for {condition["name"].lower()} with advanced treatment options'
+                        }
+                    },
+                    "status": "published",
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                    "published_at": datetime.now(timezone.utc).isoformat()
+                }
+                
+                await db.cms_pages.insert_one(cms_page)
+                created_conditions += 1
+                
+            except Exception as e:
+                errors.append(f"Condition {condition['id']}: {str(e)}")
+        
+        # Migrate treatments
+        for treatment in MIGRATION_TREATMENTS:
+            try:
+                # Check if already exists
+                existing = await db.cms_pages.find_one({"slug": treatment["id"]})
+                if existing:
+                    skipped += 1
+                    continue
+                
+                # Transform to CMS format
+                cms_page = {
+                    "id": str(uuid.uuid4()),
+                    "slug": treatment["id"],
+                    "type": "treatment",
+                    "title": f'{treatment["name"]} in Hyderabad',
+                    "meta_title": f'{treatment["name"]} Hyderabad | Dr. Harsha Reddy',
+                    "meta_description": f'Expert {treatment["name"].lower()} in Hyderabad by Dr. B Harsha Vardhana Reddy. {treatment["description"][:100]}',
+                    "keywords": treatment.get("seoKeywords", "").split(", ") if treatment.get("seoKeywords") else [],
+                    "content": {
+                        "name": treatment["name"],
+                        "category": treatment["category"],
+                        "description": treatment["description"],
+                        "benefits": treatment.get("benefits", []),
+                        "procedure": treatment.get("procedure", []),
+                        "recovery": treatment.get("recovery", ""),
+                        "hospitalStay": treatment.get("hospitalStay", ""),
+                        "icon": treatment.get("icon", "🏥"),
+                        "hero": {
+                            "title": treatment["name"],
+                            "subtitle": treatment["description"]
+                        }
+                    },
+                    "status": "published",
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                    "published_at": datetime.now(timezone.utc).isoformat()
+                }
+                
+                await db.cms_pages.insert_one(cms_page)
+                created_treatments += 1
+                
+            except Exception as e:
+                errors.append(f"Treatment {treatment['id']}: {str(e)}")
+        
+        # Get total counts
+        total_conditions = await db.cms_pages.count_documents({"type": "condition"})
+        total_treatments = await db.cms_pages.count_documents({"type": "treatment"})
+        total_pages = await db.cms_pages.count_documents({})
+        
+        logger.info(f"Content migration complete: {created_conditions} conditions, {created_treatments} treatments created")
+        
+        return {
+            "success": True,
+            "message": "Content migration completed successfully",
+            "created": {
+                "conditions": created_conditions,
+                "treatments": created_treatments,
+                "total": created_conditions + created_treatments
+            },
+            "skipped": skipped,
+            "totals": {
+                "conditions": total_conditions,
+                "treatments": total_treatments,
+                "all_pages": total_pages
+            },
+            "errors": errors if errors else None
+        }
+        
+    except Exception as e:
+        logger.error(f"Content migration failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Migration failed: {str(e)}")
+
+@api_router.get("/admin/cms/migration-status")
+async def get_migration_status():
+    """Get current status of CMS content migration"""
+    try:
+        total_pages = await db.cms_pages.count_documents({})
+        conditions = await db.cms_pages.count_documents({"type": "condition"})
+        treatments = await db.cms_pages.count_documents({"type": "treatment"})
+        blogs = await db.cms_pages.count_documents({"type": "blog"})
+        
+        # Get list of migrated slugs
+        condition_slugs = await db.cms_pages.find({"type": "condition"}, {"slug": 1, "_id": 0}).to_list(100)
+        treatment_slugs = await db.cms_pages.find({"type": "treatment"}, {"slug": 1, "_id": 0}).to_list(100)
+        
+        return {
+            "total_pages": total_pages,
+            "by_type": {
+                "conditions": conditions,
+                "treatments": treatments,
+                "blogs": blogs
+            },
+            "migrated_conditions": [c["slug"] for c in condition_slugs],
+            "migrated_treatments": [t["slug"] for t in treatment_slugs],
+            "target_conditions": len(MIGRATION_CONDITIONS),
+            "target_treatments": len(MIGRATION_TREATMENTS),
+            "migration_progress": {
+                "conditions": f"{conditions}/{len(MIGRATION_CONDITIONS)}",
+                "treatments": f"{treatments}/{len(MIGRATION_TREATMENTS)}"
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error getting migration status: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 app.include_router(api_router)
 
 app.add_middleware(
