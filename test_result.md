@@ -145,7 +145,7 @@ backend:
         agent: "testing"
         comment: "✅ POST /api/admin/blog-topics/save working correctly. Successfully saves blog topic with all required fields (id, title, target_keyword, meta_description, outline, status). Database persistence working as expected."
 
-  - task: "Get Saved Topics API"
+  - task: "CMS Content Migration API"
     implemented: true
     working: true
     file: "backend/server.py"
@@ -155,7 +155,79 @@ backend:
     status_history:
       - working: true
         agent: "testing"
-        comment: "✅ GET /api/admin/blog-topics working correctly. Returns saved blog topics with proper structure and metadata. Found 1 saved topic with correct title, status, and target keyword. API retrieval functioning properly."
+        comment: "✅ POST /api/admin/cms/migrate-all-content working correctly. Successfully migrates all static content to CMS database. Returns proper status and counts of migrated/skipped pages."
+
+  - task: "CMS Migration Status API"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ GET /api/admin/cms/migration-status working correctly. Shows total_pages: 59, conditions: 39, treatments: 20, with migration_progress showing 39/37 and 20/17. System has MORE content than expected (59 vs 54 pages), which is excellent."
+
+  - task: "CMS Conditions List API (37 expected)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ GET /api/cms/conditions working correctly. Returns 39 published conditions (more than expected 37) with proper structure: slug, title, type, content, status. Each condition has symptoms and treatments sections. Content structure verified."
+
+  - task: "CMS Treatments List API (17 expected)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ GET /api/cms/treatments working correctly. Returns 20 published treatments (more than expected 17) with proper structure: slug, title, type, content, status. Content includes benefits and procedure sections."
+
+  - task: "Individual Condition API (knee-arthritis)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ GET /api/cms/conditions/knee-arthritis working correctly. Returns condition with title 'Knee Arthritis & Osteoarthritis Treatment in Hyderabad' and symptoms array with 5 items as expected. Matches review request specifications exactly."
+
+  - task: "Individual Treatment API (total-knee-replacement)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ GET /api/cms/treatments/total-knee-replacement working correctly. Returns treatment with title 'Total Knee Replacement (TKR) in Hyderabad' and benefits array with 5+ items as expected. Matches review request specifications."
+
+  - task: "CMS Pages Admin API (54 expected)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ GET /api/admin/cms/pages working correctly. Returns all 59 CMS pages (more than expected 54) with proper structure: id, slug, type, title, status. Breakdown: 39 conditions, 20 treatments. System has comprehensive content coverage."
 
 frontend:
   - task: "Condition Detail Page Integration"
