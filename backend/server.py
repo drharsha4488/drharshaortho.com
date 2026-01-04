@@ -1611,7 +1611,12 @@ EXCLUDED_KEYWORDS = [
     "iphone", "android", "laptop", "computer",
     "game", "gaming", "movie", "film",
     "recipe", "food", "cooking",
-    "baby", "infant", "pregnancy"
+    "baby", "infant", "pregnancy",
+    "pillow", "mattress", "bed", "chair", "seat", "cushion",  # Products not services
+    "shoes", "insole", "brace", "belt", "support",  # Products
+    "sindh", "pakistan", "karachi", "lahore",  # Wrong location
+    "medicaid", "medicare",  # US insurance not relevant
+    "salary", "jobs", "career", "vacancy"  # Job searches
 ]
 
 # Keywords that MUST be present (at least one)
