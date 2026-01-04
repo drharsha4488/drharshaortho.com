@@ -8,6 +8,7 @@ import WhyChooseSection from '@/components/home/WhyChooseSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import FAQSection from '@/components/home/FAQSection';
 import CTASection from '@/components/home/CTASection';
+import TrustSignals from '@/components/TrustSignals';
 
 // FAQ data for schema markup (rich snippets in Google)
 const homepageFAQs = [
