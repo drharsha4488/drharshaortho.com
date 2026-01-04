@@ -1406,6 +1406,33 @@ async def get_blog_by_slug(slug: str):
         logger.error(f"Error fetching blog: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch blog")
 
+@api_router.get("/blogs/visible")
+async def get_visible_blogs():
+    """Get only visible blogs for main website (excludes hidden SEO pages)"""
+    try:
+        # Get blogs that are NOT hidden
+        blogs = await db.cms_pages.find(
+            {"type": "blog", "status": "published", "is_hidden": {"$ne": True}},
+            {"_id": 0}
+        ).sort("created_at", -1).to_list(100)
+        return blogs
+    except Exception as e:
+        logger.error(f"Error fetching visible blogs: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to fetch blogs")
+
+@api_router.put("/admin/cms/pages/{page_id}/visibility")
+async def toggle_page_visibility(page_id: str, is_hidden: bool):
+    """Toggle page visibility (hidden = SEO only, not shown on main site)"""
+    try:
+        result = await db.cms_pages.update_one(
+            {"id": page_id},
+            {"$set": {"is_hidden": is_hidden}}
+        )
+        return {"success": result.modified_count > 0}
+    except Exception as e:
+        logger.error(f"Error updating visibility: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # ============ Keyword Research & Blog Suggestion Endpoints ============
 
