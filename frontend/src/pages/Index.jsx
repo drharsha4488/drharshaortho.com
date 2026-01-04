@@ -58,7 +58,7 @@ const Index = () => {
   return (
     <Layout>
       <SEO 
-        title="Dr. B Harsha Vardhana Reddy - Best Orthopedic Surgeon in Hyderabad | Joint Replacement | Sports Medicine"
+        title="Best Orthopedic Surgeon in Hyderabad | Dr. Harsha Reddy"
         description="Leading orthopedic surgeon in Hyderabad with 15+ years experience. Expert in knee replacement, hip replacement, ACL surgery, arthroscopy & sports injuries. Book appointment at Yashoda Hospital Hitec City."
         keywords="best orthopedic surgeon Hyderabad, knee replacement Hyderabad, hip replacement surgery, ACL surgery, sports injury doctor, joint replacement surgeon Hyderabad, arthroscopy Hyderabad, orthopedic doctor Hitec City"
         canonicalUrl="https://drharshaortho.com"
