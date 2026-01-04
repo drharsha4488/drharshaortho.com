@@ -80,8 +80,11 @@ const Conditions = () => {
                     <div className="relative h-40 overflow-hidden">
                       <img 
                         src={condition.imageUrl} 
-                        alt={condition.name}
+                        alt={`${condition.name} - Orthopedic Treatment in Hyderabad`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        width="400"
+                        height="160"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       <span className="absolute bottom-3 left-3 px-2 py-1 bg-white/90 text-primary text-xs font-medium rounded">
