@@ -166,12 +166,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "CMS Conditions API - List all published conditions"
-    - "CMS Conditions API - Get single condition by slug"
-    - "CMS Treatments API - List all published treatments"
-    - "CMS Treatments API - Get single treatment by slug"
-    - "CMS Blogs API - List all published blogs"
-    - "CMS Blogs API - Get single blog by slug"
+    - "Condition Detail Page Integration"
+    - "Treatment Detail Page Integration"
+    - "Blog Post Page Integration"
+    - "Loading States"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
