@@ -8,5 +8,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-# Sitemap location
+# Sitemap locations
 Sitemap: https://drharshaortho.com/sitemap.xml
+Sitemap: https://drharshaortho.com/sitemap-images.xml
