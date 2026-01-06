@@ -100,8 +100,18 @@ const Blog = () => {
   }, [activeCategory, searchQuery, blogPosts]);
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    if (!dateString || dateString === 'Invalid Date') return 'Recently Published';
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Recently Published';
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch {
+      return 'Recently Published';
+    }
+  };
+
+  const getPostDate = (post) => {
+    return post.published_date || post.publishedDate || post.date || null;
   };
 
   const getReadTime = (post) => {
