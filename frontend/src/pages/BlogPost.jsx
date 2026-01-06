@@ -134,7 +134,7 @@ const BlogPost = () => {
         <div className="min-h-screen flex flex-col items-center justify-center py-20">
           <BookOpen className="w-20 h-20 text-muted-foreground/30 mb-6" />
           <h1 className="text-2xl font-bold mb-4">Article Not Found</h1>
-          <p className="text-muted-foreground mb-6">The article you're looking for doesn't exist or has been moved.</p>
+          <p className="text-muted-foreground mb-6">The article you&apos;re looking for doesn&apos;t exist or has been moved.</p>
           <Link to="/blog">
             <Button className="gap-2">
               <ArrowLeft className="w-4 h-4" />
