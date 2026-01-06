@@ -2358,6 +2358,142 @@ async def get_migration_status():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ============ INDEXNOW SEO INTEGRATION ============
+
+async def submit_to_indexnow(urls: List[str]):
+    """Submit URLs to IndexNow for instant search engine indexing"""
+    if not INDEXNOW_ENABLED or not urls:
+        return {"success": False, "reason": "IndexNow disabled or no URLs"}
+    
+    try:
+        payload = {
+            "host": SITE_HOST,
+            "key": INDEXNOW_KEY,
+            "keyLocation": f"https://{SITE_HOST}/{INDEXNOW_KEY}.txt",
+            "urlList": urls
+        }
+        
+        async with httpx.AsyncClient() as client:
+            # Submit to IndexNow API (Bing, Yandex, etc.)
+            response = await client.post(
+                "https://api.indexnow.org/IndexNow",
+                json=payload,
+                headers={"Content-Type": "application/json"},
+                timeout=10.0
+            )
+            
+            if response.status_code in [200, 202]:
+                logger.info(f"IndexNow: Successfully submitted {len(urls)} URLs")
+                return {"success": True, "urls_submitted": len(urls), "status_code": response.status_code}
+            else:
+                logger.warning(f"IndexNow: Submission returned status {response.status_code}")
+                return {"success": False, "status_code": response.status_code, "response": response.text}
+                
+    except Exception as e:
+        logger.error(f"IndexNow submission error: {str(e)}")
+        return {"success": False, "error": str(e)}
+
+@api_router.post("/admin/seo/indexnow/submit")
+async def submit_urls_to_indexnow(urls: List[str]):
+    """Manually submit URLs to IndexNow for instant indexing"""
+    if not urls:
+        raise HTTPException(status_code=400, detail="No URLs provided")
+    
+    # Ensure all URLs are properly formatted
+    formatted_urls = []
+    for url in urls:
+        if not url.startswith("http"):
+            url = f"https://{SITE_HOST}{url if url.startswith('/') else '/' + url}"
+        formatted_urls.append(url)
+    
+    result = await submit_to_indexnow(formatted_urls)
+    
+    # Log the submission
+    await db.indexnow_submissions.insert_one({
+        "urls": formatted_urls,
+        "result": result,
+        "submitted_at": datetime.now(timezone.utc).isoformat()
+    })
+    
+    return result
+
+@api_router.post("/admin/seo/indexnow/submit-all-pages")
+async def submit_all_pages_to_indexnow():
+    """Submit all published CMS pages to IndexNow"""
+    try:
+        # Get all published CMS pages
+        pages = await db.cms_pages.find(
+            {"status": "published"},
+            {"slug": 1, "type": 1, "_id": 0}
+        ).to_list(500)
+        
+        # Build URLs based on page type
+        urls = []
+        for page in pages:
+            page_type = page.get("type", "")
+            slug = page.get("slug", "")
+            
+            if page_type == "condition":
+                urls.append(f"https://{SITE_HOST}/conditions/{slug}")
+            elif page_type == "treatment":
+                urls.append(f"https://{SITE_HOST}/treatments/{slug}")
+            elif page_type == "blog":
+                urls.append(f"https://{SITE_HOST}/blog/{slug}")
+        
+        # Add static pages
+        static_pages = [
+            f"https://{SITE_HOST}/",
+            f"https://{SITE_HOST}/about",
+            f"https://{SITE_HOST}/contact",
+            f"https://{SITE_HOST}/conditions",
+            f"https://{SITE_HOST}/treatments",
+            f"https://{SITE_HOST}/blog"
+        ]
+        urls.extend(static_pages)
+        
+        # Submit in batches of 10,000 (IndexNow limit)
+        batch_size = 10000
+        results = []
+        for i in range(0, len(urls), batch_size):
+            batch = urls[i:i + batch_size]
+            result = await submit_to_indexnow(batch)
+            results.append(result)
+        
+        return {
+            "success": True,
+            "total_urls": len(urls),
+            "batches": len(results),
+            "results": results
+        }
+        
+    except Exception as e:
+        logger.error(f"Error submitting all pages: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/admin/seo/indexnow/status")
+async def get_indexnow_status():
+    """Get IndexNow integration status and recent submissions"""
+    try:
+        recent_submissions = await db.indexnow_submissions.find(
+            {},
+            {"_id": 0}
+        ).sort("submitted_at", -1).to_list(10)
+        
+        total_submissions = await db.indexnow_submissions.count_documents({})
+        
+        return {
+            "enabled": INDEXNOW_ENABLED,
+            "key": INDEXNOW_KEY[:8] + "..." if INDEXNOW_KEY else None,
+            "host": SITE_HOST,
+            "key_file_url": f"https://{SITE_HOST}/{INDEXNOW_KEY}.txt",
+            "total_submissions": total_submissions,
+            "recent_submissions": recent_submissions
+        }
+    except Exception as e:
+        logger.error(f"Error getting IndexNow status: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 app.include_router(api_router)
 
 app.add_middleware(
