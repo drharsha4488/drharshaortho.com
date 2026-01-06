@@ -279,7 +279,7 @@ const BlogPost = () => {
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="w-4 h-4" />
-                {formatDate(post.publishedDate || post.published_date)}
+                {formatDate(getPostDate(post))}
               </div>
             </motion.div>
           </div>
