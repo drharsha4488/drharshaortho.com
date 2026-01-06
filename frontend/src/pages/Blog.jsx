@@ -350,7 +350,7 @@ const Blog = () => {
                               <div className="flex items-center justify-between text-xs text-muted-foreground pt-4 border-t border-border">
                                 <div className="flex items-center gap-1">
                                   <Calendar className="w-3 h-3" />
-                                  <span>{formatDate(post.published_date || post.publishedDate)}</span>
+                                  <span>{formatDate(getPostDate(post))}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <Clock className="w-3 h-3" />
