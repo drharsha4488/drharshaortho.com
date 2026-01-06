@@ -22,7 +22,10 @@ import {
   AlertCircle,
   CheckCircle,
   Star,
-  Lock
+  Lock,
+  Globe,
+  Send,
+  Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -35,6 +38,11 @@ const AutoSEODashboard = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [activeFilter, setActiveFilter] = useState('all');
   const [lastGenerated, setLastGenerated] = useState(null);
+  
+  // IndexNow state
+  const [indexNowStatus, setIndexNowStatus] = useState(null);
+  const [indexingAll, setIndexingAll] = useState(false);
+  const [indexResult, setIndexResult] = useState(null);
 
   // Fetch dashboard data
   const fetchDashboard = useCallback(async () => {
