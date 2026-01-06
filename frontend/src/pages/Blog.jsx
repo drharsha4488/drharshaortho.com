@@ -284,7 +284,7 @@ const Blog = () => {
                             </div>
                             <div className="flex items-center gap-2">
                               <Calendar className="w-4 h-4" />
-                              <span>{formatDate(featuredPost.published_date || featuredPost.publishedDate)}</span>
+                              <span>{formatDate(getPostDate(featuredPost))}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Clock className="w-4 h-4" />
