@@ -81,10 +81,44 @@ const AutoSEODashboard = () => {
     const loadInitialData = async () => {
       await fetchDashboard();
       await fetchSuggestions();
+      await fetchIndexNowStatus();
     };
     loadInitialData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Fetch IndexNow status
+  const fetchIndexNowStatus = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/admin/seo/indexnow/status`);
+      if (response.ok) {
+        const data = await response.json();
+        setIndexNowStatus(data);
+      }
+    } catch (error) {
+      console.error('Error fetching IndexNow status:', error);
+    }
+  };
+
+  // Submit all pages to IndexNow
+  const submitAllToIndexNow = async () => {
+    setIndexingAll(true);
+    setIndexResult(null);
+    try {
+      const response = await fetch(`${API_URL}/api/admin/seo/indexnow/submit-all-pages`, {
+        method: 'POST'
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setIndexResult(data);
+        await fetchIndexNowStatus();
+      }
+    } catch (error) {
+      console.error('Error submitting to IndexNow:', error);
+      setIndexResult({ success: false, error: error.message });
+    }
+    setIndexingAll(false);
+  };
 
   // Auto-generate suggestions
   const runAutoGenerate = async () => {
