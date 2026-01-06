@@ -463,7 +463,7 @@ const BlogPost = () => {
                   className="bg-white rounded-xl p-6 mb-8 border-l-4 border-primary shadow-sm"
                 >
                   <p className="text-lg text-foreground leading-relaxed font-medium italic">
-                    "{post.excerpt}"
+                    &ldquo;{post.excerpt}&rdquo;
                   </p>
                 </motion.div>
               )}
