@@ -45,6 +45,11 @@ RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
 NOTIFICATION_EMAIL = os.environ.get('NOTIFICATION_EMAIL', 'info@drharshaortho.com')
 
+# IndexNow configuration for instant SEO indexing
+INDEXNOW_KEY = "4a23f9921f4a4ef087adc0bd40b03484"
+INDEXNOW_ENABLED = True
+SITE_HOST = os.environ.get('SITE_HOST', 'drharshaortho.com')
+
 # Initialize Resend
 if RESEND_AVAILABLE and RESEND_API_KEY and RESEND_API_KEY != 're_placeholder':
     resend.api_key = RESEND_API_KEY
