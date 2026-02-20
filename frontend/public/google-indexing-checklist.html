@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Indexing Checklist - Dr. Harsha Orthopedic</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: white; text-align: center; margin-bottom: 30px; font-size: 2rem; }
+        .card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .card h2 { color: #333; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .card h2 .emoji { font-size: 1.5rem; }
+        .checklist { list-style: none; }
+        .checklist li { padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: flex-start; gap: 12px; }
+        .checklist li:last-child { border-bottom: none; }
+        .checklist input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; cursor: pointer; }
+        .checklist label { cursor: pointer; flex: 1; }
+        .checklist .action { color: #667eea; font-weight: 600; }
+        .checklist .note { font-size: 0.85rem; color: #666; margin-top: 4px; }
+        .btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 5px 5px 5px 0; transition: transform 0.2s; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-secondary { background: #10b981; }
+        .url-list { background: #f8f9fa; padding: 16px; border-radius: 8px; margin: 16px 0; max-height: 300px; overflow-y: auto; }
+        .url-list code { display: block; padding: 6px 0; font-size: 0.85rem; color: #333; border-bottom: 1px solid #e5e7eb; }
+        .url-list code:last-child { border-bottom: none; }
+        .priority-high { background: #fef2f2; border-left: 4px solid #ef4444; }
+        .priority-medium { background: #fffbeb; border-left: 4px solid #f59e0b; }
+        .progress { background: #e5e7eb; border-radius: 99px; height: 8px; margin-top: 20px; overflow: hidden; }
+        .progress-bar { background: linear-gradient(90deg, #10b981, #34d399); height: 100%; width: 0%; transition: width 0.5s; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+        .stat { text-align: center; padding: 16px; background: #f8f9fa; border-radius: 8px; }
+        .stat .number { font-size: 2rem; font-weight: 700; color: #667eea; }
+        .stat .label { font-size: 0.85rem; color: #666; }
+        .copy-btn { background: #374151; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+        .copy-btn:hover { background: #1f2937; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Google Indexing Checklist</h1>
+
+        <!-- Stats -->
+        <div class="card">
+            <div class="stats">
+                <div class="stat">
+                    <div class="number">65</div>
+                    <div class="label">Total Pages</div>
+                </div>
+                <div class="stat">
+                    <div class="number">39</div>
+                    <div class="label">Conditions</div>
+                </div>
+                <div class="stat">
+                    <div class="number">20</div>
+                    <div class="label">Treatments</div>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p style="text-align: center; margin-top: 10px; color: #666;" id="progressText">0% Complete</p>
+        </div>
+
+        <!-- Step 1: Google Search Console -->
+        <div class="card priority-high">
+            <h2><span class="emoji">🎯</span> Step 1: Google Search Console (MOST IMPORTANT)</h2>
+            <ul class="checklist">
+                <li>
+                    <input type="checkbox" id="c1" onchange="updateProgress()">
+                    <label for="c1">
+                        <span class="action">Verify website ownership</span>
+                        <div class="note">Go to Search Console → Add Property → Verify via DNS, HTML file, or Google Analytics</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c2" onchange="updateProgress()">
+                    <label for="c2">
+                        <span class="action">Submit Sitemap</span>
+                        <div class="note">Go to Sitemaps → Add: sitemap.xml</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c3" onchange="updateProgress()">
+                    <label for="c3">
+                        <span class="action">Request indexing for Homepage</span>
+                        <div class="note">URL Inspection → Enter homepage URL → Request Indexing</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c4" onchange="updateProgress()">
+                    <label for="c4">
+                        <span class="action">Request indexing for top 10 important pages</span>
+                        <div class="note">Use URL Inspection tool for each priority page (see list below)</div>
+                    </label>
+                </li>
+            </ul>
+            <div style="margin-top: 16px;">
+                <a href="https://search.google.com/search-console" target="_blank" class="btn">Open Google Search Console →</a>
+            </div>
+        </div>
+
+        <!-- Priority URLs to Index First -->
+        <div class="card">
+            <h2><span class="emoji">⭐</span> Priority URLs to Index First</h2>
+            <p style="margin-bottom: 12px; color: #666;">Copy these URLs and request indexing in Google Search Console:</p>
+            <button class="copy-btn" onclick="copyUrls()">📋 Copy All URLs</button>
+            <div class="url-list" id="priorityUrls">
+                <code>https://drharshaortho.com/</code>
+                <code>https://drharshaortho.com/about</code>
+                <code>https://drharshaortho.com/contact</code>
+                <code>https://drharshaortho.com/conditions</code>
+                <code>https://drharshaortho.com/treatments</code>
+                <code>https://drharshaortho.com/conditions/knee-arthritis</code>
+                <code>https://drharshaortho.com/conditions/acl-tear</code>
+                <code>https://drharshaortho.com/conditions/hip-arthritis</code>
+                <code>https://drharshaortho.com/treatments/total-knee-replacement</code>
+                <code>https://drharshaortho.com/treatments/total-hip-replacement</code>
+                <code>https://drharshaortho.com/treatments/acl-reconstruction</code>
+                <code>https://drharshaortho.com/blog</code>
+            </div>
+        </div>
+
+        <!-- Step 2: Bing Webmaster Tools -->
+        <div class="card priority-medium">
+            <h2><span class="emoji">🌐</span> Step 2: Bing Webmaster Tools + IndexNow</h2>
+            <ul class="checklist">
+                <li>
+                    <input type="checkbox" id="c5" onchange="updateProgress()">
+                    <label for="c5">
+                        <span class="action">Add site to Bing Webmaster Tools</span>
+                        <div class="note">You can import from Google Search Console directly!</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c6" onchange="updateProgress()">
+                    <label for="c6">
+                        <span class="action">Submit sitemap to Bing</span>
+                        <div class="note">Same sitemap.xml works for Bing</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c7" onchange="updateProgress()">
+                    <label for="c7">
+                        <span class="action">IndexNow already submitted ✅</span>
+                        <div class="note">65 pages submitted via IndexNow API (Bing indexes within hours!)</div>
+                    </label>
+                </li>
+            </ul>
+            <div style="margin-top: 16px;">
+                <a href="https://www.bing.com/webmasters" target="_blank" class="btn btn-secondary">Open Bing Webmaster Tools →</a>
+            </div>
+        </div>
+
+        <!-- Step 3: Social Signals -->
+        <div class="card">
+            <h2><span class="emoji">📱</span> Step 3: Create Social Signals (Speeds Up Crawling)</h2>
+            <ul class="checklist">
+                <li>
+                    <input type="checkbox" id="c8" onchange="updateProgress()">
+                    <label for="c8">
+                        <span class="action">Share homepage on Google Business Profile</span>
+                        <div class="note">Post about the new website with link</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c9" onchange="updateProgress()">
+                    <label for="c9">
+                        <span class="action">Share on LinkedIn</span>
+                        <div class="note">Post about the practice with website link</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c10" onchange="updateProgress()">
+                    <label for="c10">
+                        <span class="action">Share on Facebook</span>
+                        <div class="note">Create a post about the new website</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c11" onchange="updateProgress()">
+                    <label for="c11">
+                        <span class="action">Post 2-3 blog articles on social media</span>
+                        <div class="note">Each share creates a signal for Google to crawl</div>
+                    </label>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Step 4: Backlinks -->
+        <div class="card">
+            <h2><span class="emoji">🔗</span> Step 4: Quick Backlinks (Use the Directory Kit)</h2>
+            <ul class="checklist">
+                <li>
+                    <input type="checkbox" id="c12" onchange="updateProgress()">
+                    <label for="c12">
+                        <span class="action">Submit to Practo</span>
+                        <div class="note">Free doctor listing with backlink</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c13" onchange="updateProgress()">
+                    <label for="c13">
+                        <span class="action">Submit to Justdial</span>
+                        <div class="note">Free business listing</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c14" onchange="updateProgress()">
+                    <label for="c14">
+                        <span class="action">Submit to Lybrate</span>
+                        <div class="note">Healthcare directory</div>
+                    </label>
+                </li>
+                <li>
+                    <input type="checkbox" id="c15" onchange="updateProgress()">
+                    <label for="c15">
+                        <span class="action">Update Google Business Profile</span>
+                        <div class="note">Add website URL to your Google Business listing</div>
+                    </label>
+                </li>
+            </ul>
+            <div style="margin-top: 16px;">
+                <a href="/directory-submission-kit.html" target="_blank" class="btn">Open Directory Submission Kit →</a>
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="card" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+            <h2 style="color: white;"><span class="emoji">💡</span> Pro Tips for Faster Indexing</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2);">✅ <strong>Daily limit:</strong> You can request ~10-20 URLs per day in Search Console</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2);">✅ <strong>Timing:</strong> Google typically indexes within 1-7 days after request</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2);">✅ <strong>IndexNow:</strong> Bing indexes within hours (already done!)</li>
+                <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2);">✅ <strong>Check status:</strong> Use "site:drharshaortho.com" in Google to see indexed pages</li>
+                <li style="padding: 8px 0;">✅ <strong>Be patient:</strong> New domains take 2-4 weeks for full indexing</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const percentage = Math.round((checked / checkboxes.length) * 100);
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = percentage + '% Complete (' + checked + '/' + checkboxes.length + ' tasks)';
+            
+            // Save progress
+            localStorage.setItem('indexingProgress', JSON.stringify(
+                Array.from(checkboxes).map(cb => cb.checked)
+            ));
+        }
+
+        function copyUrls() {
+            const urls = Array.from(document.querySelectorAll('#priorityUrls code'))
+                .map(el => el.textContent)
+                .join('\n');
+            navigator.clipboard.writeText(urls);
+            alert('URLs copied to clipboard!');
+        }
+
+        // Load saved progress
+        window.onload = function() {
+            const saved = localStorage.getItem('indexingProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach((cb, i) => {
+                    if (progress[i]) cb.checked = true;
+                });
+                updateProgress();
+            }
+        }
+    </script>
+</body>
+</html>
