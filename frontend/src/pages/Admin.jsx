@@ -1802,6 +1802,11 @@ const Admin = () => {
             </motion.div>
           </AnimatePresence>
         )}
+
+        {/* Automation Tab */}
+        {activeTab === 'automation' && (
+          <AutomationDashboard apiUrl={API_URL} />
+        )}
       </main>
     </div>
   );
