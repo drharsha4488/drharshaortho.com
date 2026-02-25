@@ -3736,6 +3736,48 @@ async def get_indexnow_status():
 
 app.include_router(api_router)
 
+# ============ AUTOMATION STARTUP & ADMIN ENDPOINTS ============
+
+@app.on_event("startup")
+async def start_automation():
+    """Launch SEO automation scheduler on server start"""
+    seo_automation.launch()
+    logger.info("SEO Automation Engine launched")
+
+@api_router.get("/admin/automation/status")
+async def get_automation_status():
+    """Get full automation status — scheduler, sitemap, last run, content counts"""
+    return await seo_automation.get_status()
+
+@api_router.post("/admin/automation/run-now")
+async def run_automation_now():
+    """Manually trigger one full automation cycle (blog generation + sitemap + Google ping)"""
+    try:
+        results = await seo_automation.run_cycle()
+        return {"success": True, "results": results}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/admin/automation/regenerate-sitemap")
+async def regenerate_sitemap_now():
+    """Regenerate sitemap immediately + ping Google"""
+    url_count = await seo_automation.generate_and_write_sitemap()
+    await seo_automation.ping_google()
+    return {"success": True, "url_count": url_count, "message": "Sitemap updated and Google notified"}
+
+@api_router.post("/admin/automation/generate-blog")
+async def generate_single_blog(data: dict):
+    """Generate and auto-publish a single blog post for a given keyword"""
+    keyword = data.get("keyword", "").strip()
+    if not keyword:
+        raise HTTPException(status_code=400, detail="keyword is required")
+    post = await seo_automation.generate_blog_post(keyword)
+    if not post:
+        raise HTTPException(status_code=500, detail="Blog generation failed")
+    # Trigger post-publish hooks
+    await seo_automation.on_content_published(f"https://drharshaortho.com/blog/{post['slug']}")
+    return {"success": True, "post": post}
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
