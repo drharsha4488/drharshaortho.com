@@ -22,7 +22,7 @@ export const secondaryKeywords = [
   'carpal tunnel surgery Hyderabad',
   'ankle ligament surgery Hyderabad',
   'sports medicine Hyderabad',
-  'orthopedic specialist Yashoda Hospital',
+  'orthopedic specialist Apollo Hospitals',
   'joint replacement doctor Hyderabad',
 ];
 
@@ -31,7 +31,7 @@ export const longTailKeywords = [
   'robotic knee replacement Hyderabad',
   'minimally invasive hip surgery Hyderabad',
   'ACL reconstruction surgeon Hyderabad',
-  'best joint replacement surgeon Hitec City',
+  'best joint replacement surgeon Financial District',
   'sports injury treatment Hyderabad',
   'arthroscopic knee surgery Hyderabad',
   'shoulder dislocation surgery Hyderabad',
@@ -41,8 +41,8 @@ export const longTailKeywords = [
 
 export const locationKeywords = [
   'Hyderabad',
-  'Hitec City',
-  'Madhapur',
+  'Financial District',
+  'Nanakramguda',
   'Gachibowli',
   'Banjara Hills',
   'Jubilee Hills',
@@ -57,7 +57,7 @@ export const generatePageTitle = (baseTi, location = 'Hyderabad') => {
 };
 
 export const generateMetaDescription = (service, location = 'Hyderabad') => {
-  return `Expert ${service} in ${location} by Dr. B Harsha Vardhana Reddy. 15+ years experience, 8000+ successful surgeries. Book appointment at Yashoda Hospital. Call +91 99599 64567`;
+  return `Expert ${service} in ${location} by Dr. B Harsha Vardhana Reddy. 15+ years experience, 8000+ successful surgeries. Book appointment at Apollo Hospitals. Call +91 99599 64567`;
 };
 
 export const getConditionSchema = (condition) => {
