@@ -239,8 +239,8 @@ const HeroSection = () => {
               whileHover={{ scale: 1.05, y: -5 }}
               className="absolute -top-4 -left-4 bg-card p-3 rounded-xl shadow-xl border border-border backdrop-blur-sm"
             >
-              <p className="text-xs font-semibold text-primary">Yashoda Hospital</p>
-              <p className="text-xs text-muted-foreground">Hi-Tech City, Hyderabad</p>
+              <p className="text-xs font-semibold text-primary">Apollo Hospitals</p>
+              <p className="text-xs text-muted-foreground">Financial District, Hyderabad</p>
             </motion.div>
           </motion.div>
         </div>
