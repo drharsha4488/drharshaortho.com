@@ -43,6 +43,9 @@ client = AsyncIOMotorClient(
 )
 db = client[db_name]
 
+# Initialize SEO Automation Engine
+seo_automation = SEOAutomation(db)
+
 # Email configuration
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
