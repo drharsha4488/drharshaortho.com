@@ -151,62 +151,63 @@ class SEOAutomation:
         self._scheduler_task: Optional[asyncio.Task] = None
 
     # ─────────────────────────────────────────────────────────
-    # 1. DYNAMIC SITEMAP GENERATOR
+    # 1. DYNAMIC SITEMAP BUILDER (pure DB → XML string)
     # ─────────────────────────────────────────────────────────
+    async def build_sitemap_xml(self) -> str:
+        """Build and return sitemap XML string from MongoDB + static pages."""
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        urls = list(STATIC_SITEMAP_PAGES)  # copy static list
+
+        # CMS treatments
+        treatments = await self.db.cms_pages.find(
+            {"type": "treatment"}, {"slug": 1, "_id": 0}
+        ).to_list(500)
+        for t in treatments:
+            if t.get("slug"):
+                urls.append((f"/treatments/{t['slug']}", 0.85, "monthly"))
+
+        # CMS conditions
+        conditions = await self.db.cms_pages.find(
+            {"type": "condition"}, {"slug": 1, "_id": 0}
+        ).to_list(500)
+        for c in conditions:
+            if c.get("slug"):
+                urls.append((f"/conditions/{c['slug']}", 0.85, "monthly"))
+
+        # All blog posts
+        blogs = await self.db.blog_posts.find({}, {"slug": 1, "_id": 0}).to_list(2000)
+        for b in blogs:
+            if b.get("slug"):
+                urls.append((f"/blog/{b['slug']}", 0.8, "monthly"))
+
+        lines = [
+            '<?xml version="1.0" encoding="UTF-8"?>',
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        ]
+        for path_or_loc, priority, changefreq in urls:
+            loc = path_or_loc if path_or_loc.startswith("http") else f"{BASE_URL}{path_or_loc}"
+            lines.append(
+                f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{today}</lastmod>\n"
+                f"    <changefreq>{changefreq}</changefreq>\n    <priority>{priority}</priority>\n  </url>"
+            )
+        lines.append("</urlset>")
+        return "\n".join(lines)
+
     async def generate_and_write_sitemap(self) -> int:
-        """Build sitemap.xml from MongoDB + static pages. Auto-includes every new page."""
+        """Build sitemap and write to file (fallback for local dev). Also returns URL count."""
         try:
-            today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-            urls = []
-
-            # Static & SEO pages
-            for path, priority, changefreq in STATIC_SITEMAP_PAGES:
-                urls.append((f"{BASE_URL}{path}", priority, changefreq))
-
-            # CMS treatments
-            treatments = await self.db.cms_pages.find(
-                {"type": "treatment"},
-                {"slug": 1, "_id": 0}
-            ).to_list(500)
-            for t in treatments:
-                if t.get("slug"):
-                    urls.append((f"{BASE_URL}/treatments/{t['slug']}", 0.85, "monthly"))
-
-            # CMS conditions
-            conditions = await self.db.cms_pages.find(
-                {"type": "condition"},
-                {"slug": 1, "_id": 0}
-            ).to_list(500)
-            for c in conditions:
-                if c.get("slug"):
-                    urls.append((f"{BASE_URL}/conditions/{c['slug']}", 0.85, "monthly"))
-
-            # All blog posts
-            blogs = await self.db.blog_posts.find({}, {"slug": 1, "_id": 0}).to_list(2000)
-            for b in blogs:
-                if b.get("slug"):
-                    urls.append((f"{BASE_URL}/blog/{b['slug']}", 0.8, "monthly"))
-
-            # Write XML
-            lines = [
-                '<?xml version="1.0" encoding="UTF-8"?>',
-                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-            ]
-            for loc, priority, changefreq in urls:
-                lines.append(f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>{changefreq}</changefreq>\n    <priority>{priority}</priority>\n  </url>")
-            lines.append("</urlset>")
-
-            SITEMAP_PATH.write_text("\n".join(lines), encoding="utf-8")
-            logger.info(f"[Automation] Sitemap written: {len(urls)} URLs")
-
+            xml = await self.build_sitemap_xml()
+            url_count = xml.count("<url>")
+            SITEMAP_PATH.write_text(xml, encoding="utf-8")
+            logger.info(f"[Automation] Sitemap written: {url_count} URLs")
             await self.db.automation_log.update_one(
                 {"type": "sitemap"},
-                {"$set": {"last_generated": today, "url_count": len(urls)}},
+                {"$set": {"last_generated": datetime.now(timezone.utc).strftime("%Y-%m-%d"), "url_count": url_count}},
                 upsert=True,
             )
-            return len(urls)
+            return url_count
         except Exception as e:
-            logger.error(f"[Automation] Sitemap error: {e}")
+            logger.error(f"[Automation] Sitemap write error: {e}")
             return 0
 
     # ─────────────────────────────────────────────────────────
