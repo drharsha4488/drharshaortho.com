@@ -94,6 +94,11 @@ const Treatments = () => {
       </div>
       
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="treatments-page">
+        {loading && (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        )}
         <div className="container-medical">
           <SectionHeading
             badge="Our Treatments"
