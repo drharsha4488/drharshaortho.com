@@ -20,23 +20,23 @@ const SchemaMarkup = ({ type, data, faqs }) => {
     "email": "contact@drharshareddy.com",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Yashoda Hospital, Survey No. 41/14, JNTU to Hitech City Main Rd",
+      "streetAddress": "Apollo Hospitals, Financial District, Nanakramguda, Serilingampally",
       "addressLocality": "Hyderabad",
       "addressRegion": "Telangana",
-      "postalCode": "500081",
+      "postalCode": "500032",
       "addressCountry": "IN"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "17.4474",
-      "longitude": "78.3762"
+      "latitude": "17.4167554",
+      "longitude": "78.3550579"
     },
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
         "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
         "opens": "09:00",
-        "closes": "18:00"
+        "closes": "17:00"
       }
     ],
     "priceRange": "₹₹₹",
@@ -56,7 +56,7 @@ const SchemaMarkup = ({ type, data, faqs }) => {
     "image": "https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg",
     "url": "https://drharshaortho.com/about",
     "telephone": "+91-99599-64567",
-    "description": "Dr. B Harsha Vardhana Reddy is a leading orthopedic surgeon in Hyderabad with 15+ years of experience. Specializes in joint replacement, sports medicine, and arthroscopy. Currently Associate Consultant at Yashoda Hospital Hi-Tech City.",
+    "description": "Dr. B Harsha Vardhana Reddy is a leading orthopedic surgeon in Hyderabad with 15+ years of experience. Specializes in joint replacement, sports medicine, and arthroscopy. Currently Senior Consultant at Apollo Hospitals, Financial District.",
     "medicalSpecialty": [
       {
         "@type": "MedicalSpecialty",
