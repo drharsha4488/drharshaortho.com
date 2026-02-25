@@ -3,6 +3,7 @@ SEO Automation Engine for Dr. Harsha Orthopedic Website
 - Auto-generates sitemap from MongoDB
 - Pings Google when content changes
 - Generates & publishes AI blog posts weekly (zero manual work)
+- Self-adaptive: monitors growth, adjusts strategy automatically
 """
 import asyncio
 import httpx
@@ -11,7 +12,7 @@ import re
 import logging
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
 
 logger = logging.getLogger(__name__)
 
