@@ -118,7 +118,7 @@ const Header = () => {
               </motion.div>
               <span>+91 99599 64567</span>
             </motion.a>
-            <Link to="/contact">
+            <a href="https://www.apollo247.com/doctors/dr-b-harsha-vardhana-reddy-51807eec-1507-467c-91fb-4c6b2cb599ff" target="_blank" rel="noopener noreferrer">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -128,7 +128,7 @@ const Header = () => {
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
-            </Link>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -211,11 +211,11 @@ const Header = () => {
                     <Phone className="w-4 h-4" />
                     <span>+91 99599 64567</span>
                   </a>
-                  <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+                  <a href="https://www.apollo247.com/doctors/dr-b-harsha-vardhana-reddy-51807eec-1507-467c-91fb-4c6b2cb599ff" target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)}>
                     <Button className="w-full bg-accent hover:brightness-110 text-accent-foreground" data-testid="mobile-book-appointment-btn">
                       Book Appointment
                     </Button>
-                  </Link>
+                  </a>
                 </motion.div>
               </div>
             </motion.nav>
