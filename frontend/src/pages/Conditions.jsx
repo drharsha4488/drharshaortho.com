@@ -92,6 +92,11 @@ const Conditions = () => {
       </div>
       
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="conditions-page">
+        {loading && (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        )}
         <div className="container-medical">
           <SectionHeading
             badge="Conditions We Treat"
@@ -100,6 +105,7 @@ const Conditions = () => {
           />
 
           {/* Category Filter */}
+          {!loading && (
           <div className="flex flex-wrap justify-center gap-2 mb-12">
             {conditionCategories.map((category) => (
               <Button
