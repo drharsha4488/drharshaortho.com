@@ -600,23 +600,27 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         return max(0, round(delta.total_seconds() / 3600, 1))
 
     # ─────────────────────────────────────────────────────────
-    # 7. SCHEDULER — runs every 7 days, checks every 6 hours
+    # 10. SCHEDULER — runs every 7 days, checks every 6 hours, records daily snapshots
     # ─────────────────────────────────────────────────────────
     async def _scheduler_loop(self):
         logger.info("[Automation] Scheduler started — checking every 6 hours")
-        # Run initial sitemap generation on startup (no blog posts)
         await asyncio.sleep(10)
         await self.generate_and_write_sitemap()
         await self.ping_google()
+        # Record initial growth snapshot
+        await self.record_growth_snapshot()
 
         while True:
             try:
+                # Always record daily snapshot
+                await self.record_growth_snapshot()
+
                 hours_remaining = await self._next_run_hours()
                 if hours_remaining == 0:
                     await self.run_cycle()
                 else:
                     logger.info(f"[Automation] Next cycle in {hours_remaining}h")
-                await asyncio.sleep(6 * 3600)  # Check again in 6 hours
+                await asyncio.sleep(6 * 3600)
             except asyncio.CancelledError:
                 break
             except Exception as e:
