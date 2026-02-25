@@ -107,7 +107,7 @@ const Treatments = () => {
           />
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-2 mb-12">
+          {!loading && (
             {treatmentCategories.map((category) => (
               <Button
                 key={category}
