@@ -34,7 +34,7 @@ const homepageFAQs = [
     "name": "What is the cost of robotic knee replacement in Hyderabad?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Robotic knee replacement at Yashoda Hospital costs 3.5-5 lakhs rupees, including pre-op tests, surgery, implants, hospital stay, and initial physiotherapy. Insurance typically covers 80-100%."
+      "text": "Robotic knee replacement at Apollo Hospitals costs 3.5-5 lakhs rupees, including pre-op tests, surgery, implants, hospital stay, and initial physiotherapy. Insurance typically covers 80-100%."
     }
   },
   {
@@ -50,7 +50,7 @@ const homepageFAQs = [
     "name": "Do you accept insurance for orthopedic surgery?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Yes! Yashoda Hospital accepts cashless treatment from 30+ insurance companies including Star Health, ICICI Lombard, HDFC Ergo. We also accept all government schemes (CGHS, ESI)."
+      "text": "Yes! Apollo Hospitals accepts cashless treatment from 30+ insurance companies including Star Health, ICICI Lombard, HDFC Ergo. We also accept all government schemes (CGHS, ESI)."
     }
   }
 ];
@@ -60,8 +60,8 @@ const Index = () => {
     <Layout>
       <SEO 
         title="Best Orthopedic Surgeon in Hyderabad | Dr. Harsha Reddy"
-        description="Leading orthopedic surgeon in Hyderabad with 15+ years experience. Expert in knee replacement, hip replacement, ACL surgery, arthroscopy & sports injuries. Book appointment at Yashoda Hospital Hitec City."
-        keywords="best orthopedic surgeon Hyderabad, knee replacement Hyderabad, hip replacement surgery, ACL surgery, sports injury doctor, joint replacement surgeon Hyderabad, arthroscopy Hyderabad, orthopedic doctor Hitec City"
+        description="Leading orthopedic surgeon in Hyderabad with 15+ years experience. Expert in knee replacement, hip replacement, ACL surgery, arthroscopy & sports injuries. Book appointment at Apollo Hospitals, Financial District."
+        keywords="best orthopedic surgeon Hyderabad, knee replacement Hyderabad, hip replacement surgery, ACL surgery, sports injury doctor, joint replacement surgeon Hyderabad, arthroscopy Hyderabad, orthopedic doctor Financial District, Apollo Hospitals"
         canonicalUrl="https://drharshaortho.com"
       />
       <SchemaMarkup faqs={homepageFAQs} />
