@@ -41,9 +41,40 @@ const treatmentsFAQs = [
 
 const Treatments = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [allTreatments, setAllTreatments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredTreatments = selectedCategory === 'All' 
-    ? allTreatments 
+  useEffect(() => {
+    const fetchTreatments = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/cms/treatments`);
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = data.map(t => ({
+            id: t.slug,
+            slug: t.slug,
+            name: t.content?.name || t.title,
+            category: t.content?.category || 'General',
+            description: t.content?.description || t.meta_description || '',
+            imageUrl: t.content?.imageUrl || '',
+            icon: t.content?.icon || '🏥',
+            recovery: t.content?.recovery || '',
+            hospitalStay: t.content?.hospitalStay || '',
+            benefits: t.content?.benefits || [],
+          }));
+          setAllTreatments(mapped);
+        }
+      } catch (err) {
+        console.error('Failed to fetch treatments:', err);
+      }
+      setLoading(false);
+    };
+    fetchTreatments();
+  }, []);
+
+  const treatmentCategories = ['All', ...new Set(allTreatments.map(t => t.category).filter(Boolean))];
+  const filteredTreatments = selectedCategory === 'All'
+    ? allTreatments
     : allTreatments.filter(t => t.category === selectedCategory);
 
   return (
