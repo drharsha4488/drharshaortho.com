@@ -124,68 +124,70 @@ const Conditions = () => {
 
           {/* Conditions Grid */}
           {!loading && (
-            {filteredConditions.map((condition, i) => (
-              <motion.div
-                key={condition.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-              >
-                <Link
-                  to={`/conditions/${condition.slug}`}
-                  className="block bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border hover:border-primary group h-full"
-                  data-testid={`condition-${condition.id}`}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredConditions.map((condition, i) => (
+                <motion.div
+                  key={condition.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
                 >
-                  {/* Condition Image */}
-                  {condition.imageUrl && (
-                    <div className="relative h-40 overflow-hidden">
-                      <img 
-                        src={condition.imageUrl} 
-                        alt={`${condition.name} - Orthopedic Treatment in Hyderabad`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        width="400"
-                        height="160"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      <span className="absolute bottom-3 left-3 px-2 py-1 bg-white/90 text-primary text-xs font-medium rounded">
-                        {condition.category}
-                      </span>
-                    </div>
-                  )}
-                  
-                  <div className="p-5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-2xl">{condition.icon}</span>
-                      <h3 className="font-serif font-semibold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-1">
-                        {condition.name}
-                      </h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
-                      {condition.shortDescription}
-                    </p>
+                  <Link
+                    to={`/conditions/${condition.slug}`}
+                    className="block bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border hover:border-primary group h-full"
+                    data-testid={`condition-${condition.id}`}
+                  >
+                    {/* Condition Image */}
+                    {condition.imageUrl && (
+                      <div className="relative h-40 overflow-hidden">
+                        <img 
+                          src={condition.imageUrl} 
+                          alt={`${condition.name} - Orthopedic Treatment in Hyderabad`}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                          width="400"
+                          height="160"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        <span className="absolute bottom-3 left-3 px-2 py-1 bg-white/90 text-primary text-xs font-medium rounded">
+                          {condition.category}
+                        </span>
+                      </div>
+                    )}
+                    
+                    <div className="p-5">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-2xl">{condition.icon}</span>
+                        <h3 className="font-serif font-semibold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                          {condition.name}
+                        </h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                        {condition.shortDescription}
+                      </p>
 
-                    {/* Treatment tags */}
-                    <div className="mb-4">
-                      <div className="flex flex-wrap gap-1">
-                        {condition.surgicalTreatments?.slice(0, 2).map((treatment, idx) => (
-                          <span key={idx} className="text-xs bg-teal-light text-primary px-2 py-0.5 rounded-full">
-                            {treatment.name.length > 20 ? treatment.name.substring(0, 20) + '...' : treatment.name}
-                          </span>
-                        ))}
+                      {/* Treatment tags */}
+                      <div className="mb-4">
+                        <div className="flex flex-wrap gap-1">
+                          {condition.surgicalTreatments?.slice(0, 2).map((treatment, idx) => (
+                            <span key={idx} className="text-xs bg-teal-light text-primary px-2 py-0.5 rounded-full">
+                              {typeof treatment === 'string' ? treatment.substring(0, 20) : (treatment.name?.substring(0, 20) || '')}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Read more link */}
+                      <div className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
+                        Learn More <ArrowRight className="w-4 h-4 ml-1" />
                       </div>
                     </div>
-
-                    {/* Read more link */}
-                    <div className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
-                      Learn More <ArrowRight className="w-4 h-4 ml-1" />
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          )}
 
           {/* CTA Section */}
           <motion.div
