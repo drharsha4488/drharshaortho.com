@@ -216,7 +216,7 @@ class SEOAutomation:
     async def ping_google(self):
         """Notify Google about the updated sitemap."""
         try:
-            ping_url = f"https://www.google.com/ping?sitemap={BASE_URL}/sitemap.xml"
+            ping_url = f"https://www.google.com/ping?sitemap={SITEMAP_URL}"
             async with httpx.AsyncClient(timeout=10) as client:
                 resp = await client.get(ping_url)
             logger.info(f"[Automation] Google ping → {resp.status_code}")
