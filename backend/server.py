@@ -2217,7 +2217,7 @@ async def enrich_cms_extended_content():
                 created_count += 1
         
         # Update treatments with extended data
-        for slug, detailed_data in EXTENDED_TREATMENTS_DATA.items():
+        for slug, detailed_data in all_treatments.items():
             existing = await db.cms_pages.find_one({"slug": slug, "type": "treatment"})
             
             if existing:
