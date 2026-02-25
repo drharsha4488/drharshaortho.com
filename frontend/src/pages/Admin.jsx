@@ -702,6 +702,18 @@ const Admin = () => {
             <Target className="w-4 h-4 inline mr-2" />
             SEO & Keywords
           </button>
+          <button
+            onClick={() => setActiveTab('automation')}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
+              activeTab === 'automation'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+            data-testid="automation-tab"
+          >
+            <Activity className="w-4 h-4 inline mr-2" />
+            Automation
+          </button>
         </div>
 
         {/* Appointments Tab */}
