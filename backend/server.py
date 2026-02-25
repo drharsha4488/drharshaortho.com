@@ -24,6 +24,9 @@ except ImportError:
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# SEO Automation Engine
+from automation import SEOAutomation
+
 # MongoDB connection with better error handling for Atlas
 mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
 db_name = os.environ.get('DB_NAME', 'careconnect')
