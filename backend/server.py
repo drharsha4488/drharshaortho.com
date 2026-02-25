@@ -549,6 +549,9 @@ async def create_blog_post(post_data: BlogPostCreate):
         
         await db.blog_posts.insert_one(doc)
         
+        # Auto: update sitemap + ping Google + IndexNow
+        await seo_automation.on_content_published(f"https://drharshaortho.com/blog/{post.slug}")
+        
         logger.info(f"New blog post created: {post.title}")
         return {"success": True, "id": post.id, "slug": post.slug}
     except Exception as e:
