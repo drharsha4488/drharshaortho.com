@@ -120,13 +120,13 @@ const About = () => {
             <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-border" />
             {milestones.map((item, i) => (
               <motion.div
-                key={item.year}
+                key={`${item.year}-${i}`}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
                 className="relative pl-12 pb-8 last:pb-0"
-                data-testid={`milestone-${item.year}`}
+                data-testid={`milestone-${item.year}-${i}`}
               >
                 <div className="absolute left-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                   <span className="text-xs font-bold text-primary-foreground">
