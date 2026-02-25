@@ -14,7 +14,7 @@ const milestones = [
   { year: '2020', event: 'MBA in Hospital Administration from ICFAI Business School' },
   { year: '2022', event: 'Founded AgileOrtho - Healthcare Startup' },
   { year: '2022', event: 'Consultant Orthopedic Surgeon at Himagiri Hospital, Gachibowli' },
-  { year: '2024', event: 'Associate Consultant at Yashoda Hospital, Hi-Tech City' },
+  { year: '2025', event: 'Senior Consultant at Apollo Hospitals, Financial District' },
 ];
 
 const memberships = [
@@ -28,8 +28,8 @@ const About = () => {
     <Layout>
       <SEO 
         title="About Dr. B Harsha Vardhana Reddy - Orthopedic Surgeon Hyderabad | 15+ Years Experience"
-        description="Meet Dr. B Harsha Vardhana Reddy - DNB Orthopedics, MBA Hospital Administration, 15+ years experience, Founder of AgileOrtho. Expert in joint replacement & sports medicine at Yashoda Hospital."
-        keywords="Dr Harsha Reddy orthopedic surgeon, best orthopedic doctor Hyderabad, joint replacement surgeon, sports medicine doctor, Yashoda Hospital orthopedic, AgileOrtho founder"
+        description="Meet Dr. B Harsha Vardhana Reddy - DNB Orthopedics, MBA Hospital Administration, 15+ years experience, Founder of AgileOrtho. Expert in joint replacement & sports medicine at Apollo Hospitals, Financial District."
+        keywords="Dr Harsha Reddy orthopedic surgeon, best orthopedic doctor Hyderabad, joint replacement surgeon, sports medicine doctor, Apollo Hospitals orthopedic, AgileOrtho founder"
       />
       {/* Hero */}
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="about-hero">
@@ -42,7 +42,7 @@ const About = () => {
               <SectionHeading
                 badge="About"
                 title="Dr. B Harsha Vardhana Reddy"
-                subtitle="Associate Consultant Orthopedic Surgeon at Yashoda Hospital Hi-Tech City with over 15 years of experience in joint replacement, sports medicine, and trauma surgery. Founder of AgileOrtho Healthcare."
+                subtitle="Senior Consultant Orthopedic Surgeon at Apollo Hospitals, Financial District with over 15 years of experience in joint replacement, sports medicine, and trauma surgery. Founder of AgileOrtho Healthcare."
                 centered={false}
               />
               <div className="space-y-4 text-muted-foreground">
