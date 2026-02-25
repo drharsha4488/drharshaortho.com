@@ -3770,6 +3770,13 @@ async def generate_single_blog(data: dict):
     return {"success": True, "post": post}
 
 
+@api_router.get("/sitemap.xml", response_class=Response)
+async def serve_sitemap():
+    """Dynamic sitemap — always fresh from MongoDB. No file, no stale data after deploy."""
+    xml = await seo_automation.build_sitemap_xml()
+    return Response(content=xml, media_type="application/xml")
+
+
 app.include_router(api_router)
 
 # ============ AUTOMATION STARTUP ============
