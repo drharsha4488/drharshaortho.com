@@ -231,7 +231,7 @@ async def send_appointment_notification(appointment: Appointment):
             </div>
             <div style="padding: 20px; background-color: #0d9488; text-align: center;">
                 <p style="color: white; margin: 0;">Dr. B Harsha Vardhana Reddy - Orthopedic Surgeon</p>
-                <p style="color: white; margin: 5px 0 0 0; font-size: 12px;">Yashoda Hospital, Hi-Tech City, Hyderabad</p>
+                <p style="color: white; margin: 5px 0 0 0; font-size: 12px;">Apollo Hospitals, Financial District, Hyderabad</p>
             </div>
         </div>
         """
