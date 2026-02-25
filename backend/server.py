@@ -795,14 +795,14 @@ CMS_SEED_CONTENT = [
         "type": "condition",
         "title": "Osteoarthritis Treatment in Hyderabad",
         "meta_title": "Osteoarthritis Treatment Hyderabad | Joint Arthritis | Dr. Harsha",
-        "meta_description": "Expert osteoarthritis treatment in Hyderabad. Knee, hip & joint arthritis care with advanced therapies. Dr. Harsha at Yashoda Hospital.",
+        "meta_description": "Expert osteoarthritis treatment in Hyderabad. Knee, hip & joint arthritis care with advanced therapies. Dr. Harsha at Apollo Hospitals, Financial District.",
         "keywords": ["osteoarthritis treatment hyderabad", "joint arthritis", "knee arthritis", "hip arthritis"],
         "content": {
             "hero": {
                 "title": "Expert Osteoarthritis Treatment",
                 "subtitle": "Comprehensive care for joint arthritis with advanced treatment options"
             },
-            "introduction": "Osteoarthritis (OA) is the most common form of arthritis, affecting millions of people worldwide. It occurs when the protective cartilage that cushions the ends of bones wears down over time. Dr. Harsha provides comprehensive osteoarthritis treatment at Yashoda Hospital, Hyderabad.",
+            "introduction": "Osteoarthritis (OA) is the most common form of arthritis, affecting millions of people worldwide. It occurs when the protective cartilage that cushions the ends of bones wears down over time. Dr. Harsha provides comprehensive osteoarthritis treatment at Apollo Hospitals, Financial District, Hyderabad.",
             "symptoms": [
                 "Joint pain during or after movement",
                 "Joint stiffness, especially in the morning",
@@ -825,7 +825,7 @@ CMS_SEED_CONTENT = [
         "type": "condition",
         "title": "ACL Injury Treatment in Hyderabad",
         "meta_title": "ACL Injury Treatment Hyderabad | ACL Tear Surgery | Dr. Harsha",
-        "meta_description": "Expert ACL injury treatment and reconstruction surgery in Hyderabad. Sports injury specialist Dr. Harsha at Yashoda Hospital.",
+        "meta_description": "Expert ACL injury treatment and reconstruction surgery in Hyderabad. Sports injury specialist Dr. Harsha at Apollo Hospitals, Financial District.",
         "keywords": ["ACL injury treatment", "ACL tear surgery hyderabad", "ACL reconstruction", "sports injury"],
         "content": {
             "hero": {
@@ -854,7 +854,7 @@ CMS_SEED_CONTENT = [
         "type": "condition",
         "title": "Meniscus Tear Treatment in Hyderabad",
         "meta_title": "Meniscus Tear Treatment Hyderabad | Knee Cartilage Injury | Dr. Harsha",
-        "meta_description": "Expert meniscus tear treatment in Hyderabad. Arthroscopic meniscus repair and surgery. Dr. Harsha at Yashoda Hospital.",
+        "meta_description": "Expert meniscus tear treatment in Hyderabad. Arthroscopic meniscus repair and surgery. Dr. Harsha at Apollo Hospitals, Financial District.",
         "keywords": ["meniscus tear treatment", "torn meniscus surgery", "knee cartilage injury", "arthroscopic repair"],
         "content": {
             "hero": {
@@ -884,7 +884,7 @@ CMS_SEED_CONTENT = [
         "type": "treatment",
         "title": "Total Knee Replacement Surgery in Hyderabad",
         "meta_title": "Total Knee Replacement Hyderabad | TKR Surgery | Dr. Harsha",
-        "meta_description": "Expert total knee replacement surgery in Hyderabad. Computer-navigated TKR by Dr. Harsha at Yashoda Hospital. 95%+ success rate.",
+        "meta_description": "Expert total knee replacement surgery in Hyderabad. Computer-navigated TKR by Dr. Harsha at Apollo Hospitals, Financial District. 95%+ success rate.",
         "keywords": ["total knee replacement", "TKR surgery hyderabad", "knee replacement cost", "knee arthroplasty"],
         "content": {
             "hero": {
@@ -915,7 +915,7 @@ CMS_SEED_CONTENT = [
         "type": "treatment",
         "title": "Hip Replacement Surgery in Hyderabad",
         "meta_title": "Hip Replacement Surgery Hyderabad | THR | Dr. Harsha",
-        "meta_description": "Expert hip replacement surgery in Hyderabad. Total and partial hip replacement by Dr. Harsha at Yashoda Hospital.",
+        "meta_description": "Expert hip replacement surgery in Hyderabad. Total and partial hip replacement by Dr. Harsha at Apollo Hospitals, Financial District.",
         "keywords": ["hip replacement surgery", "THR hyderabad", "hip arthroplasty", "hip joint replacement"],
         "content": {
             "hero": {
@@ -939,7 +939,7 @@ CMS_SEED_CONTENT = [
         "type": "treatment",
         "title": "Arthroscopic Surgery in Hyderabad",
         "meta_title": "Arthroscopic Surgery Hyderabad | Keyhole Surgery | Dr. Harsha",
-        "meta_description": "Minimally invasive arthroscopic surgery in Hyderabad. Knee, shoulder, ankle arthroscopy by Dr. Harsha at Yashoda Hospital.",
+        "meta_description": "Minimally invasive arthroscopic surgery in Hyderabad. Knee, shoulder, ankle arthroscopy by Dr. Harsha at Apollo Hospitals, Financial District.",
         "keywords": ["arthroscopic surgery", "keyhole surgery", "minimally invasive surgery", "arthroscopy hyderabad"],
         "content": {
             "hero": {
@@ -970,7 +970,7 @@ CMS_SEED_CONTENT = [
         "type": "treatment",
         "title": "Sports Injury Treatment in Hyderabad",
         "meta_title": "Sports Injury Treatment Hyderabad | Sports Medicine | Dr. Harsha",
-        "meta_description": "Expert sports injury treatment in Hyderabad. ACL, meniscus, rotator cuff injuries. Dr. Harsha at Yashoda Hospital.",
+        "meta_description": "Expert sports injury treatment in Hyderabad. ACL, meniscus, rotator cuff injuries. Dr. Harsha at Apollo Hospitals, Financial District.",
         "keywords": ["sports injury treatment", "sports medicine hyderabad", "ACL injury", "meniscus tear"],
         "content": {
             "hero": {
@@ -1061,7 +1061,7 @@ CONDITIONS_DETAILED_DATA = {
         "category": "Knee",
         "icon": "🦵",
         "imageUrl": "https://images.pexels.com/photos/7446985/pexels-photo-7446985.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "overview": "Knee osteoarthritis (OA) is the most common form of arthritis affecting millions worldwide. It occurs when the protective cartilage cushioning the knee joint gradually wears down, leading to bone-on-bone contact, inflammation, and pain. Dr. B Harsha Vardhana Reddy specializes in comprehensive knee arthritis management at Yashoda Hospital, Hyderabad.",
+        "overview": "Knee osteoarthritis (OA) is the most common form of arthritis affecting millions worldwide. It occurs when the protective cartilage cushioning the knee joint gradually wears down, leading to bone-on-bone contact, inflammation, and pain. Dr. B Harsha Vardhana Reddy specializes in comprehensive knee arthritis management at Apollo Hospitals, Financial District, Hyderabad.",
         "causes": [
             "Age-related wear and tear (most common in adults over 50)",
             "Previous knee injuries (ACL tears, meniscus injuries, fractures)",
@@ -1206,7 +1206,7 @@ CONDITIONS_DETAILED_DATA = {
         "category": "Sports Injury",
         "icon": "⚽",
         "imageUrl": "https://images.unsplash.com/photo-1649751361457-01d3a696c7e6?w=800&q=80",
-        "overview": "The anterior cruciate ligament (ACL) is one of the key ligaments that help stabilize the knee joint. ACL injuries commonly occur during sports that involve sudden stops, changes in direction, or jumping. Dr. B Harsha Vardhana Reddy is an expert in ACL reconstruction surgery at Yashoda Hospital, Hyderabad, using advanced arthroscopic techniques.",
+        "overview": "The anterior cruciate ligament (ACL) is one of the key ligaments that help stabilize the knee joint. ACL injuries commonly occur during sports that involve sudden stops, changes in direction, or jumping. Dr. B Harsha Vardhana Reddy is an expert in ACL reconstruction surgery at Apollo Hospitals, Financial District, Hyderabad, using advanced arthroscopic techniques.",
         "causes": [
             "Sports injuries: Sudden pivoting or cutting movements",
             "Direct blow to the knee during contact sports",
@@ -1325,7 +1325,7 @@ CONDITIONS_DETAILED_DATA = {
         "category": "Hip",
         "icon": "🦴",
         "imageUrl": "https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "overview": "Hip arthritis and avascular necrosis (AVN) are conditions that cause progressive hip joint damage and pain. Osteoarthritis involves wear of cartilage, while AVN occurs when blood supply to the femoral head is disrupted. Dr. B Harsha Vardhana Reddy specializes in hip preservation and replacement surgery at Yashoda Hospital, Hyderabad.",
+        "overview": "Hip arthritis and avascular necrosis (AVN) are conditions that cause progressive hip joint damage and pain. Osteoarthritis involves wear of cartilage, while AVN occurs when blood supply to the femoral head is disrupted. Dr. B Harsha Vardhana Reddy specializes in hip preservation and replacement surgery at Apollo Hospitals, Financial District, Hyderabad.",
         "causes": [
             "Age-related wear and tear (primary osteoarthritis)",
             "Previous hip injury or fracture",
@@ -1459,7 +1459,7 @@ CONDITIONS_DETAILED_DATA = {
         "category": "Shoulder",
         "icon": "🥶",
         "imageUrl": "https://images.unsplash.com/photo-1631217871099-88310a909a32?w=800&q=80",
-        "overview": "Frozen shoulder, also known as adhesive capsulitis, is a condition characterized by stiffness and pain in the shoulder joint. It typically develops gradually over months and can take 1-3 years to resolve. Dr. B Harsha Vardhana Reddy offers both conservative and surgical treatment options at Yashoda Hospital, Hyderabad.",
+        "overview": "Frozen shoulder, also known as adhesive capsulitis, is a condition characterized by stiffness and pain in the shoulder joint. It typically develops gradually over months and can take 1-3 years to resolve. Dr. B Harsha Vardhana Reddy offers both conservative and surgical treatment options at Apollo Hospitals, Financial District, Hyderabad.",
         "causes": [
             "Diabetes mellitus (5x higher risk)",
             "Thyroid disorders",
@@ -1564,7 +1564,7 @@ CONDITIONS_DETAILED_DATA = {
         "category": "Knee",
         "icon": "🦵",
         "imageUrl": "https://images.pexels.com/photos/339619/pexels-photo-339619.jpeg?auto=compress&cs=tinysrgb&w=800",
-        "overview": "The meniscus is a C-shaped piece of cartilage that acts as a shock absorber between the thigh bone and shin bone. Meniscus tears are among the most common knee injuries. Dr. B Harsha Vardhana Reddy specializes in arthroscopic meniscus surgery at Yashoda Hospital, Hyderabad, prioritizing meniscus preservation when possible.",
+        "overview": "The meniscus is a C-shaped piece of cartilage that acts as a shock absorber between the thigh bone and shin bone. Meniscus tears are among the most common knee injuries. Dr. B Harsha Vardhana Reddy specializes in arthroscopic meniscus surgery at Apollo Hospitals, Financial District, Hyderabad, prioritizing meniscus preservation when possible.",
         "causes": [
             "Sports injuries with twisting motion",
             "Degenerative changes in older adults",
@@ -1673,7 +1673,7 @@ TREATMENTS_DETAILED_DATA = {
         "imageUrl": "https://images.pexels.com/photos/263337/pexels-photo-263337.jpeg?auto=compress&cs=tinysrgb&w=800",
         "heroTitle": "Total Knee Replacement Surgery in Hyderabad",
         "heroSubtitle": "Advanced computer-navigated knee replacement with 95%+ success rate. Get back to pain-free walking within weeks.",
-        "overview": "Total Knee Replacement (TKR), also known as Total Knee Arthroplasty, is a surgical procedure that replaces damaged knee joint surfaces with metal and plastic components. Dr. B Harsha Vardhana Reddy performs over 300 knee replacements annually at Yashoda Hospital, Hyderabad, using the latest minimally invasive techniques and computer-assisted navigation for precise implant positioning.",
+        "overview": "Total Knee Replacement (TKR), also known as Total Knee Arthroplasty, is a surgical procedure that replaces damaged knee joint surfaces with metal and plastic components. Dr. B Harsha Vardhana Reddy performs over 300 knee replacements annually at Apollo Hospitals, Financial District, Hyderabad, using the latest minimally invasive techniques and computer-assisted navigation for precise implant positioning.",
         "statistics": [
             {"label": "Success Rate", "value": "95%+", "description": "Long-term satisfaction"},
             {"label": "Implant Lifespan", "value": "20-25 yrs", "description": "With modern implants"},
@@ -1828,7 +1828,7 @@ TREATMENTS_DETAILED_DATA = {
         "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
         "heroTitle": "ACL Reconstruction Surgery in Hyderabad",
         "heroSubtitle": "Get back to sports with expert ACL reconstruction. 90%+ return to activity rate.",
-        "overview": "ACL reconstruction is a surgical procedure to replace a torn anterior cruciate ligament (ACL). Dr. B Harsha Vardhana Reddy performs anatomic ACL reconstruction using arthroscopic techniques at Yashoda Hospital, Hyderabad. The surgery uses a tissue graft to reconstruct the torn ligament, restoring knee stability.",
+        "overview": "ACL reconstruction is a surgical procedure to replace a torn anterior cruciate ligament (ACL). Dr. B Harsha Vardhana Reddy performs anatomic ACL reconstruction using arthroscopic techniques at Apollo Hospitals, Financial District, Hyderabad. The surgery uses a tissue graft to reconstruct the torn ligament, restoring knee stability.",
         "statistics": [
             {"label": "Success Rate", "value": "90-95%", "description": "Return to sports"},
             {"label": "Surgery Time", "value": "1-1.5 hrs", "description": "Arthroscopic"},
@@ -1898,7 +1898,7 @@ TREATMENTS_DETAILED_DATA = {
         "imageUrl": "https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=800",
         "heroTitle": "Knee Arthroscopy in Hyderabad",
         "heroSubtitle": "Minimally invasive knee surgery for faster recovery and better outcomes.",
-        "overview": "Knee arthroscopy is a minimally invasive surgical procedure that uses a small camera (arthroscope) to diagnose and treat knee problems. Dr. B Harsha Vardhana Reddy performs advanced arthroscopic procedures at Yashoda Hospital, Hyderabad, including meniscus repair, ACL reconstruction, and cartilage restoration.",
+        "overview": "Knee arthroscopy is a minimally invasive surgical procedure that uses a small camera (arthroscope) to diagnose and treat knee problems. Dr. B Harsha Vardhana Reddy performs advanced arthroscopic procedures at Apollo Hospitals, Financial District, Hyderabad, including meniscus repair, ACL reconstruction, and cartilage restoration.",
         "statistics": [
             {"label": "Incisions", "value": "2-3", "description": "Small portals (5mm)"},
             {"label": "Surgery Time", "value": "30-90 min", "description": "Depending on procedure"},
@@ -2054,7 +2054,7 @@ async def enrich_cms_with_detailed_content():
                     "type": "condition",
                     "title": f"{detailed_data['name']} Treatment in Hyderabad",
                     "meta_title": f"{detailed_data['name']} Treatment Hyderabad | Dr. Harsha Reddy",
-                    "meta_description": f"Expert {detailed_data['name'].lower()} treatment in Hyderabad by Dr. B Harsha Vardhana Reddy at Yashoda Hospital.",
+                    "meta_description": f"Expert {detailed_data['name'].lower()} treatment in Hyderabad by Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District.",
                     "keywords": [f"{detailed_data['name'].lower()} treatment", f"{detailed_data['name'].lower()} hyderabad"],
                     "content": detailed_data,
                     "status": "published",
@@ -2111,7 +2111,7 @@ async def enrich_cms_with_detailed_content():
                     "type": "treatment",
                     "title": f"{detailed_data['name']} in Hyderabad",
                     "meta_title": f"{detailed_data['name']} Hyderabad | Dr. Harsha Reddy",
-                    "meta_description": f"Expert {detailed_data['name'].lower()} in Hyderabad by Dr. B Harsha Vardhana Reddy at Yashoda Hospital.",
+                    "meta_description": f"Expert {detailed_data['name'].lower()} in Hyderabad by Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District.",
                     "keywords": [f"{detailed_data['name'].lower()}", f"{detailed_data['name'].lower()} hyderabad"],
                     "content": detailed_data,
                     "status": "published",
@@ -2861,7 +2861,7 @@ async def generate_auto_blog_topic(keyword: str, priority: str) -> dict:
             "Factors Affecting Price",
             "Insurance Coverage Options",
             "EMI and Payment Plans",
-            "Why Choose Dr. Harsha at Yashoda Hospital",
+            "Why Choose Dr. Harsha at Apollo Hospitals, Financial District",
             "FAQs"
         ]
     elif "recovery" in keyword.lower() or "time" in keyword.lower():
@@ -3310,7 +3310,7 @@ async def migrate_all_content():
                     "type": "condition",
                     "title": f'{condition["name"]} Treatment in Hyderabad',
                     "meta_title": f'{condition["name"]} Treatment Hyderabad | Dr. Harsha Reddy',
-                    "meta_description": f'Expert {condition["name"].lower()} treatment in Hyderabad by Dr. B Harsha Vardhana Reddy at Yashoda Hospital. {condition["description"][:100]}',
+                    "meta_description": f'Expert {condition["name"].lower()} treatment in Hyderabad by Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District. {condition["description"][:100]}',
                     "keywords": condition.get("seoKeywords", "").split(", ") if condition.get("seoKeywords") else [],
                     "content": {
                         "name": condition["name"],
