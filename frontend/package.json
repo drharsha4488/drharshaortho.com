@@ -59,7 +59,38 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "postbuild": "react-snap",
     "test": "craco test"
+  },
+  "reactSnap": {
+    "source": "build",
+    "minifyHtml": {
+      "collapseWhitespace": true,
+      "removeComments": true
+    },
+    "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
+    "skipThirdPartyRequests": true,
+    "crawl": true,
+    "include": [
+      "/",
+      "/about",
+      "/contact",
+      "/conditions",
+      "/treatments",
+      "/blog",
+      "/conditions/knee-arthritis",
+      "/conditions/hip-arthritis",
+      "/conditions/acl-tear",
+      "/conditions/rotator-cuff",
+      "/conditions/frozen-shoulder",
+      "/conditions/meniscus-tear",
+      "/treatments/total-knee-replacement",
+      "/treatments/total-hip-replacement",
+      "/treatments/acl-reconstruction",
+      "/treatments/shoulder-arthroscopy",
+      "/treatments/knee-arthroscopy"
+    ],
+    "inlineCss": true
   },
   "browserslist": {
     "production": [
