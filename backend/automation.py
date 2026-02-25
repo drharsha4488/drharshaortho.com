@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 BASE_URL = "https://drharshaortho.com"
 SITEMAP_PATH = Path("/app/frontend/public/sitemap.xml")
+SITEMAP_URL = f"{BASE_URL}/api/sitemap.xml"   # Dynamic endpoint — never stale
 EMERGENT_LLM_KEY = "sk-emergent-817A95a8cA6E27eAc2"
 
 # Fresh SEO keywords to generate blog posts for (20 topics = ~20 weeks of auto content)
