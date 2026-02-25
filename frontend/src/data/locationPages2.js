@@ -449,7 +449,7 @@ Dr. Harsha uses modern fracture fixation techniques including minimally invasive
         }
       ],
       testimonial: {
-        text: "Broke my arm in an accident near Attapur. Yashoda emergency team was quick and professional. Dr. Harsha operated the same night. The fracture healed perfectly.",
+        text: "Broke my arm in an accident near Attapur. Apollo emergency team was quick and professional. Dr. Harsha operated the same night. The fracture healed perfectly.",
         author: "Mohammed A.",
         designation: "Attapur Resident"
       }

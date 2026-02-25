@@ -270,7 +270,7 @@ Whether you're dealing with severe knee arthritis, hip avascular necrosis, or fa
         }
       ],
       testimonial: {
-        text: "Coming from KPHB, I was worried about traveling for surgery. But Yashoda Financial District was so convenient via metro. Dr. Harsha's team made my hip replacement journey smooth.",
+        text: "Coming from KPHB, I was worried about traveling for surgery. But Apollo Hospitals Financial District was so convenient via metro. Dr. Harsha's team made my hip replacement journey smooth.",
         author: "Venkat Rao",
         designation: "KPHB Colony Resident"
       }
