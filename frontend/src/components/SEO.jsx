@@ -2,8 +2,8 @@ import { Helmet } from 'react-helmet-async';
 
 const SEO = ({
   title = 'Dr. B Harsha Vardhana Reddy - Best Orthopedic Surgeon in Hyderabad',
-  description = 'Leading orthopedic surgeon in Hyderabad with 15+ years experience. Specializing in joint replacement, ACL surgery, arthroscopy, sports injuries & trauma. Book appointment at Yashoda Hospital.',
-  keywords = 'orthopedic surgeon Hyderabad, knee replacement Hyderabad, hip replacement surgery, ACL surgery, sports injury doctor, joint replacement surgeon, best orthopedic doctor Hyderabad, arthroscopy Hyderabad, rotator cuff repair',
+  description = 'Leading orthopedic surgeon in Hyderabad with 15+ years experience. Specializing in joint replacement, ACL surgery, arthroscopy, sports injuries & trauma. Book appointment at Apollo Hospitals, Financial District.',
+  keywords = 'orthopedic surgeon Hyderabad, knee replacement Hyderabad, hip replacement surgery, ACL surgery, sports injury doctor, joint replacement surgeon, best orthopedic doctor Hyderabad, arthroscopy Hyderabad, rotator cuff repair, Apollo Hospitals Financial District',
   canonicalUrl = 'https://drharshaortho.com',
   ogImage = 'https://drharshaortho.com/images/dr-harsha-og.jpg',
   structuredData,
@@ -20,23 +20,23 @@ const SEO = ({
     email: 'drharsha4488@gmail.com',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Yashoda Hospitals, Hi-Tech City, Madhapur',
+      streetAddress: 'Apollo Hospitals, Financial District, Nanakramguda, Serilingampally',
       addressLocality: 'Hyderabad',
       addressRegion: 'Telangana',
-      postalCode: '500081',
+      postalCode: '500032',
       addressCountry: 'IN',
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 17.4477,
-      longitude: 78.3873,
+      latitude: 17.4167554,
+      longitude: 78.3550579,
     },
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         opens: '09:00',
-        closes: '18:00',
+        closes: '17:00',
       },
     ],
     priceRange: '$$',
