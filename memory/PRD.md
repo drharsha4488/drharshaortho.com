@@ -41,10 +41,15 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 │   ├── build/            # Pre-rendered static HTML (react-snap)
 │   ├── src/
 │   │   ├── components/   # UI components, admin dashboard
-│   │   ├── data/         # Static data fallback files
-│   │   └── pages/        # React pages with CMS integration
+│   │   ├── data/         # SEO pages, blog posts (static), location pages
+│   │   └── pages/        # React pages - ALL CMS-driven (no static fallbacks)
 │   └── package.json      # react-snap for SSG
 ```
+
+## Data Architecture (Post-Migration)
+- ALL 39 conditions and 20 treatments are stored in MongoDB CMS (`cms_pages`)
+- Frontend fetches exclusively from CMS API - no static data fallbacks
+- Static data files removed: conditions.js, conditionsDetailed.js, treatments.js, treatmentsDetailed.js
 
 ## Key Database Collections
 - `cms_pages`: Stores all CMS content (conditions, treatments, blogs)
