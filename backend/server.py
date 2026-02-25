@@ -1052,6 +1052,1089 @@ async def seed_cms_content():
         raise HTTPException(status_code=500, detail=f"Failed to seed content: {str(e)}")
 
 
+# ============ Full CMS Content Migration with Detailed Data ============
+
+# Comprehensive condition data with full treatment protocols (from conditionsDetailed.js)
+CONDITIONS_DETAILED_DATA = {
+    "knee-arthritis": {
+        "name": "Knee Arthritis & Osteoarthritis",
+        "category": "Knee",
+        "icon": "🦵",
+        "imageUrl": "https://images.pexels.com/photos/7446985/pexels-photo-7446985.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "overview": "Knee osteoarthritis (OA) is the most common form of arthritis affecting millions worldwide. It occurs when the protective cartilage cushioning the knee joint gradually wears down, leading to bone-on-bone contact, inflammation, and pain. Dr. B Harsha Vardhana Reddy specializes in comprehensive knee arthritis management at Yashoda Hospital, Hyderabad.",
+        "causes": [
+            "Age-related wear and tear (most common in adults over 50)",
+            "Previous knee injuries (ACL tears, meniscus injuries, fractures)",
+            "Obesity and excess body weight",
+            "Genetic predisposition",
+            "Repetitive stress from occupational activities",
+            "Malalignment (bow legs or knock knees)",
+            "Inflammatory conditions like rheumatoid arthritis"
+        ],
+        "symptoms": [
+            {"name": "Knee pain and stiffness", "description": "Especially after prolonged sitting or in the morning"},
+            {"name": "Swelling and inflammation", "description": "Joint appears puffy, warm to touch"},
+            {"name": "Difficulty walking or climbing stairs", "description": "Pain worsens with activity"},
+            {"name": "Grinding sensation (crepitus)", "description": "Feeling or hearing crackling during movement"},
+            {"name": "Reduced range of motion", "description": "Difficulty fully bending or straightening the knee"},
+            {"name": "Joint instability", "description": "Feeling of knee giving way"}
+        ],
+        "diagnosis": [
+            {"name": "Physical Examination", "description": "Assessment of range of motion, swelling, tenderness, and alignment"},
+            {"name": "X-rays", "description": "Standing weight-bearing views to assess joint space narrowing"},
+            {"name": "MRI Scan", "description": "Detailed imaging of cartilage, meniscus, and soft tissues"},
+            {"name": "Blood Tests", "description": "To rule out inflammatory arthritis conditions"}
+        ],
+        "nonSurgicalTreatments": [
+            {
+                "name": "Physical Therapy Protocol",
+                "link": "/treatments/physical-therapy",
+                "description": "Structured exercise program to strengthen muscles and improve joint function",
+                "details": [
+                    "Quadriceps strengthening: Straight leg raises (3 sets x 15 reps, daily)",
+                    "Hamstring curls: Seated or standing (3 sets x 12 reps)",
+                    "Range of motion exercises: Heel slides, knee bends",
+                    "Low-impact aerobics: Swimming, cycling (30 min, 3-5 times/week)",
+                    "Balance training: Single leg stands, wobble board exercises"
+                ],
+                "duration": "6-12 weeks initial program, ongoing maintenance",
+                "evidenceLevel": "Strong evidence (Level A) - Cochrane Review 2022"
+            },
+            {
+                "name": "Weight Management",
+                "description": "Every 1 kg of weight loss reduces knee joint load by 4 kg",
+                "details": [
+                    "Target: BMI < 25 for optimal joint health",
+                    "Caloric deficit of 500-750 calories/day for gradual weight loss",
+                    "Anti-inflammatory diet: Mediterranean diet recommended",
+                    "Avoid processed foods, excess sugar, and red meat"
+                ],
+                "evidenceLevel": "Strong evidence (Level A)"
+            },
+            {
+                "name": "Medications",
+                "description": "Pain relief and inflammation control",
+                "details": [
+                    "Paracetamol (Acetaminophen): First-line, up to 3g/day",
+                    "NSAIDs (Ibuprofen, Diclofenac): Short-term use for flare-ups",
+                    "Topical NSAIDs: Diclofenac gel applied 3-4 times daily",
+                    "Glucosamine & Chondroitin: 1500mg/1200mg daily (moderate evidence)"
+                ],
+                "evidenceLevel": "Moderate evidence (Level B)"
+            },
+            {
+                "name": "Intra-articular Injections",
+                "link": "/treatments/prp-injections",
+                "description": "Direct injection into the knee joint",
+                "details": [
+                    "Corticosteroid injections: Quick relief, lasts 4-12 weeks (max 3-4/year)",
+                    "Hyaluronic acid (Viscosupplementation): Lubricates joint, may last 6 months",
+                    "PRP (Platelet-Rich Plasma): Uses body's healing factors",
+                    "Stem cell therapy: Emerging treatment for cartilage regeneration"
+                ],
+                "evidenceLevel": "Moderate evidence for steroids/HA, emerging for PRP"
+            }
+        ],
+        "surgicalTreatments": [
+            {
+                "name": "Arthroscopic Debridement",
+                "link": "/treatments/knee-arthroscopy",
+                "description": "Keyhole surgery to clean up the joint",
+                "indications": "Mechanical symptoms (catching, locking) with loose bodies",
+                "procedure": "Removal of loose cartilage fragments, smoothening of rough surfaces",
+                "recovery": "2-4 weeks",
+                "successRate": "Limited for pure OA, better for mechanical symptoms"
+            },
+            {
+                "name": "High Tibial Osteotomy (HTO)",
+                "link": "/treatments/osteotomy",
+                "description": "Bone realignment surgery for younger patients",
+                "indications": "Unicompartmental OA with malalignment, age < 60",
+                "procedure": "Cutting and realigning the tibia to shift weight to healthy cartilage",
+                "recovery": "3-6 months",
+                "successRate": "80-90% good results at 10 years"
+            },
+            {
+                "name": "Partial Knee Replacement (UKR)",
+                "link": "/treatments/partial-knee-replacement",
+                "description": "Replacing only the damaged compartment",
+                "indications": "Single compartment OA with intact ligaments",
+                "procedure": "Resurfacing of medial or lateral compartment only",
+                "recovery": "4-6 weeks",
+                "successRate": "90% survival at 15 years"
+            },
+            {
+                "name": "Total Knee Replacement (TKR)",
+                "link": "/treatments/total-knee-replacement",
+                "description": "Gold standard for end-stage knee arthritis",
+                "indications": "Severe OA affecting multiple compartments, failed conservative treatment",
+                "procedure": "Replacing all three compartments with metal and plastic implants",
+                "recovery": "6-12 weeks for walking independence, 3-6 months full recovery",
+                "successRate": "95% survival at 15-20 years"
+            }
+        ],
+        "recoveryTimeline": [
+            {"phase": "Week 1-2", "milestone": "Pain management, gentle range of motion exercises"},
+            {"phase": "Week 3-6", "milestone": "Progressive strengthening, walking with assistance"},
+            {"phase": "Week 7-12", "milestone": "Independent walking, stair climbing"},
+            {"phase": "Month 3-6", "milestone": "Return to normal daily activities"},
+            {"phase": "Month 6-12", "milestone": "Full recovery, return to recreational activities"}
+        ],
+        "faqs": [
+            {
+                "question": "Can knee arthritis be cured without surgery?",
+                "answer": "While knee arthritis cannot be completely reversed, many patients achieve significant pain relief and improved function through non-surgical treatments including physical therapy, weight loss, medications, and injections. Surgery is only considered when conservative treatments fail."
+            },
+            {
+                "question": "How long does a knee replacement last?",
+                "answer": "Modern knee replacements have excellent durability with 95% of implants lasting 15-20 years. With proper care and activity modification, many patients enjoy pain-free function for their lifetime."
+            },
+            {
+                "question": "What is the best exercise for knee arthritis?",
+                "answer": "Low-impact exercises are best: swimming, cycling, walking on flat surfaces, and specific strengthening exercises for quadriceps and hamstrings. High-impact activities like running and jumping should be avoided."
+            },
+            {
+                "question": "When should I consider knee replacement surgery?",
+                "answer": "Consider surgery when pain significantly affects your quality of life, sleep, and daily activities despite trying conservative treatments for 3-6 months. X-rays showing severe joint damage and failure of medications/injections are additional indicators."
+            }
+        ],
+        "relatedConditions": ["meniscus-tear", "acl-tear", "patella-dislocation"],
+        "relatedTreatments": ["total-knee-replacement", "knee-arthroscopy", "prp-injections"]
+    },
+    "acl-tear": {
+        "name": "ACL Tear & Knee Ligament Injuries",
+        "category": "Sports Injury",
+        "icon": "⚽",
+        "imageUrl": "https://images.unsplash.com/photo-1649751361457-01d3a696c7e6?w=800&q=80",
+        "overview": "The anterior cruciate ligament (ACL) is one of the key ligaments that help stabilize the knee joint. ACL injuries commonly occur during sports that involve sudden stops, changes in direction, or jumping. Dr. B Harsha Vardhana Reddy is an expert in ACL reconstruction surgery at Yashoda Hospital, Hyderabad, using advanced arthroscopic techniques.",
+        "causes": [
+            "Sports injuries: Sudden pivoting or cutting movements",
+            "Direct blow to the knee during contact sports",
+            "Landing awkwardly from a jump",
+            "Rapidly slowing down while running",
+            "Hyperextension of the knee",
+            "Female athletes at higher risk (anatomical and hormonal factors)"
+        ],
+        "symptoms": [
+            {"name": "Loud 'pop' at time of injury", "description": "Many patients hear or feel a popping sensation"},
+            {"name": "Severe pain and swelling", "description": "Rapid swelling within hours of injury"},
+            {"name": "Knee instability", "description": "Feeling of knee giving way, especially with pivoting"},
+            {"name": "Loss of range of motion", "description": "Difficulty fully extending the knee"},
+            {"name": "Difficulty bearing weight", "description": "Unable to continue activity after injury"}
+        ],
+        "diagnosis": [
+            {"name": "Physical Examination", "description": "Lachman test, anterior drawer test, pivot shift test"},
+            {"name": "X-rays", "description": "To rule out fractures"},
+            {"name": "MRI Scan", "description": "Gold standard - shows ACL tear and associated injuries"},
+            {"name": "Arthroscopy", "description": "Direct visualization during surgery"}
+        ],
+        "nonSurgicalTreatments": [
+            {
+                "name": "RICE Protocol",
+                "description": "Immediate first aid management",
+                "details": [
+                    "Rest: Avoid weight bearing, use crutches",
+                    "Ice: 20 minutes every 2-3 hours for first 48-72 hours",
+                    "Compression: Elastic bandage to control swelling",
+                    "Elevation: Keep leg elevated above heart level"
+                ],
+                "duration": "First 1-2 weeks",
+                "evidenceLevel": "Standard of care for acute injury"
+            },
+            {
+                "name": "Physical Therapy (Pre-habilitation)",
+                "description": "Preparation before surgery",
+                "details": [
+                    "Restore full range of motion before surgery",
+                    "Reduce swelling through exercises and modalities",
+                    "Strengthen quadriceps and hamstrings",
+                    "Improve proprioception and balance"
+                ],
+                "duration": "2-4 weeks before surgery",
+                "evidenceLevel": "Strong evidence for better surgical outcomes"
+            },
+            {
+                "name": "Functional Bracing",
+                "description": "For patients opting out of surgery",
+                "details": [
+                    "Hinged knee brace for stability",
+                    "Activity modification - avoid pivoting sports",
+                    "Ongoing strengthening program",
+                    "May be suitable for older, less active patients"
+                ],
+                "evidenceLevel": "Moderate evidence for selected patients"
+            }
+        ],
+        "surgicalTreatments": [
+            {
+                "name": "ACL Reconstruction (Arthroscopic)",
+                "link": "/treatments/acl-reconstruction",
+                "description": "Gold standard surgical treatment",
+                "indications": "Active individuals, athletes, recurrent instability, associated injuries",
+                "procedure": "Replace torn ACL with graft (hamstring, patellar tendon, or allograft)",
+                "recovery": "6-9 months for return to sports",
+                "successRate": "90-95% return to previous activity level"
+            },
+            {
+                "name": "ACL Repair (Bridge-Enhanced)",
+                "description": "Newer technique for proximal tears",
+                "indications": "Acute proximal ACL tears, good tissue quality",
+                "procedure": "Repair native ACL with scaffold and biological augmentation",
+                "recovery": "6-9 months",
+                "successRate": "Emerging technique with promising results"
+            },
+            {
+                "name": "Multi-Ligament Reconstruction",
+                "description": "For combined ligament injuries",
+                "indications": "ACL + PCL, ACL + MCL, knee dislocation",
+                "procedure": "Staged or single-stage reconstruction of multiple ligaments",
+                "recovery": "9-12 months",
+                "successRate": "Variable based on injury severity"
+            }
+        ],
+        "recoveryTimeline": [
+            {"phase": "Week 1-2", "milestone": "Pain and swelling control, restore extension"},
+            {"phase": "Week 2-6", "milestone": "Progress range of motion, begin strengthening"},
+            {"phase": "Month 2-3", "milestone": "Full ROM, progressive strengthening, stationary bike"},
+            {"phase": "Month 3-6", "milestone": "Running progression, sport-specific training"},
+            {"phase": "Month 6-9", "milestone": "Return to sport after clearance testing"}
+        ],
+        "faqs": [
+            {
+                "question": "Can you walk with a torn ACL?",
+                "answer": "Yes, many people can walk with a torn ACL once the initial swelling subsides. However, the knee may feel unstable, especially with pivoting or turning movements. Walking in a straight line is usually possible."
+            },
+            {
+                "question": "Is ACL surgery necessary?",
+                "answer": "Not always. Surgery is recommended for active individuals, athletes, and those with recurrent instability. Older, less active patients may manage well with physical therapy and bracing."
+            },
+            {
+                "question": "How long before I can play sports after ACL surgery?",
+                "answer": "Most athletes return to sports 6-9 months after ACL reconstruction, following successful completion of rehabilitation and return-to-sport testing."
+            },
+            {
+                "question": "What is the best graft for ACL reconstruction?",
+                "answer": "The choice depends on individual factors. Patellar tendon and hamstring autografts are most common. Your surgeon will recommend the best option based on your activity level and goals."
+            }
+        ],
+        "relatedConditions": ["meniscus-tear", "pcl-injury", "knee-arthritis"],
+        "relatedTreatments": ["acl-reconstruction", "knee-arthroscopy", "physical-therapy"]
+    },
+    "hip-arthritis": {
+        "name": "Hip Arthritis & AVN",
+        "category": "Hip",
+        "icon": "🦴",
+        "imageUrl": "https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "overview": "Hip arthritis and avascular necrosis (AVN) are conditions that cause progressive hip joint damage and pain. Osteoarthritis involves wear of cartilage, while AVN occurs when blood supply to the femoral head is disrupted. Dr. B Harsha Vardhana Reddy specializes in hip preservation and replacement surgery at Yashoda Hospital, Hyderabad.",
+        "causes": [
+            "Age-related wear and tear (primary osteoarthritis)",
+            "Previous hip injury or fracture",
+            "Avascular necrosis from steroid use, alcohol, or trauma",
+            "Developmental dysplasia of hip (DDH)",
+            "Inflammatory conditions (rheumatoid arthritis)",
+            "Femoroacetabular impingement (FAI)"
+        ],
+        "symptoms": [
+            {"name": "Groin pain", "description": "Deep aching pain in the groin area, the hallmark of hip arthritis"},
+            {"name": "Pain with activity", "description": "Worse with walking, climbing stairs, getting up from chair"},
+            {"name": "Limping", "description": "Antalgic gait to offload the painful hip"},
+            {"name": "Stiffness", "description": "Difficulty putting on shoes, socks, cutting toenails"},
+            {"name": "Referred pain", "description": "Pain may radiate to thigh, buttock, or knee"},
+            {"name": "Night pain", "description": "Pain disturbing sleep in advanced cases"}
+        ],
+        "diagnosis": [
+            {"name": "Physical Examination", "description": "Range of motion testing, gait analysis, impingement tests"},
+            {"name": "X-rays", "description": "Standing AP pelvis and lateral hip views"},
+            {"name": "MRI Scan", "description": "Essential for diagnosing AVN and labral tears"},
+            {"name": "CT Scan", "description": "For complex deformity planning"}
+        ],
+        "nonSurgicalTreatments": [
+            {
+                "name": "Activity Modification",
+                "description": "Lifestyle changes to reduce hip stress",
+                "details": [
+                    "Avoid prolonged standing and walking",
+                    "Use walking aids (cane in opposite hand)",
+                    "Avoid stairs, squatting, sitting cross-legged",
+                    "Swimming and cycling are preferred exercises"
+                ],
+                "evidenceLevel": "Standard recommendation"
+            },
+            {
+                "name": "Physical Therapy",
+                "description": "Hip strengthening and mobility program",
+                "details": [
+                    "Hip abductor strengthening (gluteus medius)",
+                    "Core stability exercises",
+                    "Gentle stretching for hip flexors",
+                    "Aquatic therapy for low-impact exercise"
+                ],
+                "duration": "6-12 weeks",
+                "evidenceLevel": "Moderate evidence"
+            },
+            {
+                "name": "Medications",
+                "description": "Pain and inflammation control",
+                "details": [
+                    "NSAIDs for pain relief",
+                    "Paracetamol as first-line option",
+                    "Disease-modifying drugs for inflammatory arthritis"
+                ],
+                "evidenceLevel": "Moderate evidence"
+            },
+            {
+                "name": "Hip Injections",
+                "description": "Intra-articular injections for diagnosis and treatment",
+                "details": [
+                    "Corticosteroid injection: Provides 4-12 weeks relief",
+                    "Hyaluronic acid: May provide longer-lasting relief",
+                    "PRP: Emerging treatment option",
+                    "Diagnostic injection confirms hip as pain source"
+                ],
+                "evidenceLevel": "Moderate short-term evidence"
+            }
+        ],
+        "surgicalTreatments": [
+            {
+                "name": "Hip Arthroscopy",
+                "link": "/treatments/hip-arthroscopy",
+                "description": "Keyhole surgery for hip preservation",
+                "indications": "FAI, labral tears, early arthritis in young patients",
+                "procedure": "Reshaping bone, repairing labrum through small incisions",
+                "recovery": "3-6 months",
+                "successRate": "Good results in properly selected patients"
+            },
+            {
+                "name": "Core Decompression",
+                "description": "For early-stage AVN",
+                "indications": "AVN stage 1-2, before collapse",
+                "procedure": "Drilling into femoral head to relieve pressure and stimulate healing",
+                "recovery": "6-8 weeks protected weight bearing",
+                "successRate": "Variable, 50-80% in early stages"
+            },
+            {
+                "name": "Total Hip Replacement",
+                "link": "/treatments/total-hip-replacement",
+                "description": "Gold standard for end-stage hip disease",
+                "indications": "Severe arthritis, advanced AVN, failed conservative treatment",
+                "procedure": "Replace femoral head and acetabulum with artificial joint",
+                "recovery": "6-12 weeks, walking with support day 1",
+                "successRate": "95%+ patient satisfaction, 25+ year implant life"
+            },
+            {
+                "name": "Hip Resurfacing",
+                "description": "Bone-conserving alternative for young active patients",
+                "indications": "Young males with good bone quality, large femoral head",
+                "procedure": "Cap the femoral head instead of replacing it",
+                "recovery": "Similar to total hip replacement",
+                "successRate": "90% at 10 years in selected patients"
+            }
+        ],
+        "recoveryTimeline": [
+            {"phase": "Day 1", "milestone": "Stand and walk with support (hip replacement)"},
+            {"phase": "Week 1-2", "milestone": "Walk with walker, basic activities"},
+            {"phase": "Week 3-6", "milestone": "Transition to cane, drive automatic car"},
+            {"phase": "Month 2-3", "milestone": "Walk independently, return to desk work"},
+            {"phase": "Month 3-6", "milestone": "Full recovery, return to recreational activities"}
+        ],
+        "faqs": [
+            {
+                "question": "What is the difference between hip arthritis and AVN?",
+                "answer": "Hip arthritis is wear of cartilage covering the joint surfaces. AVN (avascular necrosis) is death of bone in the femoral head due to loss of blood supply. Both can lead to joint destruction requiring hip replacement."
+            },
+            {
+                "question": "How long does a hip replacement last?",
+                "answer": "Modern hip replacements with ceramic bearings can last 25+ years. Over 95% of hip replacements are still functioning well at 15 years."
+            },
+            {
+                "question": "Can hip arthritis be cured without surgery?",
+                "answer": "Hip arthritis cannot be cured, but symptoms can often be managed for years with exercise, weight loss, medications, and injections. Surgery is considered when these measures no longer provide adequate relief."
+            }
+        ],
+        "relatedConditions": ["knee-arthritis", "bursitis"],
+        "relatedTreatments": ["total-hip-replacement", "hip-arthroscopy"]
+    },
+    "frozen-shoulder": {
+        "name": "Frozen Shoulder (Adhesive Capsulitis)",
+        "category": "Shoulder",
+        "icon": "🥶",
+        "imageUrl": "https://images.unsplash.com/photo-1631217871099-88310a909a32?w=800&q=80",
+        "overview": "Frozen shoulder, also known as adhesive capsulitis, is a condition characterized by stiffness and pain in the shoulder joint. It typically develops gradually over months and can take 1-3 years to resolve. Dr. B Harsha Vardhana Reddy offers both conservative and surgical treatment options at Yashoda Hospital, Hyderabad.",
+        "causes": [
+            "Diabetes mellitus (5x higher risk)",
+            "Thyroid disorders",
+            "Prolonged immobilization after surgery or injury",
+            "Idiopathic (unknown cause)",
+            "More common in women aged 40-60",
+            "Associated with Parkinson's disease and cardiac disease"
+        ],
+        "symptoms": [
+            {"name": "Gradual onset of pain", "description": "Deep, aching shoulder pain, worse at night"},
+            {"name": "Progressive stiffness", "description": "Difficulty with overhead activities, reaching behind back"},
+            {"name": "Three stages", "description": "Freezing (2-9 months), Frozen (4-12 months), Thawing (5-24 months)"},
+            {"name": "Sleep disturbance", "description": "Unable to sleep on affected side"},
+            {"name": "Limited daily activities", "description": "Difficulty dressing, grooming, reaching"}
+        ],
+        "diagnosis": [
+            {"name": "Physical Examination", "description": "Loss of both active and passive range of motion"},
+            {"name": "X-rays", "description": "Usually normal, rule out arthritis"},
+            {"name": "MRI", "description": "May show thickened capsule, rule out rotator cuff tear"}
+        ],
+        "nonSurgicalTreatments": [
+            {
+                "name": "Physical Therapy",
+                "description": "Cornerstone of treatment",
+                "details": [
+                    "Gentle stretching within pain tolerance",
+                    "Pendulum exercises",
+                    "Wall walks and finger ladder",
+                    "External rotation stretches with stick",
+                    "Heat before, ice after exercises"
+                ],
+                "duration": "6-12 months or longer",
+                "evidenceLevel": "Strong evidence"
+            },
+            {
+                "name": "Corticosteroid Injections",
+                "description": "Reduce inflammation and pain",
+                "details": [
+                    "Intra-articular injection under ultrasound guidance",
+                    "Provides 4-8 weeks of pain relief",
+                    "Allows more effective physical therapy",
+                    "May be repeated 2-3 times"
+                ],
+                "evidenceLevel": "Moderate evidence for short-term relief"
+            },
+            {
+                "name": "Hydrodilatation",
+                "description": "Stretch the capsule with fluid injection",
+                "details": [
+                    "Inject saline and steroid under pressure",
+                    "Stretches the contracted capsule",
+                    "Performed under image guidance",
+                    "Combined with physical therapy"
+                ],
+                "evidenceLevel": "Moderate evidence"
+            }
+        ],
+        "surgicalTreatments": [
+            {
+                "name": "Manipulation Under Anesthesia (MUA)",
+                "description": "Forceful stretching while asleep",
+                "indications": "Persistent stiffness despite 6+ months of conservative treatment",
+                "procedure": "Gentle, controlled movements to break adhesions while under anesthesia",
+                "recovery": "Intensive physical therapy immediately after",
+                "successRate": "Good results in most patients"
+            },
+            {
+                "name": "Arthroscopic Capsular Release",
+                "link": "/treatments/shoulder-arthroscopy",
+                "description": "Keyhole surgery to cut the tight capsule",
+                "indications": "Failed MUA, diabetic patients, revision cases",
+                "procedure": "Cut 360-degree capsule release using arthroscope",
+                "recovery": "Intensive PT immediately after, 3-6 months full recovery",
+                "successRate": "85-90% significant improvement"
+            }
+        ],
+        "recoveryTimeline": [
+            {"phase": "Freezing Stage", "milestone": "Pain predominant, stiffness beginning (2-9 months)"},
+            {"phase": "Frozen Stage", "milestone": "Pain decreasing, maximum stiffness (4-12 months)"},
+            {"phase": "Thawing Stage", "milestone": "Gradual improvement in motion (5-24 months)"},
+            {"phase": "Post-Surgery", "milestone": "Intensive PT for 6-12 weeks, ongoing exercises"}
+        ],
+        "faqs": [
+            {
+                "question": "How long does frozen shoulder last?",
+                "answer": "Frozen shoulder typically lasts 1-3 years if untreated. With proper treatment including physical therapy and possibly injections, recovery may be faster."
+            },
+            {
+                "question": "Can frozen shoulder come back?",
+                "answer": "Recurrence in the same shoulder is rare (about 5%). However, the other shoulder may be affected in 6-17% of patients."
+            },
+            {
+                "question": "Is surgery necessary for frozen shoulder?",
+                "answer": "Most cases resolve with conservative treatment. Surgery (manipulation or arthroscopic release) is considered if symptoms persist despite 6+ months of appropriate treatment."
+            }
+        ],
+        "relatedConditions": ["rotator-cuff-tear", "shoulder-dislocation"],
+        "relatedTreatments": ["shoulder-arthroscopy", "physical-therapy"]
+    },
+    "meniscus-tear": {
+        "name": "Meniscus Tear",
+        "category": "Knee",
+        "icon": "🦵",
+        "imageUrl": "https://images.pexels.com/photos/339619/pexels-photo-339619.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "overview": "The meniscus is a C-shaped piece of cartilage that acts as a shock absorber between the thigh bone and shin bone. Meniscus tears are among the most common knee injuries. Dr. B Harsha Vardhana Reddy specializes in arthroscopic meniscus surgery at Yashoda Hospital, Hyderabad, prioritizing meniscus preservation when possible.",
+        "causes": [
+            "Sports injuries with twisting motion",
+            "Degenerative changes in older adults",
+            "Squatting or kneeling activities",
+            "Associated with ACL injuries",
+            "Occupational stress (repeated squatting)"
+        ],
+        "symptoms": [
+            {"name": "Pain along joint line", "description": "Localized to inner or outer side of knee"},
+            {"name": "Swelling", "description": "May develop over 24-48 hours"},
+            {"name": "Catching or locking", "description": "Knee gets stuck and cannot fully straighten"},
+            {"name": "Popping sensation", "description": "Feeling of something moving in the knee"},
+            {"name": "Difficulty squatting", "description": "Pain with deep bending of knee"}
+        ],
+        "diagnosis": [
+            {"name": "Physical Examination", "description": "McMurray test, Apley test, joint line tenderness"},
+            {"name": "MRI Scan", "description": "Gold standard for meniscus imaging"},
+            {"name": "X-rays", "description": "Rule out arthritis and other conditions"}
+        ],
+        "nonSurgicalTreatments": [
+            {
+                "name": "RICE Protocol",
+                "description": "Initial management for acute tears",
+                "details": [
+                    "Rest and activity modification",
+                    "Ice application 20 minutes, 3-4 times daily",
+                    "Compression with elastic bandage",
+                    "Elevation above heart level"
+                ],
+                "duration": "First 1-2 weeks",
+                "evidenceLevel": "Standard of care"
+            },
+            {
+                "name": "Physical Therapy",
+                "description": "For stable, degenerative tears",
+                "details": [
+                    "Quadriceps and hamstring strengthening",
+                    "Range of motion exercises",
+                    "Balance and proprioception training",
+                    "Activity modification guidance"
+                ],
+                "duration": "6-12 weeks",
+                "evidenceLevel": "Strong evidence for degenerative tears"
+            }
+        ],
+        "surgicalTreatments": [
+            {
+                "name": "Arthroscopic Meniscus Repair",
+                "link": "/treatments/knee-arthroscopy",
+                "description": "Preserving the meniscus by stitching it",
+                "indications": "Peripheral tears in vascular zone, young patients",
+                "procedure": "Sutures placed to hold tear together and allow healing",
+                "recovery": "6-8 weeks protected, 4-6 months full activity",
+                "successRate": "85-90% healing rate in good tears"
+            },
+            {
+                "name": "Partial Meniscectomy",
+                "link": "/treatments/knee-arthroscopy",
+                "description": "Removing only the damaged portion",
+                "indications": "Complex tears, degenerative tears, inner zone tears",
+                "procedure": "Trim damaged tissue, preserve as much healthy meniscus as possible",
+                "recovery": "2-4 weeks, quick return to activity",
+                "successRate": "Good short-term results, may accelerate arthritis long-term"
+            },
+            {
+                "name": "Meniscus Transplant",
+                "description": "Replacing meniscus with donor tissue",
+                "indications": "Young patients who had total meniscectomy",
+                "procedure": "Implant donor meniscus into knee",
+                "recovery": "6-9 months",
+                "successRate": "75-85% good results at 10 years"
+            }
+        ],
+        "recoveryTimeline": [
+            {"phase": "Post-op Day 1", "milestone": "Weight bearing as tolerated (meniscectomy)"},
+            {"phase": "Week 1-2", "milestone": "Return to desk work (meniscectomy)"},
+            {"phase": "Week 4-6", "milestone": "Return to sports (meniscectomy)"},
+            {"phase": "Week 6-8", "milestone": "Protected weight bearing ends (repair)"},
+            {"phase": "Month 4-6", "milestone": "Return to sports (repair)"}
+        ],
+        "faqs": [
+            {
+                "question": "Can a meniscus tear heal on its own?",
+                "answer": "Small tears in the outer edge (vascular zone) may heal with rest. However, most tears, especially in the inner zone, do not heal due to poor blood supply."
+            },
+            {
+                "question": "Is meniscus repair better than removal?",
+                "answer": "Yes, preserving the meniscus is preferred when possible. The meniscus protects the knee from arthritis. Repair has longer recovery but better long-term outcomes."
+            },
+            {
+                "question": "How long is recovery after meniscus surgery?",
+                "answer": "Partial meniscectomy: 2-4 weeks. Meniscus repair: 4-6 months. Recovery depends on the type of surgery and individual factors."
+            }
+        ],
+        "relatedConditions": ["acl-tear", "knee-arthritis"],
+        "relatedTreatments": ["knee-arthroscopy", "acl-reconstruction"]
+    }
+}
+
+# Comprehensive treatment data with full protocols (from treatmentsDetailed.js)
+TREATMENTS_DETAILED_DATA = {
+    "total-knee-replacement": {
+        "name": "Total Knee Replacement (TKR)",
+        "category": "Joint Replacement",
+        "icon": "🦵",
+        "imageUrl": "https://images.pexels.com/photos/263337/pexels-photo-263337.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "heroTitle": "Total Knee Replacement Surgery in Hyderabad",
+        "heroSubtitle": "Advanced computer-navigated knee replacement with 95%+ success rate. Get back to pain-free walking within weeks.",
+        "overview": "Total Knee Replacement (TKR), also known as Total Knee Arthroplasty, is a surgical procedure that replaces damaged knee joint surfaces with metal and plastic components. Dr. B Harsha Vardhana Reddy performs over 300 knee replacements annually at Yashoda Hospital, Hyderabad, using the latest minimally invasive techniques and computer-assisted navigation for precise implant positioning.",
+        "statistics": [
+            {"label": "Success Rate", "value": "95%+", "description": "Long-term satisfaction"},
+            {"label": "Implant Lifespan", "value": "20-25 yrs", "description": "With modern implants"},
+            {"label": "Hospital Stay", "value": "2-3 days", "description": "Quick discharge"},
+            {"label": "Walking", "value": "Day 1", "description": "With assistance"}
+        ],
+        "candidatesFor": [
+            "Severe knee arthritis not responding to medications",
+            "Significant knee pain affecting daily activities",
+            "Difficulty walking, climbing stairs, or getting up from chairs",
+            "Knee deformity (bow legs or knock knees)",
+            "Failed previous knee surgeries",
+            "Age typically 55-80 years (can vary based on condition)"
+        ],
+        "procedureSteps": [
+            {"step": 1, "title": "Pre-operative Planning", "description": "X-rays and CT scans for templating. Blood tests, cardiac clearance, and dental checkup.", "duration": "1-2 weeks before"},
+            {"step": 2, "title": "Anesthesia", "description": "Spinal anesthesia (preferred) or general anesthesia. Nerve blocks for post-operative pain control.", "duration": "30-45 minutes"},
+            {"step": 3, "title": "Surgical Approach", "description": "Minimally invasive incision (10-12 cm). Medial parapatellar approach preserves muscle.", "duration": "Part of surgery"},
+            {"step": 4, "title": "Bone Preparation", "description": "Computer navigation guides precise bone cuts. Damaged cartilage and bone removed.", "duration": "45-60 minutes"},
+            {"step": 5, "title": "Implant Placement", "description": "Trial implants tested for fit and alignment. Final cobalt-chrome and polyethylene components cemented.", "duration": "30-45 minutes"},
+            {"step": 6, "title": "Closure & Recovery", "description": "Wound closure with absorbable sutures. Drain placement. Compression bandage applied.", "duration": "20-30 minutes"}
+        ],
+        "benefits": [
+            {"title": "Pain Relief", "description": "90-95% of patients report significant pain reduction", "icon": "✓"},
+            {"title": "Improved Mobility", "description": "Walk, climb stairs, and resume daily activities", "icon": "✓"},
+            {"title": "Better Quality of Life", "description": "Return to golf, swimming, cycling, and travel", "icon": "✓"},
+            {"title": "Long-lasting Results", "description": "95% of implants last 15-20 years or more", "icon": "✓"},
+            {"title": "Corrects Deformity", "description": "Straightens bow legs or knock knees", "icon": "✓"}
+        ],
+        "recoveryTimeline": [
+            {"phase": "Day 1", "milestone": "Stand and take first steps with walker", "activities": "Ankle pumps, quadriceps sets"},
+            {"phase": "Days 2-3", "milestone": "Walk in corridor, climb stairs", "activities": "Discharge home or to rehab"},
+            {"phase": "Week 1-2", "milestone": "Walk with walker at home", "activities": "Home exercises, ice therapy"},
+            {"phase": "Week 3-4", "milestone": "Transition to cane", "activities": "Increase walking distance"},
+            {"phase": "Week 6", "milestone": "Drive (automatic car)", "activities": "Light daily activities"},
+            {"phase": "Month 3", "milestone": "Walk independently", "activities": "Return to most activities"},
+            {"phase": "Month 6", "milestone": "Full recovery", "activities": "Golf, swimming, travel"}
+        ],
+        "risks": [
+            {"risk": "Infection", "percentage": "1-2%", "prevention": "Antibiotics, sterile technique"},
+            {"risk": "Blood clots (DVT)", "percentage": "2-3%", "prevention": "Blood thinners, compression stockings"},
+            {"risk": "Stiffness", "percentage": "5-10%", "prevention": "Early physiotherapy"},
+            {"risk": "Implant loosening", "percentage": "<1% at 10 years", "prevention": "Proper cementing technique"}
+        ],
+        "preOpPreparation": [
+            "Stop smoking 4-6 weeks before surgery",
+            "Lose weight if BMI > 35",
+            "Control diabetes (HbA1c < 8%)",
+            "Treat any dental infections",
+            "Arrange home help for 2-3 weeks",
+            "Prepare home: remove rugs, install grab bars",
+            "Stop blood thinners as advised"
+        ],
+        "postOpCare": [
+            "Wound care: Keep dry for 2 weeks, watch for redness",
+            "Ice therapy: 20 minutes, 3-4 times daily",
+            "Exercises: As prescribed by physiotherapist",
+            "Medications: Pain killers, blood thinners, antibiotics",
+            "Follow-up: 2 weeks, 6 weeks, 3 months, 1 year",
+            "Activity: Avoid kneeling, squatting, running"
+        ],
+        "faqs": [
+            {"question": "How long does total knee replacement surgery take?", "answer": "The surgery typically takes 1.5 to 2 hours. With anesthesia preparation and recovery room time, expect to be in the operation theater area for about 3-4 hours total."},
+            {"question": "What is the cost of knee replacement surgery in Hyderabad?", "answer": "The cost ranges from ₹2.5 to 4.5 lakhs depending on the implant type (standard vs premium), hospital room category, and any additional procedures needed."},
+            {"question": "Can both knees be replaced at the same time?", "answer": "Yes, bilateral (both knees) replacement can be done in a single surgery for suitable candidates. This reduces overall recovery time and cost."},
+            {"question": "How long will my knee replacement last?", "answer": "Modern knee implants typically last 20-25 years. With proper care and avoiding high-impact activities, many patients never need revision surgery."},
+            {"question": "When can I drive after knee replacement?", "answer": "Most patients can drive an automatic car 4-6 weeks after surgery (left knee) or 6-8 weeks (right knee). You should be off narcotic pain medications."}
+        ],
+        "relatedConditions": ["knee-arthritis", "meniscus-tear", "acl-tear"],
+        "relatedTreatments": ["knee-arthroscopy", "acl-reconstruction"]
+    },
+    "total-hip-replacement": {
+        "name": "Total Hip Replacement (THR)",
+        "category": "Joint Replacement",
+        "icon": "🦴",
+        "imageUrl": "https://images.pexels.com/photos/2324837/pexels-photo-2324837.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "heroTitle": "Total Hip Replacement Surgery in Hyderabad",
+        "heroSubtitle": "Advanced anterior approach hip replacement for faster recovery and better outcomes.",
+        "overview": "Total Hip Replacement (THR) is a surgical procedure where the damaged hip joint is replaced with artificial components. Dr. B Harsha Vardhana Reddy specializes in both anterior and posterior approach hip replacements, offering personalized surgical plans based on patient anatomy and activity goals. Hip replacement is one of the most successful orthopedic surgeries, with over 95% of patients experiencing dramatic pain relief.",
+        "statistics": [
+            {"label": "Success Rate", "value": "97%", "description": "Patient satisfaction"},
+            {"label": "Implant Life", "value": "25+ yrs", "description": "With ceramic bearings"},
+            {"label": "Hospital Stay", "value": "2-3 days", "description": "Early discharge"},
+            {"label": "Walking", "value": "Same day", "description": "With rapid recovery protocol"}
+        ],
+        "candidatesFor": [
+            "Hip arthritis (osteoarthritis or rheumatoid)",
+            "Avascular necrosis (AVN) of femoral head",
+            "Hip fractures in elderly patients",
+            "Failed previous hip surgeries",
+            "Developmental dysplasia of hip",
+            "Post-traumatic arthritis"
+        ],
+        "procedureSteps": [
+            {"step": 1, "title": "Pre-operative Assessment", "description": "Hip X-rays, blood tests, cardiac evaluation. Template for implant sizing.", "duration": "1-2 weeks before"},
+            {"step": 2, "title": "Anesthesia", "description": "Spinal or general anesthesia based on patient factors.", "duration": "30 minutes"},
+            {"step": 3, "title": "Surgical Approach", "description": "Anterior (front) or posterior (back) approach based on patient anatomy.", "duration": "Part of surgery"},
+            {"step": 4, "title": "Femoral Head Removal", "description": "Dislocate hip and remove damaged femoral head.", "duration": "20-30 minutes"},
+            {"step": 5, "title": "Socket Preparation", "description": "Ream acetabulum and place cup with liner.", "duration": "30 minutes"},
+            {"step": 6, "title": "Stem Insertion", "description": "Prepare femur and insert stem with ceramic head.", "duration": "30 minutes"}
+        ],
+        "benefits": [
+            {"title": "Complete Pain Relief", "description": "95% patients pain-free", "icon": "✓"},
+            {"title": "Restored Mobility", "description": "Walk, climb stairs, sit cross-legged", "icon": "✓"},
+            {"title": "Equal Leg Length", "description": "Corrects limb length discrepancy", "icon": "✓"},
+            {"title": "Durable Implants", "description": "Ceramic bearings last 25+ years", "icon": "✓"},
+            {"title": "Anterior Approach", "description": "Faster recovery, lower dislocation risk", "icon": "✓"}
+        ],
+        "recoveryTimeline": [
+            {"phase": "Day 0", "milestone": "Stand and walk with support", "activities": "Rapid recovery protocol"},
+            {"phase": "Days 2-3", "milestone": "Discharge home", "activities": "Walk with walker"},
+            {"phase": "Week 2", "milestone": "Climb stairs", "activities": "Transition to cane"},
+            {"phase": "Week 4", "milestone": "Walk without support", "activities": "Drive automatic car"},
+            {"phase": "Week 6", "milestone": "Return to desk work", "activities": "Light activities"},
+            {"phase": "Month 3", "milestone": "Full recovery", "activities": "Sports, travel"}
+        ],
+        "risks": [
+            {"risk": "Dislocation", "percentage": "1-2%", "prevention": "Hip precautions, anterior approach"},
+            {"risk": "Infection", "percentage": "1%", "prevention": "Antibiotics, laminar airflow OR"},
+            {"risk": "Leg length inequality", "percentage": "2-3%", "prevention": "Intraoperative templating"},
+            {"risk": "DVT/PE", "percentage": "1-2%", "prevention": "Blood thinners, early mobilization"}
+        ],
+        "preOpPreparation": [
+            "Stop smoking 4-6 weeks before",
+            "Optimize diabetes and blood pressure",
+            "Dental clearance to prevent infection",
+            "Lose weight if significantly overweight",
+            "Arrange raised toilet seat and grab bars",
+            "Plan for 2-3 weeks of home help"
+        ],
+        "postOpCare": [
+            "Hip precautions for 6 weeks (posterior approach)",
+            "Anterior approach: fewer restrictions",
+            "Blood thinners for 4-6 weeks",
+            "Physiotherapy exercises daily",
+            "Avoid low chairs and crossing legs initially",
+            "Sleep on back or non-operated side"
+        ],
+        "faqs": [
+            {"question": "What is the difference between anterior and posterior hip replacement?", "answer": "Anterior approach goes through the front of hip between muscles (no muscle cutting), allowing faster recovery and lower dislocation risk. Posterior approach is more traditional."},
+            {"question": "How much does hip replacement cost in Hyderabad?", "answer": "Hip replacement costs range from ₹3 to 5 lakhs depending on the type of implant, hospital room, and surgeon fees."},
+            {"question": "How long does hip replacement surgery take?", "answer": "The surgery takes about 1.5-2 hours. Total time in the operating theater including anesthesia is about 3 hours."},
+            {"question": "When can I walk after hip replacement?", "answer": "With modern rapid recovery protocols, most patients stand and walk with support on the same day of surgery."}
+        ],
+        "relatedConditions": ["hip-arthritis", "avascular-necrosis"],
+        "relatedTreatments": ["hip-arthroscopy", "core-decompression"]
+    },
+    "acl-reconstruction": {
+        "name": "ACL Reconstruction",
+        "category": "Sports Surgery",
+        "icon": "⚽",
+        "imageUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+        "heroTitle": "ACL Reconstruction Surgery in Hyderabad",
+        "heroSubtitle": "Get back to sports with expert ACL reconstruction. 90%+ return to activity rate.",
+        "overview": "ACL reconstruction is a surgical procedure to replace a torn anterior cruciate ligament (ACL). Dr. B Harsha Vardhana Reddy performs anatomic ACL reconstruction using arthroscopic techniques at Yashoda Hospital, Hyderabad. The surgery uses a tissue graft to reconstruct the torn ligament, restoring knee stability.",
+        "statistics": [
+            {"label": "Success Rate", "value": "90-95%", "description": "Return to sports"},
+            {"label": "Surgery Time", "value": "1-1.5 hrs", "description": "Arthroscopic"},
+            {"label": "Hospital Stay", "value": "1-2 days", "description": "Outpatient possible"},
+            {"label": "Return to Sports", "value": "6-9 months", "description": "With proper rehab"}
+        ],
+        "candidatesFor": [
+            "Active individuals with ACL tear",
+            "Athletes wanting to return to pivoting sports",
+            "Patients with knee instability episodes",
+            "Combined ligament injuries",
+            "Young patients with ACL tear"
+        ],
+        "procedureSteps": [
+            {"step": 1, "title": "Pre-operative Rehabilitation", "description": "Restore motion and strength before surgery. Reduce swelling.", "duration": "2-4 weeks before"},
+            {"step": 2, "title": "Graft Harvest", "description": "Hamstring tendon, patellar tendon, or quadriceps tendon graft.", "duration": "15-20 minutes"},
+            {"step": 3, "title": "Arthroscopic Inspection", "description": "Assess ACL tear and associated injuries (meniscus, cartilage).", "duration": "10 minutes"},
+            {"step": 4, "title": "Tunnel Creation", "description": "Precise bone tunnels drilled in femur and tibia.", "duration": "20-30 minutes"},
+            {"step": 5, "title": "Graft Passage", "description": "Thread graft through tunnels, tension appropriately.", "duration": "15-20 minutes"},
+            {"step": 6, "title": "Graft Fixation", "description": "Secure graft with interference screws or suspensory devices.", "duration": "15 minutes"}
+        ],
+        "benefits": [
+            {"title": "Restored Stability", "description": "Eliminate knee giving way episodes", "icon": "✓"},
+            {"title": "Return to Sports", "description": "90%+ return to previous activity level", "icon": "✓"},
+            {"title": "Prevent Further Damage", "description": "Protect meniscus and cartilage", "icon": "✓"},
+            {"title": "Minimally Invasive", "description": "Small incisions, faster recovery", "icon": "✓"}
+        ],
+        "recoveryTimeline": [
+            {"phase": "Week 1-2", "milestone": "Control pain and swelling, restore extension", "activities": "Crutches, brace locked in extension"},
+            {"phase": "Week 2-6", "milestone": "Regain range of motion, begin strengthening", "activities": "Stationary bike, pool walking"},
+            {"phase": "Month 2-3", "milestone": "Full ROM, progressive strengthening", "activities": "Leg press, squats, balance training"},
+            {"phase": "Month 3-6", "milestone": "Running progression, agility training", "activities": "Sport-specific drills"},
+            {"phase": "Month 6-9", "milestone": "Return to sport testing", "activities": "Full return if tests passed"}
+        ],
+        "risks": [
+            {"risk": "Graft failure", "percentage": "5-10%", "prevention": "Proper graft selection, technique"},
+            {"risk": "Stiffness", "percentage": "5-10%", "prevention": "Early range of motion"},
+            {"risk": "Infection", "percentage": "<1%", "prevention": "Sterile technique, antibiotics"}
+        ],
+        "preOpPreparation": [
+            "Pre-habilitation exercises to restore motion",
+            "Reduce swelling before surgery",
+            "Strengthen quadriceps and hamstrings",
+            "Arrange for 2-4 weeks of limited activity",
+            "Obtain crutches and knee brace"
+        ],
+        "postOpCare": [
+            "Use crutches for 2-4 weeks",
+            "Wear brace as directed",
+            "Ice 20 minutes, 4-5 times daily",
+            "Follow physical therapy protocol strictly",
+            "Avoid pivoting activities until cleared"
+        ],
+        "faqs": [
+            {"question": "Which graft is best for ACL reconstruction?", "answer": "The best graft depends on individual factors. Patellar tendon and hamstring are most common. Your surgeon will recommend based on your activity level and anatomy."},
+            {"question": "Can I play sports after ACL reconstruction?", "answer": "Yes, 90%+ of patients return to their previous sport level after proper rehabilitation. Return to sports typically occurs 6-9 months after surgery."},
+            {"question": "Is ACL surgery painful?", "answer": "Pain is well-controlled with nerve blocks and medications. Most patients rate pain as moderate in the first few days, improving significantly by week 2."},
+            {"question": "What if I don't have ACL surgery?", "answer": "Without surgery, the knee may remain unstable, especially with pivoting activities. This can lead to further meniscus and cartilage damage over time."}
+        ],
+        "relatedConditions": ["acl-tear", "meniscus-tear", "pcl-injury"],
+        "relatedTreatments": ["knee-arthroscopy", "physical-therapy"]
+    },
+    "knee-arthroscopy": {
+        "name": "Knee Arthroscopy",
+        "category": "Minimally Invasive",
+        "icon": "🔬",
+        "imageUrl": "https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "heroTitle": "Knee Arthroscopy in Hyderabad",
+        "heroSubtitle": "Minimally invasive knee surgery for faster recovery and better outcomes.",
+        "overview": "Knee arthroscopy is a minimally invasive surgical procedure that uses a small camera (arthroscope) to diagnose and treat knee problems. Dr. B Harsha Vardhana Reddy performs advanced arthroscopic procedures at Yashoda Hospital, Hyderabad, including meniscus repair, ACL reconstruction, and cartilage restoration.",
+        "statistics": [
+            {"label": "Incisions", "value": "2-3", "description": "Small portals (5mm)"},
+            {"label": "Surgery Time", "value": "30-90 min", "description": "Depending on procedure"},
+            {"label": "Hospital Stay", "value": "Day care", "description": "Same-day discharge"},
+            {"label": "Return to Work", "value": "1-2 weeks", "description": "Desk job"}
+        ],
+        "candidatesFor": [
+            "Meniscus tears",
+            "ACL and ligament injuries",
+            "Loose bodies in the knee",
+            "Cartilage damage",
+            "Synovitis and inflammation",
+            "Diagnostic uncertainty"
+        ],
+        "procedureSteps": [
+            {"step": 1, "title": "Anesthesia", "description": "Spinal or general anesthesia based on procedure.", "duration": "15-20 minutes"},
+            {"step": 2, "title": "Portal Creation", "description": "2-3 small incisions (5mm) around knee.", "duration": "5 minutes"},
+            {"step": 3, "title": "Joint Inspection", "description": "Camera inserted, systematic evaluation of all compartments.", "duration": "10 minutes"},
+            {"step": 4, "title": "Treatment", "description": "Meniscus repair/trim, ACL reconstruction, loose body removal.", "duration": "20-60 minutes"},
+            {"step": 5, "title": "Closure", "description": "Portal closure with sutures or steri-strips.", "duration": "5 minutes"}
+        ],
+        "benefits": [
+            {"title": "Minimal Scarring", "description": "Tiny incisions heal quickly", "icon": "✓"},
+            {"title": "Fast Recovery", "description": "Return to normal activities sooner", "icon": "✓"},
+            {"title": "Less Pain", "description": "Compared to open surgery", "icon": "✓"},
+            {"title": "Outpatient Procedure", "description": "Go home same day", "icon": "✓"},
+            {"title": "Accurate Diagnosis", "description": "Direct visualization of joint", "icon": "✓"}
+        ],
+        "recoveryTimeline": [
+            {"phase": "Day 0", "milestone": "Go home same day", "activities": "Rest, ice, elevation"},
+            {"phase": "Days 1-3", "milestone": "Walk with support", "activities": "Gentle exercises"},
+            {"phase": "Week 1-2", "milestone": "Return to desk work", "activities": "Physical therapy starts"},
+            {"phase": "Week 4-6", "milestone": "Return to driving", "activities": "Progressive strengthening"},
+            {"phase": "Month 2-3", "milestone": "Return to sports (meniscectomy)", "activities": "Full activity"}
+        ],
+        "risks": [
+            {"risk": "Infection", "percentage": "<0.5%", "prevention": "Sterile technique"},
+            {"risk": "Blood clots", "percentage": "1%", "prevention": "Early mobilization"},
+            {"risk": "Stiffness", "percentage": "2-5%", "prevention": "Early range of motion"}
+        ],
+        "faqs": [
+            {"question": "Is knee arthroscopy painful?", "answer": "Discomfort is usually mild to moderate. Pain is well-controlled with medications. Most patients report significant improvement within a few days."},
+            {"question": "How long does knee arthroscopy take?", "answer": "Simple procedures like meniscus trimming take 30-45 minutes. Complex procedures like ACL reconstruction take 60-90 minutes."},
+            {"question": "When can I walk after knee arthroscopy?", "answer": "Most patients walk with support immediately after simple procedures. Weight bearing depends on the specific surgery performed."},
+            {"question": "When can I return to work?", "answer": "Desk jobs: 1-2 weeks. Physical jobs: 4-6 weeks. Sports: 6 weeks (meniscectomy) to 6-9 months (ACL reconstruction)."}
+        ],
+        "relatedConditions": ["meniscus-tear", "acl-tear", "knee-arthritis"],
+        "relatedTreatments": ["acl-reconstruction", "meniscus-repair"]
+    },
+    "shoulder-arthroscopy": {
+        "name": "Shoulder Arthroscopy",
+        "category": "Minimally Invasive",
+        "icon": "💪",
+        "imageUrl": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80",
+        "heroTitle": "Shoulder Arthroscopy in Hyderabad",
+        "heroSubtitle": "Advanced minimally invasive shoulder surgery for rotator cuff, instability, and more.",
+        "overview": "Shoulder arthroscopy is a minimally invasive surgical technique that allows Dr. B Harsha Vardhana Reddy to diagnose and treat shoulder problems through small incisions. Common procedures include rotator cuff repair, labral repair, and treatment of frozen shoulder.",
+        "statistics": [
+            {"label": "Incisions", "value": "3-4", "description": "Small portals"},
+            {"label": "Surgery Time", "value": "1-2 hrs", "description": "Depending on procedure"},
+            {"label": "Hospital Stay", "value": "1 day", "description": "Overnight stay"},
+            {"label": "Return to Work", "value": "2-6 weeks", "description": "Desk job"}
+        ],
+        "candidatesFor": [
+            "Rotator cuff tears",
+            "Shoulder instability/dislocations",
+            "Labral tears (SLAP, Bankart)",
+            "Frozen shoulder",
+            "Impingement syndrome",
+            "AC joint arthritis"
+        ],
+        "procedureSteps": [
+            {"step": 1, "title": "Anesthesia", "description": "General anesthesia with nerve block for pain control.", "duration": "30 minutes"},
+            {"step": 2, "title": "Positioning", "description": "Beach chair or lateral decubitus position.", "duration": "10 minutes"},
+            {"step": 3, "title": "Portal Placement", "description": "3-4 small incisions for camera and instruments.", "duration": "10 minutes"},
+            {"step": 4, "title": "Joint Inspection", "description": "Evaluate rotator cuff, labrum, biceps, cartilage.", "duration": "10-15 minutes"},
+            {"step": 5, "title": "Repair/Treatment", "description": "Suture anchors for repair, debridement, capsular release.", "duration": "45-90 minutes"}
+        ],
+        "benefits": [
+            {"title": "Smaller Incisions", "description": "Better cosmesis, less scarring", "icon": "✓"},
+            {"title": "Less Muscle Damage", "description": "Preserves surrounding tissue", "icon": "✓"},
+            {"title": "Better Visualization", "description": "See entire joint clearly", "icon": "✓"},
+            {"title": "Faster Recovery", "description": "Compared to open surgery", "icon": "✓"}
+        ],
+        "recoveryTimeline": [
+            {"phase": "Week 1-2", "milestone": "Sling wear, pain control", "activities": "Passive motion, pendulums"},
+            {"phase": "Week 2-6", "milestone": "Begin active motion", "activities": "Sling weaning, PT starts"},
+            {"phase": "Month 2-3", "milestone": "Strengthening begins", "activities": "Resistance exercises"},
+            {"phase": "Month 3-6", "milestone": "Return to activities", "activities": "Progressive sports"},
+            {"phase": "Month 6-9", "milestone": "Full recovery", "activities": "Unrestricted activity"}
+        ],
+        "risks": [
+            {"risk": "Stiffness", "percentage": "5-10%", "prevention": "Early controlled motion"},
+            {"risk": "Re-tear (rotator cuff)", "percentage": "10-20%", "prevention": "Protected healing"},
+            {"risk": "Infection", "percentage": "<1%", "prevention": "Sterile technique"}
+        ],
+        "faqs": [
+            {"question": "How long do I wear a sling after shoulder arthroscopy?", "answer": "Sling wear varies: 2-4 weeks for simple procedures, 4-6 weeks for rotator cuff repair. Your surgeon will provide specific guidelines."},
+            {"question": "When can I drive after shoulder surgery?", "answer": "Usually 4-6 weeks after surgery, once you can safely control the steering wheel. Earlier for left shoulder if you drive automatic."},
+            {"question": "Will I regain full shoulder strength?", "answer": "Most patients regain 90-95% of strength after proper rehabilitation. Full recovery of strength takes 6-12 months."}
+        ],
+        "relatedConditions": ["rotator-cuff-tear", "frozen-shoulder", "shoulder-dislocation"],
+        "relatedTreatments": ["rotator-cuff-repair", "bankart-repair"]
+    }
+}
+
+@api_router.post("/admin/cms/enrich-detailed-content")
+async def enrich_cms_with_detailed_content():
+    """Enrich existing CMS pages with detailed treatment protocols and content"""
+    try:
+        updated_count = 0
+        skipped_count = 0
+        results = []
+        
+        # Update conditions with detailed data
+        for slug, detailed_data in CONDITIONS_DETAILED_DATA.items():
+            existing = await db.cms_pages.find_one({"slug": slug, "type": "condition"})
+            
+            if existing:
+                # Merge detailed content into existing CMS content
+                updated_content = existing.get("content", {})
+                updated_content.update({
+                    "name": detailed_data.get("name", updated_content.get("name")),
+                    "category": detailed_data.get("category", updated_content.get("category")),
+                    "icon": detailed_data.get("icon", updated_content.get("icon")),
+                    "imageUrl": detailed_data.get("imageUrl"),
+                    "overview": detailed_data.get("overview"),
+                    "causes": detailed_data.get("causes", []),
+                    "symptoms": detailed_data.get("symptoms", []),
+                    "diagnosis": detailed_data.get("diagnosis", []),
+                    "nonSurgicalTreatments": detailed_data.get("nonSurgicalTreatments", []),
+                    "surgicalTreatments": detailed_data.get("surgicalTreatments", []),
+                    "recoveryTimeline": detailed_data.get("recoveryTimeline", []),
+                    "faqs": detailed_data.get("faqs", []),
+                    "relatedConditions": detailed_data.get("relatedConditions", []),
+                    "relatedTreatments": detailed_data.get("relatedTreatments", [])
+                })
+                
+                await db.cms_pages.update_one(
+                    {"_id": existing["_id"]},
+                    {"$set": {
+                        "content": updated_content,
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }}
+                )
+                results.append({"slug": slug, "type": "condition", "status": "enriched"})
+                updated_count += 1
+            else:
+                # Create new page if doesn't exist
+                page_doc = {
+                    "id": str(uuid.uuid4()),
+                    "slug": slug,
+                    "type": "condition",
+                    "title": f"{detailed_data['name']} Treatment in Hyderabad",
+                    "meta_title": f"{detailed_data['name']} Treatment Hyderabad | Dr. Harsha Reddy",
+                    "meta_description": f"Expert {detailed_data['name'].lower()} treatment in Hyderabad by Dr. B Harsha Vardhana Reddy at Yashoda Hospital.",
+                    "keywords": [f"{detailed_data['name'].lower()} treatment", f"{detailed_data['name'].lower()} hyderabad"],
+                    "content": detailed_data,
+                    "status": "published",
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                    "published_at": datetime.now(timezone.utc).isoformat()
+                }
+                await db.cms_pages.insert_one(page_doc)
+                results.append({"slug": slug, "type": "condition", "status": "created"})
+                updated_count += 1
+        
+        # Update treatments with detailed data
+        for slug, detailed_data in TREATMENTS_DETAILED_DATA.items():
+            existing = await db.cms_pages.find_one({"slug": slug, "type": "treatment"})
+            
+            if existing:
+                # Merge detailed content into existing CMS content
+                updated_content = existing.get("content", {})
+                updated_content.update({
+                    "name": detailed_data.get("name", updated_content.get("name")),
+                    "category": detailed_data.get("category", updated_content.get("category")),
+                    "icon": detailed_data.get("icon", updated_content.get("icon")),
+                    "imageUrl": detailed_data.get("imageUrl"),
+                    "heroTitle": detailed_data.get("heroTitle"),
+                    "heroSubtitle": detailed_data.get("heroSubtitle"),
+                    "overview": detailed_data.get("overview"),
+                    "statistics": detailed_data.get("statistics", []),
+                    "candidatesFor": detailed_data.get("candidatesFor", []),
+                    "procedureSteps": detailed_data.get("procedureSteps", []),
+                    "benefits": detailed_data.get("benefits", []),
+                    "recoveryTimeline": detailed_data.get("recoveryTimeline", []),
+                    "risks": detailed_data.get("risks", []),
+                    "preOpPreparation": detailed_data.get("preOpPreparation", []),
+                    "postOpCare": detailed_data.get("postOpCare", []),
+                    "faqs": detailed_data.get("faqs", []),
+                    "relatedConditions": detailed_data.get("relatedConditions", []),
+                    "relatedTreatments": detailed_data.get("relatedTreatments", [])
+                })
+                
+                await db.cms_pages.update_one(
+                    {"_id": existing["_id"]},
+                    {"$set": {
+                        "content": updated_content,
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }}
+                )
+                results.append({"slug": slug, "type": "treatment", "status": "enriched"})
+                updated_count += 1
+            else:
+                # Create new page if doesn't exist
+                page_doc = {
+                    "id": str(uuid.uuid4()),
+                    "slug": slug,
+                    "type": "treatment",
+                    "title": f"{detailed_data['name']} in Hyderabad",
+                    "meta_title": f"{detailed_data['name']} Hyderabad | Dr. Harsha Reddy",
+                    "meta_description": f"Expert {detailed_data['name'].lower()} in Hyderabad by Dr. B Harsha Vardhana Reddy at Yashoda Hospital.",
+                    "keywords": [f"{detailed_data['name'].lower()}", f"{detailed_data['name'].lower()} hyderabad"],
+                    "content": detailed_data,
+                    "status": "published",
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                    "published_at": datetime.now(timezone.utc).isoformat()
+                }
+                await db.cms_pages.insert_one(page_doc)
+                results.append({"slug": slug, "type": "treatment", "status": "created"})
+                updated_count += 1
+        
+        return {
+            "success": True,
+            "message": f"CMS enrichment complete. Updated/Created: {updated_count}",
+            "updated": updated_count,
+            "skipped": skipped_count,
+            "details": results
+        }
+    except Exception as e:
+        logger.error(f"Error enriching CMS content: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to enrich content: {str(e)}")
+
+
 # ============ AI Chat Agent ============
 
 # Try to import emergentintegrations for AI chat
