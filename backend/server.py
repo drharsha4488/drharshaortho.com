@@ -3770,6 +3770,27 @@ async def generate_single_blog(data: dict):
     return {"success": True, "post": post}
 
 
+# ============ GROWTH TRACKING ENDPOINTS ============
+
+@api_router.get("/admin/growth/history")
+async def get_growth_history(days: int = 30):
+    """Get growth snapshots for the last N days."""
+    history = await seo_automation.get_growth_history(days)
+    return {"snapshots": history, "total": len(history)}
+
+@api_router.post("/admin/growth/snapshot")
+async def record_growth_snapshot():
+    """Manually record a growth snapshot for today."""
+    snapshot = await seo_automation.record_growth_snapshot()
+    return {"success": True, "snapshot": snapshot}
+
+@api_router.get("/admin/growth/analysis")
+async def get_growth_analysis():
+    """Get current growth analysis and strategy recommendation."""
+    analysis = await seo_automation.get_growth_analysis()
+    return analysis
+
+
 @api_router.get("/sitemap.xml", response_class=Response)
 async def serve_sitemap():
     """Dynamic sitemap — always fresh from MongoDB. No file, no stale data after deploy."""
