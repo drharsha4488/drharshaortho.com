@@ -17,7 +17,7 @@ const conditionsFAQs = [
     "name": "What are the most common orthopedic conditions?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "The most common orthopedic conditions include knee arthritis, hip arthritis, ACL tears, meniscus tears, rotator cuff injuries, frozen shoulder, and back pain. Dr. Harsha at Yashoda Hospital Hyderabad treats all these conditions with advanced techniques."
+      "text": "The most common orthopedic conditions include knee arthritis, hip arthritis, ACL tears, meniscus tears, rotator cuff injuries, frozen shoulder, and back pain. Dr. Harsha at Apollo Hospitals Financial District treats all these conditions with advanced techniques."
     }
   },
   {

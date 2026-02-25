@@ -14,7 +14,7 @@ const TrustSignals = ({ variant = 'full' }) => {
   ];
 
   const affiliations = [
-    { name: 'Yashoda Hospital', logo: '/images/yashoda-logo.png', type: 'Primary Practice' },
+    { name: 'Apollo Hospitals', logo: '/images/yashoda-logo.png', type: 'Primary Practice' },
     { name: 'Indian Orthopaedic Association', logo: null, type: 'Member' },
     { name: 'Telangana Orthopaedic Association', logo: null, type: 'Member' },
     { name: 'Indian Arthroscopy Society', logo: null, type: 'Member' },

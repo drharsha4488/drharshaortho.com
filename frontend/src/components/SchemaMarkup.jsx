@@ -127,7 +127,7 @@ const SchemaMarkup = ({ type, data, faqs }) => {
     ],
     "worksFor": {
       "@type": "Hospital",
-      "name": "Yashoda Hospital Hi-Tech City",
+      "name": "Apollo Hospitals Financial District",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Hyderabad",
@@ -209,14 +209,14 @@ const SchemaMarkup = ({ type, data, faqs }) => {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": "https://drharshaortho.com/#localbusiness",
-    "name": "Dr. Harsha Orthopedic Centre - Yashoda Hospital",
+    "name": "Dr. Harsha Orthopedic Centre - Apollo Hospitals",
     "image": "https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg",
     "telephone": "+91-99599-64567",
     "email": "contact@drharshaortho.com",
     "url": "https://drharshaortho.com",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Yashoda Hospital, Alexander Road, Hi-Tech City",
+      "streetAddress": "Apollo Hospitals, Alexander Road, Hi-Tech City",
       "addressLocality": "Hyderabad",
       "addressRegion": "Telangana",
       "postalCode": "500081",

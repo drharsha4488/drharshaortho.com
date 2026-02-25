@@ -623,7 +623,7 @@ const ConditionDetail = () => {
           </h2>
           <p className="text-ivory/80 max-w-2xl mx-auto mb-8">
             Dr. B Harsha Vardhana Reddy provides comprehensive care from diagnosis to recovery. 
-            Book your consultation at Yashoda Hospital, Hi-Tech City, Hyderabad.
+            Book your consultation at Apollo Hospitals, Hi-Tech City, Hyderabad.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/contact">

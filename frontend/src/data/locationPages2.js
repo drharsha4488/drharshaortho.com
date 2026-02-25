@@ -6,18 +6,18 @@ export const extendedLocationPages2 = [
     slug: 'orthopedic-doctor-dilsukhnagar',
     title: 'Orthopedic Doctor in Dilsukhnagar - Dr. Harsha',
     metaTitle: 'Orthopedic Doctor Dilsukhnagar | Joint Pain Specialist | Dr. Harsha',
-    metaDescription: 'Expert orthopedic doctor near Dilsukhnagar. Dr. Harsha Reddy treats knee pain, hip problems, fractures at Yashoda Hospital Hi-Tech City. Book appointment today.',
+    metaDescription: 'Expert orthopedic doctor near Dilsukhnagar. Dr. Harsha Reddy treats knee pain, hip problems, fractures at Apollo Hospitals Financial District. Book appointment today.',
     keywords: ['orthopedic doctor dilsukhnagar', 'bone doctor dilsukhnagar', 'knee specialist dilsukhnagar', 'joint pain dilsukhnagar'],
     location: 'Dilsukhnagar',
-    distance: '15 km from Yashoda Hospital',
+    distance: '15 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Trusted Orthopedic Care for Dilsukhnagar',
-        subtitle: 'Expert bone and joint treatment at Yashoda Hospital Hi-Tech City'
+        subtitle: 'Expert bone and joint treatment at Apollo Hospitals Financial District'
       },
-      introduction: `Dilsukhnagar residents seeking quality orthopedic care can consult Dr. B Harsha Vardhana Reddy at Yashoda Hospital Hi-Tech City. While the distance is 15 km, the world-class facilities and expertise make it worth the journey. With excellent metro connectivity and road access, reaching the hospital is convenient.
+      introduction: `Dilsukhnagar residents seeking quality orthopedic care can consult Dr. B Harsha Vardhana Reddy at Apollo Hospitals Financial District. While the distance is 15 km, the world-class facilities and expertise make it worth the journey. With excellent metro connectivity and road access, reaching the hospital is convenient.
 
-Dr. Harsha specializes in treating all orthopedic conditions - from chronic knee pain and arthritis to sports injuries and complex joint replacements. Many patients from Dilsukhnagar, Chaitanyapuri, and Kothapet areas travel to Yashoda Hospital for his expertise.`,
+Dr. Harsha specializes in treating all orthopedic conditions - from chronic knee pain and arthritis to sports injuries and complex joint replacements. Many patients from Dilsukhnagar, Chaitanyapuri, and Kothapet areas travel to Apollo Hospitals for his expertise.`,
       whyChoose: [
         { title: '15+ Years Experience', description: 'Extensive orthopedic expertise' },
         { title: 'Metro Connected', description: 'Easy access via Hyderabad Metro' },
@@ -36,12 +36,12 @@ Dr. Harsha specializes in treating all orthopedic conditions - from chronic knee
       ],
       faqs: [
         {
-          question: 'How do I reach Yashoda Hospital from Dilsukhnagar?',
+          question: 'How do I reach Apollo Hospitals from Dilsukhnagar?',
           answer: 'By metro: Take the Blue Line from Dilsukhnagar to Ameerpet, then change to Green Line to Hi-Tech City (about 50 minutes). By road: Via Inner Ring Road, approximately 45 minutes depending on traffic.'
         },
         {
           question: 'Is it worth traveling from Dilsukhnagar for treatment?',
-          answer: 'Yes, Yashoda Hospital is JCI-accredited with world-class orthopedic facilities. Dr. Harsha has performed 4000+ successful surgeries. Many patients from East Hyderabad travel here for quality care.'
+          answer: 'Yes, Apollo Hospitals is JCI-accredited with world-class orthopedic facilities. Dr. Harsha has performed 4000+ successful surgeries. Many patients from East Hyderabad travel here for quality care.'
         },
         {
           question: 'Do you have accommodation for outstation patients?',
@@ -63,13 +63,13 @@ Dr. Harsha specializes in treating all orthopedic conditions - from chronic knee
     metaDescription: 'Best knee doctor near Ameerpet, Hyderabad. Dr. Harsha treats knee pain, ACL injuries, arthritis. Just 20 mins from Ameerpet. Book consultation.',
     keywords: ['knee doctor ameerpet', 'knee specialist ameerpet', 'knee pain treatment ameerpet', 'orthopedic ameerpet'],
     location: 'Ameerpet',
-    distance: '8 km from Yashoda Hospital',
+    distance: '8 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Expert Knee Doctor Near Ameerpet',
         subtitle: 'Comprehensive knee care just 20 minutes away'
       },
-      introduction: `Ameerpet residents experiencing knee pain can find expert care at Yashoda Hospital Hi-Tech City, just 8 km away. Dr. B Harsha Vardhana Reddy is a fellowship-trained knee specialist who treats all knee conditions from minor injuries to total knee replacement.
+      introduction: `Ameerpet residents experiencing knee pain can find expert care at Apollo Hospitals Financial District, just 8 km away. Dr. B Harsha Vardhana Reddy is a fellowship-trained knee specialist who treats all knee conditions from minor injuries to total knee replacement.
 
 Whether you're a student, professional, or senior citizen in Ameerpet, SR Nagar, or Punjagutta areas, Dr. Harsha provides personalized knee care with the latest treatment options.`,
       whyChoose: [
@@ -91,7 +91,7 @@ Whether you're a student, professional, or senior citizen in Ameerpet, SR Nagar,
       faqs: [
         {
           question: 'How far is Dr. Harsha from Ameerpet?',
-          answer: 'Yashoda Hospital Hi-Tech City is 8 km from Ameerpet. By metro, take the Green Line from Ameerpet to Hi-Tech City (15-20 minutes direct). By road, it takes about 20-25 minutes.'
+          answer: 'Apollo Hospitals Financial District is 8 km from Ameerpet. By metro, take the Green Line from Ameerpet to Hi-Tech City (15-20 minutes direct). By road, it takes about 20-25 minutes.'
         },
         {
           question: 'What knee conditions do you treat?',
@@ -113,13 +113,13 @@ Whether you're a student, professional, or senior citizen in Ameerpet, SR Nagar,
     metaDescription: 'Expert orthopedic surgeon near Begumpet. Dr. Harsha Reddy offers knee replacement, hip surgery, sports medicine. 15+ years experience. Book appointment.',
     keywords: ['orthopedic surgeon begumpet', 'bone doctor begumpet', 'joint replacement begumpet', 'orthopedic begumpet hyderabad'],
     location: 'Begumpet',
-    distance: '10 km from Yashoda Hospital',
+    distance: '10 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Expert Orthopedic Surgeon Near Begumpet',
-        subtitle: 'World-class bone and joint care at Yashoda Hospital'
+        subtitle: 'World-class bone and joint care at Apollo Hospitals'
       },
-      introduction: `Begumpet and Somajiguda residents can access expert orthopedic care at Yashoda Hospital Hi-Tech City with Dr. B Harsha Vardhana Reddy. Located 10 km away, the hospital is easily accessible via Begumpet Road and offers comprehensive orthopedic services.
+      introduction: `Begumpet and Somajiguda residents can access expert orthopedic care at Apollo Hospitals Financial District with Dr. B Harsha Vardhana Reddy. Located 10 km away, the hospital is easily accessible via Begumpet Road and offers comprehensive orthopedic services.
 
 From joint replacements to sports injuries, fractures to spine problems, Dr. Harsha provides complete orthopedic care with the latest surgical techniques and rehabilitation support.`,
       whyChoose: [
@@ -160,16 +160,16 @@ From joint replacements to sports injuries, fractures to spine problems, Dr. Har
     slug: 'joint-pain-doctor-lb-nagar',
     title: 'Joint Pain Doctor in LB Nagar - Dr. Harsha Reddy',
     metaTitle: 'Joint Pain Doctor LB Nagar | Arthritis Specialist | Dr. Harsha',
-    metaDescription: 'Expert joint pain doctor near LB Nagar. Dr. Harsha treats arthritis, knee pain, hip problems. Advanced treatments at Yashoda Hospital. Book appointment.',
+    metaDescription: 'Expert joint pain doctor near LB Nagar. Dr. Harsha treats arthritis, knee pain, hip problems. Advanced treatments at Apollo Hospitals. Book appointment.',
     keywords: ['joint pain doctor lb nagar', 'arthritis specialist lb nagar', 'knee pain lb nagar', 'orthopedic lb nagar'],
     location: 'LB Nagar',
-    distance: '18 km from Yashoda Hospital',
+    distance: '18 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Joint Pain Specialist for LB Nagar',
-        subtitle: 'Expert arthritis and joint care at Yashoda Hospital'
+        subtitle: 'Expert arthritis and joint care at Apollo Hospitals'
       },
-      introduction: `LB Nagar and Vanasthalipuram residents suffering from joint pain can consult Dr. B Harsha Vardhana Reddy at Yashoda Hospital Hi-Tech City. While the distance is 18 km, the specialized care and expertise available make it a preferred choice for complex joint problems.
+      introduction: `LB Nagar and Vanasthalipuram residents suffering from joint pain can consult Dr. B Harsha Vardhana Reddy at Apollo Hospitals Financial District. While the distance is 18 km, the specialized care and expertise available make it a preferred choice for complex joint problems.
 
 Dr. Harsha treats all types of joint pain including knee arthritis, hip problems, shoulder issues, and inflammatory conditions. Both conservative management and surgical options are available based on your condition.`,
       whyChoose: [
@@ -210,16 +210,16 @@ Dr. Harsha treats all types of joint pain including knee arthritis, hip problems
     slug: 'orthopedic-doctor-uppal',
     title: 'Orthopedic Doctor Near Uppal - Dr. Harsha',
     metaTitle: 'Orthopedic Doctor Uppal | Bone Specialist | Dr. Harsha Reddy',
-    metaDescription: 'Best orthopedic doctor near Uppal, Hyderabad. Dr. Harsha at Yashoda Hospital treats fractures, joint problems, sports injuries. 15+ years experience.',
+    metaDescription: 'Best orthopedic doctor near Uppal, Hyderabad. Dr. Harsha at Apollo Hospitals treats fractures, joint problems, sports injuries. 15+ years experience.',
     keywords: ['orthopedic doctor uppal', 'bone doctor uppal', 'fracture treatment uppal', 'orthopedic uppal hyderabad'],
     location: 'Uppal',
-    distance: '16 km from Yashoda Hospital',
+    distance: '16 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Expert Orthopedic Care for Uppal Residents',
-        subtitle: 'Comprehensive bone and joint treatment at Yashoda Hospital'
+        subtitle: 'Comprehensive bone and joint treatment at Apollo Hospitals'
       },
-      introduction: `Uppal and Habsiguda residents can access quality orthopedic care at Yashoda Hospital Hi-Tech City with Dr. B Harsha Vardhana Reddy. Located 16 km away with good metro connectivity, the hospital offers advanced orthopedic treatments not available elsewhere.
+      introduction: `Uppal and Habsiguda residents can access quality orthopedic care at Apollo Hospitals Financial District with Dr. B Harsha Vardhana Reddy. Located 16 km away with good metro connectivity, the hospital offers advanced orthopedic treatments not available elsewhere.
 
 Whether you need fracture treatment, joint replacement, or sports injury care, Dr. Harsha provides expert diagnosis and treatment using the latest medical technology.`,
       whyChoose: [
@@ -245,7 +245,7 @@ Whether you need fracture treatment, joint replacement, or sports injury care, D
         },
         {
           question: 'Do you handle emergency fractures?',
-          answer: 'Yes, Yashoda Hospital has 24/7 emergency services. For fractures, you can come directly to emergency or call ahead. Orthopedic surgeons are available round the clock.'
+          answer: 'Yes, Apollo Hospitals has 24/7 emergency services. For fractures, you can come directly to emergency or call ahead. Orthopedic surgeons are available round the clock.'
         }
       ],
       testimonial: {
@@ -263,13 +263,13 @@ Whether you need fracture treatment, joint replacement, or sports injury care, D
     metaDescription: 'Expert hip specialist near Manikonda. Dr. Harsha performs hip replacement, hip arthroscopy, AVN treatment. Just 6 km from Manikonda. Book consultation.',
     keywords: ['hip specialist manikonda', 'hip replacement manikonda', 'hip doctor manikonda', 'hip pain treatment manikonda'],
     location: 'Manikonda',
-    distance: '6 km from Yashoda Hospital',
+    distance: '6 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Hip Specialist Near Manikonda',
         subtitle: 'Advanced hip treatments including replacement surgery'
       },
-      introduction: `Manikonda residents with hip problems can consult Dr. B Harsha Vardhana Reddy at Yashoda Hospital Hi-Tech City, just 6 km away. Dr. Harsha is an expert in treating all hip conditions including arthritis, avascular necrosis (AVN), fractures, and performing hip replacement surgery.
+      introduction: `Manikonda residents with hip problems can consult Dr. B Harsha Vardhana Reddy at Apollo Hospitals Financial District, just 6 km away. Dr. Harsha is an expert in treating all hip conditions including arthritis, avascular necrosis (AVN), fractures, and performing hip replacement surgery.
 
 Whether you're dealing with hip pain from arthritis, recovering from an injury, or need hip replacement, Dr. Harsha provides comprehensive hip care with the latest surgical techniques.`,
       whyChoose: [
@@ -313,13 +313,13 @@ Whether you're dealing with hip pain from arthritis, recovering from an injury, 
     metaDescription: 'Expert sports medicine doctor near Narsingi. Dr. Harsha treats ACL tears, muscle injuries, tennis elbow. Trusted by athletes. Book appointment.',
     keywords: ['sports medicine narsingi', 'sports injury doctor narsingi', 'ACL surgery narsingi', 'sports doctor narsingi'],
     location: 'Narsingi',
-    distance: '8 km from Yashoda Hospital',
+    distance: '8 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Sports Medicine Expert Near Narsingi',
         subtitle: 'Get back in the game with specialized sports injury care'
       },
-      introduction: `Athletes and fitness enthusiasts in Narsingi can access specialized sports medicine care at Yashoda Hospital Hi-Tech City with Dr. B Harsha Vardhana Reddy. Located just 8 km away, the hospital offers comprehensive sports injury treatment using the latest arthroscopic techniques.
+      introduction: `Athletes and fitness enthusiasts in Narsingi can access specialized sports medicine care at Apollo Hospitals Financial District with Dr. B Harsha Vardhana Reddy. Located just 8 km away, the hospital offers comprehensive sports injury treatment using the latest arthroscopic techniques.
 
 From weekend warriors to professional athletes, Dr. Harsha treats all sports-related injuries including ligament tears, muscle injuries, and overuse syndromes. His goal is to get you back to your sport safely and quickly.`,
       whyChoose: [
@@ -360,16 +360,16 @@ From weekend warriors to professional athletes, Dr. Harsha treats all sports-rel
     slug: 'orthopedic-clinic-kompally',
     title: 'Orthopedic Clinic Near Kompally - Dr. Harsha',
     metaTitle: 'Orthopedic Clinic Kompally | Bone Doctor | Dr. Harsha Reddy',
-    metaDescription: 'Best orthopedic clinic near Kompally. Dr. Harsha Reddy at Yashoda Hospital treats joint problems, fractures, spine issues. Book consultation today.',
+    metaDescription: 'Best orthopedic clinic near Kompally. Dr. Harsha Reddy at Apollo Hospitals treats joint problems, fractures, spine issues. Book consultation today.',
     keywords: ['orthopedic clinic kompally', 'bone doctor kompally', 'orthopedic kompally', 'joint specialist kompally'],
     location: 'Kompally',
-    distance: '20 km from Yashoda Hospital',
+    distance: '20 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Quality Orthopedic Care for Kompally',
-        subtitle: 'Expert treatment at Yashoda Hospital Hi-Tech City'
+        subtitle: 'Expert treatment at Apollo Hospitals Financial District'
       },
-      introduction: `Kompally and Medchal residents can access expert orthopedic care at Yashoda Hospital Hi-Tech City with Dr. B Harsha Vardhana Reddy. Though 20 km away, the journey is worthwhile for the specialized care and advanced facilities available.
+      introduction: `Kompally and Medchal residents can access expert orthopedic care at Apollo Hospitals Financial District with Dr. B Harsha Vardhana Reddy. Though 20 km away, the journey is worthwhile for the specialized care and advanced facilities available.
 
 Dr. Harsha treats all orthopedic conditions with a focus on getting you back to normal life quickly. From conservative treatment to complex surgeries, comprehensive care is available under one roof.`,
       whyChoose: [
@@ -395,11 +395,11 @@ Dr. Harsha treats all orthopedic conditions with a focus on getting you back to 
         },
         {
           question: 'Are there any branches closer to Kompally?',
-          answer: 'Dr. Harsha practices exclusively at Yashoda Hospital Hi-Tech City. While there\'s no branch in Kompally, the specialized care available makes the travel worthwhile for serious orthopedic conditions.'
+          answer: 'Dr. Harsha practices exclusively at Apollo Hospitals Financial District. While there\'s no branch in Kompally, the specialized care available makes the travel worthwhile for serious orthopedic conditions.'
         }
       ],
       testimonial: {
-        text: "We drove from Kompally for my wife's knee replacement. Dr. Harsha and Yashoda Hospital provided excellent care. The ORR makes the journey quite easy.",
+        text: "We drove from Kompally for my wife's knee replacement. Dr. Harsha and Apollo Hospitals provided excellent care. The ORR makes the journey quite easy.",
         author: "Raju P.",
         designation: "Kompally Resident"
       }
@@ -410,16 +410,16 @@ Dr. Harsha treats all orthopedic conditions with a focus on getting you back to 
     slug: 'fracture-specialist-attapur',
     title: 'Fracture Specialist in Attapur - Dr. Harsha',
     metaTitle: 'Fracture Specialist Attapur | Fracture Treatment | Dr. Harsha',
-    metaDescription: 'Expert fracture specialist near Attapur. Dr. Harsha treats all fractures - simple to complex. Emergency care available 24/7 at Yashoda Hospital.',
+    metaDescription: 'Expert fracture specialist near Attapur. Dr. Harsha treats all fractures - simple to complex. Emergency care available 24/7 at Apollo Hospitals.',
     keywords: ['fracture specialist attapur', 'fracture treatment attapur', 'bone fracture doctor attapur', 'trauma surgeon attapur'],
     location: 'Attapur',
-    distance: '10 km from Yashoda Hospital',
+    distance: '10 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Fracture Specialist Near Attapur',
-        subtitle: '24/7 emergency fracture care at Yashoda Hospital'
+        subtitle: '24/7 emergency fracture care at Apollo Hospitals'
       },
-      introduction: `Attapur and Rajendra Nagar residents with fractures can get expert treatment at Yashoda Hospital Hi-Tech City with Dr. B Harsha Vardhana Reddy. Located 10 km away with 24/7 emergency services, the hospital handles all types of fractures from simple to complex.
+      introduction: `Attapur and Rajendra Nagar residents with fractures can get expert treatment at Apollo Hospitals Financial District with Dr. B Harsha Vardhana Reddy. Located 10 km away with 24/7 emergency services, the hospital handles all types of fractures from simple to complex.
 
 Dr. Harsha uses modern fracture fixation techniques including minimally invasive methods that promote faster healing and better outcomes. Emergency fracture care is available round the clock.`,
       whyChoose: [
@@ -441,7 +441,7 @@ Dr. Harsha uses modern fracture fixation techniques including minimally invasive
       faqs: [
         {
           question: 'What should I do if I have a fracture?',
-          answer: 'Immobilize the injured area, apply ice if possible, and come to Yashoda Hospital emergency immediately. Don\'t try to set the bone yourself. Call ahead if possible so we can prepare for your arrival.'
+          answer: 'Immobilize the injured area, apply ice if possible, and come to Apollo Hospitals emergency immediately. Don\'t try to set the bone yourself. Call ahead if possible so we can prepare for your arrival.'
         },
         {
           question: 'How long does fracture healing take?',
@@ -463,13 +463,13 @@ Dr. Harsha uses modern fracture fixation techniques including minimally invasive
     metaDescription: 'Expert arthritis doctor near Shamshabad. Dr. Harsha treats knee arthritis, hip arthritis, rheumatoid arthritis. Advanced treatments available. Book consultation.',
     keywords: ['arthritis doctor shamshabad', 'joint pain shamshabad', 'knee arthritis shamshabad', 'orthopedic shamshabad'],
     location: 'Shamshabad',
-    distance: '25 km from Yashoda Hospital',
+    distance: '25 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Arthritis Specialist for Shamshabad Area',
-        subtitle: 'Comprehensive arthritis care at Yashoda Hospital'
+        subtitle: 'Comprehensive arthritis care at Apollo Hospitals'
       },
-      introduction: `Shamshabad and Airport area residents suffering from arthritis can consult Dr. B Harsha Vardhana Reddy at Yashoda Hospital Hi-Tech City. While 25 km away, the specialized arthritis care and treatment options make it a preferred destination for patients with joint problems.
+      introduction: `Shamshabad and Airport area residents suffering from arthritis can consult Dr. B Harsha Vardhana Reddy at Apollo Hospitals Financial District. While 25 km away, the specialized arthritis care and treatment options make it a preferred destination for patients with joint problems.
 
 Dr. Harsha provides complete arthritis management from medications and injections to joint replacement surgery when needed. The goal is to reduce pain, improve function, and maintain quality of life.`,
       whyChoose: [

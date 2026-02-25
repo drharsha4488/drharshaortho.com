@@ -1,28 +1,28 @@
 // Comprehensive Location-Based Landing Pages for Local SEO
-// These pages target specific neighborhoods near Yashoda Hospital Hi-Tech City
+// These pages target specific neighborhoods near Apollo Hospitals Financial District
 
 export const locationLandingPages = [
-  // Primary Service Area - Within 5km of Yashoda Hospital
+  // Primary Service Area - Within 5km of Apollo Hospitals
   {
     slug: 'orthopedic-surgeon-hitec-city',
     title: 'Best Orthopedic Surgeon in Hi-Tech City, Hyderabad',
-    metaTitle: 'Best Orthopedic Surgeon Hi-Tech City | Dr. Harsha Reddy | Yashoda Hospital',
-    metaDescription: 'Looking for the best orthopedic surgeon in Hi-Tech City? Dr. B Harsha Vardhana Reddy at Yashoda Hospital offers expert knee replacement, ACL surgery & sports injury treatment. Book appointment today.',
+    metaTitle: 'Best Orthopedic Surgeon Hi-Tech City | Dr. Harsha Reddy | Apollo Hospitals',
+    metaDescription: 'Looking for the best orthopedic surgeon in Hi-Tech City? Dr. B Harsha Vardhana Reddy at Apollo Hospitals offers expert knee replacement, ACL surgery & sports injury treatment. Book appointment today.',
     keywords: ['orthopedic surgeon hitec city', 'bone doctor hi-tech city', 'knee specialist hitec city hyderabad', 'orthopedic hospital hitec city'],
     location: 'Hi-Tech City',
     distance: '0 km (Located here)',
     content: {
       hero: {
         title: 'Expert Orthopedic Care in Hi-Tech City',
-        subtitle: 'Dr. Harsha Reddy at Yashoda Hospital - Your trusted orthopedic specialist for joint replacement, sports injuries & trauma care'
+        subtitle: 'Dr. Harsha Reddy at Apollo Hospitals - Your trusted orthopedic specialist for joint replacement, sports injuries & trauma care'
       },
-      introduction: `Looking for the best orthopedic surgeon in Hi-Tech City, Hyderabad? Dr. B Harsha Vardhana Reddy, Associate Consultant at Yashoda Hospital Hi-Tech City, brings 15+ years of expertise in treating bone, joint, and muscle conditions. Located in the heart of Hi-Tech City, our clinic is easily accessible to residents of Madhapur, Gachibowli, Kondapur, and surrounding IT corridors.
+      introduction: `Looking for the best orthopedic surgeon in Hi-Tech City, Hyderabad? Dr. B Harsha Vardhana Reddy, Associate Consultant at Apollo Hospitals Financial District, brings 15+ years of expertise in treating bone, joint, and muscle conditions. Located in the heart of Hi-Tech City, our clinic is easily accessible to residents of Madhapur, Gachibowli, Kondapur, and surrounding IT corridors.
 
 Whether you're an IT professional dealing with desk-related back pain, a sports enthusiast with a knee injury, or someone needing joint replacement surgery, Dr. Harsha provides personalized, world-class orthopedic care right here in Hi-Tech City.`,
       whyChoose: [
         { title: '15+ Years Experience', description: 'Extensive expertise in all orthopedic conditions' },
         { title: '4,000+ Surgeries', description: 'Successfully performed joint replacements and arthroscopy' },
-        { title: 'JCI Accredited Hospital', description: 'World-class facilities at Yashoda Hospital' },
+        { title: 'JCI Accredited Hospital', description: 'World-class facilities at Apollo Hospitals' },
         { title: 'Robotic Surgery', description: 'Advanced computer-navigated procedures available' },
         { title: '98% Satisfaction Rate', description: 'Trusted by thousands of patients' },
         { title: '30+ Insurance Partners', description: 'Cashless treatment with major insurers' }
@@ -37,12 +37,12 @@ Whether you're an IT professional dealing with desk-related back pain, a sports 
       ],
       faqs: [
         {
-          question: 'What are the consultation timings at Yashoda Hospital Hi-Tech City?',
-          answer: 'Dr. Harsha is available Monday to Saturday, 9 AM to 6 PM at Yashoda Hospital Hi-Tech City. Emergency consultations are available 24/7.'
+          question: 'What are the consultation timings at Apollo Hospitals Financial District?',
+          answer: 'Dr. Harsha is available Monday to Saturday, 9 AM to 6 PM at Apollo Hospitals Financial District. Emergency consultations are available 24/7.'
         },
         {
-          question: 'How do I reach Yashoda Hospital Hi-Tech City?',
-          answer: 'Yashoda Hospital is located on the main JNTU-Hitech City road, near Cyber Towers. It is well-connected by metro (Hi-Tech City station) and bus routes. Ample parking is available.'
+          question: 'How do I reach Apollo Hospitals Financial District?',
+          answer: 'Apollo Hospitals is located on the main JNTU-Hitech City road, near Cyber Towers. It is well-connected by metro (Hi-Tech City station) and bus routes. Ample parking is available.'
         },
         {
           question: 'Does Dr. Harsha treat IT professionals with desk-related injuries?',
@@ -50,7 +50,7 @@ Whether you're an IT professional dealing with desk-related back pain, a sports 
         },
         {
           question: 'Is robotic knee replacement available at Hi-Tech City?',
-          answer: 'Yes, Yashoda Hospital Hi-Tech City offers computer-navigated and robotic-assisted knee replacement surgery for enhanced precision and faster recovery.'
+          answer: 'Yes, Apollo Hospitals Financial District offers computer-navigated and robotic-assisted knee replacement surgery for enhanced precision and faster recovery.'
         }
       ],
       testimonial: {
@@ -65,16 +65,16 @@ Whether you're an IT professional dealing with desk-related back pain, a sports 
     slug: 'orthopedic-doctor-madhapur',
     title: 'Orthopedic Doctor in Madhapur - Dr. Harsha Reddy',
     metaTitle: 'Orthopedic Doctor Madhapur | Knee & Joint Specialist | Dr. Harsha Reddy',
-    metaDescription: 'Best orthopedic doctor in Madhapur, Hyderabad. Dr. Harsha Reddy specializes in knee replacement, hip surgery, sports injuries. Located at Yashoda Hospital Hi-Tech City, just 2 km from Madhapur.',
+    metaDescription: 'Best orthopedic doctor in Madhapur, Hyderabad. Dr. Harsha Reddy specializes in knee replacement, hip surgery, sports injuries. Located at Apollo Hospitals Financial District, just 2 km from Madhapur.',
     keywords: ['orthopedic doctor madhapur', 'bone specialist madhapur', 'knee doctor madhapur hyderabad', 'joint pain treatment madhapur'],
     location: 'Madhapur',
-    distance: '2 km from Yashoda Hospital',
+    distance: '2 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Trusted Orthopedic Doctor in Madhapur',
         subtitle: 'Expert bone and joint care just minutes away from Madhapur'
       },
-      introduction: `Residents of Madhapur now have access to world-class orthopedic care at Yashoda Hospital Hi-Tech City, just 2 km away. Dr. B Harsha Vardhana Reddy offers comprehensive treatment for all bone, joint, and muscle conditions, from minor sprains to complex joint replacements.
+      introduction: `Residents of Madhapur now have access to world-class orthopedic care at Apollo Hospitals Financial District, just 2 km away. Dr. B Harsha Vardhana Reddy offers comprehensive treatment for all bone, joint, and muscle conditions, from minor sprains to complex joint replacements.
 
 Madhapur, being a hub for IT professionals and fitness enthusiasts, sees a high incidence of sports injuries, back pain, and repetitive strain injuries. Dr. Harsha's expertise in both conservative management and surgical treatment ensures you get the right care for your condition.`,
       whyChoose: [
@@ -96,7 +96,7 @@ Madhapur, being a hub for IT professionals and fitness enthusiasts, sees a high 
       faqs: [
         {
           question: "How far is Dr. Harsha's clinic from Madhapur?",
-          answer: "Dr. Harsha practices at Yashoda Hospital Hi-Tech City, which is just 2 km (5-7 minutes drive) from Madhapur main road."
+          answer: "Dr. Harsha practices at Apollo Hospitals Financial District, which is just 2 km (5-7 minutes drive) from Madhapur main road."
         },
         {
           question: 'Do you offer treatment for gym injuries?',
@@ -108,7 +108,7 @@ Madhapur, being a hub for IT professionals and fitness enthusiasts, sees a high 
         }
       ],
       testimonial: {
-        text: "Living in Madhapur, I was looking for a good orthopedic doctor nearby. Dr. Harsha at Yashoda Hospital was excellent. Fixed my ACL tear and I'm back to playing football!",
+        text: "Living in Madhapur, I was looking for a good orthopedic doctor nearby. Dr. Harsha at Apollo Hospitals was excellent. Fixed my ACL tear and I'm back to playing football!",
         author: "Suresh P.",
         designation: "Resident, Ayyappa Society, Madhapur"
       }
@@ -122,13 +122,13 @@ Madhapur, being a hub for IT professionals and fitness enthusiasts, sees a high 
     metaDescription: 'Expert knee specialist in Gachibowli. Dr. Harsha Reddy offers knee replacement, ACL surgery, meniscus repair near Gachibowli. 15+ years experience. Book appointment now.',
     keywords: ['knee specialist gachibowli', 'knee doctor gachibowli', 'knee replacement gachibowli', 'knee pain doctor gachibowli hyderabad'],
     location: 'Gachibowli',
-    distance: '4 km from Yashoda Hospital',
+    distance: '4 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Expert Knee Specialist Near Gachibowli',
         subtitle: 'Advanced knee treatments including robotic knee replacement'
       },
-      introduction: `If you're experiencing knee pain in Gachibowli, Dr. B Harsha Vardhana Reddy is your go-to knee specialist. Located at Yashoda Hospital Hi-Tech City (just 4 km from Gachibowli), Dr. Harsha offers the full spectrum of knee treatments - from conservative management to advanced robotic knee replacement.
+      introduction: `If you're experiencing knee pain in Gachibowli, Dr. B Harsha Vardhana Reddy is your go-to knee specialist. Located at Apollo Hospitals Financial District (just 4 km from Gachibowli), Dr. Harsha offers the full spectrum of knee treatments - from conservative management to advanced robotic knee replacement.
 
 Gachibowli residents, whether you're a student at ISB or University of Hyderabad, a corporate professional at DLF Cyber City, or a senior citizen dealing with arthritis, you'll find expert knee care close to home.`,
       whyChoose: [
@@ -150,15 +150,15 @@ Gachibowli residents, whether you're a student at ISB or University of Hyderabad
       faqs: [
         {
           question: 'What is the cost of knee replacement near Gachibowli?',
-          answer: 'Knee replacement at Yashoda Hospital costs between ₹2.5-4.5 lakhs depending on the implant type. This includes surgery, hospital stay, implants, and initial physiotherapy. Insurance coverage is available.'
+          answer: 'Knee replacement at Apollo Hospitals costs between ₹2.5-4.5 lakhs depending on the implant type. This includes surgery, hospital stay, implants, and initial physiotherapy. Insurance coverage is available.'
         },
         {
           question: 'How long will I stay in hospital after knee replacement?',
           answer: 'Most patients stay 3-4 days after knee replacement. With our enhanced recovery protocols, some patients are discharged within 2-3 days.'
         },
         {
-          question: 'Is there parking available at Yashoda Hospital?',
-          answer: 'Yes, Yashoda Hospital Hi-Tech City has a large multi-level parking facility with valet service available.'
+          question: 'Is there parking available at Apollo Hospitals?',
+          answer: 'Yes, Apollo Hospitals Financial District has a large multi-level parking facility with valet service available.'
         }
       ],
       testimonial: {
@@ -171,18 +171,18 @@ Gachibowli residents, whether you're a student at ISB or University of Hyderabad
 
   {
     slug: 'orthopedic-hospital-kondapur',
-    title: 'Orthopedic Hospital Near Kondapur - Yashoda Hospital',
+    title: 'Orthopedic Hospital Near Kondapur - Apollo Hospitals',
     metaTitle: 'Orthopedic Hospital Kondapur | Joint Replacement | Sports Medicine',
-    metaDescription: 'Best orthopedic hospital near Kondapur. Yashoda Hospital Hi-Tech City offers knee replacement, hip surgery, sports injury treatment. Dr. Harsha Reddy - 15+ years experience.',
+    metaDescription: 'Best orthopedic hospital near Kondapur. Apollo Hospitals Financial District offers knee replacement, hip surgery, sports injury treatment. Dr. Harsha Reddy - 15+ years experience.',
     keywords: ['orthopedic hospital kondapur', 'bone hospital kondapur', 'joint replacement hospital kondapur', 'orthopedic surgeon kondapur'],
     location: 'Kondapur',
-    distance: '3 km from Yashoda Hospital',
+    distance: '3 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Premier Orthopedic Hospital Near Kondapur',
-        subtitle: 'Comprehensive bone and joint care at Yashoda Hospital Hi-Tech City'
+        subtitle: 'Comprehensive bone and joint care at Apollo Hospitals Financial District'
       },
-      introduction: `Kondapur residents seeking orthopedic treatment have excellent care available at Yashoda Hospital Hi-Tech City, just 3 km away. As a JCI-accredited hospital with state-of-the-art orthopedic facilities, we offer everything from simple fracture care to complex joint replacements.
+      introduction: `Kondapur residents seeking orthopedic treatment have excellent care available at Apollo Hospitals Financial District, just 3 km away. As a JCI-accredited hospital with state-of-the-art orthopedic facilities, we offer everything from simple fracture care to complex joint replacements.
 
 Dr. B Harsha Vardhana Reddy leads the orthopedic department with a team of specialists, physiotherapists, and rehabilitation experts. Whether you need emergency fracture care or planned joint replacement surgery, we provide comprehensive orthopedic services.`,
       whyChoose: [
@@ -203,8 +203,8 @@ Dr. B Harsha Vardhana Reddy leads the orthopedic department with a team of speci
       ],
       faqs: [
         {
-          question: 'Does Yashoda Hospital have emergency orthopedic services?',
-          answer: 'Yes, Yashoda Hospital Hi-Tech City has 24/7 emergency services with orthopedic surgeons on call round the clock for trauma and fracture emergencies.'
+          question: 'Does Apollo Hospitals have emergency orthopedic services?',
+          answer: 'Yes, Apollo Hospitals Financial District has 24/7 emergency services with orthopedic surgeons on call round the clock for trauma and fracture emergencies.'
         },
         {
           question: 'What diagnostic facilities are available?',
@@ -212,7 +212,7 @@ Dr. B Harsha Vardhana Reddy leads the orthopedic department with a team of speci
         },
         {
           question: 'Do you have ambulance services from Kondapur?',
-          answer: 'Yes, Yashoda Hospital has 24/7 ambulance services. For emergencies in Kondapur, call the hospital emergency number for immediate ambulance dispatch.'
+          answer: 'Yes, Apollo Hospitals has 24/7 ambulance services. For emergencies in Kondapur, call the hospital emergency number for immediate ambulance dispatch.'
         }
       ],
       testimonial: {
@@ -227,16 +227,16 @@ Dr. B Harsha Vardhana Reddy leads the orthopedic department with a team of speci
     slug: 'joint-replacement-surgeon-kukatpally',
     title: 'Joint Replacement Surgeon in Kukatpally - Dr. Harsha',
     metaTitle: 'Joint Replacement Surgeon Kukatpally | Knee & Hip Surgery | Dr. Harsha',
-    metaDescription: 'Best joint replacement surgeon near Kukatpally. Dr. Harsha Reddy performs knee & hip replacement at Yashoda Hospital. 4000+ surgeries. Book consultation today.',
+    metaDescription: 'Best joint replacement surgeon near Kukatpally. Dr. Harsha Reddy performs knee & hip replacement at Apollo Hospitals. 4000+ surgeries. Book consultation today.',
     keywords: ['joint replacement surgeon kukatpally', 'knee replacement kukatpally', 'hip replacement kukatpally', 'orthopedic surgeon kukatpally'],
     location: 'Kukatpally',
-    distance: '6 km from Yashoda Hospital',
+    distance: '6 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Expert Joint Replacement Surgery Near Kukatpally',
         subtitle: 'Advanced knee and hip replacement with rapid recovery'
       },
-      introduction: `Kukatpally and KPHB residents looking for joint replacement surgery can access expert care at Yashoda Hospital Hi-Tech City, just 15 minutes away via the metro. Dr. B Harsha Vardhana Reddy is a fellowship-trained joint replacement surgeon with over 4,000 successful surgeries.
+      introduction: `Kukatpally and KPHB residents looking for joint replacement surgery can access expert care at Apollo Hospitals Financial District, just 15 minutes away via the metro. Dr. B Harsha Vardhana Reddy is a fellowship-trained joint replacement surgeon with over 4,000 successful surgeries.
 
 Whether you're dealing with severe knee arthritis, hip avascular necrosis, or failed previous joint surgery, Dr. Harsha offers the latest techniques including computer-navigated surgery, minimally invasive approaches, and rapid recovery protocols.`,
       whyChoose: [
@@ -257,7 +257,7 @@ Whether you're dealing with severe knee arthritis, hip avascular necrosis, or fa
       ],
       faqs: [
         {
-          question: 'How do I reach Yashoda Hospital from Kukatpally?',
+          question: 'How do I reach Apollo Hospitals from Kukatpally?',
           answer: "Take the metro from Kukatpally or KPHB station to Hi-Tech City station (15 minutes). The hospital is a 5-minute auto ride from the metro. By road, it's about 6 km via Cyber Towers route."
         },
         {
@@ -266,7 +266,7 @@ Whether you're dealing with severe knee arthritis, hip avascular necrosis, or fa
         },
         {
           question: 'Is joint replacement covered by insurance?',
-          answer: 'Yes, joint replacement is covered by most health insurance policies. Yashoda Hospital has tie-ups with 30+ insurance companies for cashless treatment.'
+          answer: 'Yes, joint replacement is covered by most health insurance policies. Apollo Hospitals has tie-ups with 30+ insurance companies for cashless treatment.'
         }
       ],
       testimonial: {
@@ -284,13 +284,13 @@ Whether you're dealing with severe knee arthritis, hip avascular necrosis, or fa
     metaDescription: 'Expert sports injury doctor near Jubilee Hills. Dr. Harsha Reddy treats ACL tears, meniscus injuries, rotator cuff problems. Trusted by athletes. Book appointment.',
     keywords: ['sports injury doctor jubilee hills', 'sports medicine jubilee hills', 'ACL doctor jubilee hills', 'sports orthopedic jubilee hills'],
     location: 'Jubilee Hills',
-    distance: '5 km from Yashoda Hospital',
+    distance: '5 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Sports Injury Specialist Near Jubilee Hills',
         subtitle: 'Get back to your active lifestyle with expert sports medicine care'
       },
-      introduction: `Jubilee Hills and Banjara Hills residents have access to top-tier sports medicine at Yashoda Hospital Hi-Tech City. Dr. B Harsha Vardhana Reddy specializes in treating sports injuries in athletes, fitness enthusiasts, and weekend warriors.
+      introduction: `Jubilee Hills and Banjara Hills residents have access to top-tier sports medicine at Apollo Hospitals Financial District. Dr. B Harsha Vardhana Reddy specializes in treating sports injuries in athletes, fitness enthusiasts, and weekend warriors.
 
 From tennis players with rotator cuff tears to runners with knee problems, from gym-goers with muscle injuries to cricketers with ligament tears - Dr. Harsha provides comprehensive sports injury care using the latest arthroscopic and minimally invasive techniques.`,
       whyChoose: [
@@ -335,16 +335,16 @@ From tennis players with rotator cuff tears to runners with knee problems, from 
     slug: 'bone-doctor-secunderabad',
     title: 'Bone Doctor in Secunderabad - Orthopedic Specialist',
     metaTitle: 'Bone Doctor Secunderabad | Orthopedic Surgeon | Dr. Harsha Reddy',
-    metaDescription: 'Experienced bone doctor near Secunderabad. Dr. Harsha Reddy treats fractures, joint problems, arthritis at Yashoda Hospital. 15+ years experience. Book appointment.',
+    metaDescription: 'Experienced bone doctor near Secunderabad. Dr. Harsha Reddy treats fractures, joint problems, arthritis at Apollo Hospitals. 15+ years experience. Book appointment.',
     keywords: ['bone doctor secunderabad', 'orthopedic doctor secunderabad', 'fracture treatment secunderabad', 'orthopedic surgeon secunderabad'],
     location: 'Secunderabad',
-    distance: '12 km from Yashoda Hospital',
+    distance: '12 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Expert Bone & Joint Care for Secunderabad',
-        subtitle: 'Comprehensive orthopedic treatment at Yashoda Hospital Hi-Tech City'
+        subtitle: 'Comprehensive orthopedic treatment at Apollo Hospitals Financial District'
       },
-      introduction: `Secunderabad residents can access specialized orthopedic care at Yashoda Hospital Hi-Tech City. While the hospital is 12 km away, it's well-connected by road and metro, and the world-class facilities make the journey worthwhile.
+      introduction: `Secunderabad residents can access specialized orthopedic care at Apollo Hospitals Financial District. While the hospital is 12 km away, it's well-connected by road and metro, and the world-class facilities make the journey worthwhile.
 
 Dr. B Harsha Vardhana Reddy offers complete bone and joint care - from treating simple fractures to performing complex joint replacements. The hospital's modern infrastructure, experienced team, and excellent post-operative care ensure the best outcomes for patients.`,
       whyChoose: [
@@ -365,7 +365,7 @@ Dr. B Harsha Vardhana Reddy offers complete bone and joint care - from treating 
       ],
       faqs: [
         {
-          question: 'How do I reach Yashoda Hospital Hi-Tech City from Secunderabad?',
+          question: 'How do I reach Apollo Hospitals Financial District from Secunderabad?',
           answer: 'By metro: Take the Blue Line to Hi-Tech City station (about 45 minutes), then a short auto ride. By road: Via Begumpet-JNTU route, approximately 40-50 minutes depending on traffic.'
         },
         {
@@ -374,7 +374,7 @@ Dr. B Harsha Vardhana Reddy offers complete bone and joint care - from treating 
         },
         {
           question: 'Is there emergency orthopedic care available?',
-          answer: 'Yes, Yashoda Hospital has 24/7 emergency services. For orthopedic emergencies from Secunderabad, you can call ahead so the team is prepared for your arrival.'
+          answer: 'Yes, Apollo Hospitals has 24/7 emergency services. For orthopedic emergencies from Secunderabad, you can call ahead so the team is prepared for your arrival.'
         }
       ],
       testimonial: {
@@ -389,16 +389,16 @@ Dr. B Harsha Vardhana Reddy offers complete bone and joint care - from treating 
     slug: 'orthopedic-surgeon-miyapur',
     title: 'Orthopedic Surgeon Near Miyapur - Dr. Harsha Reddy',
     metaTitle: 'Orthopedic Surgeon Miyapur | Knee & Hip Doctor | Dr. Harsha',
-    metaDescription: 'Best orthopedic surgeon near Miyapur, Hyderabad. Dr. Harsha Reddy at Yashoda Hospital offers joint replacement, sports medicine, fracture care. Book appointment.',
+    metaDescription: 'Best orthopedic surgeon near Miyapur, Hyderabad. Dr. Harsha Reddy at Apollo Hospitals offers joint replacement, sports medicine, fracture care. Book appointment.',
     keywords: ['orthopedic surgeon miyapur', 'bone doctor miyapur', 'knee doctor miyapur', 'orthopedic hospital miyapur'],
     location: 'Miyapur',
-    distance: '8 km from Yashoda Hospital',
+    distance: '8 km from Apollo Hospitals',
     content: {
       hero: {
         title: 'Quality Orthopedic Care Near Miyapur',
-        subtitle: 'Expert bone and joint treatment at Yashoda Hospital Hi-Tech City'
+        subtitle: 'Expert bone and joint treatment at Apollo Hospitals Financial District'
       },
-      introduction: `Miyapur and Chandanagar residents can access excellent orthopedic care at Yashoda Hospital Hi-Tech City, just 20 minutes away via the metro. Dr. B Harsha Vardhana Reddy provides comprehensive orthopedic services for all age groups.
+      introduction: `Miyapur and Chandanagar residents can access excellent orthopedic care at Apollo Hospitals Financial District, just 20 minutes away via the metro. Dr. B Harsha Vardhana Reddy provides comprehensive orthopedic services for all age groups.
 
 Whether you're dealing with chronic joint pain, need a knee replacement, or have a sports injury, our team offers personalized treatment plans with the latest techniques and technology.`,
       whyChoose: [

@@ -32,7 +32,7 @@ export const conditionsDetailed = [
     shortDescription: 'Degenerative joint disease causing pain, stiffness, and reduced mobility in the knee.',
     
     // Detailed content for individual page
-    overview: `Knee osteoarthritis (OA) is the most common form of arthritis affecting millions worldwide. It occurs when the protective cartilage cushioning the knee joint gradually wears down, leading to bone-on-bone contact, inflammation, and pain. Dr. B Harsha Vardhana Reddy specializes in comprehensive knee arthritis management at Yashoda Hospital, Hyderabad.`,
+    overview: `Knee osteoarthritis (OA) is the most common form of arthritis affecting millions worldwide. It occurs when the protective cartilage cushioning the knee joint gradually wears down, leading to bone-on-bone contact, inflammation, and pain. Dr. B Harsha Vardhana Reddy specializes in comprehensive knee arthritis management at Apollo Hospitals, Financial District.`,
     
     causes: [
       'Age-related wear and tear (most common in adults over 50)',
@@ -184,7 +184,7 @@ export const conditionsDetailed = [
     relatedTreatments: ['total-knee-replacement', 'knee-arthroscopy', 'prp-injections'],
     
     seoKeywords: 'knee arthritis treatment Hyderabad, osteoarthritis specialist, knee pain doctor, best knee surgeon Hyderabad, knee replacement surgeon',
-    metaDescription: 'Expert knee arthritis treatment in Hyderabad by Dr. B Harsha Vardhana Reddy. Comprehensive care from physical therapy to total knee replacement. Book appointment at Yashoda Hospital.'
+    metaDescription: 'Expert knee arthritis treatment in Hyderabad by Dr. B Harsha Vardhana Reddy. Comprehensive care from physical therapy to total knee replacement. Book appointment at Apollo Hospitals.'
   },
   
   {
@@ -196,7 +196,7 @@ export const conditionsDetailed = [
     imageUrl: conditionImages['rotator-cuff'],
     shortDescription: 'Tear in shoulder tendons causing pain and weakness. Can occur from injury or age-related degeneration.',
     
-    overview: `A rotator cuff tear is a common cause of shoulder pain and disability. The rotator cuff consists of four muscles (supraspinatus, infraspinatus, teres minor, subscapularis) that stabilize and move the shoulder. Tears can be partial or full-thickness, and may result from acute injury or chronic degeneration. Dr. B Harsha Vardhana Reddy provides advanced arthroscopic rotator cuff repair at Yashoda Hospital, Hyderabad.`,
+    overview: `A rotator cuff tear is a common cause of shoulder pain and disability. The rotator cuff consists of four muscles (supraspinatus, infraspinatus, teres minor, subscapularis) that stabilize and move the shoulder. Tears can be partial or full-thickness, and may result from acute injury or chronic degeneration. Dr. B Harsha Vardhana Reddy provides advanced arthroscopic rotator cuff repair at Apollo Hospitals, Financial District.`,
     
     causes: [
       'Acute injury: Fall on outstretched arm, lifting heavy objects',
@@ -591,7 +591,7 @@ export const conditionsDetailed = [
     relatedTreatments: ['total-hip-replacement', 'hip-arthroscopy', 'core-decompression'],
     
     seoKeywords: 'hip arthritis treatment Hyderabad, AVN treatment, hip replacement surgery, hip pain doctor, best hip surgeon Hyderabad',
-    metaDescription: 'Expert hip arthritis and AVN treatment in Hyderabad. Dr. B Harsha Vardhana Reddy offers hip arthroscopy to total hip replacement. Book consultation at Yashoda Hospital.'
+    metaDescription: 'Expert hip arthritis and AVN treatment in Hyderabad. Dr. B Harsha Vardhana Reddy offers hip arthroscopy to total hip replacement. Book consultation at Apollo Hospitals.'
   },
   
   {

@@ -15,7 +15,7 @@ export const treatmentsDetailed = [
     heroTitle: 'Total Knee Replacement Surgery in Hyderabad',
     heroSubtitle: 'Advanced computer-navigated knee replacement with 95%+ success rate. Get back to pain-free walking within weeks.',
     
-    overview: `Total Knee Replacement (TKR), also known as Total Knee Arthroplasty, is a surgical procedure that replaces damaged knee joint surfaces with metal and plastic components. Dr. B Harsha Vardhana Reddy performs over 300 knee replacements annually at Yashoda Hospital, Hyderabad, using the latest minimally invasive techniques and computer-assisted navigation for precise implant positioning.
+    overview: `Total Knee Replacement (TKR), also known as Total Knee Arthroplasty, is a surgical procedure that replaces damaged knee joint surfaces with metal and plastic components. Dr. B Harsha Vardhana Reddy performs over 300 knee replacements annually at Apollo Hospitals, Financial District, using the latest minimally invasive techniques and computer-assisted navigation for precise implant positioning.
 
 This gold-standard treatment is recommended for patients with end-stage knee arthritis who have exhausted non-surgical options. With advancements in implant design and surgical techniques, most patients can expect 20-25 years of implant longevity and significant improvement in quality of life.`,
 
@@ -172,7 +172,7 @@ This gold-standard treatment is recommended for patients with end-stage knee art
 
     // SEO metadata
     seoTitle: 'Total Knee Replacement Surgery in Hyderabad | Dr. Harsha Reddy',
-    seoDescription: 'Expert total knee replacement (TKR) surgery at Yashoda Hospital Hyderabad. Computer-navigated, minimally invasive technique. 95%+ success rate. Book consultation.',
+    seoDescription: 'Expert total knee replacement (TKR) surgery at Apollo Hospitals Financial District. Computer-navigated, minimally invasive technique. 95%+ success rate. Book consultation.',
     seoKeywords: 'total knee replacement Hyderabad, TKR surgery cost, best knee surgeon Hyderabad, knee replacement hospital, robotic knee surgery, computer navigated knee replacement'
   },
 
@@ -322,7 +322,7 @@ Hip replacement is one of the most successful orthopedic surgeries, with over 95
     relatedTreatments: ['hip-arthroscopy'],
 
     seoTitle: 'Total Hip Replacement Surgery in Hyderabad | Anterior Approach | Dr. Harsha',
-    seoDescription: 'Expert hip replacement surgery at Yashoda Hospital Hyderabad. Anterior approach, ceramic implants, rapid recovery. AVN and arthritis treatment. Book consultation.',
+    seoDescription: 'Expert hip replacement surgery at Apollo Hospitals Financial District. Anterior approach, ceramic implants, rapid recovery. AVN and arthritis treatment. Book consultation.',
     seoKeywords: 'hip replacement Hyderabad, THR surgery cost, anterior hip replacement, AVN treatment, best hip surgeon Hyderabad, ceramic hip implant'
   },
 
@@ -472,7 +472,7 @@ The ACL is crucial for knee stability during cutting, pivoting, and jumping move
     relatedTreatments: ['knee-arthroscopy'],
 
     seoTitle: 'ACL Reconstruction Surgery in Hyderabad | Sports Injury Treatment | Dr. Harsha',
-    seoDescription: 'Expert ACL reconstruction surgery for athletes at Yashoda Hospital Hyderabad. Arthroscopic technique, hamstring/patellar graft. Return to sports. Book consultation.',
+    seoDescription: 'Expert ACL reconstruction surgery for athletes at Apollo Hospitals Financial District. Arthroscopic technique, hamstring/patellar graft. Return to sports. Book consultation.',
     seoKeywords: 'ACL reconstruction Hyderabad, ACL surgery cost, sports injury doctor, knee ligament surgery, ACL tear treatment, best sports surgeon Hyderabad'
   },
 
@@ -622,7 +622,7 @@ This keyhole approach offers significant advantages over open surgery: smaller i
     relatedTreatments: ['shoulder-replacement', 'bankart-repair'],
 
     seoTitle: 'Shoulder Arthroscopy & Rotator Cuff Repair Hyderabad | Dr. Harsha Reddy',
-    seoDescription: 'Expert shoulder arthroscopy for rotator cuff tears, impingement, labral tears at Yashoda Hospital Hyderabad. Keyhole surgery, day care procedure. Book consultation.',
+    seoDescription: 'Expert shoulder arthroscopy for rotator cuff tears, impingement, labral tears at Apollo Hospitals Financial District. Keyhole surgery, day care procedure. Book consultation.',
     seoKeywords: 'shoulder arthroscopy Hyderabad, rotator cuff repair cost, shoulder surgery, keyhole shoulder surgery, SLAP repair, shoulder impingement treatment'
   },
 
@@ -773,7 +773,7 @@ Common procedures include meniscus repair, partial meniscectomy, cartilage treat
     relatedTreatments: ['acl-reconstruction', 'total-knee-replacement'],
 
     seoTitle: 'Knee Arthroscopy & Meniscus Surgery Hyderabad | Dr. Harsha Reddy',
-    seoDescription: 'Expert knee arthroscopy for meniscus tears at Yashoda Hospital Hyderabad. Day care surgery, same-day discharge. Meniscus repair preferred. Book consultation.',
+    seoDescription: 'Expert knee arthroscopy for meniscus tears at Apollo Hospitals Financial District. Day care surgery, same-day discharge. Meniscus repair preferred. Book consultation.',
     seoKeywords: 'knee arthroscopy Hyderabad, meniscus surgery cost, cartilage repair, knee keyhole surgery, meniscus tear treatment, sports injury Hyderabad'
   },
 
@@ -923,7 +923,7 @@ Modern fracture surgery emphasizes minimally invasive techniques, anatomic reduc
     relatedTreatments: [],
 
     seoTitle: 'Fracture Surgery in Hyderabad | ORIF | Trauma Specialist | Dr. Harsha',
-    seoDescription: 'Expert fracture fixation surgery at Yashoda Hospital Hyderabad. Plates, screws, nails for all fractures. 24/7 trauma care. Minimally invasive techniques.',
+    seoDescription: 'Expert fracture fixation surgery at Apollo Hospitals Financial District. Plates, screws, nails for all fractures. 24/7 trauma care. Minimally invasive techniques.',
     seoKeywords: 'fracture surgery Hyderabad, ORIF surgery, trauma surgeon, broken bone treatment, fracture specialist, orthopedic trauma'
   },
 
@@ -1076,7 +1076,7 @@ Common conditions treated include labral tears, femoroacetabular impingement (FA
     relatedTreatments: ['total-hip-replacement'],
 
     seoTitle: 'Hip Arthroscopy Surgery in Hyderabad | FAI Treatment | Dr. Harsha Reddy',
-    seoDescription: 'Expert hip arthroscopy for labral tears, FAI, and hip pain at Yashoda Hospital Hyderabad. Minimally invasive, joint-preserving surgery. Book consultation.',
+    seoDescription: 'Expert hip arthroscopy for labral tears, FAI, and hip pain at Apollo Hospitals Financial District. Minimally invasive, joint-preserving surgery. Book consultation.',
     seoKeywords: 'hip arthroscopy Hyderabad, FAI treatment, labral tear surgery, hip pain treatment, femoroacetabular impingement, hip preservation surgery'
   },
 
@@ -1226,7 +1226,7 @@ Modern shoulder replacement provides excellent pain relief and improved function
     relatedTreatments: ['shoulder-arthroscopy'],
 
     seoTitle: 'Shoulder Replacement Surgery in Hyderabad | Reverse Shoulder | Dr. Harsha',
-    seoDescription: 'Expert shoulder replacement surgery at Yashoda Hospital Hyderabad. Anatomic and reverse shoulder replacement for arthritis. 95% pain relief. Book consultation.',
+    seoDescription: 'Expert shoulder replacement surgery at Apollo Hospitals Financial District. Anatomic and reverse shoulder replacement for arthritis. 95% pain relief. Book consultation.',
     seoKeywords: 'shoulder replacement Hyderabad, reverse shoulder replacement, shoulder arthroplasty cost, rotator cuff arthropathy treatment, shoulder surgeon Hyderabad'
   },
 
@@ -1376,7 +1376,7 @@ Chronic ankle instability affects 20-40% of people after ankle sprains. Without 
     relatedTreatments: [],
 
     seoTitle: 'Ankle Ligament Reconstruction Surgery Hyderabad | Dr. Harsha Reddy',
-    seoDescription: 'Expert ankle ligament repair for chronic instability at Yashoda Hospital Hyderabad. Broström procedure, day care surgery. Return to sports. Book consultation.',
+    seoDescription: 'Expert ankle ligament repair for chronic instability at Apollo Hospitals Financial District. Broström procedure, day care surgery. Return to sports. Book consultation.',
     seoKeywords: 'ankle ligament surgery Hyderabad, chronic ankle instability treatment, Broström procedure, ankle sprain surgery, ankle reconstruction, sports injury ankle'
   },
 
@@ -1521,7 +1521,7 @@ Dr. B Harsha Vardhana Reddy performs both open and endoscopic carpal tunnel rele
     relatedTreatments: [],
 
     seoTitle: 'Carpal Tunnel Release Surgery in Hyderabad | Hand Surgery | Dr. Harsha',
-    seoDescription: 'Expert carpal tunnel surgery at Yashoda Hospital Hyderabad. Quick 15-minute procedure, local anesthesia, 95% success rate. Relief from hand numbness. Book now.',
+    seoDescription: 'Expert carpal tunnel surgery at Apollo Hospitals Financial District. Quick 15-minute procedure, local anesthesia, 95% success rate. Relief from hand numbness. Book now.',
     seoKeywords: 'carpal tunnel surgery Hyderabad, hand numbness treatment, median nerve decompression, carpal tunnel release cost, hand surgeon Hyderabad'
   },
 
@@ -1671,7 +1671,7 @@ Dr. B Harsha Vardhana Reddy performs arthroscopic Bankart repair using suture an
     relatedTreatments: ['shoulder-arthroscopy'],
 
     seoTitle: 'Bankart Repair Surgery in Hyderabad | Shoulder Dislocation Treatment | Dr. Harsha',
-    seoDescription: 'Expert arthroscopic Bankart repair for shoulder dislocations at Yashoda Hospital Hyderabad. Stop recurrent instability, return to sports. Book consultation.',
+    seoDescription: 'Expert arthroscopic Bankart repair for shoulder dislocations at Apollo Hospitals Financial District. Stop recurrent instability, return to sports. Book consultation.',
     seoKeywords: 'Bankart repair Hyderabad, shoulder dislocation surgery, labral tear repair, shoulder instability treatment, arthroscopic shoulder surgery'
   },
 
@@ -1822,7 +1822,7 @@ The goal is to create more space for the nerves, relieving pain, numbness, and w
     relatedTreatments: [],
 
     seoTitle: 'Spinal Decompression Surgery in Hyderabad | Spine Specialist | Dr. Harsha',
-    seoDescription: 'Expert spinal decompression for stenosis, disc herniation at Yashoda Hospital Hyderabad. Minimally invasive options, 80-90% success. Book spine consultation.',
+    seoDescription: 'Expert spinal decompression for stenosis, disc herniation at Apollo Hospitals Financial District. Minimally invasive options, 80-90% success. Book spine consultation.',
     seoKeywords: 'spinal decompression Hyderabad, laminectomy surgery, spinal stenosis treatment, disc surgery, spine surgeon Hyderabad, back pain surgery'
   }
 ];

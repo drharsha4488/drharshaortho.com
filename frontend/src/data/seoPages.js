@@ -7,18 +7,18 @@ export const seoLandingPages = [
     slug: 'best-orthopedic-surgeon-hyderabad',
     title: 'Best Orthopedic Surgeon in Hyderabad',
     metaTitle: 'Best Orthopedic Surgeon in Hyderabad | Dr. B Harsha Vardhana Reddy',
-    metaDescription: 'Looking for the best orthopedic surgeon in Hyderabad? Dr. B Harsha Vardhana Reddy at Yashoda Hospital offers expert joint replacement, sports medicine & trauma surgery. 15+ years experience, 8000+ surgeries.',
+    metaDescription: 'Looking for the best orthopedic surgeon in Hyderabad? Dr. B Harsha Vardhana Reddy at Apollo Hospitals offers expert joint replacement, sports medicine & trauma surgery. 15+ years experience, 8000+ surgeries.',
     keywords: 'best orthopedic surgeon hyderabad, orthopedic doctor hyderabad, top orthopedic surgeon, bone specialist hyderabad, joint specialist hyderabad',
     heroTitle: 'Best Orthopedic Surgeon in Hyderabad',
     heroSubtitle: 'Dr. B Harsha Vardhana Reddy - 15+ Years of Excellence in Orthopedic Care',
     searchVolume: 50000,
     content: {
-      introduction: `Looking for the best orthopedic surgeon in Hyderabad? Dr. B Harsha Vardhana Reddy is a leading orthopedic specialist with over 15 years of experience and 8,000+ successful surgeries. Based at Yashoda Hospital Hi-Tech City, he specializes in joint replacement, sports medicine, arthroscopy, and trauma surgery.`,
+      introduction: `Looking for the best orthopedic surgeon in Hyderabad? Dr. B Harsha Vardhana Reddy is a leading orthopedic specialist with over 15 years of experience and 8,000+ successful surgeries. Based at Apollo Hospitals Financial District, he specializes in joint replacement, sports medicine, arthroscopy, and trauma surgery.`,
       whyChoose: [
         { title: 'Expert Credentials', description: 'DNB Orthopedics, Fellowship in Arthroplasty, MBA in Hospital Administration' },
         { title: 'Vast Experience', description: '15+ years of surgical experience with 8,000+ successful procedures' },
         { title: 'Advanced Techniques', description: 'Computer-navigated surgery, minimally invasive approaches, robotic assistance' },
-        { title: 'World-Class Facility', description: 'Yashoda Hospital - NABH accredited, state-of-the-art operation theaters' },
+        { title: 'World-Class Facility', description: 'Apollo Hospitals - NABH accredited, state-of-the-art operation theaters' },
         { title: 'Comprehensive Care', description: 'From diagnosis to rehabilitation, complete orthopedic treatment under one roof' },
         { title: 'Patient-Centered Approach', description: 'Personalized treatment plans tailored to each patient\'s needs and lifestyle' }
       ],
@@ -37,7 +37,7 @@ export const seoLandingPages = [
       faqs: [
         {
           question: 'Who is the best orthopedic surgeon in Hyderabad?',
-          answer: 'Dr. B Harsha Vardhana Reddy is widely regarded as one of the best orthopedic surgeons in Hyderabad. With 15+ years of experience, DNB in Orthopedics, and Fellowship in Joint Replacement, he has performed over 8,000 successful surgeries at Yashoda Hospital.'
+          answer: 'Dr. B Harsha Vardhana Reddy is widely regarded as one of the best orthopedic surgeons in Hyderabad. With 15+ years of experience, DNB in Orthopedics, and Fellowship in Joint Replacement, he has performed over 8,000 successful surgeries at Apollo Hospitals.'
         },
         {
           question: 'What conditions does Dr. Harsha treat?',
@@ -45,7 +45,7 @@ export const seoLandingPages = [
         },
         {
           question: 'Where is Dr. Harsha\'s clinic located?',
-          answer: 'Dr. Harsha practices at Yashoda Hospital, Hi-Tech City, Hyderabad. The hospital is easily accessible and has excellent facilities for orthopedic surgery and rehabilitation.'
+          answer: 'Dr. Harsha practices at Apollo Hospitals, Hi-Tech City, Hyderabad. The hospital is easily accessible and has excellent facilities for orthopedic surgery and rehabilitation.'
         },
         {
           question: 'How do I book an appointment?',
@@ -59,13 +59,13 @@ export const seoLandingPages = [
     slug: 'robotic-knee-replacement-hyderabad',
     title: 'Robotic Knee Replacement Surgery in Hyderabad',
     metaTitle: 'Robotic Knee Replacement Surgery in Hyderabad | Advanced Technology | Dr. Harsha',
-    metaDescription: 'Get robotic knee replacement surgery in Hyderabad with computer-navigated precision. Dr. Harsha Reddy offers advanced robotic-assisted TKR at Yashoda Hospital. Better accuracy, faster recovery.',
+    metaDescription: 'Get robotic knee replacement surgery in Hyderabad with computer-navigated precision. Dr. Harsha Reddy offers advanced robotic-assisted TKR at Apollo Hospitals. Better accuracy, faster recovery.',
     keywords: 'robotic knee replacement hyderabad, robotic knee surgery, computer navigated knee replacement, robotic TKR, mako knee replacement hyderabad',
     heroTitle: 'Robotic Knee Replacement Surgery in Hyderabad',
     heroSubtitle: 'Precision Surgery with Advanced Computer Navigation Technology',
     searchVolume: 5000,
     content: {
-      introduction: `Robotic knee replacement surgery represents the cutting-edge of orthopedic technology. At Yashoda Hospital Hyderabad, Dr. B Harsha Vardhana Reddy utilizes computer-navigated surgery systems that provide real-time feedback for precise implant positioning, resulting in better outcomes and faster recovery.`,
+      introduction: `Robotic knee replacement surgery represents the cutting-edge of orthopedic technology. At Apollo Hospitals Financial District, Dr. B Harsha Vardhana Reddy utilizes computer-navigated surgery systems that provide real-time feedback for precise implant positioning, resulting in better outcomes and faster recovery.`,
       benefits: [
         { title: 'Sub-Millimeter Precision', description: 'Computer navigation ensures implant placement within 1mm accuracy' },
         { title: 'Personalized Surgery', description: '3D planning customizes surgery to your unique anatomy' },
@@ -115,13 +115,13 @@ export const seoLandingPages = [
     slug: 'knee-replacement-cost-hyderabad',
     title: 'Knee Replacement Surgery Cost in Hyderabad',
     metaTitle: 'Knee Replacement Cost in Hyderabad 2024 | Price Guide | Dr. Harsha Reddy',
-    metaDescription: 'Complete guide to knee replacement surgery cost in Hyderabad. TKR costs ₹2.5-5 lakhs. Compare prices, understand inclusions, and get transparent pricing from Dr. Harsha at Yashoda Hospital.',
+    metaDescription: 'Complete guide to knee replacement surgery cost in Hyderabad. TKR costs ₹2.5-5 lakhs. Compare prices, understand inclusions, and get transparent pricing from Dr. Harsha at Apollo Hospitals.',
     keywords: 'knee replacement cost hyderabad, TKR surgery price, knee surgery cost, affordable knee replacement, knee replacement package',
     heroTitle: 'Knee Replacement Surgery Cost in Hyderabad',
     heroSubtitle: 'Transparent Pricing with World-Class Care',
     searchVolume: 2000,
     content: {
-      introduction: `Understanding knee replacement surgery costs helps you plan for this life-changing procedure. At Yashoda Hospital Hyderabad, we offer transparent pricing with comprehensive packages. This guide breaks down all costs associated with total knee replacement surgery.`,
+      introduction: `Understanding knee replacement surgery costs helps you plan for this life-changing procedure. At Apollo Hospitals Financial District, we offer transparent pricing with comprehensive packages. This guide breaks down all costs associated with total knee replacement surgery.`,
       priceRange: {
         basic: { min: 250000, max: 300000, label: 'Standard Implant Package', features: ['Imported standard implant', 'General ward', '3-day stay', 'Basic physiotherapy'] },
         premium: { min: 350000, max: 400000, label: 'Premium Implant Package', features: ['High-flex imported implant', 'Semi-private room', '3-day stay', 'Extended physiotherapy'] },
@@ -173,13 +173,13 @@ export const seoLandingPages = [
     slug: 'hip-replacement-cost-hyderabad',
     title: 'Hip Replacement Surgery Cost in Hyderabad',
     metaTitle: 'Hip Replacement Cost in Hyderabad 2024 | Price Guide | Dr. Harsha Reddy',
-    metaDescription: 'Complete guide to hip replacement surgery cost in Hyderabad. THR costs ₹3-6 lakhs. Compare ceramic vs metal implants, understand pricing factors. Transparent costs at Yashoda Hospital.',
+    metaDescription: 'Complete guide to hip replacement surgery cost in Hyderabad. THR costs ₹3-6 lakhs. Compare ceramic vs metal implants, understand pricing factors. Transparent costs at Apollo Hospitals.',
     keywords: 'hip replacement cost hyderabad, THR surgery price, hip surgery cost, ceramic hip replacement cost, hip replacement package',
     heroTitle: 'Hip Replacement Surgery Cost in Hyderabad',
     heroSubtitle: 'Comprehensive Pricing Guide for Hip Arthroplasty',
     searchVolume: 1500,
     content: {
-      introduction: `Hip replacement surgery cost in Hyderabad varies based on implant material, surgical approach, and hospital facilities. This guide provides transparent information about THR costs at Yashoda Hospital with Dr. B Harsha Vardhana Reddy.`,
+      introduction: `Hip replacement surgery cost in Hyderabad varies based on implant material, surgical approach, and hospital facilities. This guide provides transparent information about THR costs at Apollo Hospitals with Dr. B Harsha Vardhana Reddy.`,
       priceRange: {
         basic: { min: 300000, max: 350000, label: 'Metal-on-Poly Package', features: ['Standard metal-on-polyethylene implant', 'General ward', '3-day stay', 'Basic rehab'] },
         premium: { min: 400000, max: 500000, label: 'Ceramic Bearing Package', features: ['Ceramic-on-ceramic bearings', 'Semi-private room', 'Anterior approach option', 'Extended rehab'] },
@@ -261,15 +261,15 @@ export const seoLandingPages = [
     slug: 'orthopedic-doctor-near-me-hyderabad',
     title: 'Orthopedic Doctor Near Me in Hyderabad',
     metaTitle: 'Orthopedic Doctor Near Me in Hyderabad | Hi-Tech City | Dr. Harsha Reddy',
-    metaDescription: 'Find the best orthopedic doctor near you in Hyderabad. Dr. Harsha Reddy at Yashoda Hospital Hi-Tech City. Expert bone & joint specialist. Easy appointment booking.',
+    metaDescription: 'Find the best orthopedic doctor near you in Hyderabad. Dr. Harsha Reddy at Apollo Hospitals Financial District. Expert bone & joint specialist. Easy appointment booking.',
     keywords: 'orthopedic doctor near me, bone doctor hyderabad, joint specialist near me, orthopedic clinic hitech city, bone specialist madhapur',
     heroTitle: 'Find an Orthopedic Doctor Near You in Hyderabad',
-    heroSubtitle: 'Yashoda Hospital, Hi-Tech City - Easy Access from All Hyderabad Areas',
+    heroSubtitle: 'Apollo Hospitals, Hi-Tech City - Easy Access from All Hyderabad Areas',
     searchVolume: 50000,
     content: {
-      introduction: `Looking for an orthopedic doctor near you in Hyderabad? Dr. B Harsha Vardhana Reddy practices at Yashoda Hospital Hi-Tech City, conveniently located and easily accessible from Madhapur, Gachibowli, Kondapur, Kukatpally, Begumpet, and all major areas of Hyderabad.`,
+      introduction: `Looking for an orthopedic doctor near you in Hyderabad? Dr. B Harsha Vardhana Reddy practices at Apollo Hospitals Financial District, conveniently located and easily accessible from Madhapur, Gachibowli, Kondapur, Kukatpally, Begumpet, and all major areas of Hyderabad.`,
       location: {
-        hospital: 'Yashoda Hospital',
+        hospital: 'Apollo Hospitals',
         area: 'Hi-Tech City',
         city: 'Hyderabad, Telangana',
         landmarks: 'Near Cyber Towers, HITEC City Metro Station',
@@ -298,7 +298,7 @@ export const seoLandingPages = [
       faqs: [
         {
           question: 'Where is the best orthopedic hospital in Hyderabad?',
-          answer: 'Yashoda Hospital Hi-Tech City is one of the best orthopedic hospitals in Hyderabad, with state-of-the-art facilities, dedicated orthopedic OTs, and experienced surgeons like Dr. Harsha Reddy.'
+          answer: 'Apollo Hospitals Financial District is one of the best orthopedic hospitals in Hyderabad, with state-of-the-art facilities, dedicated orthopedic OTs, and experienced surgeons like Dr. Harsha Reddy.'
         },
         {
           question: 'How do I book an appointment with Dr. Harsha?',

@@ -76,13 +76,13 @@ Today, the landscape has changed dramatically:
 
 ### My Recommendation
 
-At Yashoda Hospital Hi-Tech City, we evaluate each patient individually. I've operated on patients as young as 45 and as old as 85. The key is matching the right patient with the right procedure at the right time.
+At Apollo Hospitals Financial District, we evaluate each patient individually. I've operated on patients as young as 45 and as old as 85. The key is matching the right patient with the right procedure at the right time.
 
 **Book a consultation** if you're suffering from knee pain regardless of your age. We'll do a thorough evaluation and discuss all options – surgery is always the last resort, not the first.
 
 ---
 
-*Dr. B Harsha Vardhana Reddy is an Associate Consultant Orthopedic Surgeon at Yashoda Hospital Hi-Tech City, Hyderabad, with 15+ years of experience in joint replacement surgery.*
+*Dr. B Harsha Vardhana Reddy is an Associate Consultant Orthopedic Surgeon at Apollo Hospitals Financial District, Hyderabad, with 15+ years of experience in joint replacement surgery.*
     `,
     summary: 'Learn about knee replacement age guidelines - when surgery is appropriate for young and elderly patients, and what factors matter more than age.'
   },
@@ -182,7 +182,7 @@ I strongly recommend ACL reconstruction for:
 
 ### My Clinical Approach
 
-At Yashoda Hospital, we don't rush to surgery. Every patient gets:
+At Apollo Hospitals, we don't rush to surgery. Every patient gets:
 1. Thorough clinical examination
 2. MRI to assess injury extent
 3. Discussion of goals and lifestyle
@@ -196,7 +196,7 @@ An ACL tear won't heal on its own, but surgery isn't always necessary. The decis
 
 ---
 
-*Dr. B Harsha Vardhana Reddy specializes in arthroscopic ACL reconstruction at Yashoda Hospital Hi-Tech City, Hyderabad.*
+*Dr. B Harsha Vardhana Reddy specializes in arthroscopic ACL reconstruction at Apollo Hospitals Financial District, Hyderabad.*
     `,
     summary: 'Understand when ACL tears can be managed without surgery, who needs reconstruction, and what to expect from non-surgical treatment.'
   },
@@ -379,7 +379,7 @@ Contact us if:
 
 ---
 
-*These exercises are general recommendations. For a personalized exercise program, book a consultation with Dr. Harsha at Yashoda Hospital Hi-Tech City.*
+*These exercises are general recommendations. For a personalized exercise program, book a consultation with Dr. Harsha at Apollo Hospitals Financial District.*
     `,
     summary: 'Doctor-recommended knee exercises for pain relief and strengthening. Safe for arthritis and injury recovery. Step-by-step instructions included.'
   },
@@ -495,7 +495,7 @@ I can fine-tune during surgery based on soft tissue balance
 
 Robotic surgery is an excellent tool, but it's just that – a tool. The most important factor is still the surgeon's skill and experience. A skilled surgeon with traditional techniques will outperform a less experienced surgeon with a robot.
 
-At Yashoda Hospital Hi-Tech City, we offer both options. I'll recommend what's best for YOUR specific situation after examination.
+At Apollo Hospitals Financial District, we offer both options. I'll recommend what's best for YOUR specific situation after examination.
 
 ### Conclusion
 
@@ -505,7 +505,7 @@ Robotic knee replacement offers advantages in precision and potentially faster r
 
 ---
 
-*Dr. B Harsha Vardhana Reddy performs both traditional and computer-navigated knee replacements at Yashoda Hospital Hi-Tech City, Hyderabad.*
+*Dr. B Harsha Vardhana Reddy performs both traditional and computer-navigated knee replacements at Apollo Hospitals Financial District, Hyderabad.*
     `,
     summary: 'Complete guide to robotic knee replacement - benefits, how it works, cost comparison in Hyderabad, and whether it is worth the extra investment.'
   },
@@ -648,7 +648,7 @@ You CAN delay or potentially avoid knee replacement with the right approach. The
 
 ---
 
-*Dr. B Harsha Vardhana Reddy believes in exhausting conservative options before recommending surgery. Book a consultation at Yashoda Hospital Hi-Tech City for a comprehensive knee evaluation.*
+*Dr. B Harsha Vardhana Reddy believes in exhausting conservative options before recommending surgery. Book a consultation at Apollo Hospitals Financial District for a comprehensive knee evaluation.*
     `,
     summary: 'Learn 8 proven strategies to avoid or delay knee replacement surgery - from weight management and exercises to injections and lifestyle modifications.'
   }

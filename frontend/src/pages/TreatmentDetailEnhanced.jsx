@@ -98,7 +98,7 @@ const TreatmentDetailEnhanced = () => {
     <Layout>
       <SEO 
         title={hasDetailedContent ? treatment.seoTitle : `${treatment.name} in Hyderabad | Dr. Harsha Reddy`}
-        description={hasDetailedContent ? treatment.seoDescription : `Expert ${treatment.name} at Yashoda Hospital. ${treatment.shortDescription || treatment.description}`}
+        description={hasDetailedContent ? treatment.seoDescription : `Expert ${treatment.name} at Apollo Hospitals. ${treatment.shortDescription || treatment.description}`}
         keywords={hasDetailedContent ? treatment.seoKeywords : treatment.seoKeywords}
       />
       <SchemaMarkup type="MedicalTherapy" data={{
@@ -413,7 +413,7 @@ const TreatmentDetailEnhanced = () => {
                 <Building2 className="w-10 h-10 text-gold mb-4" />
                 <h3 className="text-xl font-semibold mb-3">World-Class Facility</h3>
                 <ul className="space-y-2 text-white/80">
-                  <li>• Yashoda Hospital Hi-Tech City</li>
+                  <li>• Apollo Hospitals Financial District</li>
                   <li>• State-of-the-art operation theaters</li>
                   <li>• Advanced imaging & diagnostics</li>
                   <li>• Dedicated rehabilitation center</li>
@@ -462,7 +462,7 @@ const TreatmentDetailEnhanced = () => {
           </h2>
           <p className="text-white/90 max-w-2xl mx-auto mb-8">
             Take the first step towards a pain-free life. Schedule your consultation with 
-            Dr. B Harsha Vardhana Reddy at Yashoda Hospital, Hi-Tech City, Hyderabad.
+            Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Hi-Tech City, Hyderabad.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/contact">

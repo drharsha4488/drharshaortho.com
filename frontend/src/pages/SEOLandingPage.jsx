@@ -434,7 +434,7 @@ const SEOLandingPage = () => {
             Ready to Get Expert Orthopedic Care?
           </h2>
           <p className="text-white/90 max-w-2xl mx-auto mb-8">
-            Schedule your consultation with Dr. B Harsha Vardhana Reddy at Yashoda Hospital, Hi-Tech City, Hyderabad.
+            Schedule your consultation with Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Hi-Tech City, Hyderabad.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/contact">
