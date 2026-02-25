@@ -556,18 +556,20 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         return results
 
     # ─────────────────────────────────────────────────────────
-    # 6. STATUS
+    # 8. STATUS
     # ─────────────────────────────────────────────────────────
     async def get_status(self) -> dict:
         try:
             weekly = await self.db.automation_log.find_one({"type": "weekly_run"}, {"_id": 0}) or {}
             sitemap = await self.db.automation_log.find_one({"type": "sitemap"}, {"_id": 0}) or {}
             ping = await self.db.automation_log.find_one({"type": "google_ping"}, {"_id": 0}) or {}
+            analysis = await self.get_growth_analysis()
             return {
                 "scheduler_running": self._scheduler_task is not None and not self._scheduler_task.done(),
                 "next_run_in": await self._next_run_hours(),
                 "last_run": weekly.get("last_run"),
                 "last_results": weekly.get("last_results", {}),
+                "last_strategy": weekly.get("last_strategy", "normal"),
                 "sitemap": {
                     "last_generated": sitemap.get("last_generated"),
                     "url_count": sitemap.get("url_count", 0),
@@ -582,6 +584,7 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                     "conditions": await self.db.cms_pages.count_documents({"type": "condition"}),
                     "treatments": await self.db.cms_pages.count_documents({"type": "treatment"}),
                 },
+                "growth": analysis,
             }
         except Exception as e:
             return {"error": str(e)}
