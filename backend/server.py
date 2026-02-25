@@ -2135,6 +2135,149 @@ async def enrich_cms_with_detailed_content():
         raise HTTPException(status_code=500, detail=f"Failed to enrich content: {str(e)}")
 
 
+# Import extended enrichment data
+try:
+    from enrichment_data import EXTENDED_CONDITIONS_DATA, EXTENDED_TREATMENTS_DATA
+    EXTENDED_DATA_AVAILABLE = True
+except ImportError:
+    EXTENDED_DATA_AVAILABLE = False
+    EXTENDED_CONDITIONS_DATA = {}
+    EXTENDED_TREATMENTS_DATA = {}
+
+
+@api_router.post("/admin/cms/enrich-extended")
+async def enrich_cms_extended_content():
+    """Enrich CMS with extended detailed content for remaining conditions and treatments"""
+    if not EXTENDED_DATA_AVAILABLE:
+        raise HTTPException(status_code=500, detail="Extended enrichment data not available")
+    
+    try:
+        updated_count = 0
+        created_count = 0
+        results = []
+        
+        # Update conditions with extended data
+        for slug, detailed_data in EXTENDED_CONDITIONS_DATA.items():
+            existing = await db.cms_pages.find_one({"slug": slug, "type": "condition"})
+            
+            if existing:
+                # Merge detailed content into existing CMS content
+                updated_content = existing.get("content", {})
+                updated_content.update({
+                    "name": detailed_data.get("name", updated_content.get("name")),
+                    "category": detailed_data.get("category", updated_content.get("category")),
+                    "icon": detailed_data.get("icon", updated_content.get("icon")),
+                    "imageUrl": detailed_data.get("imageUrl"),
+                    "overview": detailed_data.get("overview"),
+                    "causes": detailed_data.get("causes", []),
+                    "symptoms": detailed_data.get("symptoms", []),
+                    "diagnosis": detailed_data.get("diagnosis", []),
+                    "nonSurgicalTreatments": detailed_data.get("nonSurgicalTreatments", []),
+                    "surgicalTreatments": detailed_data.get("surgicalTreatments", []),
+                    "recoveryTimeline": detailed_data.get("recoveryTimeline", []),
+                    "faqs": detailed_data.get("faqs", []),
+                    "relatedConditions": detailed_data.get("relatedConditions", []),
+                    "relatedTreatments": detailed_data.get("relatedTreatments", [])
+                })
+                
+                await db.cms_pages.update_one(
+                    {"_id": existing["_id"]},
+                    {"$set": {
+                        "content": updated_content,
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }}
+                )
+                results.append({"slug": slug, "type": "condition", "status": "enriched"})
+                updated_count += 1
+            else:
+                # Create new page if doesn't exist
+                page_doc = {
+                    "id": str(uuid.uuid4()),
+                    "slug": slug,
+                    "type": "condition",
+                    "title": f"{detailed_data['name']} Treatment in Hyderabad",
+                    "meta_title": f"{detailed_data['name']} Treatment Hyderabad | Dr. Harsha Reddy",
+                    "meta_description": f"Expert {detailed_data['name'].lower()} treatment in Hyderabad by Dr. B Harsha Vardhana Reddy at Apollo Hospitals.",
+                    "keywords": [f"{detailed_data['name'].lower()} treatment", f"{detailed_data['name'].lower()} hyderabad"],
+                    "content": detailed_data,
+                    "status": "published",
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                    "published_at": datetime.now(timezone.utc).isoformat()
+                }
+                await db.cms_pages.insert_one(page_doc)
+                results.append({"slug": slug, "type": "condition", "status": "created"})
+                created_count += 1
+        
+        # Update treatments with extended data
+        for slug, detailed_data in EXTENDED_TREATMENTS_DATA.items():
+            existing = await db.cms_pages.find_one({"slug": slug, "type": "treatment"})
+            
+            if existing:
+                # Merge detailed content into existing CMS content
+                updated_content = existing.get("content", {})
+                updated_content.update({
+                    "name": detailed_data.get("name", updated_content.get("name")),
+                    "category": detailed_data.get("category", updated_content.get("category")),
+                    "icon": detailed_data.get("icon", updated_content.get("icon")),
+                    "imageUrl": detailed_data.get("imageUrl"),
+                    "heroTitle": detailed_data.get("heroTitle"),
+                    "heroSubtitle": detailed_data.get("heroSubtitle"),
+                    "overview": detailed_data.get("overview"),
+                    "statistics": detailed_data.get("statistics", []),
+                    "candidatesFor": detailed_data.get("candidatesFor", []),
+                    "procedureSteps": detailed_data.get("procedureSteps", []),
+                    "benefits": detailed_data.get("benefits", []),
+                    "recoveryTimeline": detailed_data.get("recoveryTimeline", []),
+                    "risks": detailed_data.get("risks", []),
+                    "preOpPreparation": detailed_data.get("preOpPreparation", []),
+                    "postOpCare": detailed_data.get("postOpCare", []),
+                    "faqs": detailed_data.get("faqs", []),
+                    "relatedConditions": detailed_data.get("relatedConditions", []),
+                    "relatedTreatments": detailed_data.get("relatedTreatments", [])
+                })
+                
+                await db.cms_pages.update_one(
+                    {"_id": existing["_id"]},
+                    {"$set": {
+                        "content": updated_content,
+                        "updated_at": datetime.now(timezone.utc).isoformat()
+                    }}
+                )
+                results.append({"slug": slug, "type": "treatment", "status": "enriched"})
+                updated_count += 1
+            else:
+                # Create new page if doesn't exist
+                page_doc = {
+                    "id": str(uuid.uuid4()),
+                    "slug": slug,
+                    "type": "treatment",
+                    "title": f"{detailed_data['name']} in Hyderabad",
+                    "meta_title": f"{detailed_data['name']} Hyderabad | Dr. Harsha Reddy",
+                    "meta_description": f"Expert {detailed_data['name'].lower()} in Hyderabad by Dr. B Harsha Vardhana Reddy at Apollo Hospitals.",
+                    "keywords": [f"{detailed_data['name'].lower()}", f"{detailed_data['name'].lower()} hyderabad"],
+                    "content": detailed_data,
+                    "status": "published",
+                    "created_at": datetime.now(timezone.utc).isoformat(),
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                    "published_at": datetime.now(timezone.utc).isoformat()
+                }
+                await db.cms_pages.insert_one(page_doc)
+                results.append({"slug": slug, "type": "treatment", "status": "created"})
+                created_count += 1
+        
+        return {
+            "success": True,
+            "message": f"Extended CMS enrichment complete. Updated: {updated_count}, Created: {created_count}",
+            "updated": updated_count,
+            "created": created_count,
+            "details": results
+        }
+    except Exception as e:
+        logger.error(f"Error enriching extended CMS content: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to enrich extended content: {str(e)}")
+
+
 # ============ AI Chat Agent ============
 
 # Try to import emergentintegrations for AI chat
