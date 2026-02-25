@@ -2159,8 +2159,12 @@ async def enrich_cms_extended_content():
         created_count = 0
         results = []
         
+        # Combine all conditions data
+        all_conditions = {**EXTENDED_CONDITIONS_DATA, **ADDITIONAL_CONDITIONS_DATA}
+        all_treatments = {**EXTENDED_TREATMENTS_DATA, **ADDITIONAL_TREATMENTS_DATA}
+        
         # Update conditions with extended data
-        for slug, detailed_data in EXTENDED_CONDITIONS_DATA.items():
+        for slug, detailed_data in all_conditions.items():
             existing = await db.cms_pages.find_one({"slug": slug, "type": "condition"})
             
             if existing:
