@@ -120,9 +120,10 @@ const Conditions = () => {
               </Button>
             ))}
           </div>
+          )}
 
           {/* Conditions Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {!loading && (
             {filteredConditions.map((condition, i) => (
               <motion.div
                 key={condition.id}
