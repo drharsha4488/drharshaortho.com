@@ -98,7 +98,7 @@ const Footer = () => {
             <ul className="space-y-4">
               <li>
                 <motion.a 
-                  href="https://maps.google.com" 
+                  href="https://maps.app.goo.gl/8nE3J5ajgmtizEyTA" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-start gap-3 group"
@@ -107,7 +107,7 @@ const Footer = () => {
                   <div className="w-8 h-8 bg-gold/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-gold/20 transition-colors">
                     <MapPin className="w-4 h-4 text-gold" />
                   </div>
-                  <span className="text-sm text-ivory/70 group-hover:text-ivory transition-colors">Yashoda Hospitals, Hi-Tech City, Madhapur, Hyderabad</span>
+                  <span className="text-sm text-ivory/70 group-hover:text-ivory transition-colors">Apollo Hospitals, Financial District, Nanakramguda, Hyderabad</span>
                 </motion.a>
               </li>
               <li>
@@ -138,7 +138,7 @@ const Footer = () => {
                 <div className="w-8 h-8 bg-gold/10 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Clock className="w-4 h-4 text-gold" />
                 </div>
-                <span className="text-sm text-ivory/70">Mon - Sat: 9:00 AM - 6:00 PM</span>
+                <span className="text-sm text-ivory/70">Mon - Sat: 9:00 AM - 5:00 PM</span>
               </li>
             </ul>
           </motion.div>
