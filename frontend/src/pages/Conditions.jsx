@@ -41,9 +41,38 @@ const conditionsFAQs = [
 
 const Conditions = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [allConditionsDetailed, setAllConditionsDetailed] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredConditions = selectedCategory === 'All' 
-    ? allConditionsDetailed 
+  useEffect(() => {
+    const fetchConditions = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/cms/conditions`);
+        if (response.ok) {
+          const data = await response.json();
+          const mapped = data.map(c => ({
+            id: c.slug,
+            slug: c.slug,
+            name: c.content?.name || c.title,
+            category: c.content?.category || 'General',
+            shortDescription: c.meta_description || c.content?.description || '',
+            imageUrl: c.content?.imageUrl || '',
+            icon: c.content?.icon || '🦴',
+            surgicalTreatments: c.content?.surgicalTreatments || [],
+          }));
+          setAllConditionsDetailed(mapped);
+        }
+      } catch (err) {
+        console.error('Failed to fetch conditions:', err);
+      }
+      setLoading(false);
+    };
+    fetchConditions();
+  }, []);
+
+  const conditionCategories = ['All', ...new Set(allConditionsDetailed.map(c => c.category).filter(Boolean))];
+  const filteredConditions = selectedCategory === 'All'
+    ? allConditionsDetailed
     : allConditionsDetailed.filter(c => c.category === selectedCategory);
 
   return (
