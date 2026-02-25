@@ -35,7 +35,7 @@ const AboutDoctorSection = () => {
             <div className="space-y-4 text-muted-foreground mb-8">
               <p>
                 Dr. B Harsha Vardhana Reddy is one of the most trusted orthopedic surgeons in Hyderabad, 
-                currently serving as Associate Consultant at Yashoda Hospital, Hi-Tech City. With over 
+                currently serving as Senior Consultant at Apollo Hospitals, Financial District. With over 
                 15 years of specialized experience in orthopedic surgery, he has successfully performed 
                 more than 4,000 surgeries including complex joint replacements, sports injury treatments, 
                 and trauma cases.
