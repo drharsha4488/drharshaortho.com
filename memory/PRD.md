@@ -82,18 +82,14 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
   - `recoveryTimeline` with phase-by-phase milestones
   - `causes`, `symptoms`, `diagnosis` arrays
 
-### February 25, 2026 - Hospital Address Change (Yashoda → Apollo)
-- **MIGRATED**: All hospital references from Yashoda Hospital Hi-Tech City to Apollo Hospitals, Financial District
-- **UPDATED FILES**: 50+ files across frontend and backend
-  - Contact page: New address, map embed, timings (9 AM - 5 PM)
-  - Header/Footer: Apollo Hospitals branding, Apollo247 booking link
-  - About page: Updated career timeline (2025: Senior Consultant at Apollo)
-  - SEO components: Updated schema markup, geo coordinates (17.4167554, 78.3550579)
-  - AI Chat: Updated system prompt with new location info
-  - Email templates: New hospital info in appointment notifications
-  - Static data files: All condition/treatment pages updated
-- **BOOKING**: Book Appointment button now links directly to Apollo247 profile
-- **TESTED**: All 8 key features verified (100% pass rate)
+### February 25, 2026 - CMS-Only Migration & Static File Removal (This Session)
+- **FIXED**: "Treatment Not Found" bug on treatment detail pages (e.g., `/treatments/prp-therapy`)
+  - Root cause: `TreatmentDetailEnhanced.jsx` was 100% static (no CMS API calls)
+  - Fix: Rewrote to fetch exclusively from `/api/cms/treatments/${slug}`
+- **REFACTORED**: `ConditionDetail.jsx` - removed hybrid static+CMS system, now CMS-only
+- **UPDATED**: `Treatments.jsx` and `Conditions.jsx` list pages - now fetch from CMS API
+- **DELETED**: ~4000+ lines of static data (conditions.js, conditionsDetailed.js, treatments.js, treatmentsDetailed.js, old TreatmentDetail.jsx)
+- **TESTED**: 9/9 tests passed (all treatment and condition pages working)
 
 ---
 
@@ -101,14 +97,15 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 
 ### P0 - Completed
 - [x] CMS content migration (59 pages)
-- [x] CMS enrichment with detailed treatment protocols (10 key pages)
+- [x] CMS enrichment with detailed treatment protocols
 - [x] Pre-rendering (SSG) with react-snap
 - [x] IndexNow integration
+- [x] Fix "Treatment Not Found" bug - full CMS-only migration complete
+- [x] Remove static data fallback system
 
 ### P1 - High Priority (Next)
-- [ ] Enrich remaining conditions and treatments with detailed content
-- [ ] Use Automated SEO Engine to expand medical content
-- [ ] Code cleanup - evaluate which static data files can be deprecated
+- [ ] Use Automated SEO Engine to expand medical content beyond 59 pages
+- [ ] Deeper content enrichment for remaining conditions/treatments
 
 ### P2 - Medium Priority
 - [ ] Backlink building campaign (use directory-submission-kit.html)
