@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import SEO from '@/components/SEO';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { allConditionsDetailed, conditionCategories } from '@/data/conditionsDetailed';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
+
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 
 // FAQ Schema for rich snippets
 const conditionsFAQs = [
