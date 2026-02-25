@@ -3737,6 +3737,36 @@ async def get_indexnow_status():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ============ AUTOMATION ENDPOINTS (must be before include_router) ============
+
+@api_router.get("/admin/automation/status")
+async def get_automation_status():
+    return await seo_automation.get_status()
+
+@api_router.post("/admin/automation/run-now")
+async def run_automation_now():
+    try:
+        results = await seo_automation.run_cycle()
+        return {"success": True, "results": results}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/admin/automation/regenerate-sitemap")
+async def regenerate_sitemap_now():
+    url_count = await seo_automation.generate_and_write_sitemap()
+    await seo_automation.ping_google()
+    return {"success": True, "url_count": url_count, "message": "Sitemap updated and Google notified"}
+
+@api_router.post("/admin/automation/generate-blog")
+async def generate_single_blog(data: dict):
+    keyword = data.get("keyword", "").strip()
+    if not keyword:
+        raise HTTPException(status_code=400, detail="keyword is required")
+    post = await seo_automation.generate_blog_post(keyword)
+    if not post:
+        raise HTTPException(status_code=500, detail="Blog generation failed")
+    await seo_automation.on_content_published(f"https://drharshaortho.com/blog/{post['slug']}")
+    return {"success": True, "post": post}
 
 
 app.include_router(api_router)
