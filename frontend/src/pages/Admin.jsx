@@ -647,79 +647,35 @@ const Admin = () => {
           </motion.div>
         </div>
 
-        {/* Tab Navigation */}
+        {/* Tab Navigation — 3 focused tabs */}
         <div className="flex gap-2 mb-6 border-b border-border overflow-x-auto">
           <button
-            onClick={() => setActiveTab('appointments')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
-              activeTab === 'appointments'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
+            onClick={() => setActiveTab('growth')}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${activeTab === 'growth' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+            data-testid="growth-tab"
           >
-            <Users className="w-4 h-4 inline mr-2" />
-            Appointments
-          </button>
-          <button
-            onClick={() => setActiveTab('blog')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
-              activeTab === 'blog'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <FileText className="w-4 h-4 inline mr-2" />
-            Blog Posts
+            <TrendingUp className="w-4 h-4 inline mr-2" />
+            Organic Growth
           </button>
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
-              activeTab === 'analytics'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${activeTab === 'analytics' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
           >
             <BarChart3 className="w-4 h-4 inline mr-2" />
             Analytics
           </button>
           <button
             onClick={() => setActiveTab('cms')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
-              activeTab === 'cms'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
+            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${activeTab === 'cms' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
           >
             <Layers className="w-4 h-4 inline mr-2" />
             CMS Pages
           </button>
-          <button
-            onClick={() => setActiveTab('seo')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
-              activeTab === 'seo'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Target className="w-4 h-4 inline mr-2" />
-            SEO & Keywords
-          </button>
-          <button
-            onClick={() => setActiveTab('automation')}
-            className={`px-4 py-3 font-medium text-sm border-b-2 transition-colors whitespace-nowrap ${
-              activeTab === 'automation'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
-            data-testid="automation-tab"
-          >
-            <Activity className="w-4 h-4 inline mr-2" />
-            Automation
-          </button>
         </div>
 
-        {/* Appointments Tab */}
-        {activeTab === 'appointments' && (
+        {/* Organic Growth Tab */}
+        {activeTab === 'growth' && <OrganicGrowthDashboard />}
+
           <>
             {/* Filter Tabs */}
             <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
