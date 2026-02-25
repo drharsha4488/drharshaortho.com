@@ -108,19 +108,21 @@ const Treatments = () => {
 
           {/* Category Filter */}
           {!loading && (
-            {treatmentCategories.map((category) => (
-              <Button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                variant={selectedCategory === category ? 'default' : 'outline'}
-                size="sm"
-                className={selectedCategory === category ? 'bg-primary text-white' : ''}
-                data-testid={`filter-${category.toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
+            <div className="flex flex-wrap justify-center gap-2 mb-12">
+              {treatmentCategories.map((category) => (
+                <Button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  variant={selectedCategory === category ? 'default' : 'outline'}
+                  size="sm"
+                  className={selectedCategory === category ? 'bg-primary text-white' : ''}
+                  data-testid={`filter-${category.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
+          )}
 
           {/* Treatments Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
