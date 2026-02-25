@@ -2138,11 +2138,14 @@ async def enrich_cms_with_detailed_content():
 # Import extended enrichment data
 try:
     from enrichment_data import EXTENDED_CONDITIONS_DATA, EXTENDED_TREATMENTS_DATA
+    from enrichment_data_part2 import ADDITIONAL_CONDITIONS_DATA, ADDITIONAL_TREATMENTS_DATA
     EXTENDED_DATA_AVAILABLE = True
 except ImportError:
     EXTENDED_DATA_AVAILABLE = False
     EXTENDED_CONDITIONS_DATA = {}
     EXTENDED_TREATMENTS_DATA = {}
+    ADDITIONAL_CONDITIONS_DATA = {}
+    ADDITIONAL_TREATMENTS_DATA = {}
 
 
 @api_router.post("/admin/cms/enrich-extended")
