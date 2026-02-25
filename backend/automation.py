@@ -164,7 +164,7 @@ class SEOAutomation:
 
             # CMS treatments
             treatments = await self.db.cms_pages.find(
-                {"page_type": "treatment"},
+                {"type": "treatment"},
                 {"slug": 1, "_id": 0}
             ).to_list(500)
             for t in treatments:
@@ -173,7 +173,7 @@ class SEOAutomation:
 
             # CMS conditions
             conditions = await self.db.cms_pages.find(
-                {"page_type": "condition"},
+                {"type": "condition"},
                 {"slug": 1, "_id": 0}
             ).to_list(500)
             for c in conditions:
