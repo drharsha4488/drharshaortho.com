@@ -61,15 +61,15 @@ const Contact = () => {
     <Layout>
       <SEO 
         title="Book Appointment - Best Orthopedic Surgeon Hyderabad | Dr. B Harsha Vardhana Reddy"
-        description="Book appointment with Dr. B Harsha Vardhana Reddy at Yashoda Hospital Hitec City, Hyderabad. Expert orthopedic consultation for knee, hip, shoulder, and sports injuries. Call +91 99599 64567"
-        keywords="book orthopedic appointment Hyderabad, orthopedic consultation, Yashoda Hospital Hitec City, knee pain doctor appointment, hip replacement consultation, sports injury appointment"
+        description="Book appointment with Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District, Hyderabad. Expert orthopedic consultation for knee, hip, shoulder, and sports injuries. Call +91 99599 64567"
+        keywords="book orthopedic appointment Hyderabad, orthopedic consultation, Apollo Hospitals Financial District, knee pain doctor appointment, hip replacement consultation, sports injury appointment"
       />
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="contact-page">
         <div className="container-medical">
           <SectionHeading
             badge="Contact Us"
             title="Book Your Appointment with Best Orthopedic Surgeon in Hyderabad"
-            subtitle="Schedule a consultation with Dr. B Harsha Vardhana Reddy at Yashoda Hospital, Hitec City. Expert treatment for all orthopedic conditions."
+            subtitle="Schedule a consultation with Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District. Expert treatment for all orthopedic conditions."
           />
 
           <div className="grid lg:grid-cols-2 gap-12">
@@ -91,9 +91,9 @@ const Contact = () => {
                     <div>
                       <p className="font-medium text-foreground">Clinic Address</p>
                       <p className="text-sm text-muted-foreground">
-                        Yashoda Hospitals, Hi-Tech City,<br />
-                        Madhapur, Hyderabad,<br />
-                        Telangana 500081
+                        Apollo Hospitals, Financial District,<br />
+                        Nanakramguda, Serilingampally,<br />
+                        Hyderabad, Telangana 500032
                       </p>
                     </div>
                   </div>
@@ -129,7 +129,7 @@ const Contact = () => {
                     <div>
                       <p className="font-medium text-foreground">Clinic Hours</p>
                       <p className="text-sm text-muted-foreground">
-                        Mon - Sat: 9:00 AM - 6:00 PM<br />
+                        Mon - Sat: 9:00 AM - 5:00 PM<br />
                         Sunday: Closed<br />
                         <span className="text-primary">Emergency: 24/7</span>
                       </p>
@@ -141,8 +141,8 @@ const Contact = () => {
               {/* Map */}
               <div className="bg-card rounded-xl overflow-hidden shadow-md border border-border">
                 <iframe
-                  title="Yashoda Hospitals Hi-Tech City Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.1558644792896!2d78.38491237487853!3d17.462313701625256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb917df77e5ba9%3A0xa47221c5deef3da2!2sYashoda%20Hospitals%20%7C%20Best%20Hospital%20in%20Hitech%20City!5e0!3m2!1sen!2sin!4v1735469000000!5m2!1sen!2sin"
+                  title="Apollo Hospitals Financial District Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.0234567890123!2d78.3550579!3d17.4167554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb95001ecefe67%3A0x16f103db18412633!2sApollo%20Hospitals%20-%20Best%20Multispeciality%20Hospital%20in%20Financial%20District%2C%20Hyderabad!5e0!3m2!1sen!2sin!4v1735469000000!5m2!1sen!2sin"
                   width="100%"
                   height="350"
                   style={{ border: 0 }}
