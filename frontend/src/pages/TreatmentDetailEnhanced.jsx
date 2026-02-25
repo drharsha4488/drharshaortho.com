@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
@@ -20,12 +20,15 @@ import {
   ChevronUp,
   Stethoscope,
   Heart,
-  Activity
+  Activity,
+  Loader2
 } from 'lucide-react';
-import { treatmentsDetailed, getTreatmentById } from '@/data/treatmentsDetailed';
-import { treatments } from '@/data/treatments';
-import { conditionsDetailed } from '@/data/conditionsDetailed';
-import { useState } from 'react';
+
+const API_URL = process.env.REACT_APP_BACKEND_URL || '';
+
+// Helper to format slug as title
+const slugToTitle = (slug) => 
+  slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
 // FAQ Accordion Component
 const FAQItem = ({ question, answer, isOpen, onClick }) => (
@@ -51,15 +54,50 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => (
 
 const TreatmentDetailEnhanced = () => {
   const { slug } = useParams();
+  const [treatment, setTreatment] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [openFAQ, setOpenFAQ] = useState(0);
-  
-  // Try to get detailed treatment first, fall back to basic
-  const detailedTreatment = treatmentsDetailed.find(t => t.id === slug || t.slug === slug);
-  const basicTreatment = treatments.find(t => t.id === slug);
-  
-  const treatment = detailedTreatment || basicTreatment;
-  const hasDetailedContent = !!detailedTreatment;
-  
+
+  useEffect(() => {
+    const fetchTreatment = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`${API_URL}/api/cms/treatments/${slug}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.content) {
+            setTreatment({
+              ...data.content,
+              slug: data.slug,
+              seoTitle: data.title || data.content.name,
+              seoDescription: data.meta_description || data.content.description,
+              seoKeywords: data.keywords?.join(', ') || '',
+            });
+          } else {
+            setTreatment(null);
+          }
+        } else {
+          setTreatment(null);
+        }
+      } catch (err) {
+        console.error('Failed to fetch treatment:', err);
+        setTreatment(null);
+      }
+      setLoading(false);
+    };
+    fetchTreatment();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </Layout>
+    );
+  }
+
   if (!treatment) {
     return (
       <Layout>
@@ -75,38 +113,31 @@ const TreatmentDetailEnhanced = () => {
     );
   }
 
-  // Find related conditions
-  const relatedConditions = conditionsDetailed.filter(c => 
-    treatment.relatedConditions?.includes(c.id) || c.relatedTreatments?.includes(treatment.id)
-  ).slice(0, 4);
+  const hasDetailedContent = !!(treatment.procedureSteps?.length || treatment.faqs?.length);
 
   // FAQ Schema for SEO
-  const faqSchema = hasDetailedContent && treatment.faqs ? {
+  const faqSchema = treatment.faqs?.length ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": treatment.faqs.map(faq => ({
       "@type": "Question",
       "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
+      "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
     }))
   } : null;
 
   return (
     <Layout>
       <SEO 
-        title={hasDetailedContent ? treatment.seoTitle : `${treatment.name} in Hyderabad | Dr. Harsha Reddy`}
-        description={hasDetailedContent ? treatment.seoDescription : `Expert ${treatment.name} at Apollo Hospitals. ${treatment.shortDescription || treatment.description}`}
-        keywords={hasDetailedContent ? treatment.seoKeywords : treatment.seoKeywords}
+        title={treatment.seoTitle}
+        description={treatment.seoDescription}
+        keywords={treatment.seoKeywords}
       />
       <SchemaMarkup type="MedicalTherapy" data={{
         name: treatment.name,
-        description: treatment.overview || treatment.detailedDescription || treatment.description
+        description: treatment.overview || treatment.description
       }} />
       
-      {/* FAQ Schema */}
       {faqSchema && (
         <script type="application/ld+json">
           {JSON.stringify(faqSchema)}
@@ -130,7 +161,7 @@ const TreatmentDetailEnhanced = () => {
       <section className="relative">
         <div className="absolute inset-0 min-h-[450px] md:h-[400px]">
           <img 
-            src={treatment.imageUrl} 
+            src={treatment.imageUrl || 'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=800'} 
             alt={treatment.name}
             className="w-full h-full object-cover"
           />
@@ -138,15 +169,15 @@ const TreatmentDetailEnhanced = () => {
         </div>
         <div className="relative container-medical py-12 md:py-24 min-h-[450px] md:min-h-0">
           <div className="max-w-3xl text-white">
-            <span className="text-4xl md:text-5xl mb-3 md:mb-4 block">{treatment.icon}</span>
+            <span className="text-4xl md:text-5xl mb-3 md:mb-4 block">{treatment.icon || '🏥'}</span>
             <span className="inline-block px-3 py-1 bg-white/20 text-white text-sm rounded-full mb-3 md:mb-4">
               {treatment.category}
             </span>
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-serif font-semibold mb-3 md:mb-4">
-              {hasDetailedContent ? treatment.heroTitle : treatment.name}
+              {treatment.heroTitle || treatment.name}
             </h1>
             <p className="text-base md:text-lg text-white/90 mb-6 md:mb-8">
-              {hasDetailedContent ? treatment.heroSubtitle : (treatment.detailedDescription || treatment.description)}
+              {treatment.heroSubtitle || treatment.overview || treatment.description}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -168,7 +199,7 @@ const TreatmentDetailEnhanced = () => {
       </section>
 
       {/* Statistics Bar */}
-      {hasDetailedContent && treatment.statistics && (
+      {treatment.statistics?.length > 0 && (
         <section className="bg-primary text-white py-6">
           <div className="container-medical">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -191,16 +222,41 @@ const TreatmentDetailEnhanced = () => {
               About {treatment.name}
             </h2>
             <div className="prose prose-lg text-muted-foreground">
-              {(hasDetailedContent ? treatment.overview : treatment.detailedDescription)?.split('\n\n').map((para, i) => (
+              {(treatment.overview || treatment.description)?.split('\n\n').map((para, i) => (
                 <p key={i} className="mb-4">{para}</p>
               ))}
             </div>
+            
+            {/* Quick Info */}
+            {(treatment.hospitalStay || treatment.recovery) && (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+                {treatment.hospitalStay && (
+                  <div className="bg-card rounded-lg p-4 border border-border">
+                    <Clock className="w-6 h-6 text-primary mb-2" />
+                    <p className="text-sm text-muted-foreground">Hospital Stay</p>
+                    <p className="font-semibold text-foreground">{treatment.hospitalStay}</p>
+                  </div>
+                )}
+                {treatment.recovery && (
+                  <div className="bg-card rounded-lg p-4 border border-border">
+                    <Activity className="w-6 h-6 text-primary mb-2" />
+                    <p className="text-sm text-muted-foreground">Recovery</p>
+                    <p className="font-semibold text-foreground">{treatment.recovery}</p>
+                  </div>
+                )}
+                <div className="bg-card rounded-lg p-4 border border-border">
+                  <Award className="w-6 h-6 text-primary mb-2" />
+                  <p className="text-sm text-muted-foreground">Specialist</p>
+                  <p className="font-semibold text-foreground">Dr. Harsha Reddy</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Who Needs This Surgery */}
-      {hasDetailedContent && treatment.candidatesFor && (
+      {/* Who Needs This */}
+      {treatment.candidatesFor?.length > 0 && (
         <section className="section-padding bg-secondary">
           <div className="container-medical">
             <div className="max-w-4xl">
@@ -224,82 +280,88 @@ const TreatmentDetailEnhanced = () => {
       )}
 
       {/* Procedure Steps */}
-      <section className="section-padding">
-        <div className="container-medical">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-6">
-              <Stethoscope className="w-8 h-8 text-primary" />
-              <h2 className="text-2xl font-serif font-semibold text-foreground">
-                The Procedure: Step by Step
-              </h2>
-            </div>
-            <div className="relative">
-              <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-primary/30" />
-              {(hasDetailedContent ? treatment.procedureSteps : treatment.procedure?.map((step, i) => ({ step: i+1, title: `Step ${i+1}`, description: step }))).map((step, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="relative pl-12 pb-6 last:pb-0"
-                >
-                  <div className="absolute left-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold">
-                    {step.step || i + 1}
-                  </div>
-                  <div className="bg-card rounded-lg p-4 border border-border">
-                    {step.title && <h3 className="font-semibold text-foreground mb-2">{step.title}</h3>}
-                    <p className="text-muted-foreground">{step.description}</p>
-                    {step.duration && (
-                      <p className="text-sm text-primary mt-2 flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {step.duration}
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+      {(treatment.procedureSteps?.length > 0) && (
+        <section className="section-padding">
+          <div className="container-medical">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-3 mb-6">
+                <Stethoscope className="w-8 h-8 text-primary" />
+                <h2 className="text-2xl font-serif font-semibold text-foreground">
+                  The Procedure: Step by Step
+                </h2>
+              </div>
+              <div className="relative">
+                <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-primary/30" />
+                {treatment.procedureSteps.map((step, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="relative pl-12 pb-6 last:pb-0"
+                  >
+                    <div className="absolute left-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold">
+                      {step.step || i + 1}
+                    </div>
+                    <div className="bg-card rounded-lg p-4 border border-border">
+                      {step.title && <h3 className="font-semibold text-foreground mb-2">{step.title}</h3>}
+                      <p className="text-muted-foreground">{step.description}</p>
+                      {step.duration && (
+                        <p className="text-sm text-primary mt-2 flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {step.duration}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Benefits Section */}
-      <section className="section-padding bg-gradient-to-br from-teal-light/30 to-background">
-        <div className="container-medical">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-6">
-              <Heart className="w-8 h-8 text-primary" />
-              <h2 className="text-2xl font-serif font-semibold text-foreground">
-                Benefits of {treatment.name}
-              </h2>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {(hasDetailedContent ? treatment.benefits : treatment.benefits?.map(b => ({ title: b, description: '' }))).map((benefit, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="flex items-start gap-3 p-4 bg-card rounded-lg border border-border"
-                >
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-medium text-foreground">{benefit.title || benefit}</span>
-                    {benefit.description && (
-                      <p className="text-sm text-muted-foreground mt-1">{benefit.description}</p>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+      {treatment.benefits?.length > 0 && (
+        <section className="section-padding bg-gradient-to-br from-teal-light/30 to-background">
+          <div className="container-medical">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-3 mb-6">
+                <Heart className="w-8 h-8 text-primary" />
+                <h2 className="text-2xl font-serif font-semibold text-foreground">
+                  Benefits of {treatment.name}
+                </h2>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {treatment.benefits.map((benefit, i) => {
+                  const title = typeof benefit === 'string' ? benefit : benefit.title;
+                  const desc = typeof benefit === 'string' ? '' : benefit.description;
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05 }}
+                      className="flex items-start gap-3 p-4 bg-card rounded-lg border border-border"
+                    >
+                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-medium text-foreground">{title}</span>
+                        {desc && <p className="text-sm text-muted-foreground mt-1">{desc}</p>}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Recovery Timeline */}
-      {hasDetailedContent && treatment.recoveryTimeline && (
+      {treatment.recoveryTimeline?.length > 0 && (
         <section className="section-padding">
           <div className="container-medical">
             <div className="max-w-4xl">
@@ -335,7 +397,7 @@ const TreatmentDetailEnhanced = () => {
       )}
 
       {/* Risks Section */}
-      {hasDetailedContent && treatment.risks && (
+      {treatment.risks?.length > 0 && (
         <section className="section-padding bg-secondary">
           <div className="container-medical">
             <div className="max-w-4xl">
@@ -353,12 +415,16 @@ const TreatmentDetailEnhanced = () => {
                   <div key={i} className="bg-card p-4 rounded-lg border border-border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-medium text-foreground">{risk.risk}</span>
-                      <span className="text-sm px-2 py-1 bg-amber-100 text-amber-700 rounded">{risk.percentage}</span>
+                      {risk.percentage && (
+                        <span className="text-sm px-2 py-1 bg-amber-100 text-amber-700 rounded">{risk.percentage}</span>
+                      )}
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      <span className="text-green-600 font-medium">Prevention: </span>
-                      {risk.prevention}
-                    </p>
+                    {risk.prevention && (
+                      <p className="text-sm text-muted-foreground">
+                        <span className="text-green-600 font-medium">Prevention: </span>
+                        {risk.prevention}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
@@ -368,7 +434,7 @@ const TreatmentDetailEnhanced = () => {
       )}
 
       {/* FAQs Section */}
-      {hasDetailedContent && treatment.faqs && (
+      {treatment.faqs?.length > 0 && (
         <section className="section-padding">
           <div className="container-medical">
             <div className="max-w-4xl">
@@ -415,7 +481,7 @@ const TreatmentDetailEnhanced = () => {
                 <ul className="space-y-2 text-white/80">
                   <li>• Apollo Hospitals Financial District</li>
                   <li>• State-of-the-art operation theaters</li>
-                  <li>• Advanced imaging & diagnostics</li>
+                  <li>• Advanced imaging &amp; diagnostics</li>
                   <li>• Dedicated rehabilitation center</li>
                 </ul>
               </div>
@@ -425,7 +491,7 @@ const TreatmentDetailEnhanced = () => {
       </section>
 
       {/* Related Conditions */}
-      {relatedConditions.length > 0 && (
+      {treatment.relatedConditions?.length > 0 && (
         <section className="section-padding bg-secondary">
           <div className="container-medical">
             <div className="max-w-4xl">
@@ -433,15 +499,14 @@ const TreatmentDetailEnhanced = () => {
                 Related Conditions
               </h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {relatedConditions.map((condition) => (
+                {treatment.relatedConditions.map((condSlug) => (
                   <Link
-                    key={condition.id}
-                    to={`/conditions/${condition.slug}`}
+                    key={condSlug}
+                    to={`/conditions/${condSlug}`}
                     className="bg-card rounded-lg p-4 border border-border hover:border-primary hover:shadow-md transition-all group"
                   >
-                    <span className="text-2xl mb-2 block">{condition.icon}</span>
                     <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm">
-                      {condition.name}
+                      {slugToTitle(condSlug)}
                     </h3>
                     <span className="text-primary text-xs font-medium mt-2 inline-flex items-center gap-1">
                       Learn more <ArrowRight className="w-3 h-3" />
