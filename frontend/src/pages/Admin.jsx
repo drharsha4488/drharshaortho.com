@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import KeywordResearchTool from '@/components/admin/KeywordResearchTool';
 import AutoSEODashboard from '@/components/admin/AutoSEODashboard';
+import AutomationDashboard from '@/components/admin/AutomationDashboard';
 import {
   Lock,
   LogOut,
