@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     question: 'What is the cost of robotic knee replacement in Hyderabad?',
-    answer: 'Robotic knee replacement at Yashoda Hospital costs 3.5-5 lakhs rupees, including pre-op tests, surgery, implants, hospital stay, and initial physiotherapy. Insurance typically covers 80-100%. The precision of robotic surgery leads to better outcomes and longer implant life, making it worth the investment.',
+    answer: 'Robotic knee replacement at Apollo Hospitals costs 3.5-5 lakhs rupees, including pre-op tests, surgery, implants, hospital stay, and initial physiotherapy. Insurance typically covers 80-100%. The precision of robotic surgery leads to better outcomes and longer implant life, making it worth the investment.',
   },
   {
     question: 'Can I avoid surgery for my rotator cuff tear?',
@@ -38,7 +38,7 @@ const faqs = [
   },
   {
     question: 'Do you accept insurance for orthopedic surgery?',
-    answer: 'Yes! Yashoda Hospital accepts cashless treatment from 30+ insurance companies including Star Health, ICICI Lombard, HDFC Ergo, New India Assurance. We also accept all government schemes (CGHS, ESI). Pre-authorization is required 3-5 days before surgery. Our team assists with insurance documentation.',
+    answer: 'Yes! Apollo Hospitals accepts cashless treatment from 30+ insurance companies including Star Health, ICICI Lombard, HDFC Ergo, New India Assurance. We also accept all government schemes (CGHS, ESI). Pre-authorization is required 3-5 days before surgery. Our team assists with insurance documentation.',
   },
   {
     question: 'What makes Dr. Harsha Reddy different from other orthopedic surgeons?',
@@ -46,7 +46,7 @@ const faqs = [
   },
   {
     question: 'How do I book an appointment with Dr. Harsha?',
-    answer: 'You can book an appointment by: 1) Calling +91-99599-64567, 2) WhatsApp message to the same number, 3) Using the Book Appointment form on this website, or 4) Walking in to Yashoda Hospital Hi-Tech City (OPD timings: Mon-Sat, 9AM-6PM). Emergency consultations available 24/7.',
+    answer: 'You can book an appointment by: 1) Calling +91-99599-64567, 2) WhatsApp message to the same number, 3) Booking online at apollo247.com, or 4) Walking in to Apollo Hospitals Financial District (OPD timings: Mon-Sat, 9AM-5PM). Emergency consultations available 24/7.',
   },
   {
     question: 'What should I bring for my first consultation?',
@@ -54,7 +54,7 @@ const faqs = [
   },
   {
     question: 'Is physiotherapy included in treatment?',
-    answer: 'Yes, physiotherapy is an integral part of our treatment approach. Yashoda Hospital has an in-house physiotherapy department. For surgical patients, rehabilitation starts from day 1 post-surgery. We provide personalized exercise programs and follow-up physio sessions as needed.',
+    answer: 'Yes, physiotherapy is an integral part of our treatment approach. Apollo Hospitals has an in-house physiotherapy department. For surgical patients, rehabilitation starts from day 1 post-surgery. We provide personalized exercise programs and follow-up physio sessions as needed.',
   },
   {
     question: 'What is the success rate of joint replacement surgery?',
@@ -66,7 +66,7 @@ const faqs = [
   },
   {
     question: 'What are the hospital visiting hours?',
-    answer: 'Yashoda Hospital visiting hours: Morning 10AM-12PM, Evening 5PM-8PM. ICU has restricted visiting with specific timings. Post-surgery patients can have one attendant stay overnight. OPD consultation: Mon-Sat, 9AM-6PM. Emergency services available 24/7.',
+    answer: 'Apollo Hospitals visiting hours: Morning 10AM-12PM, Evening 5PM-8PM. ICU has restricted visiting with specific timings. Post-surgery patients can have one attendant stay overnight. OPD consultation: Mon-Sat, 9AM-5PM. Emergency services available 24/7.',
   },
 ];
 
