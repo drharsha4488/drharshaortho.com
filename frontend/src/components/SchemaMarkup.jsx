@@ -216,7 +216,7 @@ const SchemaMarkup = ({ type, data, faqs }) => {
     "url": "https://drharshaortho.com",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Apollo Hospitals, Alexander Road, Hi-Tech City",
+      "streetAddress": "Apollo Hospitals, Alexander Road, Financial District",
       "addressLocality": "Hyderabad",
       "addressRegion": "Telangana",
       "postalCode": "500081",

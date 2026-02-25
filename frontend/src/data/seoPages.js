@@ -45,7 +45,7 @@ export const seoLandingPages = [
         },
         {
           question: 'Where is Dr. Harsha\'s clinic located?',
-          answer: 'Dr. Harsha practices at Apollo Hospitals, Hi-Tech City, Hyderabad. The hospital is easily accessible and has excellent facilities for orthopedic surgery and rehabilitation.'
+          answer: 'Dr. Harsha practices at Apollo Hospitals, Financial District, Hyderabad. The hospital is easily accessible and has excellent facilities for orthopedic surgery and rehabilitation.'
         },
         {
           question: 'How do I book an appointment?',
@@ -260,19 +260,19 @@ export const seoLandingPages = [
     id: 'orthopedic-doctor-near-me-hyderabad',
     slug: 'orthopedic-doctor-near-me-hyderabad',
     title: 'Orthopedic Doctor Near Me in Hyderabad',
-    metaTitle: 'Orthopedic Doctor Near Me in Hyderabad | Hi-Tech City | Dr. Harsha Reddy',
+    metaTitle: 'Orthopedic Doctor Near Me in Hyderabad | Financial District | Dr. Harsha Reddy',
     metaDescription: 'Find the best orthopedic doctor near you in Hyderabad. Dr. Harsha Reddy at Apollo Hospitals Financial District. Expert bone & joint specialist. Easy appointment booking.',
     keywords: 'orthopedic doctor near me, bone doctor hyderabad, joint specialist near me, orthopedic clinic hitech city, bone specialist madhapur',
     heroTitle: 'Find an Orthopedic Doctor Near You in Hyderabad',
-    heroSubtitle: 'Apollo Hospitals, Hi-Tech City - Easy Access from All Hyderabad Areas',
+    heroSubtitle: 'Apollo Hospitals, Financial District - Easy Access from All Hyderabad Areas',
     searchVolume: 50000,
     content: {
       introduction: `Looking for an orthopedic doctor near you in Hyderabad? Dr. B Harsha Vardhana Reddy practices at Apollo Hospitals Financial District, conveniently located and easily accessible from Madhapur, Gachibowli, Kondapur, Kukatpally, Begumpet, and all major areas of Hyderabad.`,
       location: {
         hospital: 'Apollo Hospitals',
-        area: 'Hi-Tech City',
+        area: 'Financial District',
         city: 'Hyderabad, Telangana',
-        landmarks: 'Near Cyber Towers, HITEC City Metro Station',
+        landmarks: 'Near Cyber Towers, Financial District Metro Station',
         parking: 'Ample parking available'
       },
       nearbyAreas: [

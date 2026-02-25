@@ -5,20 +5,20 @@ export const locationLandingPages = [
   // Primary Service Area - Within 5km of Apollo Hospitals
   {
     slug: 'orthopedic-surgeon-hitec-city',
-    title: 'Best Orthopedic Surgeon in Hi-Tech City, Hyderabad',
-    metaTitle: 'Best Orthopedic Surgeon Hi-Tech City | Dr. Harsha Reddy | Apollo Hospitals',
-    metaDescription: 'Looking for the best orthopedic surgeon in Hi-Tech City? Dr. B Harsha Vardhana Reddy at Apollo Hospitals offers expert knee replacement, ACL surgery & sports injury treatment. Book appointment today.',
+    title: 'Best Orthopedic Surgeon in Financial District, Hyderabad',
+    metaTitle: 'Best Orthopedic Surgeon Financial District | Dr. Harsha Reddy | Apollo Hospitals',
+    metaDescription: 'Looking for the best orthopedic surgeon in Financial District? Dr. B Harsha Vardhana Reddy at Apollo Hospitals offers expert knee replacement, ACL surgery & sports injury treatment. Book appointment today.',
     keywords: ['orthopedic surgeon hitec city', 'bone doctor hi-tech city', 'knee specialist hitec city hyderabad', 'orthopedic hospital hitec city'],
-    location: 'Hi-Tech City',
+    location: 'Financial District',
     distance: '0 km (Located here)',
     content: {
       hero: {
-        title: 'Expert Orthopedic Care in Hi-Tech City',
+        title: 'Expert Orthopedic Care in Financial District',
         subtitle: 'Dr. Harsha Reddy at Apollo Hospitals - Your trusted orthopedic specialist for joint replacement, sports injuries & trauma care'
       },
-      introduction: `Looking for the best orthopedic surgeon in Hi-Tech City, Hyderabad? Dr. B Harsha Vardhana Reddy, Associate Consultant at Apollo Hospitals Financial District, brings 15+ years of expertise in treating bone, joint, and muscle conditions. Located in the heart of Hi-Tech City, our clinic is easily accessible to residents of Madhapur, Gachibowli, Kondapur, and surrounding IT corridors.
+      introduction: `Looking for the best orthopedic surgeon in Financial District, Hyderabad? Dr. B Harsha Vardhana Reddy, Associate Consultant at Apollo Hospitals Financial District, brings 15+ years of expertise in treating bone, joint, and muscle conditions. Located in the heart of Financial District, our clinic is easily accessible to residents of Madhapur, Gachibowli, Kondapur, and surrounding IT corridors.
 
-Whether you're an IT professional dealing with desk-related back pain, a sports enthusiast with a knee injury, or someone needing joint replacement surgery, Dr. Harsha provides personalized, world-class orthopedic care right here in Hi-Tech City.`,
+Whether you're an IT professional dealing with desk-related back pain, a sports enthusiast with a knee injury, or someone needing joint replacement surgery, Dr. Harsha provides personalized, world-class orthopedic care right here in Financial District.`,
       whyChoose: [
         { title: '15+ Years Experience', description: 'Extensive expertise in all orthopedic conditions' },
         { title: '4,000+ Surgeries', description: 'Successfully performed joint replacements and arthroscopy' },
@@ -42,19 +42,19 @@ Whether you're an IT professional dealing with desk-related back pain, a sports 
         },
         {
           question: 'How do I reach Apollo Hospitals Financial District?',
-          answer: 'Apollo Hospitals is located on the main JNTU-Hitech City road, near Cyber Towers. It is well-connected by metro (Hi-Tech City station) and bus routes. Ample parking is available.'
+          answer: 'Apollo Hospitals is located on the main JNTU-Hitech City road, near Cyber Towers. It is well-connected by metro (Financial District station) and bus routes. Ample parking is available.'
         },
         {
           question: 'Does Dr. Harsha treat IT professionals with desk-related injuries?',
           answer: 'Yes, Dr. Harsha regularly treats IT professionals for conditions like carpal tunnel syndrome, neck pain, lower back pain, and repetitive strain injuries common in desk jobs.'
         },
         {
-          question: 'Is robotic knee replacement available at Hi-Tech City?',
+          question: 'Is robotic knee replacement available at Financial District?',
           answer: 'Yes, Apollo Hospitals Financial District offers computer-navigated and robotic-assisted knee replacement surgery for enhanced precision and faster recovery.'
         }
       ],
       testimonial: {
-        text: "I had my knee replacement done by Dr. Harsha at Yashoda Hi-Tech City. The surgery was smooth, and I was walking within 2 days. Highly recommend for anyone in the area!",
+        text: "I had my knee replacement done by Dr. Harsha at Yashoda Financial District. The surgery was smooth, and I was walking within 2 days. Highly recommend for anyone in the area!",
         author: "Ramesh K.",
         designation: "IT Professional, Madhapur"
       }
@@ -216,7 +216,7 @@ Dr. B Harsha Vardhana Reddy leads the orthopedic department with a team of speci
         }
       ],
       testimonial: {
-        text: "After my road accident near Kondapur, I was rushed to Yashoda Hi-Tech City. Dr. Harsha fixed my multiple fractures. The care was exceptional from emergency to discharge.",
+        text: "After my road accident near Kondapur, I was rushed to Yashoda Financial District. Dr. Harsha fixed my multiple fractures. The care was exceptional from emergency to discharge.",
         author: "Anil M.",
         designation: "Kondapur Resident"
       }
@@ -258,7 +258,7 @@ Whether you're dealing with severe knee arthritis, hip avascular necrosis, or fa
       faqs: [
         {
           question: 'How do I reach Apollo Hospitals from Kukatpally?',
-          answer: "Take the metro from Kukatpally or KPHB station to Hi-Tech City station (15 minutes). The hospital is a 5-minute auto ride from the metro. By road, it's about 6 km via Cyber Towers route."
+          answer: "Take the metro from Kukatpally or KPHB station to Financial District station (15 minutes). The hospital is a 5-minute auto ride from the metro. By road, it's about 6 km via Cyber Towers route."
         },
         {
           question: 'What is the success rate of joint replacement?',
@@ -270,7 +270,7 @@ Whether you're dealing with severe knee arthritis, hip avascular necrosis, or fa
         }
       ],
       testimonial: {
-        text: "Coming from KPHB, I was worried about traveling for surgery. But Yashoda Hi-Tech City was so convenient via metro. Dr. Harsha's team made my hip replacement journey smooth.",
+        text: "Coming from KPHB, I was worried about traveling for surgery. But Yashoda Financial District was so convenient via metro. Dr. Harsha's team made my hip replacement journey smooth.",
         author: "Venkat Rao",
         designation: "KPHB Colony Resident"
       }
@@ -350,7 +350,7 @@ Dr. B Harsha Vardhana Reddy offers complete bone and joint care - from treating 
       whyChoose: [
         { title: 'JCI Accredited', description: 'International quality standards' },
         { title: '24/7 Trauma Services', description: 'Emergency care available' },
-        { title: 'Metro Connectivity', description: 'Easy access via Hi-Tech City station' },
+        { title: 'Metro Connectivity', description: 'Easy access via Financial District station' },
         { title: 'Multi-Specialty Backup', description: 'Comprehensive hospital support' },
         { title: 'International Standards', description: 'World-class treatment protocols' },
         { title: 'All Insurance Accepted', description: 'Cashless with major insurers' }
@@ -366,7 +366,7 @@ Dr. B Harsha Vardhana Reddy offers complete bone and joint care - from treating 
       faqs: [
         {
           question: 'How do I reach Apollo Hospitals Financial District from Secunderabad?',
-          answer: 'By metro: Take the Blue Line to Hi-Tech City station (about 45 minutes), then a short auto ride. By road: Via Begumpet-JNTU route, approximately 40-50 minutes depending on traffic.'
+          answer: 'By metro: Take the Blue Line to Financial District station (about 45 minutes), then a short auto ride. By road: Via Begumpet-JNTU route, approximately 40-50 minutes depending on traffic.'
         },
         {
           question: 'Do you have patient accommodation for out-station patients?',
@@ -378,7 +378,7 @@ Dr. B Harsha Vardhana Reddy offers complete bone and joint care - from treating 
         }
       ],
       testimonial: {
-        text: "Although I live in Secunderabad, I chose to travel to Yashoda Hi-Tech City for my mother's hip replacement. The quality of care was worth every kilometer.",
+        text: "Although I live in Secunderabad, I chose to travel to Yashoda Financial District for my mother's hip replacement. The quality of care was worth every kilometer.",
         author: "Rajesh K.",
         designation: "Secunderabad Resident"
       }
@@ -420,7 +420,7 @@ Whether you're dealing with chronic joint pain, need a knee replacement, or have
       faqs: [
         {
           question: 'How long does it take to reach from Miyapur?',
-          answer: 'By metro from Miyapur station to Hi-Tech City station takes about 20 minutes. The hospital is a 5-minute auto ride from the station.'
+          answer: 'By metro from Miyapur station to Financial District station takes about 20 minutes. The hospital is a 5-minute auto ride from the station.'
         },
         {
           question: 'Are walk-in consultations available?',
@@ -428,7 +428,7 @@ Whether you're dealing with chronic joint pain, need a knee replacement, or have
         }
       ],
       testimonial: {
-        text: "I took the metro from Miyapur to Hi-Tech City for my knee surgery. Dr. Harsha and team were excellent. The metro made travel so convenient for follow-ups too.",
+        text: "I took the metro from Miyapur to Financial District for my knee surgery. Dr. Harsha and team were excellent. The metro made travel so convenient for follow-ups too.",
         author: "Srinivas M.",
         designation: "Miyapur Resident"
       }

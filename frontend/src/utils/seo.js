@@ -9,7 +9,7 @@ export const primaryKeywords = [
   'ACL surgery Hyderabad',
   'sports injury doctor Hyderabad',
   'arthroscopy Hyderabad',
-  'orthopedic doctor Hitec City',
+  'orthopedic doctor Financial District',
   'best knee surgeon Hyderabad',
 ];
 

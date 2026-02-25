@@ -330,7 +330,7 @@ const TreatmentDetail = () => {
           </h2>
           <p className="text-ivory/80 max-w-2xl mx-auto mb-8">
             Take the first step towards a pain-free life. Schedule your consultation with 
-            Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Hi-Tech City, Hyderabad.
+            Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District, Hyderabad.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/contact">

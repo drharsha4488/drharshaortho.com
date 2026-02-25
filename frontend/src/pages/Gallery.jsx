@@ -85,8 +85,8 @@ const Gallery = () => {
     <Layout>
       <SEO 
         title="Orthopedic Surgery Facilities - State-of-the-Art Equipment | Dr. B Harsha Vardhana Reddy"
-        description="View our state-of-the-art orthopedic surgery facilities at Apollo Hospitals Hitec City. Advanced robotic systems, modern operation theaters, and patient care facilities in Hyderabad."
-        keywords="orthopedic surgery facilities, Apollo Hospitals Hitec City, robotic surgery equipment, modern operation theater, orthopedic equipment Hyderabad, surgical facilities"
+        description="View our state-of-the-art orthopedic surgery facilities at Apollo Hospitals Financial District. Advanced robotic systems, modern operation theaters, and patient care facilities in Hyderabad."
+        keywords="orthopedic surgery facilities, Apollo Hospitals Financial District, robotic surgery equipment, modern operation theater, orthopedic equipment Hyderabad, surgical facilities"
       />
       
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="gallery-page">
@@ -94,7 +94,7 @@ const Gallery = () => {
           <SectionHeading
             badge="Our Facilities"
             title="State-of-the-Art Orthopedic Surgery Center"
-            subtitle="Experience world-class orthopedic care at Apollo Hospitals Hitec City. Our advanced facilities include robotic surgery systems, modern operation theaters, and comprehensive patient care amenities."
+            subtitle="Experience world-class orthopedic care at Apollo Hospitals Financial District. Our advanced facilities include robotic surgery systems, modern operation theaters, and comprehensive patient care amenities."
           />
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

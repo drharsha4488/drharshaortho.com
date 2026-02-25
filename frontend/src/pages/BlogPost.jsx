@@ -489,7 +489,7 @@ const BlogPost = () => {
                       <h4 className="font-semibold text-foreground mb-2">Expert Note</h4>
                       <p className="text-sm text-muted-foreground">
                         This article is for informational purposes only. Always consult with a qualified orthopedic surgeon 
-                        for personalized medical advice. Dr. Harsha offers consultations at Apollo Hospitals, Hitec City, Hyderabad.
+                        for personalized medical advice. Dr. Harsha offers consultations at Apollo Hospitals, Financial District, Hyderabad.
                       </p>
                     </div>
                   </div>

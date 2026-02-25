@@ -24,7 +24,7 @@ Living in Jubilee Hills means an active lifestyle - from morning walks at KBR Pa
         'Easy 20-minute drive from Road No. 36 Jubilee Hills',
         'Multiple route options via Madhapur or Banjara Hills',
         'Ample parking at Apollo Hospitals',
-        'Metro connectivity via Hi-Tech City station',
+        'Metro connectivity via Financial District station',
         'Same-day appointments available for Jubilee Hills residents',
         'Emergency orthopedic care 24/7'
       ],
@@ -113,7 +113,7 @@ With a large population of IT professionals, families, and senior citizens, Kuka
       localRelevance: [
         'Just 6 km from Kukatpally Housing Board',
         '15-minute drive via JNTU road',
-        'Metro connectivity - Hi-Tech City station',
+        'Metro connectivity - Financial District station',
         'Affordable pricing with insurance support',
         '30+ insurance partners for cashless treatment',
         'EMI options available for surgeries'
@@ -127,7 +127,7 @@ With a large population of IT professionals, families, and senior citizens, Kuka
       faqs: [
         {
           question: 'Is Apollo Hospitals easily accessible from KPHB?',
-          answer: 'Yes, Apollo Hospitals Financial District is just 6 km from KPHB Colony. Take JNTU road towards Hi-Tech City, reaching in 15 minutes.'
+          answer: 'Yes, Apollo Hospitals Financial District is just 6 km from KPHB Colony. Take JNTU road towards Financial District, reaching in 15 minutes.'
         },
         {
           question: 'Does Dr. Harsha offer affordable treatment options?',
@@ -159,7 +159,7 @@ With a large population of IT professionals, families, and senior citizens, Kuka
 As one of Hyderabad's fastest-growing residential areas, Miyapur's diverse population - from young IT professionals to retired seniors - all benefit from Dr. Harsha's comprehensive orthopedic expertise.`,
       localRelevance: [
         '8 km from Miyapur Metro Station',
-        'Direct metro connectivity to Hi-Tech City',
+        'Direct metro connectivity to Financial District',
         '20-minute drive via Miyapur-BHEL road',
         'Convenient for Hafeezpet & Chandanagar residents too',
         'Parking available at hospital',
@@ -168,7 +168,7 @@ As one of Hyderabad's fastest-growing residential areas, Miyapur's diverse popul
       faqs: [
         {
           question: 'Can I reach Apollo Hospitals by metro from Miyapur?',
-          answer: 'Yes! Take the Blue Line metro from Miyapur towards Hi-Tech City. Get down at Hi-Tech City station. The hospital is a 5-minute auto ride from the metro station.'
+          answer: 'Yes! Take the Blue Line metro from Miyapur towards Financial District. Get down at Financial District station. The hospital is a 5-minute auto ride from the metro station.'
         },
         {
           question: 'Does Dr. Harsha treat accident-related fractures?',
@@ -205,7 +205,7 @@ The rapidly developing Nallagandla area, with its gated communities and modern a
       faqs: [
         {
           question: 'How far is Apollo Hospitals from Nallagandla gated communities?',
-          answer: 'Apollo Hospitals Financial District is approximately 5 km from Nallagandla, a quick 10-minute drive via the main road towards Hi-Tech City.'
+          answer: 'Apollo Hospitals Financial District is approximately 5 km from Nallagandla, a quick 10-minute drive via the main road towards Financial District.'
         },
         {
           question: 'Does Dr. Harsha provide home physiotherapy after surgery?',
@@ -289,7 +289,7 @@ Dr. Harsha has successfully treated numerous patients from Secunderabad and the 
       ],
       faqs: [
         {
-          question: 'Is it worth traveling from Secunderabad to Hi-Tech City for treatment?',
+          question: 'Is it worth traveling from Secunderabad to Financial District for treatment?',
           answer: 'For complex surgeries like joint replacement or ACL reconstruction, absolutely. Apollo Hospitals\'s advanced facilities, computer-navigated surgery, and Dr. Harsha\'s expertise ensure better outcomes.'
         },
         {
@@ -327,7 +327,7 @@ For complex procedures like joint replacement, ACL surgery, or spine treatments,
       faqs: [
         {
           question: 'How can I reach Apollo Hospitals from LB Nagar?',
-          answer: 'Take ORR from LB Nagar towards Hi-Tech City (exit at Hi-Tech City/Gachibowli). Alternatively, take the metro and change to the Blue Line at Ameerpet for Hi-Tech City.'
+          answer: 'Take ORR from LB Nagar towards Financial District (exit at Financial District/Gachibowli). Alternatively, take the metro and change to the Blue Line at Ameerpet for Financial District.'
         },
         {
           question: 'Can I get an initial assessment via teleconsultation?',

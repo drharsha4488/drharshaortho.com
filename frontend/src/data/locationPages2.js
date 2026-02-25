@@ -37,7 +37,7 @@ Dr. Harsha specializes in treating all orthopedic conditions - from chronic knee
       faqs: [
         {
           question: 'How do I reach Apollo Hospitals from Dilsukhnagar?',
-          answer: 'By metro: Take the Blue Line from Dilsukhnagar to Ameerpet, then change to Green Line to Hi-Tech City (about 50 minutes). By road: Via Inner Ring Road, approximately 45 minutes depending on traffic.'
+          answer: 'By metro: Take the Blue Line from Dilsukhnagar to Ameerpet, then change to Green Line to Financial District (about 50 minutes). By road: Via Inner Ring Road, approximately 45 minutes depending on traffic.'
         },
         {
           question: 'Is it worth traveling from Dilsukhnagar for treatment?',
@@ -91,7 +91,7 @@ Whether you're a student, professional, or senior citizen in Ameerpet, SR Nagar,
       faqs: [
         {
           question: 'How far is Dr. Harsha from Ameerpet?',
-          answer: 'Apollo Hospitals Financial District is 8 km from Ameerpet. By metro, take the Green Line from Ameerpet to Hi-Tech City (15-20 minutes direct). By road, it takes about 20-25 minutes.'
+          answer: 'Apollo Hospitals Financial District is 8 km from Ameerpet. By metro, take the Green Line from Ameerpet to Financial District (15-20 minutes direct). By road, it takes about 20-25 minutes.'
         },
         {
           question: 'What knee conditions do you treat?',
@@ -141,7 +141,7 @@ From joint replacements to sports injuries, fractures to spine problems, Dr. Har
       faqs: [
         {
           question: 'How do I reach from Begumpet?',
-          answer: 'From Begumpet, take Begumpet Road to JNTU junction, then to Hi-Tech City (about 25-30 minutes by car). Alternatively, take metro from Begumpet to Ameerpet, change to Hi-Tech City line.'
+          answer: 'From Begumpet, take Begumpet Road to JNTU junction, then to Financial District (about 25-30 minutes by car). Alternatively, take metro from Begumpet to Ameerpet, change to Financial District line.'
         },
         {
           question: 'What is the consultation fee?',
@@ -241,7 +241,7 @@ Whether you need fracture treatment, joint replacement, or sports injury care, D
       faqs: [
         {
           question: 'How to reach from Uppal?',
-          answer: 'By metro: Take Blue Line from Uppal to Ameerpet, change to Green Line to Hi-Tech City (about 45 minutes). By road: Via ORR or through Secunderabad, approximately 40-50 minutes.'
+          answer: 'By metro: Take Blue Line from Uppal to Ameerpet, change to Green Line to Financial District (about 45 minutes). By road: Via ORR or through Secunderabad, approximately 40-50 minutes.'
         },
         {
           question: 'Do you handle emergency fractures?',
@@ -249,7 +249,7 @@ Whether you need fracture treatment, joint replacement, or sports injury care, D
         }
       ],
       testimonial: {
-        text: "Had a bike accident near Uppal. Was rushed to Yashoda Hi-Tech City. Dr. Harsha fixed my leg fracture perfectly. The emergency team was very efficient.",
+        text: "Had a bike accident near Uppal. Was rushed to Yashoda Financial District. Dr. Harsha fixed my leg fracture perfectly. The emergency team was very efficient.",
         author: "Naveen T.",
         designation: "Uppal Resident"
       }
@@ -391,7 +391,7 @@ Dr. Harsha treats all orthopedic conditions with a focus on getting you back to 
       faqs: [
         {
           question: 'How to reach from Kompally?',
-          answer: 'By road via ORR (Outer Ring Road) takes about 40-45 minutes. Take ORR from Kompally junction towards Gachibowli, exit at Hi-Tech City. Alternatively, via Secunderabad route takes similar time.'
+          answer: 'By road via ORR (Outer Ring Road) takes about 40-45 minutes. Take ORR from Kompally junction towards Gachibowli, exit at Financial District. Alternatively, via Secunderabad route takes similar time.'
         },
         {
           question: 'Are there any branches closer to Kompally?',

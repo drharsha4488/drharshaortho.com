@@ -86,7 +86,7 @@ Before surgery, Dr. Harsha conducts thorough evaluation:
 
 ### Book Your Consultation
 📞 Call: +91 99599 64567
-📍 Apollo Hospitals, Hi-Tech City, Hyderabad
+📍 Apollo Hospitals, Financial District, Hyderabad
     `,
     faqs: [
       {
@@ -209,7 +209,7 @@ Can't pay full amount upfront? We offer:
 
 Get exact cost estimate for your case:
 📞 Call: +91 99599 64567
-📍 Apollo Hospitals, Hi-Tech City, Hyderabad
+📍 Apollo Hospitals, Financial District, Hyderabad
     `,
     faqs: [
       {
@@ -556,7 +556,7 @@ Look for:
 
 Meet Dr. Harsha and get your questions answered:
 📞 Call: +91 99599 64567
-📍 Apollo Hospitals, Hi-Tech City, Hyderabad
+📍 Apollo Hospitals, Financial District, Hyderabad
 🌐 Website: drharshaortho.com
     `,
     faqs: [
