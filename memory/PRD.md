@@ -3,6 +3,14 @@
 ## Original Problem Statement
 Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an orthopedic surgeon. The goal is for this website to become the top-ranking site for orthopedic queries in their region, aiming for at least 100 new visits per day.
 
+## Current Practice Information
+- **Hospital**: Apollo Hospitals, Financial District
+- **Address**: Nanakramguda, Serilingampally, Hyderabad, Telangana 500032
+- **Phone**: +91 99599 64567
+- **Timings**: Monday - Saturday, 9:00 AM - 5:00 PM
+- **Appointment Booking**: https://www.apollo247.com/doctors/dr-b-harsha-vardhana-reddy-51807eec-1507-467c-91fb-4c6b2cb599ff
+- **Google Maps**: https://maps.app.goo.gl/8nE3J5ajgmtizEyTA
+
 ## Core Requirements
 1. Build a full-stack website named "CareConnect"
 2. SEO-ready to achieve #1 search ranking and drive 100+ daily visitors
@@ -68,6 +76,19 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
   - `faqs` with medical Q&A
   - `recoveryTimeline` with phase-by-phase milestones
   - `causes`, `symptoms`, `diagnosis` arrays
+
+### February 25, 2026 - Hospital Address Change (Yashoda → Apollo)
+- **MIGRATED**: All hospital references from Yashoda Hospital Hi-Tech City to Apollo Hospitals, Financial District
+- **UPDATED FILES**: 50+ files across frontend and backend
+  - Contact page: New address, map embed, timings (9 AM - 5 PM)
+  - Header/Footer: Apollo Hospitals branding, Apollo247 booking link
+  - About page: Updated career timeline (2025: Senior Consultant at Apollo)
+  - SEO components: Updated schema markup, geo coordinates (17.4167554, 78.3550579)
+  - AI Chat: Updated system prompt with new location info
+  - Email templates: New hospital info in appointment notifications
+  - Static data files: All condition/treatment pages updated
+- **BOOKING**: Book Appointment button now links directly to Apollo247 profile
+- **TESTED**: All 8 key features verified (100% pass rate)
 
 ---
 
