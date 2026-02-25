@@ -22,74 +22,76 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 8. Password-protected admin dashboard
 9. AI Chat assistant integration
 10. Pre-rendering (SSG) for optimal SEO performance
+11. Self-adaptive organic growth automation system
 
 ## Tech Stack
 - **Frontend**: React 19, TailwindCSS, Shadcn/UI, Framer Motion
 - **Backend**: FastAPI (Python)
 - **Database**: MongoDB
-- **AI**: OpenAI GPT via Emergent LLM Key
+- **AI**: OpenAI GPT-4o via Emergent LLM Key
 - **Email**: Resend
 - **Analytics**: Google Tag Manager, PostHog
-- **SEO**: react-snap (pre-rendering), IndexNow
+- **SEO**: react-snap (pre-rendering), IndexNow, APScheduler
+- **Automation**: Self-adaptive growth engine with daily tracking
 
 ## Architecture Overview
 ```
 /app
 ├── backend/
-│   └── server.py         # FastAPI with CMS, Analytics, IndexNow, AI Chat
-├── frontend/
-│   ├── build/            # Pre-rendered static HTML (react-snap)
-│   ├── src/
-│   │   ├── components/   # UI components, admin dashboard
-│   │   ├── data/         # SEO pages, blog posts (static), location pages
-│   │   └── pages/        # React pages - ALL CMS-driven (no static fallbacks)
-│   └── package.json      # react-snap for SSG
+│   ├── automation.py      # Self-adaptive SEO automation engine
+│   └── server.py          # FastAPI with CMS, Analytics, Growth Tracking, AI Chat
+└── frontend/
+    └── src/
+        ├── components/
+        │   └── admin/
+        │       └── OrganicGrowthDashboard.jsx  # Unified growth dashboard
+        └── pages/
+            └── Admin.jsx   # Clean 3-tab admin: Growth, Analytics, CMS
 ```
 
-## Data Architecture (Post-Migration)
-- ALL 39 conditions and 20 treatments are stored in MongoDB CMS (`cms_pages`)
-- Frontend fetches exclusively from CMS API - no static data fallbacks
-- Static data files removed: conditions.js, conditionsDetailed.js, treatments.js, treatmentsDetailed.js
+## Data Architecture
+- ALL 39 conditions and 20 treatments stored in MongoDB CMS (`cms_pages`)
+- Frontend fetches exclusively from CMS API
+- Growth snapshots tracked daily in `growth_snapshots` collection
+- Blog posts auto-generated with AI, stored in `blog_posts`
 
 ## Key Database Collections
-- `cms_pages`: Stores all CMS content (conditions, treatments, blogs)
-- `appointments`: Patient appointment bookings
-- `blog_posts`: Blog content
+- `cms_pages`: All CMS content (conditions, treatments, blogs)
+- `blog_posts`: Blog content (manual + AI-generated)
 - `page_views`: Analytics data
+- `growth_snapshots`: Daily growth metrics snapshots
+- `automation_log`: Automation cycle tracking
 - `indexnow_submissions`: SEO indexing records
 
 ---
 
 ## What's Been Implemented
 
-### December 2025 - January 2026
+### February 25, 2026 - Admin Dashboard Refactor & Self-Adaptive Growth System
+- **COMPLETED**: Admin dashboard refactored to 3 clean tabs: Organic Growth, Analytics, CMS Pages
+- **REMOVED**: Appointments tab (handled externally via Apollo link)
+- **REMOVED**: Separate Blog, SEO, Automation tabs (merged into Organic Growth)
+- **DELETED**: Unused components: AutomationDashboard.jsx, AutoSEODashboard.jsx, KeywordResearchTool.jsx
+- **FIXED**: API endpoint mismatch (OrganicGrowthDashboard now calls /api/admin/blog correctly)
+- **NEW**: Self-adaptive growth tracking system:
+  - Daily growth snapshots (content pages, views, sitemap URLs, indexed pages)
+  - Growth trend analysis (growing/flat/declining)
+  - Auto-adjusts strategy: normal (3 posts) → boost (5 posts) → aggressive (7 posts)
+  - Adaptive keyword selection based on performance
+  - Visual growth progress charts (content + page views over time)
+- **NEW**: Growth API endpoints: /api/admin/growth/snapshot, /api/admin/growth/history, /api/admin/growth/analysis
+- **TESTED**: 13/13 backend tests passed, 100% frontend tests passed
+
+### Previous Sessions
 - Full CMS system with 39 conditions and 20 treatments
 - Blog management system with SEO features
-- Admin dashboard with analytics
 - AI Chat assistant integration
 - Email notifications for appointments
 - Pre-rendering with react-snap
-
-### February 25, 2026 - CMS Content Enrichment
-- **NEW**: Created `/api/admin/cms/enrich-detailed-content` endpoint
-- **ENRICHED**: 10 key pages with detailed treatment protocols:
-  - Conditions: knee-arthritis, acl-tear, hip-arthritis, frozen-shoulder, meniscus-tear
-  - Treatments: total-knee-replacement, total-hip-replacement, acl-reconstruction, knee-arthroscopy, shoulder-arthroscopy
-- **CONTENT**: Each page now includes:
-  - `nonSurgicalTreatments` with protocol details, duration, evidence level
-  - `surgicalTreatments` with indications, procedure, recovery, success rate
-  - `faqs` with medical Q&A
-  - `recoveryTimeline` with phase-by-phase milestones
-  - `causes`, `symptoms`, `diagnosis` arrays
-
-### February 25, 2026 - CMS-Only Migration & Static File Removal (This Session)
-- **FIXED**: "Treatment Not Found" bug on treatment detail pages (e.g., `/treatments/prp-therapy`)
-  - Root cause: `TreatmentDetailEnhanced.jsx` was 100% static (no CMS API calls)
-  - Fix: Rewrote to fetch exclusively from `/api/cms/treatments/${slug}`
-- **REFACTORED**: `ConditionDetail.jsx` - removed hybrid static+CMS system, now CMS-only
-- **UPDATED**: `Treatments.jsx` and `Conditions.jsx` list pages - now fetch from CMS API
-- **DELETED**: ~4000+ lines of static data (conditions.js, conditionsDetailed.js, treatments.js, treatmentsDetailed.js, old TreatmentDetail.jsx)
-- **TESTED**: 9/9 tests passed (all treatment and condition pages working)
+- CMS content enrichment (10 key pages with detailed protocols)
+- Full CMS-only migration & static file removal
+- Automated content generation engine (APScheduler + GPT-4o)
+- Dynamic sitemap generation (/api/sitemap.xml)
 
 ---
 
@@ -100,16 +102,20 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 - [x] CMS enrichment with detailed treatment protocols
 - [x] Pre-rendering (SSG) with react-snap
 - [x] IndexNow integration
-- [x] Fix "Treatment Not Found" bug - full CMS-only migration complete
+- [x] Fix "Treatment Not Found" bug
 - [x] Remove static data fallback system
+- [x] Automated SEO content engine
+- [x] Dynamic sitemap generation
+- [x] Admin dashboard refactor (3-tab layout)
+- [x] Self-adaptive growth tracking system
 
 ### P1 - High Priority (Next)
-- [ ] Use Automated SEO Engine to expand medical content beyond 59 pages
-- [ ] Deeper content enrichment for remaining conditions/treatments
+- [ ] Deeper medical content expansion (use Organic Growth dashboard)
+- [ ] Content enrichment for remaining conditions/treatments
 
 ### P2 - Medium Priority
-- [ ] Backlink building campaign (use directory-submission-kit.html)
-- [ ] Integrate patient testimonial videos with Review schema
+- [ ] Backlink building campaign (directory-submission-kit.html)
+- [ ] Patient testimonial videos with Review schema
 - [ ] Advanced analytics dashboard features
 
 ### P3 - Future
@@ -121,27 +127,30 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 
 ## API Endpoints Reference
 
-### CMS Endpoints
-- `GET /api/cms/conditions` - List all conditions
-- `GET /api/cms/conditions/{slug}` - Get condition details
-- `GET /api/cms/treatments` - List all treatments
-- `GET /api/cms/treatments/{slug}` - Get treatment details
-- `POST /api/admin/cms/enrich-detailed-content` - Enrich CMS with detailed protocols
+### Growth Tracking (NEW)
+- `POST /api/admin/growth/snapshot` - Record daily growth metrics
+- `GET /api/admin/growth/history?days=30` - Get growth snapshots
+- `GET /api/admin/growth/analysis` - Get growth analysis & strategy
 
-### Admin Endpoints
-- `POST /api/admin/login` - Admin authentication (password: drharsha2025)
+### Automation
+- `GET /api/admin/automation/status` - Status including growth analysis
+- `POST /api/admin/automation/run-now` - Run adaptive cycle
+- `POST /api/admin/automation/regenerate-sitemap` - Rebuild sitemap
+- `POST /api/admin/automation/generate-blog` - Generate single blog post
+- `GET /api/sitemap.xml` - Dynamic sitemap
+
+### CMS
+- `GET /api/cms/conditions` / `GET /api/cms/conditions/{slug}`
+- `GET /api/cms/treatments` / `GET /api/cms/treatments/{slug}`
+- `GET/POST /api/admin/cms/pages`
+
+### Admin
+- `POST /api/admin/login` - Auth (password: drharsha2025)
+- `GET /api/admin/blog` - Blog posts list
 - `GET /api/admin/analytics` - Dashboard analytics
-- `POST /api/admin/indexnow/submit-all-pages` - Trigger IndexNow submission
 
 ---
 
 ## Test Credentials
 - **Admin Dashboard**: `/admin`
 - **Admin Password**: `drharsha2025`
-
----
-
-## Notes
-- The hybrid CMS approach (CMS data + static file fallback) ensures reliability
-- Pre-rendered HTML files improve SEO and initial load times
-- IndexNow is configured for instant Bing/Yandex indexing
