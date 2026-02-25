@@ -342,28 +342,191 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             logger.error(f"[Automation] Post-publish error: {e}")
 
     # ─────────────────────────────────────────────────────────
-    # 5. WEEKLY AUTOMATION CYCLE
+    # 5. GROWTH TRACKING — daily snapshots
     # ─────────────────────────────────────────────────────────
-    async def run_cycle(self) -> dict:
-        """Full cycle: generate 3 AI blog posts + update sitemap + ping Google."""
-        logger.info("[Automation] Starting weekly cycle...")
-        results = {"blogs_generated": 0, "blogs_failed": 0, "sitemap_urls": 0}
+    async def record_growth_snapshot(self) -> dict:
+        """Record a daily snapshot of all growth metrics."""
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-        # Find keywords not yet covered
+        # Check if already recorded today
+        existing = await self.db.growth_snapshots.find_one({"date": today})
+        if existing:
+            existing.pop("_id", None)
+            return existing
+
+        total_blogs = await self.db.blog_posts.count_documents({})
+        auto_blogs = await self.db.blog_posts.count_documents({"auto_generated": True})
+        conditions = await self.db.cms_pages.count_documents({"type": "condition"})
+        treatments = await self.db.cms_pages.count_documents({"type": "treatment"})
+        total_cms = await self.db.cms_pages.count_documents({})
+
+        # Count page views for today and total
+        today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        today_views = await self.db.page_views.count_documents({"timestamp": {"$gte": today_start.isoformat()}})
+        total_views = await self.db.page_views.count_documents({})
+
+        # Count sitemap URLs
+        sitemap_log = await self.db.automation_log.find_one({"type": "sitemap"}, {"_id": 0})
+        sitemap_urls = sitemap_log.get("url_count", 0) if sitemap_log else 0
+
+        # Count indexed pages (IndexNow submissions)
+        indexed = await self.db.indexnow_submissions.count_documents({})
+
+        snapshot = {
+            "date": today,
+            "total_blogs": total_blogs,
+            "auto_blogs": auto_blogs,
+            "conditions": conditions,
+            "treatments": treatments,
+            "total_cms_pages": total_cms,
+            "total_content_pages": total_blogs + total_cms,
+            "sitemap_urls": sitemap_urls,
+            "today_views": today_views,
+            "total_views": total_views,
+            "indexed_pages": indexed,
+            "recorded_at": datetime.now(timezone.utc).isoformat(),
+        }
+        await self.db.growth_snapshots.insert_one(snapshot)
+        snapshot.pop("_id", None)
+        logger.info(f"[Growth] Snapshot recorded for {today}: {total_blogs} blogs, {total_cms} CMS, {today_views} views today")
+        return snapshot
+
+    async def get_growth_history(self, days: int = 30) -> List[dict]:
+        """Get growth snapshots for the last N days."""
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
+        snapshots = await self.db.growth_snapshots.find(
+            {"date": {"$gte": cutoff}}, {"_id": 0}
+        ).sort("date", 1).to_list(days + 1)
+        return snapshots
+
+    async def get_growth_analysis(self) -> dict:
+        """Analyze growth trends and provide recommendations."""
+        history = await self.get_growth_history(14)
+        if len(history) < 2:
+            return {
+                "trend": "insufficient_data",
+                "message": "Need at least 2 days of data for analysis",
+                "strategy": "normal",
+                "posts_per_cycle": 3,
+            }
+
+        recent = history[-7:] if len(history) >= 7 else history[len(history)//2:]
+        older = history[:7] if len(history) >= 7 else history[:len(history)//2]
+
+        recent_avg_views = sum(s.get("today_views", 0) for s in recent) / max(len(recent), 1)
+        older_avg_views = sum(s.get("today_views", 0) for s in older) / max(len(older), 1)
+
+        recent_content = recent[-1].get("total_content_pages", 0) if recent else 0
+        older_content = older[-1].get("total_content_pages", 0) if older else 0
+        content_growth = recent_content - older_content
+
+        # Determine growth trend
+        if older_avg_views > 0:
+            view_growth_pct = ((recent_avg_views - older_avg_views) / older_avg_views) * 100
+        else:
+            view_growth_pct = 100 if recent_avg_views > 0 else 0
+
+        if view_growth_pct > 20:
+            trend = "growing_fast"
+            strategy = "maintain"
+            posts_per_cycle = 3
+            message = f"Views up {view_growth_pct:.0f}% — great momentum! Maintaining current strategy."
+        elif view_growth_pct > 5:
+            trend = "growing"
+            strategy = "maintain"
+            posts_per_cycle = 3
+            message = f"Views up {view_growth_pct:.0f}% — steady growth. Keeping pace."
+        elif view_growth_pct > -5:
+            trend = "flat"
+            strategy = "boost"
+            posts_per_cycle = 5
+            message = f"Views flat ({view_growth_pct:+.0f}%). Increasing to 5 posts/cycle and targeting new keywords."
+        else:
+            trend = "declining"
+            strategy = "aggressive"
+            posts_per_cycle = 7
+            message = f"Views declining ({view_growth_pct:+.0f}%). Switching to aggressive mode: 7 posts/cycle + new keyword strategy."
+
+        return {
+            "trend": trend,
+            "view_growth_pct": round(view_growth_pct, 1),
+            "recent_avg_views": round(recent_avg_views, 1),
+            "older_avg_views": round(older_avg_views, 1),
+            "content_growth": content_growth,
+            "total_content": recent_content,
+            "strategy": strategy,
+            "posts_per_cycle": posts_per_cycle,
+            "message": message,
+            "days_tracked": len(history),
+        }
+
+    # ─────────────────────────────────────────────────────────
+    # 6. SELF-ADAPTIVE KEYWORD SELECTION
+    # ─────────────────────────────────────────────────────────
+    async def _get_adaptive_keywords(self, count: int) -> List[str]:
+        """Select keywords adaptively based on growth analysis."""
         used_kws = set()
         async for post in self.db.blog_posts.find({"auto_generated": True}, {"keyword": 1, "_id": 0}):
             if post.get("keyword"):
                 used_kws.add(post["keyword"].lower())
 
         fresh_kws = [k for k in AUTOMATION_KEYWORDS if k.lower() not in used_kws]
-        # Cycle back to beginning when all topics exhausted
-        selected = (fresh_kws or AUTOMATION_KEYWORDS)[:3]
 
+        # If growth is stalling, try to generate fresh keywords dynamically
+        analysis = await self.get_growth_analysis()
+        if analysis["strategy"] in ("boost", "aggressive") and len(fresh_kws) < count:
+            # Generate new keywords from top-performing blog topics
+            top_posts = await self.db.blog_posts.find(
+                {}, {"keyword": 1, "title": 1, "_id": 0}
+            ).sort("published_date", -1).to_list(10)
+            # Create variations of existing successful topics
+            variations = []
+            for p in top_posts[:5]:
+                kw = p.get("keyword", p.get("title", ""))
+                if kw:
+                    variations.extend([
+                        f"best {kw} guide 2026",
+                        f"{kw} latest treatment options",
+                        f"{kw} patient recovery stories",
+                    ])
+            fresh_kws.extend([v for v in variations if v.lower() not in used_kws][:count])
+
+        selected = (fresh_kws or AUTOMATION_KEYWORDS)[:count]
+        return selected
+
+    # ─────────────────────────────────────────────────────────
+    # 7. WEEKLY AUTOMATION CYCLE (self-adaptive)
+    # ─────────────────────────────────────────────────────────
+    async def run_cycle(self) -> dict:
+        """Full cycle: analyze growth → adapt → generate posts → update sitemap → ping Google."""
+        logger.info("[Automation] Starting adaptive cycle...")
+
+        # Step 1: Record today's growth snapshot
+        await self.record_growth_snapshot()
+
+        # Step 2: Analyze growth and adapt strategy
+        analysis = await self.get_growth_analysis()
+        posts_to_generate = analysis.get("posts_per_cycle", 3)
+        strategy = analysis.get("strategy", "normal")
+        logger.info(f"[Automation] Strategy: {strategy}, generating {posts_to_generate} posts")
+
+        results = {
+            "blogs_generated": 0,
+            "blogs_failed": 0,
+            "sitemap_urls": 0,
+            "strategy": strategy,
+            "posts_target": posts_to_generate,
+            "growth_trend": analysis.get("trend", "unknown"),
+        }
+
+        # Step 3: Select keywords adaptively
+        selected = await self._get_adaptive_keywords(posts_to_generate)
+
+        # Step 4: Generate posts
         for kw in selected:
             post = await self.generate_blog_post(kw)
             if post:
                 results["blogs_generated"] += 1
-                # Instant IndexNow submission per post
                 try:
                     from server import submit_to_indexnow
                     await submit_to_indexnow([f"{BASE_URL}/blog/{post['slug']}"])
@@ -371,23 +534,25 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                     pass
             else:
                 results["blogs_failed"] += 1
-            await asyncio.sleep(5)  # Rate-limit between LLM calls
+            await asyncio.sleep(5)
 
-        # Regenerate sitemap (now includes new posts)
+        # Step 5: Regenerate sitemap
         results["sitemap_urls"] = await self.generate_and_write_sitemap()
 
-        # Ping Google with fresh sitemap
+        # Step 6: Ping Google
         await self.ping_google()
 
+        # Step 7: Record post-cycle snapshot
         await self.db.automation_log.update_one(
             {"type": "weekly_run"},
             {"$set": {
                 "last_run": datetime.now(timezone.utc).isoformat(),
                 "last_results": results,
+                "last_strategy": strategy,
             }},
             upsert=True,
         )
-        logger.info(f"[Automation] Cycle done: {results}")
+        logger.info(f"[Automation] Adaptive cycle done: {results}")
         return results
 
     # ─────────────────────────────────────────────────────────
