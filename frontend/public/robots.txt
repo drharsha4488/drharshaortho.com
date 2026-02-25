@@ -4,10 +4,9 @@
 User-agent: *
 Allow: /
 
-# Disallow admin and API paths
+# Disallow admin paths
 Disallow: /admin/
-Disallow: /api/
 
-# Sitemap locations
-Sitemap: https://drharshaortho.com/sitemap.xml
+# Sitemap — dynamic, always fresh
+Sitemap: https://drharshaortho.com/api/sitemap.xml
 Sitemap: https://drharshaortho.com/sitemap-images.xml
