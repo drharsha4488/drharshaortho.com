@@ -411,8 +411,8 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                 "content_totals": {
                     "total_blogs": await self.db.blog_posts.count_documents({}),
                     "auto_blogs": await self.db.blog_posts.count_documents({"auto_generated": True}),
-                    "conditions": await self.db.cms_pages.count_documents({"page_type": "condition"}),
-                    "treatments": await self.db.cms_pages.count_documents({"page_type": "treatment"}),
+                    "conditions": await self.db.cms_pages.count_documents({"type": "condition"}),
+                    "treatments": await self.db.cms_pages.count_documents({"type": "treatment"}),
                 },
             }
         except Exception as e:
