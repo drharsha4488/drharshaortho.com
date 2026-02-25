@@ -54,7 +54,7 @@ Whether you're an IT professional dealing with desk-related back pain, a sports 
         }
       ],
       testimonial: {
-        text: "I had my knee replacement done by Dr. Harsha at Yashoda Financial District. The surgery was smooth, and I was walking within 2 days. Highly recommend for anyone in the area!",
+        text: "I had my knee replacement done by Dr. Harsha at Apollo Hospitals Financial District. The surgery was smooth, and I was walking within 2 days. Highly recommend for anyone in the area!",
         author: "Ramesh K.",
         designation: "IT Professional, Madhapur"
       }
@@ -216,7 +216,7 @@ Dr. B Harsha Vardhana Reddy leads the orthopedic department with a team of speci
         }
       ],
       testimonial: {
-        text: "After my road accident near Kondapur, I was rushed to Yashoda Financial District. Dr. Harsha fixed my multiple fractures. The care was exceptional from emergency to discharge.",
+        text: "After my road accident near Kondapur, I was rushed to Apollo Hospitals Financial District. Dr. Harsha fixed my multiple fractures. The care was exceptional from emergency to discharge.",
         author: "Anil M.",
         designation: "Kondapur Resident"
       }
@@ -378,7 +378,7 @@ Dr. B Harsha Vardhana Reddy offers complete bone and joint care - from treating 
         }
       ],
       testimonial: {
-        text: "Although I live in Secunderabad, I chose to travel to Yashoda Financial District for my mother's hip replacement. The quality of care was worth every kilometer.",
+        text: "Although I live in Secunderabad, I chose to travel to Apollo Hospitals Financial District for my mother's hip replacement. The quality of care was worth every kilometer.",
         author: "Rajesh K.",
         designation: "Secunderabad Resident"
       }

@@ -99,7 +99,7 @@ Whether you're a student, professional, or senior citizen in Ameerpet, SR Nagar,
         }
       ],
       testimonial: {
-        text: "My mother had severe knee arthritis. Dr. Harsha at Yashoda performed her knee replacement. She's walking pain-free now. The metro from Ameerpet made follow-ups easy.",
+        text: "My mother had severe knee arthritis. Dr. Harsha at Apollo Hospitals performed her knee replacement. She's walking pain-free now. The metro from Ameerpet made follow-ups easy.",
         author: "Priya M.",
         designation: "Ameerpet Resident"
       }
@@ -249,7 +249,7 @@ Whether you need fracture treatment, joint replacement, or sports injury care, D
         }
       ],
       testimonial: {
-        text: "Had a bike accident near Uppal. Was rushed to Yashoda Financial District. Dr. Harsha fixed my leg fracture perfectly. The emergency team was very efficient.",
+        text: "Had a bike accident near Uppal. Was rushed to Apollo Hospitals Financial District. Dr. Harsha fixed my leg fracture perfectly. The emergency team was very efficient.",
         author: "Naveen T.",
         designation: "Uppal Resident"
       }
