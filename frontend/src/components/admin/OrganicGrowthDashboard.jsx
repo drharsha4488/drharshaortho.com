@@ -505,8 +505,8 @@ const OrganicGrowthDashboard = () => {
 
       {/* SEO TOPIC SUGGESTIONS */}
       <div className="bg-card rounded-xl border border-border overflow-hidden">
-        <button onClick={() => { setShowTopics(v => !v); if (!showTopics && seoTopics.length === 0) fetchSeoTopics(); }}
-          className="w-full flex items-center justify-between p-5 hover:bg-secondary/40 transition-colors">
+        <div className="flex items-center justify-between p-5 hover:bg-secondary/40 transition-colors cursor-pointer"
+          onClick={() => { setShowTopics(v => !v); if (!showTopics && seoTopics.length === 0) fetchSeoTopics(); }}>
           <div className="flex items-center gap-3">
             <Lightbulb className="w-5 h-5 text-amber-500" />
             <h2 className="font-bold text-foreground">SEO Topic Suggestions</h2>
@@ -519,7 +519,7 @@ const OrganicGrowthDashboard = () => {
             </Button>
             {showTopics ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
           </div>
-        </button>
+        </div>
 
         <AnimatePresence>
           {showTopics && (
