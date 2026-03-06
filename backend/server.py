@@ -2722,14 +2722,29 @@ async def get_blog_by_slug(slug: str):
 
 @api_router.get("/blogs/visible")
 async def get_visible_blogs():
-    """Get only visible blogs for main website (excludes hidden SEO pages)"""
+    """Get all visible blogs for the main website from both blog_posts and cms_pages collections."""
     try:
-        # Get blogs that are NOT hidden
-        blogs = await db.cms_pages.find(
+        # Get from blog_posts collection (AI-generated and manual posts)
+        blog_posts = await db.blog_posts.find(
+            {}, {"_id": 0}
+        ).sort("created_at", -1).to_list(100)
+
+        # Also get from cms_pages with type=blog (if any)
+        cms_blogs = await db.cms_pages.find(
             {"type": "blog", "status": "published", "is_hidden": {"$ne": True}},
             {"_id": 0}
         ).sort("created_at", -1).to_list(100)
-        return blogs
+
+        # Merge and deduplicate by slug
+        seen_slugs = set()
+        all_blogs = []
+        for post in blog_posts + cms_blogs:
+            slug = post.get("slug", "")
+            if slug and slug not in seen_slugs:
+                seen_slugs.add(slug)
+                all_blogs.append(post)
+
+        return all_blogs
     except Exception as e:
         logger.error(f"Error fetching visible blogs: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to fetch blogs")

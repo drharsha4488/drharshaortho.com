@@ -1095,8 +1095,27 @@ const OrganicGrowthDashboard = () => {
                             <Button size="sm" variant="outline" onClick={() => updateTopicStatus(topic.id, 'approved')} className="h-7 px-2 text-green-600 border-green-200 hover:bg-green-50">
                               <Check className="w-3.5 h-3.5" />
                             </Button>
-                            <Button size="sm" variant="outline" onClick={() => { setAiKeyword(topic.target_keyword); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="h-7 px-2 text-xs text-primary">
-                              <Zap className="w-3 h-3 mr-1" /> Write
+                            <Button size="sm" variant="outline" onClick={async () => {
+                              setAiKeyword(topic.target_keyword);
+                              setGenerating(true);
+                              try {
+                                const r = await fetch(`${API_URL}/api/admin/automation/generate-blog`, {
+                                  method: 'POST', headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ keyword: topic.target_keyword })
+                                });
+                                const data = await r.json();
+                                if (data.success) {
+                                  setAiResult({ type: 'success', message: `Published: "${data.post.title}"` });
+                                  fetchBlogPosts(); fetchAutoStatus();
+                                  updateTopicStatus(topic.id, 'published');
+                                } else {
+                                  setAiResult({ type: 'error', message: data.detail || 'Generation failed' });
+                                }
+                              } catch (e) { setAiResult({ type: 'error', message: e.message }); }
+                              setGenerating(false);
+                              setAiKeyword('');
+                            }} disabled={generating} className="h-7 px-2 text-xs text-primary">
+                              {generating && aiKeyword === topic.target_keyword ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Zap className="w-3 h-3 mr-1" />} Write
                             </Button>
                           </>
                         )}

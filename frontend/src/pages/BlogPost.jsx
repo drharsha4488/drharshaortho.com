@@ -210,16 +210,31 @@ const BlogPost = () => {
       setLoading(true);
       let foundPost = null;
       
+      // Try fetching from blog_posts collection first (AI-generated posts)
       try {
-        const response = await fetch(`${API_URL}/api/cms/blogs/${slug}`);
+        const response = await fetch(`${API_URL}/api/blog/${slug}`);
         if (response.ok) {
-          const cmsData = await response.json();
-          foundPost = transformCmsBlog(cmsData);
+          const blogData = await response.json();
+          // Blog posts from API have direct fields, not nested in content
+          foundPost = {
+            id: blogData.id || blogData.slug,
+            slug: blogData.slug,
+            title: blogData.title,
+            content: blogData.content,
+            excerpt: blogData.excerpt,
+            author: blogData.author || 'Dr. B Harsha Vardhana Reddy',
+            publishedDate: blogData.published_date,
+            imageUrl: blogData.image_url,
+            tags: blogData.tags || [],
+            readTime: '5 min read',
+            category: blogData.tags?.[0] || 'Orthopedics'
+          };
         }
       } catch (err) {
-        console.warn('CMS fetch failed, using static data:', err.message);
+        console.warn('API fetch failed, trying static data:', err.message);
       }
       
+      // Fallback to static blog data
       if (!foundPost) {
         foundPost = allBlogPosts.find(p => p.slug === slug);
       }
