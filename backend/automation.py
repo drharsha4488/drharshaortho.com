@@ -10,6 +10,7 @@ import asyncio
 import httpx
 import uuid
 import re
+import json
 import logging
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -1020,6 +1021,229 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             {}, {"_id": 0, "date": 1, "fixes_applied": 1, "audit_score": 1}
         ).sort("date", -1).to_list(limit)
         return docs
+
+    # ─────────────────────────────────────────────────────────
+    # 12. CONTENT GAP ANALYSIS & ENRICHMENT
+    # ─────────────────────────────────────────────────────────
+    async def analyze_content_gaps(self) -> dict:
+        """Analyze all CMS pages to find content gaps and thin pages."""
+        conditions = await self.db.cms_pages.find(
+            {"type": "condition", "status": "published"}, {"_id": 0}
+        ).to_list(200)
+        treatments = await self.db.cms_pages.find(
+            {"type": "treatment", "status": "published"}, {"_id": 0}
+        ).to_list(200)
+
+        def score_page(page: dict, page_type: str) -> dict:
+            content = page.get("content", {})
+            slug = page.get("slug", "")
+            title = page.get("title", slug)
+            text_dump = json.dumps(content)
+            word_count = len(text_dump.split())
+
+            if page_type == "condition":
+                checks = {
+                    "overview": bool(content.get("overview", "")),
+                    "introduction": bool(content.get("introduction", "")),
+                    "symptoms": len(content.get("symptoms", [])) >= 3,
+                    "causes": len(content.get("causes", [])) >= 2,
+                    "treatments": len(content.get("treatments", [])) >= 2,
+                    "faq": len(content.get("faq", content.get("faqs", []))) >= 2,
+                    "prevention": bool(content.get("prevention", content.get("prevention_tips", []))),
+                    "when_to_see_doctor": bool(content.get("when_to_see_doctor", content.get("whenToSeeDoctor", ""))),
+                }
+            else:
+                checks = {
+                    "description": bool(content.get("description", "")),
+                    "benefits": len(content.get("benefits", [])) >= 2,
+                    "procedure_steps": len(content.get("procedure_steps", content.get("procedure", []))) >= 2,
+                    "recovery": bool(content.get("recovery", content.get("recovery_info", {}))),
+                    "faq": len(content.get("faq", content.get("faqs", []))) >= 2,
+                    "risks": bool(content.get("risks", content.get("risks_complications", []))),
+                    "candidacy": bool(content.get("ideal_candidates", content.get("candidacy", ""))),
+                }
+
+            filled = sum(1 for v in checks.values() if v)
+            total = len(checks)
+            completeness = round((filled / total) * 100) if total else 0
+            missing = [k for k, v in checks.items() if not v]
+
+            return {
+                "slug": slug,
+                "title": title,
+                "type": page_type,
+                "word_count": word_count,
+                "completeness": completeness,
+                "filled_sections": filled,
+                "total_sections": total,
+                "missing_sections": missing,
+                "needs_enrichment": completeness < 75 or word_count < 250,
+            }
+
+        condition_scores = [score_page(p, "condition") for p in conditions]
+        treatment_scores = [score_page(p, "treatment") for p in treatments]
+        all_scores = condition_scores + treatment_scores
+        all_scores.sort(key=lambda x: x["completeness"])
+
+        needs_enrichment = [s for s in all_scores if s["needs_enrichment"]]
+        avg_completeness = round(sum(s["completeness"] for s in all_scores) / max(len(all_scores), 1))
+
+        return {
+            "total_pages": len(all_scores),
+            "conditions_count": len(condition_scores),
+            "treatments_count": len(treatment_scores),
+            "avg_completeness": avg_completeness,
+            "pages_needing_enrichment": len(needs_enrichment),
+            "gap_pages": needs_enrichment[:30],
+            "all_pages": all_scores,
+        }
+
+    async def enrich_page(self, slug: str) -> dict:
+        """Enrich a single CMS page with AI-generated content for missing sections."""
+        page = await self.db.cms_pages.find_one({"slug": slug, "status": "published"}, {"_id": 0})
+        if not page:
+            return {"error": f"Page '{slug}' not found", "slug": slug}
+
+        content = page.get("content", {})
+        page_type = page.get("type", "condition")
+        title = page.get("title", slug)
+        keywords = page.get("keywords", [])
+
+        # Determine what's missing
+        gap = self._get_missing_sections(content, page_type)
+        if not gap:
+            return {"slug": slug, "enriched": False, "message": "Page already complete"}
+
+        try:
+            from emergentintegrations.llm.chat import LlmChat, UserMessage
+            import json as _json
+
+            chat = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=f"enrich-{uuid.uuid4()}",
+                system_message=(
+                    "You are an expert medical content writer for Dr. B Harsha Vardhana Reddy, "
+                    "Senior Consultant Orthopedic Surgeon at Apollo Hospitals, Financial District, Hyderabad. "
+                    "Generate medically accurate, patient-friendly content. Return valid JSON only."
+                ),
+            ).with_model("openai", "gpt-4o")
+
+            prompt = self._build_enrichment_prompt(title, page_type, keywords, gap, content)
+            raw = await chat.send_message(UserMessage(text=prompt))
+
+            # Parse JSON from response
+            raw = raw.strip()
+            if raw.startswith("```"):
+                raw = raw.split("\n", 1)[1] if "\n" in raw else raw[3:]
+                raw = raw.rsplit("```", 1)[0]
+            new_data = _json.loads(raw)
+
+            # Merge new sections into existing content
+            updated_content = {**content}
+            for key, val in new_data.items():
+                if val and (key not in updated_content or not updated_content[key]):
+                    updated_content[key] = val
+
+            await self.db.cms_pages.update_one(
+                {"slug": slug},
+                {"$set": {"content": updated_content, "updated_at": datetime.now(timezone.utc).isoformat()}}
+            )
+            logger.info(f"[Enrich] Page /{slug} enriched with {len(new_data)} sections")
+            return {"slug": slug, "enriched": True, "sections_added": list(new_data.keys()), "type": page_type}
+
+        except Exception as e:
+            logger.error(f"[Enrich] Failed for /{slug}: {e}")
+            return {"slug": slug, "enriched": False, "error": str(e)[:100]}
+
+    def _get_missing_sections(self, content: dict, page_type: str) -> List[str]:
+        """Identify missing sections in a CMS page."""
+        if page_type == "condition":
+            expected = {
+                "overview": str, "introduction": str, "symptoms": list,
+                "causes": list, "treatments": list, "faq": list,
+                "prevention": (list, str), "when_to_see_doctor": str,
+            }
+        else:
+            expected = {
+                "description": str, "benefits": list, "procedure_steps": list,
+                "recovery": (dict, str), "faq": list, "risks": list,
+                "ideal_candidates": (list, str),
+            }
+
+        missing = []
+        for key, _ in expected.items():
+            val = content.get(key)
+            if not val or (isinstance(val, (list, dict)) and len(val) == 0):
+                missing.append(key)
+        return missing
+
+    def _build_enrichment_prompt(self, title: str, page_type: str, keywords: list, missing: list, existing: dict) -> str:
+        """Build GPT prompt to generate missing content sections."""
+        kw_str = ", ".join(keywords[:5]) if keywords else title
+
+        if page_type == "condition":
+            section_specs = {
+                "overview": 'A 2-3 sentence overview of the condition (string)',
+                "introduction": 'A detailed paragraph about the condition, mentions Dr. Harsha and Apollo Hospitals Hyderabad (string)',
+                "symptoms": 'Array of {name, description} objects, at least 5 symptoms',
+                "causes": 'Array of strings, at least 4 causes',
+                "treatments": 'Array of {name, description} objects, at least 4 treatments',
+                "faq": 'Array of {question, answer} objects, at least 4 FAQs relevant to patients in Hyderabad',
+                "prevention": 'Array of strings, at least 4 prevention tips',
+                "when_to_see_doctor": 'A paragraph about when patients should seek medical attention (string)',
+            }
+        else:
+            section_specs = {
+                "description": 'Detailed description of the treatment procedure (string, 2-3 sentences)',
+                "benefits": 'Array of {title, description} objects, at least 5 benefits',
+                "procedure_steps": 'Array of {step, title, description} objects, at least 5 steps',
+                "recovery": '{"timeline": "string", "tips": ["string"], "follow_up": "string"}',
+                "faq": 'Array of {question, answer} objects, at least 4 FAQs',
+                "risks": 'Array of strings listing potential risks/complications',
+                "ideal_candidates": 'A paragraph describing who is a good candidate (string)',
+            }
+
+        needed = {k: section_specs[k] for k in missing if k in section_specs}
+        if not needed:
+            return ""
+
+        spec_text = "\n".join(f'  "{k}": {v}' for k, v in needed.items())
+
+        return f"""Generate ONLY the missing content sections for this orthopedic {page_type} page.
+
+TOPIC: {title}
+KEYWORDS: {kw_str}
+DOCTOR: Dr. B Harsha Vardhana Reddy, Apollo Hospitals, Financial District, Hyderabad
+
+Generate these missing sections as a JSON object:
+{{
+{spec_text}
+}}
+
+RULES:
+- Medically accurate, patient-friendly language
+- Naturally include keywords and location (Hyderabad)
+- Mention Dr. Harsha 1-2 times across all sections
+- Return ONLY valid JSON, no markdown, no explanation
+- All text should be in English"""
+
+    async def bulk_enrich(self, slugs: List[str] = None, max_pages: int = 10) -> dict:
+        """Bulk enrich multiple pages. If no slugs provided, auto-detect gaps."""
+        if not slugs:
+            gaps = await self.analyze_content_gaps()
+            slugs = [p["slug"] for p in gaps.get("gap_pages", [])[:max_pages]]
+
+        if not slugs:
+            return {"enriched": 0, "results": [], "message": "No pages need enrichment"}
+
+        results = []
+        for slug in slugs[:max_pages]:
+            r = await self.enrich_page(slug)
+            results.append(r)
+            await asyncio.sleep(1)  # Rate limit
+
+        enriched = sum(1 for r in results if r.get("enriched"))
+        return {"enriched": enriched, "total_attempted": len(results), "results": results}
 
     def launch(self):
         """Start the background automation scheduler."""

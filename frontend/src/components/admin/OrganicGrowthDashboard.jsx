@@ -53,6 +53,14 @@ const OrganicGrowthDashboard = () => {
   const [showAuditDetails, setShowAuditDetails] = useState(false);
   const [runningAutoFix, setRunningAutoFix] = useState(false);
   const [autoFixResult, setAutoFixResult] = useState(null);
+  const [auditHistory, setAuditHistory] = useState([]);
+
+  // Content Gap Analysis
+  const [contentGaps, setContentGaps] = useState(null);
+  const [gapsLoading, setGapsLoading] = useState(false);
+  const [enriching, setEnriching] = useState(false);
+  const [enrichResult, setEnrichResult] = useState(null);
+  const [showGapDetails, setShowGapDetails] = useState(false);
 
   // Fetch functions
   const fetchBlogPosts = useCallback(async () => {
@@ -104,10 +112,17 @@ const OrganicGrowthDashboard = () => {
   const fetchSeoAudit = useCallback(async () => {
     setSeoAuditLoading(true);
     try {
-      const r = await fetch(`${API_URL}/api/seo-audit/latest`);
-      if (r.ok) {
-        const d = await r.json();
+      const [auditRes, histRes] = await Promise.all([
+        fetch(`${API_URL}/api/seo-audit/latest`),
+        fetch(`${API_URL}/api/seo-audit/history`)
+      ]);
+      if (auditRes.ok) {
+        const d = await auditRes.json();
         if (d.success) setSeoAudit(d);
+      }
+      if (histRes.ok) {
+        const h = await histRes.json();
+        if (h.success) setAuditHistory(h.history || []);
       }
     } catch (e) { console.error(e); }
     setSeoAuditLoading(false);
@@ -147,13 +162,49 @@ const OrganicGrowthDashboard = () => {
     setRunningAutoFix(false);
   };
 
+  const fetchContentGaps = useCallback(async () => {
+    setGapsLoading(true);
+    try {
+      const r = await fetch(`${API_URL}/api/content-gaps`);
+      if (r.ok) {
+        const d = await r.json();
+        if (d.success) setContentGaps(d);
+      }
+    } catch (e) { console.error(e); }
+    setGapsLoading(false);
+  }, []);
+
+  const runBulkEnrich = async (slugs = null) => {
+    setEnriching(true);
+    setEnrichResult(null);
+    try {
+      const body = slugs ? { slugs, max_pages: 5 } : { max_pages: 5 };
+      const r = await fetch(`${API_URL}/api/content-enrich`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (r.ok) {
+        const d = await r.json();
+        setEnrichResult(d);
+        if (d.enriched > 0) {
+          setAiResult({ type: 'success', message: `Content enriched: ${d.enriched}/${d.total_attempted} pages updated with AI-generated sections` });
+          fetchContentGaps(); // Refresh gaps
+        } else {
+          setAiResult({ type: 'success', message: 'All pages already have complete content — no enrichment needed.' });
+        }
+      }
+    } catch (e) { setAiResult({ type: 'error', message: `Enrichment failed: ${e.message}` }); }
+    setEnriching(false);
+  };
+
   useEffect(() => {
     fetchBlogPosts();
     fetchAutoStatus();
     fetchIndexNowStatus();
     fetchGrowthHistory();
     fetchSeoAudit();
-  }, [fetchBlogPosts, fetchAutoStatus, fetchIndexNowStatus, fetchGrowthHistory, fetchSeoAudit]);
+    fetchContentGaps();
+  }, [fetchBlogPosts, fetchAutoStatus, fetchIndexNowStatus, fetchGrowthHistory, fetchSeoAudit, fetchContentGaps]);
 
   // Blog CRUD
   const resetBlogForm = () => { setShowBlogForm(false); setEditingPost(null); setBlogForm({ title: '', excerpt: '', content: '', tags: '', image_url: '' }); };
@@ -451,6 +502,37 @@ const OrganicGrowthDashboard = () => {
                 </div>
               </div>
 
+              {/* Audit Score Trend */}
+              {auditHistory.length > 1 && (
+                <div>
+                  <h4 className="text-sm font-medium text-foreground mb-2">Score Trend</h4>
+                  <div className="h-20 flex items-end gap-1" data-testid="seo-trend-chart">
+                    {auditHistory.slice().reverse().slice(-14).map((entry, i) => {
+                      const score = entry.overall_score || 0;
+                      return (
+                        <div key={i} className="flex-1 flex flex-col items-center gap-1 group">
+                          <div className="w-full bg-secondary rounded-t relative" style={{ height: '60px' }}>
+                            <motion.div
+                              initial={{ height: 0 }} animate={{ height: `${score}%` }}
+                              transition={{ delay: i * 0.04, duration: 0.4 }}
+                              className={`absolute bottom-0 w-full rounded-t ${
+                                score >= 80 ? 'bg-gradient-to-t from-green-500 to-green-400' :
+                                score >= 50 ? 'bg-gradient-to-t from-amber-500 to-amber-400' :
+                                'bg-gradient-to-t from-red-500 to-red-400'
+                              }`}
+                            />
+                            <div className="absolute -top-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-charcoal text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap z-10">
+                              {score}/100
+                            </div>
+                          </div>
+                          <span className="text-[8px] text-muted-foreground">{entry.date?.slice(5, 10)}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {/* Issue summary */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-center">
@@ -544,6 +626,161 @@ const OrganicGrowthDashboard = () => {
               <p className="text-xs text-muted-foreground text-right">
                 Last audit: {seoAudit.date ? new Date(seoAudit.date).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—'}
               </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* CONTENT GAP ANALYSIS */}
+      <div className="bg-card rounded-xl border border-border overflow-hidden" data-testid="content-gap-analysis">
+        <div className="p-5 border-b border-border">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <FileText className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="font-bold text-foreground text-lg" data-testid="content-gap-title">Content Gap Analysis</h2>
+                <p className="text-sm text-muted-foreground">Find and enrich pages with missing content sections</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {contentGaps && (
+                <div className={`text-2xl font-bold ${
+                  contentGaps.avg_completeness >= 90 ? 'text-green-600' :
+                  contentGaps.avg_completeness >= 70 ? 'text-amber-500' : 'text-red-500'
+                }`} data-testid="content-completeness">{contentGaps.avg_completeness}<span className="text-sm font-normal text-muted-foreground">%</span></div>
+              )}
+              <Button onClick={() => runBulkEnrich()} disabled={enriching || !contentGaps?.pages_needing_enrichment}
+                size="sm" className="gap-2" data-testid="bulk-enrich-btn">
+                {enriching ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Enriching...</> : <><Zap className="w-3.5 h-3.5" /> Auto-Enrich</>}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-5">
+          {gapsLoading ? (
+            <div className="flex justify-center py-6"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
+          ) : !contentGaps ? (
+            <div className="text-center py-6 text-muted-foreground">
+              <FileText className="w-8 h-8 mx-auto mb-2 opacity-20" />
+              <p className="text-sm">Loading content analysis...</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {/* Overview stats */}
+              <div className="grid grid-cols-4 gap-3">
+                <div className="bg-secondary/50 rounded-lg p-3 text-center">
+                  <p className="text-lg font-bold text-foreground">{contentGaps.conditions_count}</p>
+                  <p className="text-xs text-muted-foreground">Conditions</p>
+                </div>
+                <div className="bg-secondary/50 rounded-lg p-3 text-center">
+                  <p className="text-lg font-bold text-foreground">{contentGaps.treatments_count}</p>
+                  <p className="text-xs text-muted-foreground">Treatments</p>
+                </div>
+                <div className="bg-secondary/50 rounded-lg p-3 text-center">
+                  <p className="text-lg font-bold text-foreground">{contentGaps.total_pages}</p>
+                  <p className="text-xs text-muted-foreground">Total Pages</p>
+                </div>
+                <div className={`rounded-lg p-3 text-center ${contentGaps.pages_needing_enrichment > 0 ? 'bg-amber-50 border border-amber-200' : 'bg-green-50 border border-green-200'}`}>
+                  <p className={`text-lg font-bold ${contentGaps.pages_needing_enrichment > 0 ? 'text-amber-600' : 'text-green-600'}`} data-testid="pages-needing-enrichment">
+                    {contentGaps.pages_needing_enrichment}
+                  </p>
+                  <p className={`text-xs ${contentGaps.pages_needing_enrichment > 0 ? 'text-amber-600' : 'text-green-600'}`}>Need Enrichment</p>
+                </div>
+              </div>
+
+              {/* Completeness bar */}
+              <div>
+                <div className="flex items-center justify-between text-sm mb-1.5">
+                  <span className="text-muted-foreground">Avg Content Completeness</span>
+                  <span className="font-medium">{contentGaps.avg_completeness}%</span>
+                </div>
+                <div className="h-2.5 bg-secondary rounded-full overflow-hidden">
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${contentGaps.avg_completeness}%` }} transition={{ duration: 0.8 }}
+                    className={`h-full rounded-full ${
+                      contentGaps.avg_completeness >= 90 ? 'bg-green-500' :
+                      contentGaps.avg_completeness >= 70 ? 'bg-amber-500' : 'bg-red-500'
+                    }`} />
+                </div>
+              </div>
+
+              {/* Enrichment result */}
+              {enrichResult && enrichResult.enriched > 0 && (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-600" />
+                    <span className="text-sm font-medium text-emerald-700">{enrichResult.enriched} Pages Enriched</span>
+                  </div>
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {enrichResult.results?.filter(r => r.enriched).map((r, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs">
+                        <Check className="w-3 h-3 text-emerald-500 flex-shrink-0" />
+                        <span className="text-emerald-700 font-medium">/{r.slug}</span>
+                        <span className="text-muted-foreground">+{r.sections_added?.length || 0} sections</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Gap pages list */}
+              {contentGaps.gap_pages?.length > 0 && (
+                <div>
+                  <button onClick={() => setShowGapDetails(v => !v)}
+                    className="flex items-center gap-2 text-sm font-medium text-primary hover:underline" data-testid="toggle-gap-details">
+                    {showGapDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    {showGapDetails ? 'Hide' : 'Show'} pages needing enrichment ({contentGaps.pages_needing_enrichment})
+                  </button>
+
+                  <AnimatePresence>
+                    {showGapDetails && (
+                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden mt-3">
+                        <div className="max-h-[300px] overflow-y-auto divide-y divide-border border border-border rounded-lg">
+                          {contentGaps.gap_pages.map((page, idx) => (
+                            <div key={idx} className="flex items-center justify-between p-3 hover:bg-secondary/30 transition-colors">
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-foreground truncate">{page.title}</p>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                  <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-secondary capitalize">{page.type}</span>
+                                  <span className="text-xs text-muted-foreground">{page.filled_sections}/{page.total_sections} sections</span>
+                                  <span className="text-xs text-muted-foreground">{page.word_count} words</span>
+                                </div>
+                                {page.missing_sections?.length > 0 && (
+                                  <div className="flex flex-wrap gap-1 mt-1">
+                                    {page.missing_sections.map((sec, j) => (
+                                      <span key={j} className="text-[10px] px-1.5 py-0.5 rounded bg-red-50 text-red-600 border border-red-200 capitalize">
+                                        {sec.replace(/_/g, ' ')}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-3 ml-3">
+                                <div className={`text-sm font-bold ${
+                                  page.completeness >= 75 ? 'text-green-600' : page.completeness >= 50 ? 'text-amber-500' : 'text-red-500'
+                                }`}>{page.completeness}%</div>
+                                <Button onClick={() => runBulkEnrich([page.slug])} disabled={enriching} size="sm" variant="ghost" className="h-7 px-2">
+                                  {enriching ? <Loader2 className="w-3 h-3 animate-spin" /> : <Zap className="w-3 h-3" />}
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
+
+              {contentGaps.pages_needing_enrichment === 0 && (
+                <div className="text-center py-3">
+                  <CheckCircle className="w-6 h-6 text-green-500 mx-auto mb-1" />
+                  <p className="text-sm font-medium text-green-700">All pages have complete content</p>
+                </div>
+              )}
             </div>
           )}
         </div>

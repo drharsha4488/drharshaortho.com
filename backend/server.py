@@ -3859,6 +3859,33 @@ async def get_seo_fix_history():
     history = await seo_automation.get_fix_history()
     return {"success": True, "latest": latest, "history": history}
 
+# ============ CONTENT GAP ANALYSIS & ENRICHMENT ============
+
+@api_router.get("/content-gaps")
+async def get_content_gaps():
+    """Analyze all CMS pages and identify content gaps."""
+    try:
+        result = await seo_automation.analyze_content_gaps()
+        return {"success": True, **result}
+    except Exception as e:
+        logger.error(f"Content gap analysis error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/content-enrich")
+async def enrich_content(data: dict = None):
+    """Enrich CMS pages with AI-generated content for missing sections."""
+    try:
+        data = data or {}
+        slugs = data.get("slugs")
+        max_pages = data.get("max_pages", 5)
+        if slugs and isinstance(slugs, str):
+            slugs = [slugs]
+        result = await seo_automation.bulk_enrich(slugs=slugs, max_pages=max_pages)
+        return {"success": True, **result}
+    except Exception as e:
+        logger.error(f"Content enrichment error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 app.include_router(api_router)
 
