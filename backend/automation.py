@@ -4,6 +4,7 @@ SEO Automation Engine for Dr. Harsha Orthopedic Website
 - Pings Google when content changes
 - Generates & publishes AI blog posts weekly (zero manual work)
 - Self-adaptive: monitors growth, adjusts strategy automatically
+- SEO Health Monitor: crawls site pages and audits for SEO issues
 """
 import asyncio
 import httpx
@@ -12,7 +13,14 @@ import re
 import logging
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
+from xml.etree import ElementTree as ET
+
+try:
+    from bs4 import BeautifulSoup
+    BS4_AVAILABLE = True
+except ImportError:
+    BS4_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -461,7 +469,198 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         }
 
     # ─────────────────────────────────────────────────────────
-    # 6. SELF-ADAPTIVE KEYWORD SELECTION
+    # 6. SEO HEALTH MONITOR — automated site auditing
+    # ─────────────────────────────────────────────────────────
+    async def run_seo_audit(self, site_url: str, max_pages: int = 50) -> dict:
+        """Crawl the site and audit pages for SEO issues."""
+        if not BS4_AVAILABLE:
+            return {"error": "BeautifulSoup not installed", "score": 0, "pages_audited": 0, "issues": []}
+
+        logger.info(f"[SEO Audit] Starting audit of {site_url}, max {max_pages} pages")
+        sitemap_url = f"{site_url}/api/sitemap.xml"
+        page_urls = await self._get_urls_from_sitemap(sitemap_url)
+        if not page_urls:
+            page_urls = [site_url + p for p, _, _ in STATIC_SITEMAP_PAGES[:max_pages]]
+
+        page_urls = page_urls[:max_pages]
+        logger.info(f"[SEO Audit] Found {len(page_urls)} URLs to audit")
+
+        all_issues: List[dict] = []
+        page_results: List[dict] = []
+        pages_ok = 0
+
+        async with httpx.AsyncClient(timeout=15, follow_redirects=True, verify=False) as client:
+            for url in page_urls:
+                try:
+                    resp = await client.get(url)
+                    if resp.status_code != 200:
+                        all_issues.append({"url": url, "category": "accessibility", "severity": "critical",
+                                           "issue": f"HTTP {resp.status_code}", "suggestion": "Fix broken page"})
+                        page_results.append({"url": url, "status": resp.status_code, "score": 0, "issues": 1})
+                        continue
+
+                    html = resp.text
+                    issues = self._audit_page(url, html)
+                    all_issues.extend(issues)
+                    page_score = max(0, 100 - len(issues) * 8)
+                    page_results.append({"url": url, "status": 200, "score": page_score,
+                                         "issues": len(issues)})
+                    if page_score >= 80:
+                        pages_ok += 1
+                except Exception as e:
+                    all_issues.append({"url": url, "category": "accessibility", "severity": "critical",
+                                       "issue": f"Fetch failed: {str(e)[:80]}", "suggestion": "Check if page is accessible"})
+                    page_results.append({"url": url, "status": 0, "score": 0, "issues": 1})
+                await asyncio.sleep(0.3)
+
+        # Summarise
+        total_pages = len(page_results)
+        overall_score = round(sum(p["score"] for p in page_results) / max(total_pages, 1))
+        critical = sum(1 for i in all_issues if i["severity"] == "critical")
+        warnings = sum(1 for i in all_issues if i["severity"] == "warning")
+        info = sum(1 for i in all_issues if i["severity"] == "info")
+
+        category_counts: Dict[str, int] = {}
+        for i in all_issues:
+            category_counts[i["category"]] = category_counts.get(i["category"], 0) + 1
+
+        audit_result = {
+            "date": datetime.now(timezone.utc).isoformat(),
+            "site_url": site_url,
+            "overall_score": overall_score,
+            "pages_audited": total_pages,
+            "pages_healthy": pages_ok,
+            "total_issues": len(all_issues),
+            "critical": critical,
+            "warnings": warnings,
+            "info": info,
+            "category_breakdown": category_counts,
+            "issues": all_issues[:200],  # cap stored issues
+            "page_results": page_results,
+        }
+
+        # Store in MongoDB
+        await self.db.seo_audits.insert_one({**audit_result, "recorded_at": datetime.now(timezone.utc).isoformat()})
+        # remove _id before returning
+        audit_result.pop("_id", None)
+        logger.info(f"[SEO Audit] Complete: score={overall_score}, pages={total_pages}, issues={len(all_issues)}")
+        return audit_result
+
+    async def _get_urls_from_sitemap(self, sitemap_url: str) -> List[str]:
+        """Parse sitemap XML and extract all URLs."""
+        try:
+            async with httpx.AsyncClient(timeout=15, follow_redirects=True, verify=False) as client:
+                resp = await client.get(sitemap_url)
+                if resp.status_code != 200:
+                    return []
+            root = ET.fromstring(resp.text)
+            ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+            return [loc.text for loc in root.findall(".//s:loc", ns) if loc.text]
+        except Exception as e:
+            logger.error(f"[SEO Audit] Sitemap parse error: {e}")
+            return []
+
+    def _audit_page(self, url: str, html: str) -> List[dict]:
+        """Audit a single page HTML for SEO issues. Returns list of issues."""
+        issues: List[dict] = []
+        soup = BeautifulSoup(html, "lxml")
+
+        # --- Title tag ---
+        title_tag = soup.find("title")
+        title_text = title_tag.get_text(strip=True) if title_tag else ""
+        if not title_text:
+            issues.append({"url": url, "category": "meta", "severity": "critical",
+                           "issue": "Missing <title> tag", "suggestion": "Add a unique title (50-60 chars)"})
+        elif len(title_text) < 20:
+            issues.append({"url": url, "category": "meta", "severity": "warning",
+                           "issue": f"Title too short ({len(title_text)} chars)", "suggestion": "Expand title to 50-60 characters"})
+        elif len(title_text) > 70:
+            issues.append({"url": url, "category": "meta", "severity": "warning",
+                           "issue": f"Title too long ({len(title_text)} chars)", "suggestion": "Shorten title to under 60 characters"})
+
+        # --- Meta description ---
+        meta_desc = soup.find("meta", attrs={"name": "description"})
+        desc_text = meta_desc.get("content", "").strip() if meta_desc else ""
+        if not desc_text:
+            issues.append({"url": url, "category": "meta", "severity": "critical",
+                           "issue": "Missing meta description", "suggestion": "Add a meta description (120-160 chars)"})
+        elif len(desc_text) < 50:
+            issues.append({"url": url, "category": "meta", "severity": "warning",
+                           "issue": f"Meta description too short ({len(desc_text)} chars)",
+                           "suggestion": "Expand to 120-160 characters"})
+        elif len(desc_text) > 170:
+            issues.append({"url": url, "category": "meta", "severity": "info",
+                           "issue": f"Meta description long ({len(desc_text)} chars)",
+                           "suggestion": "Consider trimming to under 160 characters"})
+
+        # --- Canonical tag ---
+        canonical = soup.find("link", attrs={"rel": "canonical"})
+        if not canonical or not canonical.get("href"):
+            issues.append({"url": url, "category": "meta", "severity": "warning",
+                           "issue": "Missing canonical tag", "suggestion": "Add <link rel='canonical'> to prevent duplicate content"})
+
+        # --- Schema markup (JSON-LD) ---
+        schema_scripts = soup.find_all("script", attrs={"type": "application/ld+json"})
+        if not schema_scripts:
+            issues.append({"url": url, "category": "schema", "severity": "warning",
+                           "issue": "No JSON-LD schema markup", "suggestion": "Add structured data for better rich snippets"})
+
+        # --- H1 tag ---
+        h1_tags = soup.find_all("h1")
+        if not h1_tags:
+            issues.append({"url": url, "category": "headings", "severity": "critical",
+                           "issue": "Missing H1 heading", "suggestion": "Add exactly one H1 tag per page"})
+        elif len(h1_tags) > 1:
+            issues.append({"url": url, "category": "headings", "severity": "warning",
+                           "issue": f"Multiple H1 tags ({len(h1_tags)})", "suggestion": "Use only one H1 per page"})
+
+        # --- Images without alt text ---
+        images = soup.find_all("img")
+        missing_alt = [img.get("src", "?")[:60] for img in images if not img.get("alt")]
+        if missing_alt:
+            issues.append({"url": url, "category": "images", "severity": "warning",
+                           "issue": f"{len(missing_alt)} images missing alt text",
+                           "suggestion": "Add descriptive alt text to all images"})
+
+        # --- Content length (thin content check) ---
+        body = soup.find("body")
+        text_content = body.get_text(separator=" ", strip=True) if body else ""
+        word_count = len(text_content.split())
+        if word_count < 100:
+            issues.append({"url": url, "category": "content", "severity": "warning",
+                           "issue": f"Thin content ({word_count} words)",
+                           "suggestion": "Aim for 300+ words of unique content"})
+
+        # --- Open Graph tags ---
+        og_title = soup.find("meta", attrs={"property": "og:title"})
+        og_desc = soup.find("meta", attrs={"property": "og:description"})
+        if not og_title or not og_desc:
+            issues.append({"url": url, "category": "social", "severity": "info",
+                           "issue": "Missing Open Graph tags", "suggestion": "Add og:title and og:description for social sharing"})
+
+        # --- Viewport meta ---
+        viewport = soup.find("meta", attrs={"name": "viewport"})
+        if not viewport:
+            issues.append({"url": url, "category": "mobile", "severity": "critical",
+                           "issue": "Missing viewport meta tag", "suggestion": "Add viewport meta for mobile responsiveness"})
+
+        return issues
+
+    async def get_latest_audit(self) -> Optional[dict]:
+        """Get the most recent SEO audit result."""
+        doc = await self.db.seo_audits.find_one({}, {"_id": 0}, sort=[("date", -1)])
+        return doc
+
+    async def get_audit_history(self, limit: int = 30) -> List[dict]:
+        """Get audit score history."""
+        docs = await self.db.seo_audits.find(
+            {}, {"_id": 0, "overall_score": 1, "pages_audited": 1, "total_issues": 1,
+                 "critical": 1, "warnings": 1, "date": 1}
+        ).sort("date", -1).to_list(limit)
+        return docs
+
+    # ─────────────────────────────────────────────────────────
+    # 7. SELF-ADAPTIVE KEYWORD SELECTION
     # ─────────────────────────────────────────────────────────
     async def _get_adaptive_keywords(self, count: int) -> List[str]:
         """Select keywords adaptively based on growth analysis."""

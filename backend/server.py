@@ -3798,6 +3798,44 @@ async def serve_sitemap():
     return Response(content=xml, media_type="application/xml")
 
 
+# ============ SEO HEALTH MONITOR ENDPOINTS ============
+
+@api_router.post("/seo-audit/run")
+async def run_seo_audit(data: dict = None):
+    """Trigger an SEO health audit of the site."""
+    try:
+        # Read site URL from frontend .env
+        frontend_env = Path("/app/frontend/.env")
+        site_url = ""
+        if frontend_env.exists():
+            for line in frontend_env.read_text().splitlines():
+                if line.startswith("REACT_APP_BACKEND_URL="):
+                    site_url = line.split("=", 1)[1].strip()
+                    break
+        if not site_url:
+            site_url = "https://drharshaortho.com"
+        max_pages = (data or {}).get("max_pages", 30)
+        result = await seo_automation.run_seo_audit(site_url, max_pages=max_pages)
+        return {"success": True, **result}
+    except Exception as e:
+        logger.error(f"SEO Audit error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/seo-audit/latest")
+async def get_latest_seo_audit():
+    """Get the most recent SEO audit results."""
+    result = await seo_automation.get_latest_audit()
+    if not result:
+        return {"success": False, "message": "No audit data yet. Run an audit first."}
+    return {"success": True, **result}
+
+@api_router.get("/seo-audit/history")
+async def get_seo_audit_history(limit: int = 20):
+    """Get SEO audit score history."""
+    history = await seo_automation.get_audit_history(limit)
+    return {"success": True, "history": history}
+
+
 app.include_router(api_router)
 
 # ============ AUTOMATION STARTUP ============

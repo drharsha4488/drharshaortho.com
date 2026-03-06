@@ -6,7 +6,8 @@ import {
   Zap, BookOpen, Plus, Edit, Trash2, Save, X, Tag, Clock,
   Globe, Send, RefreshCw, Loader2, CheckCircle, AlertCircle,
   Lightbulb, TrendingUp, TrendingDown, FileText, Search, ChevronDown, ChevronUp,
-  Check, ExternalLink, Activity, Play, BarChart3, ArrowUp, ArrowDown, Minus
+  Check, ExternalLink, Activity, Play, BarChart3, ArrowUp, ArrowDown, Minus,
+  ShieldCheck, AlertTriangle, Info, ScanLine
 } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
@@ -44,6 +45,12 @@ const OrganicGrowthDashboard = () => {
   // Growth Tracking
   const [growthHistory, setGrowthHistory] = useState([]);
   const [growthAnalysis, setGrowthAnalysis] = useState(null);
+
+  // SEO Health Monitor
+  const [seoAudit, setSeoAudit] = useState(null);
+  const [seoAuditLoading, setSeoAuditLoading] = useState(false);
+  const [runningAudit, setRunningAudit] = useState(false);
+  const [showAuditDetails, setShowAuditDetails] = useState(false);
 
   // Fetch functions
   const fetchBlogPosts = useCallback(async () => {
@@ -92,12 +99,41 @@ const OrganicGrowthDashboard = () => {
     } catch (e) { console.error(e); }
   }, []);
 
+  const fetchSeoAudit = useCallback(async () => {
+    setSeoAuditLoading(true);
+    try {
+      const r = await fetch(`${API_URL}/api/seo-audit/latest`);
+      if (r.ok) {
+        const d = await r.json();
+        if (d.success) setSeoAudit(d);
+      }
+    } catch (e) { console.error(e); }
+    setSeoAuditLoading(false);
+  }, []);
+
+  const runSeoAudit = async () => {
+    setRunningAudit(true);
+    try {
+      const r = await fetch(`${API_URL}/api/seo-audit/run`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ max_pages: 30 })
+      });
+      if (r.ok) {
+        const d = await r.json();
+        if (d.success) setSeoAudit(d);
+        setAiResult({ type: 'success', message: `SEO Audit complete: Score ${d.overall_score}/100, ${d.total_issues} issues found across ${d.pages_audited} pages` });
+      }
+    } catch (e) { setAiResult({ type: 'error', message: `Audit failed: ${e.message}` }); }
+    setRunningAudit(false);
+  };
+
   useEffect(() => {
     fetchBlogPosts();
     fetchAutoStatus();
     fetchIndexNowStatus();
     fetchGrowthHistory();
-  }, [fetchBlogPosts, fetchAutoStatus, fetchIndexNowStatus, fetchGrowthHistory]);
+    fetchSeoAudit();
+  }, [fetchBlogPosts, fetchAutoStatus, fetchIndexNowStatus, fetchGrowthHistory, fetchSeoAudit]);
 
   // Blog CRUD
   const resetBlogForm = () => { setShowBlogForm(false); setEditingPost(null); setBlogForm({ title: '', excerpt: '', content: '', tags: '', image_url: '' }); };
@@ -333,6 +369,136 @@ const OrganicGrowthDashboard = () => {
               <BarChart3 className="w-8 h-8 mx-auto mb-2 opacity-30" />
               <p className="text-sm">Growth tracking will start showing data after 2+ days.</p>
               <p className="text-xs mt-1">The system records daily snapshots automatically.</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* SEO HEALTH MONITOR */}
+      <div className="bg-card rounded-xl border border-border overflow-hidden" data-testid="seo-health-monitor">
+        <div className="p-5 border-b border-border">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+                <ShieldCheck className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="font-bold text-foreground text-lg" data-testid="seo-health-title">SEO Health Monitor</h2>
+                <p className="text-sm text-muted-foreground">Automated site audit — finds issues before Google does</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {seoAudit?.overall_score != null && (
+                <div className={`text-2xl font-bold ${
+                  seoAudit.overall_score >= 80 ? 'text-green-600' :
+                  seoAudit.overall_score >= 50 ? 'text-amber-500' : 'text-red-500'
+                }`} data-testid="seo-score">{seoAudit.overall_score}<span className="text-sm font-normal text-muted-foreground">/100</span></div>
+              )}
+              <Button onClick={runSeoAudit} disabled={runningAudit} size="sm" className="gap-2" data-testid="run-audit-btn">
+                {runningAudit ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Scanning...</> : <><ScanLine className="w-3.5 h-3.5" /> Run Audit</>}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-5">
+          {seoAuditLoading ? (
+            <div className="flex justify-center py-6"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
+          ) : !seoAudit || !seoAudit.overall_score ? (
+            <div className="text-center py-8 text-muted-foreground">
+              <ShieldCheck className="w-10 h-10 mx-auto mb-3 opacity-20" />
+              <p className="text-sm font-medium">No audit data yet</p>
+              <p className="text-xs mt-1">Click "Run Audit" to scan your site for SEO issues</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {/* Score bar */}
+              <div>
+                <div className="flex items-center justify-between text-sm mb-2">
+                  <span className="text-muted-foreground">Overall Health</span>
+                  <span className="font-medium">{seoAudit.pages_healthy}/{seoAudit.pages_audited} pages healthy</span>
+                </div>
+                <div className="h-3 bg-secondary rounded-full overflow-hidden">
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${seoAudit.overall_score}%` }} transition={{ duration: 0.8 }}
+                    className={`h-full rounded-full ${
+                      seoAudit.overall_score >= 80 ? 'bg-green-500' :
+                      seoAudit.overall_score >= 50 ? 'bg-amber-500' : 'bg-red-500'
+                    }`} />
+                </div>
+              </div>
+
+              {/* Issue summary */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-center">
+                  <AlertTriangle className="w-4 h-4 text-red-500 mx-auto mb-1" />
+                  <p className="text-lg font-bold text-red-600" data-testid="critical-count">{seoAudit.critical}</p>
+                  <p className="text-xs text-red-600">Critical</p>
+                </div>
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
+                  <AlertCircle className="w-4 h-4 text-amber-500 mx-auto mb-1" />
+                  <p className="text-lg font-bold text-amber-600" data-testid="warning-count">{seoAudit.warnings}</p>
+                  <p className="text-xs text-amber-600">Warnings</p>
+                </div>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center">
+                  <Info className="w-4 h-4 text-blue-500 mx-auto mb-1" />
+                  <p className="text-lg font-bold text-blue-600" data-testid="info-count">{seoAudit.info}</p>
+                  <p className="text-xs text-blue-600">Info</p>
+                </div>
+              </div>
+
+              {/* Category breakdown */}
+              {seoAudit.category_breakdown && Object.keys(seoAudit.category_breakdown).length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium text-foreground mb-2">Issues by Category</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(seoAudit.category_breakdown).sort((a, b) => b[1] - a[1]).map(([cat, count]) => (
+                      <span key={cat} className="px-2.5 py-1 bg-secondary rounded-full text-xs font-medium text-foreground capitalize">
+                        {cat}: {count}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Expandable detailed issues */}
+              <div>
+                <button onClick={() => setShowAuditDetails(v => !v)}
+                  className="flex items-center gap-2 text-sm font-medium text-primary hover:underline" data-testid="toggle-audit-details">
+                  {showAuditDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  {showAuditDetails ? 'Hide' : 'Show'} detailed issues ({seoAudit.total_issues})
+                </button>
+
+                <AnimatePresence>
+                  {showAuditDetails && seoAudit.issues?.length > 0 && (
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden mt-3">
+                      <div className="max-h-[400px] overflow-y-auto divide-y divide-border border border-border rounded-lg">
+                        {seoAudit.issues.map((issue, idx) => (
+                          <div key={idx} className="flex items-start gap-3 p-3 hover:bg-secondary/30 transition-colors">
+                            {issue.severity === 'critical' ? <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" /> :
+                             issue.severity === 'warning' ? <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" /> :
+                             <Info className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-foreground">{issue.issue}</p>
+                              <p className="text-xs text-muted-foreground truncate">{issue.url}</p>
+                              {issue.suggestion && <p className="text-xs text-primary mt-0.5">{issue.suggestion}</p>}
+                            </div>
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full flex-shrink-0 ${
+                              issue.severity === 'critical' ? 'bg-red-100 text-red-700' :
+                              issue.severity === 'warning' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
+                            }`}>{issue.category}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Audit timestamp */}
+              <p className="text-xs text-muted-foreground text-right">
+                Last audit: {seoAudit.date ? new Date(seoAudit.date).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—'}
+              </p>
             </div>
           )}
         </div>
