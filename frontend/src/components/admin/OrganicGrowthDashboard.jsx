@@ -54,6 +54,7 @@ const OrganicGrowthDashboard = () => {
   const [runningAutoFix, setRunningAutoFix] = useState(false);
   const [autoFixResult, setAutoFixResult] = useState(null);
   const [auditHistory, setAuditHistory] = useState([]);
+  const [seoStatus, setSeoStatus] = useState(null); // inline status message
 
   // Content Gap Analysis
   const [contentGaps, setContentGaps] = useState(null);
@@ -61,6 +62,7 @@ const OrganicGrowthDashboard = () => {
   const [enriching, setEnriching] = useState(false);
   const [enrichResult, setEnrichResult] = useState(null);
   const [showGapDetails, setShowGapDetails] = useState(false);
+  const [enrichStatus, setEnrichStatus] = useState(null); // inline status message
 
   // Fetch functions
   const fetchBlogPosts = useCallback(async () => {
@@ -130,6 +132,7 @@ const OrganicGrowthDashboard = () => {
 
   const runSeoAudit = async () => {
     setRunningAudit(true);
+    setSeoStatus({ type: 'loading', message: 'Scanning all pages for SEO issues...' });
     try {
       const r = await fetch(`${API_URL}/api/seo-audit/run`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -138,27 +141,42 @@ const OrganicGrowthDashboard = () => {
       if (r.ok) {
         const d = await r.json();
         if (d.success) setSeoAudit(d);
+        setSeoStatus({ type: 'success', message: `Audit complete: Score ${d.overall_score}/100, ${d.total_issues} issues found across ${d.pages_audited} pages` });
         setAiResult({ type: 'success', message: `SEO Audit complete: Score ${d.overall_score}/100, ${d.total_issues} issues found across ${d.pages_audited} pages` });
+        fetchSeoAudit();
+      } else {
+        setSeoStatus({ type: 'error', message: 'Audit failed — check backend logs' });
       }
-    } catch (e) { setAiResult({ type: 'error', message: `Audit failed: ${e.message}` }); }
+    } catch (e) {
+      setSeoStatus({ type: 'error', message: `Audit failed: ${e.message}` });
+      setAiResult({ type: 'error', message: `Audit failed: ${e.message}` });
+    }
     setRunningAudit(false);
   };
 
   const runAutoFix = async () => {
     setRunningAutoFix(true);
     setAutoFixResult(null);
+    setSeoStatus({ type: 'loading', message: 'Self-Heal running... generating missing meta data via AI...' });
     try {
       const r = await fetch(`${API_URL}/api/seo-audit/auto-fix`, { method: 'POST' });
       if (r.ok) {
         const d = await r.json();
         setAutoFixResult(d);
         if (d.fixes_applied > 0) {
+          setSeoStatus({ type: 'success', message: `Self-Heal done! ${d.fixes_applied} SEO fixes auto-applied (meta descriptions & titles regenerated)` });
           setAiResult({ type: 'success', message: `Self-Heal complete: ${d.fixes_applied} SEO fixes auto-applied (meta descriptions & titles regenerated via AI)` });
         } else {
+          setSeoStatus({ type: 'success', message: 'All pages already have meta data — nothing to fix!' });
           setAiResult({ type: 'success', message: 'Self-Heal: No fixable issues found — all CMS pages already have meta data.' });
         }
+      } else {
+        setSeoStatus({ type: 'error', message: 'Self-Heal failed' });
       }
-    } catch (e) { setAiResult({ type: 'error', message: `Auto-fix failed: ${e.message}` }); }
+    } catch (e) {
+      setSeoStatus({ type: 'error', message: `Auto-fix failed: ${e.message}` });
+      setAiResult({ type: 'error', message: `Auto-fix failed: ${e.message}` });
+    }
     setRunningAutoFix(false);
   };
 
@@ -177,6 +195,7 @@ const OrganicGrowthDashboard = () => {
   const runBulkEnrich = async (slugs = null) => {
     setEnriching(true);
     setEnrichResult(null);
+    setEnrichStatus({ type: 'loading', message: slugs ? `Enriching ${slugs.length} page(s) via AI...` : 'Auto-Enriching top gap pages via AI...' });
     try {
       const body = slugs ? { slugs, max_pages: 5 } : { max_pages: 5 };
       const r = await fetch(`${API_URL}/api/content-enrich`, {
@@ -187,13 +206,20 @@ const OrganicGrowthDashboard = () => {
         const d = await r.json();
         setEnrichResult(d);
         if (d.enriched > 0) {
+          setEnrichStatus({ type: 'success', message: `Done! Enriched ${d.enriched}/${d.total_attempted} pages with AI-generated content` });
           setAiResult({ type: 'success', message: `Content enriched: ${d.enriched}/${d.total_attempted} pages updated with AI-generated sections` });
-          fetchContentGaps(); // Refresh gaps
+          fetchContentGaps();
         } else {
+          setEnrichStatus({ type: 'success', message: 'All pages already have complete content — no enrichment needed' });
           setAiResult({ type: 'success', message: 'All pages already have complete content — no enrichment needed.' });
         }
+      } else {
+        setEnrichStatus({ type: 'error', message: 'Enrichment request failed' });
       }
-    } catch (e) { setAiResult({ type: 'error', message: `Enrichment failed: ${e.message}` }); }
+    } catch (e) {
+      setEnrichStatus({ type: 'error', message: `Enrichment failed: ${e.message}` });
+      setAiResult({ type: 'error', message: `Enrichment failed: ${e.message}` });
+    }
     setEnriching(false);
   };
 
@@ -474,6 +500,23 @@ const OrganicGrowthDashboard = () => {
               </Button>
             </div>
           </div>
+          {/* Inline status message for SEO actions */}
+          <AnimatePresence>
+            {seoStatus && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+                className={`mx-5 mt-0 mb-0 flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
+                  seoStatus.type === 'loading' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                  seoStatus.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' :
+                  'bg-red-50 text-red-700 border border-red-200'
+                }`} data-testid="seo-status-message">
+                {seoStatus.type === 'loading' ? <Loader2 className="w-4 h-4 animate-spin flex-shrink-0" /> :
+                 seoStatus.type === 'success' ? <CheckCircle className="w-4 h-4 flex-shrink-0" /> :
+                 <AlertCircle className="w-4 h-4 flex-shrink-0" />}
+                <span className="flex-1">{seoStatus.message}</span>
+                <button onClick={() => setSeoStatus(null)} className="ml-1"><X className="w-3.5 h-3.5" /></button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div className="p-5">
@@ -657,6 +700,23 @@ const OrganicGrowthDashboard = () => {
               </Button>
             </div>
           </div>
+          {/* Inline status message for enrichment */}
+          <AnimatePresence>
+            {enrichStatus && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+                className={`mx-5 mt-0 mb-0 flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
+                  enrichStatus.type === 'loading' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                  enrichStatus.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' :
+                  'bg-red-50 text-red-700 border border-red-200'
+                }`} data-testid="enrich-status-message">
+                {enrichStatus.type === 'loading' ? <Loader2 className="w-4 h-4 animate-spin flex-shrink-0" /> :
+                 enrichStatus.type === 'success' ? <CheckCircle className="w-4 h-4 flex-shrink-0" /> :
+                 <AlertCircle className="w-4 h-4 flex-shrink-0" />}
+                <span className="flex-1">{enrichStatus.message}</span>
+                <button onClick={() => setEnrichStatus(null)} className="ml-1"><X className="w-3.5 h-3.5" /></button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         <div className="p-5">
