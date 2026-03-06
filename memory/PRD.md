@@ -38,13 +38,13 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 ```
 /app
 ├── backend/
-│   ├── automation.py      # Self-adaptive SEO automation engine
-│   └── server.py          # FastAPI with CMS, Analytics, Growth Tracking, AI Chat
+│   ├── automation.py      # Self-adaptive SEO automation engine + SEO Health Monitor
+│   └── server.py          # FastAPI with CMS, Analytics, Growth Tracking, AI Chat, SEO Audit
 └── frontend/
     └── src/
         ├── components/
         │   └── admin/
-        │       └── OrganicGrowthDashboard.jsx  # Unified growth dashboard
+        │       └── OrganicGrowthDashboard.jsx  # Unified growth dashboard + SEO Health Monitor
         └── pages/
             └── Admin.jsx   # Clean 3-tab admin: Growth, Analytics, CMS
 ```
@@ -62,10 +62,27 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 - `growth_snapshots`: Daily growth metrics snapshots
 - `automation_log`: Automation cycle tracking
 - `indexnow_submissions`: SEO indexing records
+- `seo_audits`: SEO Health Monitor audit results
 
 ---
 
 ## What's Been Implemented
+
+### March 6, 2026 - SEO Health Monitor (Self-Running)
+- **COMPLETED**: Built full SEO Health Monitor that crawls site and audits all pages
+- **BACKEND**: Added crawler using BeautifulSoup + lxml to `automation.py`
+  - Fetches all URLs from dynamic sitemap (`/api/sitemap.xml`)
+  - Audits each page for: title tags, meta descriptions, canonical tags, JSON-LD schema, H1 headings, image alt text, content length, OG tags, viewport meta
+  - Scores each page and calculates overall health score (0-100)
+  - Stores results in MongoDB `seo_audits` collection
+- **API**: 3 new endpoints: `/api/seo-audit/run`, `/api/seo-audit/latest`, `/api/seo-audit/history`
+- **FRONTEND**: SEO Health Monitor section in Organic Growth dashboard
+  - Overall score with animated progress bar (green ≥80, amber ≥50, red <50)
+  - Issue breakdown: Critical/Warning/Info counts with colored cards
+  - Category breakdown (meta, schema, headings, content, images, social, mobile)
+  - Expandable detailed issues list with severity icons and fix suggestions
+- **TESTED**: 100% backend (6/6 tests), 100% frontend (all UI components verified)
+- **INSTALLED**: beautifulsoup4, lxml added to requirements.txt
 
 ### February 25, 2026 - Admin Dashboard Refactor & Self-Adaptive Growth System
 - **COMPLETED**: Admin dashboard refactored to 3 clean tabs: Organic Growth, Analytics, CMS Pages
@@ -108,8 +125,11 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 - [x] Dynamic sitemap generation
 - [x] Admin dashboard refactor (3-tab layout)
 - [x] Self-adaptive growth tracking system
+- [x] SEO Health Monitor (automated site auditing)
 
 ### P1 - High Priority (Next)
+- [ ] Integrate SEO audit into the APScheduler for fully automated daily/weekly runs
+- [ ] Self-adaptive logic: auto-fix detected SEO issues (e.g., generate missing meta descriptions via AI)
 - [ ] Deeper medical content expansion (use Organic Growth dashboard)
 - [ ] Content enrichment for remaining conditions/treatments
 
@@ -126,6 +146,11 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 ---
 
 ## API Endpoints Reference
+
+### SEO Health Monitor (NEW)
+- `POST /api/seo-audit/run` - Trigger full site SEO audit
+- `GET /api/seo-audit/latest` - Get most recent audit results
+- `GET /api/seo-audit/history` - Get audit score history
 
 ### Growth Tracking (NEW)
 - `POST /api/admin/growth/snapshot` - Record daily growth metrics
