@@ -472,12 +472,12 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
     # ─────────────────────────────────────────────────────────
     # 6. SEO HEALTH MONITOR — automated site auditing
     # ─────────────────────────────────────────────────────────
-    async def run_seo_audit(self, site_url: str, max_pages: int = 50) -> dict:
-        """Crawl the site and audit pages for SEO issues."""
+    async def run_seo_audit(self, site_url: str, max_pages: int = 500) -> dict:
+        """Crawl the site and audit ALL pages from sitemap. No hard limit — scans every page."""
         if not BS4_AVAILABLE:
             return {"error": "BeautifulSoup not installed", "score": 0, "pages_audited": 0, "issues": []}
 
-        logger.info(f"[SEO Audit] Starting audit of {site_url}, max {max_pages} pages")
+        logger.info(f"[SEO Audit] Starting full audit of {site_url}")
         sitemap_url = f"{site_url}/api/sitemap.xml"
         page_urls = await self._get_urls_from_sitemap(sitemap_url)
 
@@ -494,10 +494,10 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             page_urls = normalized
 
         if not page_urls:
-            page_urls = [site_url + p for p, _, _ in STATIC_SITEMAP_PAGES[:max_pages]]
+            page_urls = [site_url + p for p, _, _ in STATIC_SITEMAP_PAGES]
 
-        page_urls = page_urls[:max_pages]
-        logger.info(f"[SEO Audit] Found {len(page_urls)} URLs to audit (site: {site_url})")
+        # Scan ALL pages — no artificial cap
+        logger.info(f"[SEO Audit] Scanning {len(page_urls)} pages (all from sitemap)")
 
         all_issues: List[dict] = []
         page_results: List[dict] = []

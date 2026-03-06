@@ -69,7 +69,15 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 
 ## What's Been Implemented
 
-### March 6, 2026 - SEO Score 68 → 100/100 Fix
+### March 6, 2026 - Full-Site Audit (All 163+ Pages, Background, Production-Ready)
+- **UPGRADED**: Audit now scans ALL pages from the sitemap (no page limit)
+- Current: 163 pages scanned in ~60 seconds — all 100/100
+- New pages automatically included via dynamic sitemap
+- Runs in background (async) — no browser timeout
+- Polling UI shows real-time progress ("Scanning... 3s elapsed")
+- Production-ready: reads site URL from env — scans production when deployed
+- Added `/api/seo-audit/status` endpoint for polling
+
 - **ROOT CAUSE**: Crawler was seeing raw HTML shell (React SPA), not rendered content
 - **FIX 1**: Updated `public/index.html` — shortened meta description (213→127 chars), added JSON-LD MedicalBusiness schema, added H1 + noscript content (116 words)
 - **FIX 2**: Crawler now remaps production sitemap URLs to preview/current site URL for accurate auditing

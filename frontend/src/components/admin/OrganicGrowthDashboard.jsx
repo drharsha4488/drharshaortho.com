@@ -132,26 +132,62 @@ const OrganicGrowthDashboard = () => {
 
   const runSeoAudit = async () => {
     setRunningAudit(true);
-    setSeoStatus({ type: 'loading', message: 'Scanning all pages for SEO issues...' });
+    setSeoStatus({ type: 'loading', message: 'Starting full site audit — scanning ALL pages...' });
     try {
       const r = await fetch(`${API_URL}/api/seo-audit/run`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ max_pages: 30 })
       });
       if (r.ok) {
         const d = await r.json();
-        if (d.success) setSeoAudit(d);
-        setSeoStatus({ type: 'success', message: `Audit complete: Score ${d.overall_score}/100, ${d.total_issues} issues found across ${d.pages_audited} pages` });
-        setAiResult({ type: 'success', message: `SEO Audit complete: Score ${d.overall_score}/100, ${d.total_issues} issues found across ${d.pages_audited} pages` });
-        fetchSeoAudit();
+        if (d.status === 'started' || d.status === 'running') {
+          setSeoStatus({ type: 'loading', message: d.message || 'Audit running — scanning all pages...' });
+          // Poll for results
+          pollAuditResults();
+        }
       } else {
-        setSeoStatus({ type: 'error', message: 'Audit failed — check backend logs' });
+        setSeoStatus({ type: 'error', message: 'Failed to start audit' });
+        setRunningAudit(false);
       }
     } catch (e) {
       setSeoStatus({ type: 'error', message: `Audit failed: ${e.message}` });
-      setAiResult({ type: 'error', message: `Audit failed: ${e.message}` });
+      setRunningAudit(false);
     }
-    setRunningAudit(false);
+  };
+
+  const pollAuditResults = () => {
+    let attempts = 0;
+    const maxAttempts = 40; // ~2 minutes
+    const interval = setInterval(async () => {
+      attempts++;
+      try {
+        const statusRes = await fetch(`${API_URL}/api/seo-audit/status`);
+        const statusData = await statusRes.json();
+
+        if (!statusData.running || attempts >= maxAttempts) {
+          clearInterval(interval);
+          // Fetch latest results
+          const r = await fetch(`${API_URL}/api/seo-audit/latest`);
+          if (r.ok) {
+            const d = await r.json();
+            if (d.success) {
+              setSeoAudit(d);
+              setSeoStatus({ type: 'success', message: `Audit complete: Score ${d.overall_score}/100 — ${d.pages_audited} pages scanned, ${d.total_issues} issues` });
+            }
+          }
+          // Refresh history for trend chart
+          const histRes = await fetch(`${API_URL}/api/seo-audit/history`);
+          if (histRes.ok) {
+            const h = await histRes.json();
+            if (h.success) setAuditHistory(h.history || []);
+          }
+          setRunningAudit(false);
+        } else {
+          setSeoStatus({ type: 'loading', message: `Scanning all pages... (${attempts * 3}s elapsed)` });
+        }
+      } catch {
+        // Keep polling
+      }
+    }, 3000);
   };
 
   const runAutoFix = async () => {

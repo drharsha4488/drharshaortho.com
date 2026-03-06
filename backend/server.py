@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, BackgroundTasks
 from fastapi.responses import Response
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -3800,26 +3800,43 @@ async def serve_sitemap():
 
 # ============ SEO HEALTH MONITOR ENDPOINTS ============
 
+# Background audit task tracking
+_audit_running = False
+
 @api_router.post("/seo-audit/run")
-async def run_seo_audit(data: dict = None):
-    """Trigger an SEO health audit of the site."""
-    try:
-        # Read site URL from frontend .env
-        frontend_env = Path("/app/frontend/.env")
-        site_url = ""
-        if frontend_env.exists():
-            for line in frontend_env.read_text().splitlines():
-                if line.startswith("REACT_APP_BACKEND_URL="):
-                    site_url = line.split("=", 1)[1].strip()
-                    break
-        if not site_url:
-            site_url = "https://drharshaortho.com"
-        max_pages = (data or {}).get("max_pages", 30)
-        result = await seo_automation.run_seo_audit(site_url, max_pages=max_pages)
-        return {"success": True, **result}
-    except Exception as e:
-        logger.error(f"SEO Audit error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+async def run_seo_audit(data: dict = None, background_tasks: BackgroundTasks = None):
+    """Trigger a full SEO audit of ALL site pages (runs in background)."""
+    global _audit_running
+    if _audit_running:
+        return {"success": True, "status": "running", "message": "Audit already in progress..."}
+
+    frontend_env = Path("/app/frontend/.env")
+    site_url = ""
+    if frontend_env.exists():
+        for line in frontend_env.read_text().splitlines():
+            if line.startswith("REACT_APP_BACKEND_URL="):
+                site_url = line.split("=", 1)[1].strip()
+                break
+    if not site_url:
+        site_url = "https://drharshaortho.com"
+
+    async def _run_audit():
+        global _audit_running
+        _audit_running = True
+        try:
+            await seo_automation.run_seo_audit(site_url)
+        except Exception as e:
+            logger.error(f"Background SEO Audit error: {e}")
+        finally:
+            _audit_running = False
+
+    asyncio.create_task(_run_audit())
+    return {"success": True, "status": "started", "message": "Full site audit started — scanning all pages. Check back in ~2 minutes."}
+
+@api_router.get("/seo-audit/status")
+async def get_audit_status():
+    """Check if an audit is currently running."""
+    return {"running": _audit_running}
 
 @api_router.get("/seo-audit/latest")
 async def get_latest_seo_audit():
