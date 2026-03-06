@@ -63,6 +63,7 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 - `automation_log`: Automation cycle tracking
 - `indexnow_submissions`: SEO indexing records
 - `seo_audits`: SEO Health Monitor audit results
+- `seo_fixes`: Self-healing SEO auto-fix history
 
 ---
 
@@ -83,6 +84,18 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
   - Expandable detailed issues list with severity icons and fix suggestions
 - **TESTED**: 100% backend (6/6 tests), 100% frontend (all UI components verified)
 - **INSTALLED**: beautifulsoup4, lxml added to requirements.txt
+
+### March 6, 2026 - Auto-Run + Self-Healing SEO
+- **COMPLETED**: Integrated SEO audit into APScheduler for fully automated daily runs
+  - `_run_daily_seo_audit()` runs once per day, skips if already run today
+  - After each audit, auto-fix is triggered automatically
+- **COMPLETED**: Self-Healing SEO engine using GPT-4o
+  - Auto-generates missing/weak meta descriptions for CMS pages
+  - Auto-generates missing/weak meta titles for CMS pages
+  - Stores fix history in MongoDB `seo_fixes` collection
+- **API**: 2 new endpoints: `/api/seo-audit/auto-fix`, `/api/seo-audit/fixes`
+- **FRONTEND**: "Self-Heal" button in SEO Health Monitor with fix results display
+- **TESTED**: 100% backend (6/6 tests), 100% frontend — all passing
 
 ### February 25, 2026 - Admin Dashboard Refactor & Self-Adaptive Growth System
 - **COMPLETED**: Admin dashboard refactored to 3 clean tabs: Organic Growth, Analytics, CMS Pages
@@ -128,10 +141,9 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 - [x] SEO Health Monitor (automated site auditing)
 
 ### P1 - High Priority (Next)
-- [ ] Integrate SEO audit into the APScheduler for fully automated daily/weekly runs
-- [ ] Self-adaptive logic: auto-fix detected SEO issues (e.g., generate missing meta descriptions via AI)
-- [ ] Deeper medical content expansion (use Organic Growth dashboard)
+- [ ] Deeper medical content expansion (use Organic Growth dashboard insights)
 - [ ] Content enrichment for remaining conditions/treatments
+- [ ] SEO audit trend visualization (score over time chart in dashboard)
 
 ### P2 - Medium Priority
 - [ ] Backlink building campaign (directory-submission-kit.html)
@@ -147,10 +159,12 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 
 ## API Endpoints Reference
 
-### SEO Health Monitor (NEW)
+### SEO Health Monitor
 - `POST /api/seo-audit/run` - Trigger full site SEO audit
 - `GET /api/seo-audit/latest` - Get most recent audit results
 - `GET /api/seo-audit/history` - Get audit score history
+- `POST /api/seo-audit/auto-fix` - Trigger AI auto-fix for SEO issues
+- `GET /api/seo-audit/fixes` - Get auto-fix history
 
 ### Growth Tracking (NEW)
 - `POST /api/admin/growth/snapshot` - Record daily growth metrics
