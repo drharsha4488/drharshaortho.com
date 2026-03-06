@@ -435,7 +435,7 @@ const OrganicGrowthDashboard = () => {
                 <div>
                   <p className={`text-sm font-medium ${getTrendColor(growth.trend)}`} data-testid="growth-message">{growth.message}</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {growth.posts_per_cycle} posts per auto-cycle | {growth.total_content} total content pages | {growth.days_tracked} days tracked
+                    {growth.posts_per_cycle} posts per auto-cycle | {growth.total_content} content pages | {growth.sitemap_urls || '—'} sitemap URLs | {growth.days_tracked} days tracked
                   </p>
                 </div>
               </div>
@@ -446,8 +446,9 @@ const OrganicGrowthDashboard = () => {
                   <h4 className="text-sm font-medium text-foreground mb-3">Content Growth Over Time</h4>
                   <div className="h-40 flex items-end gap-1">
                     {growthHistory.slice(-14).map((snap, i) => {
-                      const maxContent = Math.max(...growthHistory.slice(-14).map(s => s.total_content_pages || 1), 1);
-                      const h = ((snap.total_content_pages || 0) / maxContent) * 100;
+                      const pageCount = snap.total_pages || snap.total_content_pages || 0;
+                      const maxContent = Math.max(...growthHistory.slice(-14).map(s => s.total_pages || s.total_content_pages || 1), 1);
+                      const h = (pageCount / maxContent) * 100;
                       return (
                         <div key={i} className="flex-1 flex flex-col items-center gap-1 group">
                           <div className="w-full bg-secondary rounded-t relative" style={{ height: '120px' }}>
@@ -457,7 +458,7 @@ const OrganicGrowthDashboard = () => {
                               className="absolute bottom-0 w-full bg-gradient-to-t from-primary to-primary/60 rounded-t"
                             />
                             <div className="absolute -top-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-charcoal text-white text-xs px-1.5 py-0.5 rounded whitespace-nowrap">
-                              {snap.total_content_pages}
+                              {snap.total_pages || snap.total_content_pages || 0}
                             </div>
                           </div>
                           <span className="text-[9px] text-muted-foreground">{snap.date?.slice(5)}</span>

@@ -354,14 +354,8 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
     # 5. GROWTH TRACKING — daily snapshots
     # ─────────────────────────────────────────────────────────
     async def record_growth_snapshot(self) -> dict:
-        """Record a daily snapshot of all growth metrics."""
+        """Record or update today's daily snapshot of all growth metrics."""
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-
-        # Check if already recorded today
-        existing = await self.db.growth_snapshots.find_one({"date": today})
-        if existing:
-            existing.pop("_id", None)
-            return existing
 
         total_blogs = await self.db.blog_posts.count_documents({})
         auto_blogs = await self.db.blog_posts.count_documents({"auto_generated": True})
@@ -369,16 +363,24 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         treatments = await self.db.cms_pages.count_documents({"type": "treatment"})
         total_cms = await self.db.cms_pages.count_documents({})
 
-        # Count page views for today and total
-        today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
-        today_views = await self.db.page_views.count_documents({"timestamp": {"$gte": today_start.isoformat()}})
+        # Count page views using string prefix match for today
+        today_views = await self.db.page_views.count_documents(
+            {"timestamp": {"$regex": f"^{today}"}}
+        )
         total_views = await self.db.page_views.count_documents({})
 
-        # Count sitemap URLs
-        sitemap_log = await self.db.automation_log.find_one({"type": "sitemap"}, {"_id": 0})
-        sitemap_urls = sitemap_log.get("url_count", 0) if sitemap_log else 0
+        # Get live sitemap URL count
+        sitemap_count = 0
+        try:
+            site_url = self._get_site_url()
+            async with httpx.AsyncClient(timeout=10, verify=False) as client:
+                r = await client.get(f"{site_url}/api/sitemap.xml")
+                if r.status_code == 200:
+                    sitemap_count = r.text.count("<loc>")
+        except Exception:
+            sitemap_log = await self.db.automation_log.find_one({"type": "sitemap"}, {"_id": 0})
+            sitemap_count = sitemap_log.get("url_count", 0) if sitemap_log else 0
 
-        # Count indexed pages (IndexNow submissions)
         indexed = await self.db.indexnow_submissions.count_documents({})
 
         snapshot = {
@@ -389,15 +391,20 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             "treatments": treatments,
             "total_cms_pages": total_cms,
             "total_content_pages": total_blogs + total_cms,
-            "sitemap_urls": sitemap_urls,
+            "total_pages": total_blogs + total_cms,
+            "sitemap_urls": sitemap_count,
             "today_views": today_views,
             "total_views": total_views,
             "indexed_pages": indexed,
             "recorded_at": datetime.now(timezone.utc).isoformat(),
         }
-        await self.db.growth_snapshots.insert_one(snapshot)
+
+        # Upsert — always update with latest data
+        await self.db.growth_snapshots.update_one(
+            {"date": today}, {"$set": snapshot}, upsert=True
+        )
         snapshot.pop("_id", None)
-        logger.info(f"[Growth] Snapshot recorded for {today}: {total_blogs} blogs, {total_cms} CMS, {today_views} views today")
+        logger.info(f"[Growth] Snapshot: {today} — {total_blogs+total_cms} pages, {sitemap_count} sitemap URLs, {today_views} views")
         return snapshot
 
     async def get_growth_history(self, days: int = 30) -> List[dict]:
@@ -419,50 +426,54 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                 "posts_per_cycle": 3,
             }
 
-        recent = history[-7:] if len(history) >= 7 else history[len(history)//2:]
-        older = history[:7] if len(history) >= 7 else history[:len(history)//2]
+        recent = history[-1]
+        oldest = history[0]
 
-        recent_avg_views = sum(s.get("today_views", 0) for s in recent) / max(len(recent), 1)
-        older_avg_views = sum(s.get("today_views", 0) for s in older) / max(len(older), 1)
+        # Content growth (main metric)
+        recent_content = recent.get("total_content_pages", recent.get("total_pages", 0))
+        oldest_content = oldest.get("total_content_pages", oldest.get("total_pages", 0))
+        content_growth = recent_content - oldest_content
+        content_growth_pct = round((content_growth / max(oldest_content, 1)) * 100, 1)
 
-        recent_content = recent[-1].get("total_content_pages", 0) if recent else 0
-        older_content = older[-1].get("total_content_pages", 0) if older else 0
-        content_growth = recent_content - older_content
+        # Sitemap growth
+        recent_sitemap = recent.get("sitemap_urls", 0)
+        oldest_sitemap = oldest.get("sitemap_urls", 0)
+        sitemap_growth = recent_sitemap - oldest_sitemap
 
-        # Determine growth trend
-        if older_avg_views > 0:
-            view_growth_pct = ((recent_avg_views - older_avg_views) / older_avg_views) * 100
-        else:
-            view_growth_pct = 100 if recent_avg_views > 0 else 0
+        # View growth
+        recent_views = recent.get("today_views", 0)
+        total_views = recent.get("total_views", 0)
 
-        if view_growth_pct > 20:
+        # Determine trend based on content growth (primary driver before traffic comes)
+        if content_growth_pct > 10:
             trend = "growing_fast"
             strategy = "maintain"
             posts_per_cycle = 3
-            message = f"Views up {view_growth_pct:.0f}% — great momentum! Maintaining current strategy."
-        elif view_growth_pct > 5:
+            message = f"Content up {content_growth_pct}% (+{content_growth} pages). Great momentum! {recent_sitemap} pages indexed."
+        elif content_growth_pct > 3:
             trend = "growing"
             strategy = "maintain"
             posts_per_cycle = 3
-            message = f"Views up {view_growth_pct:.0f}% — steady growth. Keeping pace."
-        elif view_growth_pct > -5:
+            message = f"Content up {content_growth_pct}% (+{content_growth} pages). Steady growth with {recent_sitemap} pages indexed."
+        elif content_growth > 0:
+            trend = "growing"
+            strategy = "boost"
+            posts_per_cycle = 5
+            message = f"Content grew +{content_growth} pages. Boosting to 5 posts/cycle to accelerate."
+        else:
             trend = "flat"
             strategy = "boost"
             posts_per_cycle = 5
-            message = f"Views flat ({view_growth_pct:+.0f}%). Increasing to 5 posts/cycle and targeting new keywords."
-        else:
-            trend = "declining"
-            strategy = "aggressive"
-            posts_per_cycle = 7
-            message = f"Views declining ({view_growth_pct:+.0f}%). Switching to aggressive mode: 7 posts/cycle + new keyword strategy."
+            message = f"No new content added. Increasing to 5 posts/cycle to drive growth."
 
         return {
             "trend": trend,
-            "view_growth_pct": round(view_growth_pct, 1),
-            "recent_avg_views": round(recent_avg_views, 1),
-            "older_avg_views": round(older_avg_views, 1),
+            "view_growth_pct": content_growth_pct,
+            "recent_avg_views": recent_views,
+            "total_views": total_views,
             "content_growth": content_growth,
             "total_content": recent_content,
+            "sitemap_urls": recent_sitemap,
             "strategy": strategy,
             "posts_per_cycle": posts_per_cycle,
             "message": message,
