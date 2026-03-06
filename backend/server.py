@@ -3835,6 +3835,30 @@ async def get_seo_audit_history(limit: int = 20):
     history = await seo_automation.get_audit_history(limit)
     return {"success": True, "history": history}
 
+@api_router.post("/seo-audit/auto-fix")
+async def run_seo_auto_fix():
+    """Trigger auto-fix for detected SEO issues (generates missing meta descriptions/titles via AI)."""
+    try:
+        frontend_env = Path("/app/frontend/.env")
+        site_url = ""
+        if frontend_env.exists():
+            for line in frontend_env.read_text().splitlines():
+                if line.startswith("REACT_APP_BACKEND_URL="):
+                    site_url = line.split("=", 1)[1].strip()
+                    break
+        result = await seo_automation.auto_fix_seo_issues(site_url)
+        return {"success": True, **result}
+    except Exception as e:
+        logger.error(f"SEO Auto-Fix error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/seo-audit/fixes")
+async def get_seo_fix_history():
+    """Get history of auto-applied SEO fixes."""
+    latest = await seo_automation.get_latest_fixes()
+    history = await seo_automation.get_fix_history()
+    return {"success": True, "latest": latest, "history": history}
+
 
 app.include_router(api_router)
 

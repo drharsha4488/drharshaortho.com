@@ -800,19 +800,22 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
 
     # ─────────────────────────────────────────────────────────
     # 10. SCHEDULER — runs every 7 days, checks every 6 hours, records daily snapshots
+    #     SEO Audit runs daily, auto-fix after each audit
     # ─────────────────────────────────────────────────────────
     async def _scheduler_loop(self):
-        logger.info("[Automation] Scheduler started — checking every 6 hours")
+        logger.info("[Automation] Scheduler started — checking every 6 hours, SEO audit daily")
         await asyncio.sleep(10)
         await self.generate_and_write_sitemap()
         await self.ping_google()
-        # Record initial growth snapshot
         await self.record_growth_snapshot()
 
         while True:
             try:
                 # Always record daily snapshot
                 await self.record_growth_snapshot()
+
+                # Run daily SEO audit + auto-fix
+                await self._run_daily_seo_audit()
 
                 hours_remaining = await self._next_run_hours()
                 if hours_remaining == 0:
@@ -825,6 +828,198 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             except Exception as e:
                 logger.error(f"[Automation] Scheduler error: {e}")
                 await asyncio.sleep(3600)
+
+    async def _run_daily_seo_audit(self):
+        """Run SEO audit once per day, then apply auto-fixes."""
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        existing = await self.db.seo_audits.find_one({"date": {"$regex": f"^{today}"}})
+        if existing:
+            logger.info(f"[SEO Audit] Already ran today ({today}), skipping")
+            return
+
+        # Read site URL
+        site_url = self._get_site_url()
+        audit = await self.run_seo_audit(site_url, max_pages=40)
+        logger.info(f"[SEO Audit] Daily audit done: score={audit.get('overall_score')}")
+
+        # Auto-fix after audit
+        fix_result = await self.auto_fix_seo_issues(site_url)
+        logger.info(f"[SEO Auto-Fix] {fix_result.get('fixes_applied', 0)} fixes applied")
+
+    def _get_site_url(self) -> str:
+        """Read site URL from frontend .env or fall back to BASE_URL."""
+        try:
+            env_path = Path("/app/frontend/.env")
+            if env_path.exists():
+                for line in env_path.read_text().splitlines():
+                    if line.startswith("REACT_APP_BACKEND_URL="):
+                        return line.split("=", 1)[1].strip()
+        except Exception:
+            pass
+        return BASE_URL
+
+    # ─────────────────────────────────────────────────────────
+    # 11. SELF-HEALING SEO — auto-fix detected issues
+    # ─────────────────────────────────────────────────────────
+    async def auto_fix_seo_issues(self, site_url: str = None) -> dict:
+        """Analyze latest audit and auto-fix what we can (meta descriptions, meta titles)."""
+        latest = await self.get_latest_audit()
+        if not latest:
+            return {"fixes_applied": 0, "message": "No audit data to fix"}
+
+        fixes: List[dict] = []
+        issues = latest.get("issues", [])
+
+        # Collect pages needing meta description fixes
+        pages_need_meta_desc: List[str] = []
+        pages_need_meta_title: List[str] = []
+        for issue in issues:
+            url = issue.get("url", "")
+            cat = issue.get("category", "")
+            msg = issue.get("issue", "").lower()
+            if cat == "meta" and ("missing meta description" in msg or "meta description too short" in msg):
+                pages_need_meta_desc.append(url)
+            elif cat == "meta" and ("missing <title>" in msg or "title too short" in msg):
+                pages_need_meta_title.append(url)
+
+        # Deduplicate
+        pages_need_meta_desc = list(set(pages_need_meta_desc))
+        pages_need_meta_title = list(set(pages_need_meta_title))
+
+        # Fix missing/weak meta descriptions on CMS pages
+        for url in pages_need_meta_desc[:15]:  # Limit batch
+            fix = await self._fix_meta_description(url)
+            if fix:
+                fixes.append(fix)
+
+        # Fix missing/weak titles on CMS pages
+        for url in pages_need_meta_title[:10]:
+            fix = await self._fix_meta_title(url)
+            if fix:
+                fixes.append(fix)
+
+        # Store fix log
+        fix_record = {
+            "date": datetime.now(timezone.utc).isoformat(),
+            "audit_score": latest.get("overall_score", 0),
+            "fixes_applied": len(fixes),
+            "fixes": fixes,
+        }
+        await self.db.seo_fixes.insert_one(fix_record)
+        fix_record.pop("_id", None)
+        return fix_record
+
+    async def _fix_meta_description(self, page_url: str) -> Optional[dict]:
+        """Generate and apply a meta description for a CMS page."""
+        slug = self._url_to_slug(page_url)
+        if not slug:
+            return None
+
+        # Find the CMS page
+        page = await self.db.cms_pages.find_one(
+            {"slug": slug, "status": "published"}, {"_id": 0, "title": 1, "slug": 1, "type": 1, "keywords": 1, "content": 1}
+        )
+        if not page:
+            return None
+
+        # Skip if already has a good meta description
+        existing = await self.db.cms_pages.find_one({"slug": slug}, {"meta_description": 1, "_id": 0})
+        if existing and existing.get("meta_description") and len(existing["meta_description"]) >= 80:
+            return None
+
+        title = page.get("title", slug)
+        page_type = page.get("type", "general")
+        keywords = ", ".join(page.get("keywords", [])[:3])
+
+        try:
+            from emergentintegrations.llm.chat import LlmChat, UserMessage
+            chat = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=f"seo-fix-{uuid.uuid4()}",
+                system_message="You are an SEO expert. Generate meta descriptions that are compelling, include keywords naturally, and are 120-155 characters. Return ONLY the meta description text, nothing else."
+            ).with_model("openai", "gpt-4o")
+
+            prompt = f"Write a meta description for this orthopedic medical page:\nTitle: {title}\nType: {page_type}\nKeywords: {keywords}\nDoctor: Dr. B Harsha Vardhana Reddy, Apollo Hospitals, Hyderabad\nReturn ONLY the meta description (120-155 chars)."
+            meta_desc = await chat.send_message(UserMessage(text=prompt))
+            meta_desc = meta_desc.strip().strip('"').strip("'")[:160]
+
+            if len(meta_desc) >= 50:
+                await self.db.cms_pages.update_one(
+                    {"slug": slug},
+                    {"$set": {"meta_description": meta_desc, "updated_at": datetime.now(timezone.utc).isoformat()}}
+                )
+                logger.info(f"[SEO Fix] Meta description updated for /{slug}")
+                return {"type": "meta_description", "slug": slug, "value": meta_desc, "status": "applied"}
+        except Exception as e:
+            logger.error(f"[SEO Fix] Failed to fix meta for {slug}: {e}")
+        return None
+
+    async def _fix_meta_title(self, page_url: str) -> Optional[dict]:
+        """Generate and apply a meta title for a CMS page."""
+        slug = self._url_to_slug(page_url)
+        if not slug:
+            return None
+
+        page = await self.db.cms_pages.find_one(
+            {"slug": slug, "status": "published"}, {"_id": 0, "title": 1, "slug": 1, "type": 1, "meta_title": 1}
+        )
+        if not page:
+            return None
+
+        if page.get("meta_title") and len(page["meta_title"]) >= 25:
+            return None
+
+        title = page.get("title", slug)
+        page_type = page.get("type", "general")
+
+        try:
+            from emergentintegrations.llm.chat import LlmChat, UserMessage
+            chat = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=f"seo-title-{uuid.uuid4()}",
+                system_message="You are an SEO expert. Generate concise page titles (50-60 chars) with primary keyword first. Return ONLY the title text."
+            ).with_model("openai", "gpt-4o")
+
+            prompt = f"Write an SEO meta title for: {title} (type: {page_type}, location: Hyderabad). Include 'Dr. Harsha' if space allows. Max 60 chars. Return ONLY the title."
+            meta_title = await chat.send_message(UserMessage(text=prompt))
+            meta_title = meta_title.strip().strip('"').strip("'")[:65]
+
+            if len(meta_title) >= 20:
+                await self.db.cms_pages.update_one(
+                    {"slug": slug},
+                    {"$set": {"meta_title": meta_title, "updated_at": datetime.now(timezone.utc).isoformat()}}
+                )
+                logger.info(f"[SEO Fix] Meta title updated for /{slug}")
+                return {"type": "meta_title", "slug": slug, "value": meta_title, "status": "applied"}
+        except Exception as e:
+            logger.error(f"[SEO Fix] Failed to fix title for {slug}: {e}")
+        return None
+
+    def _url_to_slug(self, url: str) -> Optional[str]:
+        """Extract the last path segment as slug from a URL."""
+        try:
+            from urllib.parse import urlparse
+            path = urlparse(url).path.strip("/")
+            parts = path.split("/")
+            if len(parts) >= 2:
+                return parts[-1]  # e.g. /conditions/osteoarthritis → osteoarthritis
+            elif len(parts) == 1 and parts[0]:
+                return parts[0]
+        except Exception:
+            pass
+        return None
+
+    async def get_latest_fixes(self) -> Optional[dict]:
+        """Get the most recent auto-fix result."""
+        doc = await self.db.seo_fixes.find_one({}, {"_id": 0}, sort=[("date", -1)])
+        return doc
+
+    async def get_fix_history(self, limit: int = 20) -> List[dict]:
+        """Get auto-fix history."""
+        docs = await self.db.seo_fixes.find(
+            {}, {"_id": 0, "date": 1, "fixes_applied": 1, "audit_score": 1}
+        ).sort("date", -1).to_list(limit)
+        return docs
 
     def launch(self):
         """Start the background automation scheduler."""

@@ -51,6 +51,8 @@ const OrganicGrowthDashboard = () => {
   const [seoAuditLoading, setSeoAuditLoading] = useState(false);
   const [runningAudit, setRunningAudit] = useState(false);
   const [showAuditDetails, setShowAuditDetails] = useState(false);
+  const [runningAutoFix, setRunningAutoFix] = useState(false);
+  const [autoFixResult, setAutoFixResult] = useState(null);
 
   // Fetch functions
   const fetchBlogPosts = useCallback(async () => {
@@ -125,6 +127,24 @@ const OrganicGrowthDashboard = () => {
       }
     } catch (e) { setAiResult({ type: 'error', message: `Audit failed: ${e.message}` }); }
     setRunningAudit(false);
+  };
+
+  const runAutoFix = async () => {
+    setRunningAutoFix(true);
+    setAutoFixResult(null);
+    try {
+      const r = await fetch(`${API_URL}/api/seo-audit/auto-fix`, { method: 'POST' });
+      if (r.ok) {
+        const d = await r.json();
+        setAutoFixResult(d);
+        if (d.fixes_applied > 0) {
+          setAiResult({ type: 'success', message: `Self-Heal complete: ${d.fixes_applied} SEO fixes auto-applied (meta descriptions & titles regenerated via AI)` });
+        } else {
+          setAiResult({ type: 'success', message: 'Self-Heal: No fixable issues found — all CMS pages already have meta data.' });
+        }
+      }
+    } catch (e) { setAiResult({ type: 'error', message: `Auto-fix failed: ${e.message}` }); }
+    setRunningAutoFix(false);
   };
 
   useEffect(() => {
@@ -394,8 +414,12 @@ const OrganicGrowthDashboard = () => {
                   seoAudit.overall_score >= 50 ? 'text-amber-500' : 'text-red-500'
                 }`} data-testid="seo-score">{seoAudit.overall_score}<span className="text-sm font-normal text-muted-foreground">/100</span></div>
               )}
-              <Button onClick={runSeoAudit} disabled={runningAudit} size="sm" className="gap-2" data-testid="run-audit-btn">
+              <Button onClick={runSeoAudit} disabled={runningAudit || runningAutoFix} size="sm" className="gap-2" data-testid="run-audit-btn">
                 {runningAudit ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Scanning...</> : <><ScanLine className="w-3.5 h-3.5" /> Run Audit</>}
+              </Button>
+              <Button onClick={runAutoFix} disabled={runningAutoFix || runningAudit || !seoAudit?.total_issues} size="sm" variant="outline"
+                className="gap-2 border-emerald-300 text-emerald-700 hover:bg-emerald-50" data-testid="auto-fix-btn">
+                {runningAutoFix ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Fixing...</> : <><Zap className="w-3.5 h-3.5" /> Self-Heal</>}
               </Button>
             </div>
           </div>
@@ -494,6 +518,27 @@ const OrganicGrowthDashboard = () => {
                   )}
                 </AnimatePresence>
               </div>
+
+              {/* Auto-fix results */}
+              {autoFixResult && autoFixResult.fixes_applied > 0 && (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Zap className="w-4 h-4 text-emerald-600" />
+                    <span className="text-sm font-medium text-emerald-700">
+                      {autoFixResult.fixes_applied} Auto-Fixes Applied
+                    </span>
+                  </div>
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {(autoFixResult.fixes || []).map((fix, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs">
+                        <CheckCircle className="w-3 h-3 text-emerald-500 flex-shrink-0" />
+                        <span className="text-emerald-700 font-medium capitalize">{fix.type?.replace('_', ' ')}</span>
+                        <span className="text-muted-foreground truncate">/{fix.slug}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Audit timestamp */}
               <p className="text-xs text-muted-foreground text-right">
