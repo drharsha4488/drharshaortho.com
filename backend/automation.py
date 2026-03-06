@@ -863,70 +863,93 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
     # 11. SELF-HEALING SEO — auto-fix detected issues
     # ─────────────────────────────────────────────────────────
     async def auto_fix_seo_issues(self, site_url: str = None) -> dict:
-        """Analyze latest audit and auto-fix what we can (meta descriptions, meta titles)."""
-        latest = await self.get_latest_audit()
-        if not latest:
-            return {"fixes_applied": 0, "message": "No audit data to fix"}
-
+        """Directly scan CMS pages and fix meta descriptions that are missing, too short, or too long."""
         fixes: List[dict] = []
-        issues = latest.get("issues", [])
 
-        # Collect pages needing meta description fixes
-        pages_need_meta_desc: List[str] = []
-        pages_need_meta_title: List[str] = []
-        for issue in issues:
-            url = issue.get("url", "")
-            cat = issue.get("category", "")
-            msg = issue.get("issue", "").lower()
-            if cat == "meta" and ("missing meta description" in msg or "meta description too short" in msg):
-                pages_need_meta_desc.append(url)
-            elif cat == "meta" and ("missing <title>" in msg or "title too short" in msg):
-                pages_need_meta_title.append(url)
+        # Direct CMS scan — find ALL pages with bad meta descriptions
+        cms_pages = await self.db.cms_pages.find(
+            {"status": "published"},
+            {"_id": 0, "slug": 1, "title": 1, "type": 1, "keywords": 1, "meta_description": 1}
+        ).to_list(200)
 
-        # Deduplicate
-        pages_need_meta_desc = list(set(pages_need_meta_desc))
-        pages_need_meta_title = list(set(pages_need_meta_title))
+        pages_to_fix = [
+            p for p in cms_pages
+            if not p.get("meta_description") or len(p.get("meta_description", "")) < 80 or len(p.get("meta_description", "")) > 160
+        ]
+        logger.info(f"[SEO Fix] Found {len(pages_to_fix)} CMS pages needing meta description fix")
 
-        # Fix missing/weak meta descriptions on CMS pages
-        for url in pages_need_meta_desc[:15]:  # Limit batch
-            fix = await self._fix_meta_description(url)
+        # Fix up to 15 pages per run
+        for page in pages_to_fix[:15]:
+            fix = await self._fix_cms_meta_description(page)
             if fix:
                 fixes.append(fix)
+            await asyncio.sleep(0.3)
 
-        # Fix missing/weak titles on CMS pages
-        for url in pages_need_meta_title[:10]:
-            fix = await self._fix_meta_title(url)
-            if fix:
-                fixes.append(fix)
+        # Get latest audit score
+        latest = await self.get_latest_audit()
+        audit_score = latest.get("overall_score", 0) if latest else 0
 
-        # Store fix log
         fix_record = {
             "date": datetime.now(timezone.utc).isoformat(),
-            "audit_score": latest.get("overall_score", 0),
+            "audit_score": audit_score,
             "fixes_applied": len(fixes),
+            "total_needing_fix": len(pages_to_fix),
             "fixes": fixes,
         }
         await self.db.seo_fixes.insert_one(fix_record)
         fix_record.pop("_id", None)
+        logger.info(f"[SEO Fix] Complete: {len(fixes)} fixes applied out of {len(pages_to_fix)} needing fix")
         return fix_record
 
+    async def _fix_cms_meta_description(self, page: dict) -> Optional[dict]:
+        """Generate and apply an optimized meta description for a CMS page."""
+        slug = page.get("slug", "")
+        title = page.get("title", slug)
+        page_type = page.get("type", "general")
+        keywords = ", ".join(page.get("keywords", [])[:3])
+        existing_desc = page.get("meta_description", "")
+
+        try:
+            from emergentintegrations.llm.chat import LlmChat, UserMessage
+            chat = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=f"seo-fix-{uuid.uuid4()}",
+                system_message="You are an SEO expert. Generate meta descriptions that are compelling, include keywords naturally, and are EXACTLY 120-155 characters long. Return ONLY the meta description text, nothing else."
+            ).with_model("openai", "gpt-4o")
+
+            prompt = f"Write a meta description for this orthopedic medical page:\nTitle: {title}\nType: {page_type}\nKeywords: {keywords}\nDoctor: Dr. B Harsha Vardhana Reddy, Apollo Hospitals, Hyderabad\nMUST be 120-155 characters. Return ONLY the meta description."
+            meta_desc = await chat.send_message(UserMessage(text=prompt))
+            meta_desc = meta_desc.strip().strip('"').strip("'")[:160]
+
+            if 50 <= len(meta_desc) <= 160:
+                await self.db.cms_pages.update_one(
+                    {"slug": slug},
+                    {"$set": {"meta_description": meta_desc, "updated_at": datetime.now(timezone.utc).isoformat()}}
+                )
+                action = "shortened" if len(existing_desc) > 160 else ("generated" if not existing_desc else "improved")
+                logger.info(f"[SEO Fix] Meta description {action} for /{slug}: {len(existing_desc)}→{len(meta_desc)} chars")
+                return {"type": "meta_description", "slug": slug, "value": meta_desc, "status": "applied", "action": action, "old_length": len(existing_desc), "new_length": len(meta_desc)}
+        except Exception as e:
+            logger.error(f"[SEO Fix] Failed to fix meta for {slug}: {e}")
+        return None
+
     async def _fix_meta_description(self, page_url: str) -> Optional[dict]:
-        """Generate and apply a meta description for a CMS page."""
+        """Generate and apply a meta description for a CMS page (handles missing, short, and long)."""
         slug = self._url_to_slug(page_url)
         if not slug:
             return None
 
         # Find the CMS page
         page = await self.db.cms_pages.find_one(
-            {"slug": slug, "status": "published"}, {"_id": 0, "title": 1, "slug": 1, "type": 1, "keywords": 1, "content": 1}
+            {"slug": slug, "status": "published"}, {"_id": 0, "title": 1, "slug": 1, "type": 1, "keywords": 1, "content": 1, "meta_description": 1}
         )
         if not page:
             return None
 
-        # Skip if already has a good meta description
-        existing = await self.db.cms_pages.find_one({"slug": slug}, {"meta_description": 1, "_id": 0})
-        if existing and existing.get("meta_description") and len(existing["meta_description"]) >= 80:
-            return None
+        # Check if fix is needed: missing, too short (<80), or too long (>160)
+        existing_desc = page.get("meta_description", "")
+        if existing_desc and 80 <= len(existing_desc) <= 160:
+            return None  # Already good length
 
         title = page.get("title", slug)
         page_type = page.get("type", "general")
@@ -937,10 +960,10 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             chat = LlmChat(
                 api_key=EMERGENT_LLM_KEY,
                 session_id=f"seo-fix-{uuid.uuid4()}",
-                system_message="You are an SEO expert. Generate meta descriptions that are compelling, include keywords naturally, and are 120-155 characters. Return ONLY the meta description text, nothing else."
+                system_message="You are an SEO expert. Generate meta descriptions that are compelling, include keywords naturally, and are EXACTLY 120-155 characters. Return ONLY the meta description text, nothing else."
             ).with_model("openai", "gpt-4o")
 
-            prompt = f"Write a meta description for this orthopedic medical page:\nTitle: {title}\nType: {page_type}\nKeywords: {keywords}\nDoctor: Dr. B Harsha Vardhana Reddy, Apollo Hospitals, Hyderabad\nReturn ONLY the meta description (120-155 chars)."
+            prompt = f"Write a meta description for this orthopedic medical page:\nTitle: {title}\nType: {page_type}\nKeywords: {keywords}\nDoctor: Dr. B Harsha Vardhana Reddy, Apollo Hospitals, Hyderabad\nMUST be 120-155 characters. Return ONLY the meta description."
             meta_desc = await chat.send_message(UserMessage(text=prompt))
             meta_desc = meta_desc.strip().strip('"').strip("'")[:160]
 
@@ -949,8 +972,9 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                     {"slug": slug},
                     {"$set": {"meta_description": meta_desc, "updated_at": datetime.now(timezone.utc).isoformat()}}
                 )
-                logger.info(f"[SEO Fix] Meta description updated for /{slug}")
-                return {"type": "meta_description", "slug": slug, "value": meta_desc, "status": "applied"}
+                action = "shortened" if len(existing_desc) > 160 else "generated"
+                logger.info(f"[SEO Fix] Meta description {action} for /{slug} ({len(meta_desc)} chars)")
+                return {"type": "meta_description", "slug": slug, "value": meta_desc, "status": "applied", "action": action}
         except Exception as e:
             logger.error(f"[SEO Fix] Failed to fix meta for {slug}: {e}")
         return None

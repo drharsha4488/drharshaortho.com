@@ -195,9 +195,9 @@ const OrganicGrowthDashboard = () => {
   const runBulkEnrich = async (slugs = null) => {
     setEnriching(true);
     setEnrichResult(null);
-    setEnrichStatus({ type: 'loading', message: slugs ? `Enriching ${slugs.length} page(s) via AI...` : 'Auto-Enriching top gap pages via AI...' });
+    setEnrichStatus({ type: 'loading', message: slugs ? `Enriching ${slugs.length} page(s) via AI...` : 'Auto-Enriching gap pages via AI (2 at a time)...' });
     try {
-      const body = slugs ? { slugs, max_pages: 5 } : { max_pages: 5 };
+      const body = slugs ? { slugs, max_pages: 2 } : { max_pages: 2 };
       const r = await fetch(`${API_URL}/api/content-enrich`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -211,14 +211,13 @@ const OrganicGrowthDashboard = () => {
           fetchContentGaps();
         } else {
           setEnrichStatus({ type: 'success', message: 'All pages already have complete content — no enrichment needed' });
-          setAiResult({ type: 'success', message: 'All pages already have complete content — no enrichment needed.' });
         }
       } else {
-        setEnrichStatus({ type: 'error', message: 'Enrichment request failed' });
+        const errText = await r.text().catch(() => '');
+        setEnrichStatus({ type: 'error', message: `Enrichment failed (${r.status}): ${errText.slice(0, 100) || 'Server error — try again'}` });
       }
     } catch (e) {
       setEnrichStatus({ type: 'error', message: `Enrichment failed: ${e.message}` });
-      setAiResult({ type: 'error', message: `Enrichment failed: ${e.message}` });
     }
     setEnriching(false);
   };
