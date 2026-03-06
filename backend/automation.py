@@ -480,11 +480,24 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         logger.info(f"[SEO Audit] Starting audit of {site_url}, max {max_pages} pages")
         sitemap_url = f"{site_url}/api/sitemap.xml"
         page_urls = await self._get_urls_from_sitemap(sitemap_url)
+
+        # Replace production domain with actual accessible site URL for crawling
+        if page_urls and site_url:
+            from urllib.parse import urlparse
+            site_host = urlparse(site_url).netloc
+            normalized = []
+            for u in page_urls:
+                parsed = urlparse(u)
+                if parsed.netloc != site_host:
+                    u = u.replace(f"{parsed.scheme}://{parsed.netloc}", site_url)
+                normalized.append(u)
+            page_urls = normalized
+
         if not page_urls:
             page_urls = [site_url + p for p, _, _ in STATIC_SITEMAP_PAGES[:max_pages]]
 
         page_urls = page_urls[:max_pages]
-        logger.info(f"[SEO Audit] Found {len(page_urls)} URLs to audit")
+        logger.info(f"[SEO Audit] Found {len(page_urls)} URLs to audit (site: {site_url})")
 
         all_issues: List[dict] = []
         page_results: List[dict] = []
@@ -566,6 +579,9 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         issues: List[dict] = []
         soup = BeautifulSoup(html, "lxml")
 
+        # Detect React/SPA pages
+        is_spa = bool(soup.find("div", id="root"))
+
         # --- Title tag ---
         title_tag = soup.find("title")
         title_text = title_tag.get_text(strip=True) if title_tag else ""
@@ -589,8 +605,8 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             issues.append({"url": url, "category": "meta", "severity": "warning",
                            "issue": f"Meta description too short ({len(desc_text)} chars)",
                            "suggestion": "Expand to 120-160 characters"})
-        elif len(desc_text) > 170:
-            issues.append({"url": url, "category": "meta", "severity": "info",
+        elif len(desc_text) > 160:
+            issues.append({"url": url, "category": "meta", "severity": "warning",
                            "issue": f"Meta description long ({len(desc_text)} chars)",
                            "suggestion": "Consider trimming to under 160 characters"})
 
@@ -606,13 +622,13 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             issues.append({"url": url, "category": "schema", "severity": "warning",
                            "issue": "No JSON-LD schema markup", "suggestion": "Add structured data for better rich snippets"})
 
-        # --- H1 tag ---
+        # --- H1 tag (check in both main content and noscript) ---
         h1_tags = soup.find_all("h1")
         if not h1_tags:
             issues.append({"url": url, "category": "headings", "severity": "critical",
                            "issue": "Missing H1 heading", "suggestion": "Add exactly one H1 tag per page"})
         elif len(h1_tags) > 1:
-            issues.append({"url": url, "category": "headings", "severity": "warning",
+            issues.append({"url": url, "category": "headings", "severity": "info",
                            "issue": f"Multiple H1 tags ({len(h1_tags)})", "suggestion": "Use only one H1 per page"})
 
         # --- Images without alt text ---
@@ -623,11 +639,17 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                            "issue": f"{len(missing_alt)} images missing alt text",
                            "suggestion": "Add descriptive alt text to all images"})
 
-        # --- Content length (thin content check) ---
+        # --- Content length (check full page text including noscript) ---
         body = soup.find("body")
         text_content = body.get_text(separator=" ", strip=True) if body else ""
         word_count = len(text_content.split())
-        if word_count < 100:
+        if is_spa and word_count < 30:
+            # For SPA pages, check noscript content separately
+            noscript = soup.find("noscript")
+            if noscript:
+                noscript_words = len(noscript.get_text(separator=" ", strip=True).split())
+                word_count = max(word_count, noscript_words)
+        if word_count < 50:
             issues.append({"url": url, "category": "content", "severity": "warning",
                            "issue": f"Thin content ({word_count} words)",
                            "suggestion": "Aim for 300+ words of unique content"})
