@@ -416,14 +416,14 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         return snapshots
 
     async def get_growth_analysis(self) -> dict:
-        """Analyze growth trends and provide recommendations."""
+        """Self-adaptive growth analysis: tracks SEO score, keyword coverage, content velocity, and auto-adapts."""
         history = await self.get_growth_history(14)
         if len(history) < 2:
             return {
                 "trend": "insufficient_data",
                 "message": "Need at least 2 days of data for analysis",
-                "strategy": "normal",
-                "posts_per_cycle": 3,
+                "strategy": "boost",
+                "posts_per_cycle": 5,
             }
 
         recent = history[-1]
@@ -437,34 +437,61 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
 
         # Sitemap growth
         recent_sitemap = recent.get("sitemap_urls", 0)
-        oldest_sitemap = oldest.get("sitemap_urls", 0)
-        sitemap_growth = recent_sitemap - oldest_sitemap
 
         # View growth
         recent_views = recent.get("today_views", 0)
         total_views = recent.get("total_views", 0)
 
-        # Determine trend based on content growth (primary driver before traffic comes)
-        if content_growth_pct > 10:
+        # SEO score tracking
+        latest_audit = await self.get_latest_audit()
+        seo_score = latest_audit.get("overall_score", 0) if latest_audit else 0
+
+        # Keyword coverage
+        total_keywords = len(AUTOMATION_KEYWORDS)
+        used_count = await self.db.blog_posts.count_documents({"auto_generated": True})
+        keyword_coverage = min(100, round(used_count / max(total_keywords, 1) * 100))
+
+        # Content velocity (blogs added in last 7 days)
+        week_ago = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+        weekly_blogs = await self.db.blog_posts.count_documents({"published_date": {"$gte": week_ago}})
+
+        # Self-adaptive strategy determination
+        # Priority: SEO score → content velocity → keyword coverage → content growth
+        if seo_score < 80:
+            trend = "needs_fix"
+            strategy = "aggressive"
+            posts_per_cycle = 5
+            message = f"SEO score {seo_score}/100 needs immediate attention. Running self-heal + aggressive content push."
+        elif weekly_blogs == 0 and content_growth == 0:
+            trend = "stalled"
+            strategy = "aggressive"
+            posts_per_cycle = 5
+            message = "No new content this week. Aggressively generating content to restart growth."
+        elif keyword_coverage < 40:
+            trend = "expanding"
+            strategy = "boost"
+            posts_per_cycle = 5
+            message = f"Keyword coverage at {keyword_coverage}%. Boosting blog generation to cover more search terms."
+        elif content_growth_pct > 10:
             trend = "growing_fast"
             strategy = "maintain"
             posts_per_cycle = 3
-            message = f"Content up {content_growth_pct}% (+{content_growth} pages). Great momentum! {recent_sitemap} pages indexed."
+            message = f"Excellent growth: +{content_growth_pct}% content, SEO {seo_score}/100, {keyword_coverage}% keyword coverage."
         elif content_growth_pct > 3:
             trend = "growing"
             strategy = "maintain"
             posts_per_cycle = 3
-            message = f"Content up {content_growth_pct}% (+{content_growth} pages). Steady growth with {recent_sitemap} pages indexed."
+            message = f"Steady growth: +{content_growth_pct}%, SEO {seo_score}/100. Maintaining current velocity."
         elif content_growth > 0:
             trend = "growing"
             strategy = "boost"
-            posts_per_cycle = 5
-            message = f"Content grew +{content_growth} pages. Boosting to 5 posts/cycle to accelerate."
+            posts_per_cycle = 4
+            message = f"Moderate growth +{content_growth} pages. Boosting to accelerate. SEO: {seo_score}/100."
         else:
             trend = "flat"
             strategy = "boost"
             posts_per_cycle = 5
-            message = "No new content added. Increasing to 5 posts/cycle to drive growth."
+            message = f"Growth flat. Boosting content generation. SEO: {seo_score}/100, Keywords: {keyword_coverage}%."
 
         return {
             "trend": trend,
@@ -478,6 +505,9 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             "posts_per_cycle": posts_per_cycle,
             "message": message,
             "days_tracked": len(history),
+            "seo_score": seo_score,
+            "keyword_coverage": keyword_coverage,
+            "content_velocity": weekly_blogs,
         }
 
     # ─────────────────────────────────────────────────────────
@@ -1176,21 +1206,33 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                 await asyncio.sleep(3600)
 
     async def _run_daily_seo_audit(self):
-        """Run SEO audit once per day, then apply auto-fixes."""
+        """Run SEO audit once per day, then apply auto-fixes, then re-audit to verify."""
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         existing = await self.db.seo_audits.find_one({"date": {"$regex": f"^{today}"}})
         if existing:
             logger.info(f"[SEO Audit] Already ran today ({today}), skipping")
             return
 
-        # Read site URL
+        # Phase 1: Run audit
         site_url = self._get_site_url()
-        audit = await self.run_seo_audit(site_url, max_pages=40)
-        logger.info(f"[SEO Audit] Daily audit done: score={audit.get('overall_score')}")
+        audit = await self.run_seo_audit(site_url, max_pages=500)
+        score_before = audit.get("overall_score", 0)
+        issues_before = audit.get("total_issues", 0)
+        logger.info(f"[SEO Audit] Daily audit done: score={score_before}, issues={issues_before}")
 
-        # Auto-fix after audit
-        fix_result = await self.auto_fix_seo_issues(site_url)
-        logger.info(f"[SEO Auto-Fix] {fix_result.get('fixes_applied', 0)} fixes applied")
+        # Phase 2: Auto-fix all issues
+        if issues_before > 0:
+            fix_result = await self.auto_fix_seo_issues(site_url)
+            fixes_applied = fix_result.get("fixes_applied", 0)
+            logger.info(f"[SEO Auto-Fix] {fixes_applied} fixes applied")
+
+            # Phase 3: If fixes were applied, enrich weak CMS sections too
+            if fixes_applied > 0:
+                enrich_count = await self._enrich_weak_cms_sections()
+                logger.info(f"[SEO Enrich] {enrich_count} weak sections enriched")
+
+        # Phase 4: Record daily adaptive status
+        await self._record_adaptive_status()
 
     def _get_site_url(self) -> str:
         """Read site URL from frontend .env or fall back to BASE_URL."""
@@ -1722,6 +1764,188 @@ RULES:
 
         enriched = sum(1 for r in results if r.get("enriched"))
         return {"enriched": enriched, "total_attempted": len(results), "results": results}
+
+    # ─────────────────────────────────────────────────────────
+    # 13. WEAK SECTION ENRICHMENT — expand recovery, procedure, etc.
+    # ─────────────────────────────────────────────────────────
+    async def _enrich_weak_cms_sections(self) -> int:
+        """Find CMS pages with weak individual sections and enrich them via AI."""
+        enriched_count = 0
+        cms_pages = await self.db.cms_pages.find({}, {"_id": 0}).to_list(200)
+
+        for page in cms_pages:
+            slug = page.get("slug", "")
+            page_type = page.get("type", "")
+            content = page.get("content", {})
+            title = page.get("title", content.get("name", slug))
+            if not isinstance(content, dict):
+                continue
+
+            # Find weak sections (exist but are too short)
+            weak_sections = []
+            if page_type == "treatment":
+                for section in ["recovery", "procedure", "benefits"]:
+                    val = content.get(section)
+                    if val and isinstance(val, str) and len(val.split()) < 10:
+                        weak_sections.append(section)
+                    elif val and isinstance(val, list) and len(val) < 2:
+                        weak_sections.append(section)
+            elif page_type == "condition":
+                for section in ["symptoms", "causes", "diagnosis"]:
+                    val = content.get(section)
+                    if val and isinstance(val, str) and len(val.split()) < 10:
+                        weak_sections.append(section)
+                    elif val and isinstance(val, list) and len(val) < 2:
+                        weak_sections.append(section)
+
+            if not weak_sections:
+                continue
+
+            try:
+                from emergentintegrations.llm.chat import LlmChat, UserMessage
+                chat = LlmChat(
+                    api_key=EMERGENT_LLM_KEY,
+                    session_id=f"section-enrich-{uuid.uuid4()}",
+                    system_message="You are a medical content writer. Write detailed, patient-friendly content. Return ONLY valid JSON."
+                ).with_model("openai", "gpt-4o")
+
+                sections_spec = {}
+                for sec in weak_sections:
+                    if sec in ("recovery",):
+                        sections_spec[sec] = '{"timeline": "4-6 weeks detailed timeline", "tips": ["tip1", "tip2", "tip3", "tip4"], "follow_up": "Follow-up schedule details"}'
+                    elif sec in ("procedure",):
+                        sections_spec[sec] = '[{"step": 1, "title": "Step title", "description": "Detailed description"}] — at least 5 steps'
+                    elif sec in ("benefits",):
+                        sections_spec[sec] = '[{"title": "Benefit title", "description": "Why this matters"}] — at least 5 benefits'
+                    elif sec in ("symptoms",):
+                        sections_spec[sec] = '[{"name": "Symptom name", "description": "How it manifests"}] — at least 5 symptoms'
+                    elif sec in ("causes",):
+                        sections_spec[sec] = '["Cause 1 description", "Cause 2 description"] — at least 4 causes'
+                    elif sec in ("diagnosis",):
+                        sections_spec[sec] = '"Detailed paragraph about diagnosis methods (150+ words)"'
+
+                spec_text = "\n".join(f'  "{k}": {v}' for k, v in sections_spec.items())
+                prompt = f"""Expand these weak sections for orthopedic {page_type}: {title}
+Doctor: Dr. B Harsha Vardhana Reddy, Apollo Hospitals Hyderabad
+
+Return JSON with these sections expanded:
+{{
+{spec_text}
+}}
+
+RULES: Medically accurate, patient-friendly, mention Hyderabad. Return ONLY valid JSON."""
+
+                raw = await chat.send_message(UserMessage(text=prompt))
+                raw = raw.strip()
+                if raw.startswith("```"):
+                    raw = raw.split("\n", 1)[1] if "\n" in raw else raw[3:]
+                    raw = raw.rsplit("```", 1)[0]
+
+                new_data = json.loads(raw)
+                update = {}
+                for key, val in new_data.items():
+                    if val:
+                        update[f"content.{key}"] = val
+                if update:
+                    update["updated_at"] = datetime.now(timezone.utc).isoformat()
+                    await self.db.cms_pages.update_one({"slug": slug}, {"$set": update})
+                    enriched_count += 1
+                    logger.info(f"[Section Enrich] /{slug}: expanded {list(new_data.keys())}")
+            except Exception as e:
+                logger.error(f"[Section Enrich] Failed for /{slug}: {e}")
+            await asyncio.sleep(0.5)
+
+            if enriched_count >= 15:  # Cap per run to avoid timeout
+                break
+
+        return enriched_count
+
+    # ─────────────────────────────────────────────────────────
+    # 14. ENHANCED SELF-ADAPTIVE GROWTH STRATEGY
+    # ─────────────────────────────────────────────────────────
+    async def _record_adaptive_status(self):
+        """Record the current adaptive strategy state for dashboard display."""
+        analysis = await self.get_growth_analysis()
+        latest_audit = await self.get_latest_audit()
+        seo_score = latest_audit.get("overall_score", 0) if latest_audit else 0
+
+        # Keyword coverage
+        total_keywords = len(AUTOMATION_KEYWORDS)
+        used_kws = set()
+        async for post in self.db.blog_posts.find({"auto_generated": True}, {"keyword": 1, "_id": 0}):
+            if post.get("keyword"):
+                used_kws.add(post["keyword"].lower())
+        keyword_coverage = round(len(used_kws) / max(total_keywords, 1) * 100)
+
+        # Content velocity (pages added in last 7 days)
+        week_ago = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+        recent_blogs = await self.db.blog_posts.count_documents({"published_date": {"$gte": week_ago}})
+
+        # Determine adaptive actions
+        actions = []
+        if seo_score < 90:
+            actions.append({"action": "self_heal", "reason": f"SEO score {seo_score} < 90", "priority": "high"})
+        if keyword_coverage < 50:
+            actions.append({"action": "generate_blogs", "reason": f"Keyword coverage {keyword_coverage}%", "priority": "high"})
+        elif keyword_coverage < 80:
+            actions.append({"action": "generate_blogs", "reason": f"Keyword coverage {keyword_coverage}%", "priority": "medium"})
+        if recent_blogs == 0:
+            actions.append({"action": "boost_content", "reason": "No new content this week", "priority": "high"})
+        if analysis.get("trend") == "flat":
+            actions.append({"action": "boost_content", "reason": "Growth stalled", "priority": "high"})
+
+        status = {
+            "date": datetime.now(timezone.utc).isoformat(),
+            "seo_score": seo_score,
+            "keyword_coverage_pct": keyword_coverage,
+            "keywords_used": len(used_kws),
+            "keywords_total": total_keywords,
+            "content_velocity": recent_blogs,
+            "total_blogs": await self.db.blog_posts.count_documents({}),
+            "total_cms_pages": await self.db.cms_pages.count_documents({}),
+            "growth_trend": analysis.get("trend", "unknown"),
+            "strategy": analysis.get("strategy", "normal"),
+            "adaptive_actions": actions,
+            "message": analysis.get("message", ""),
+        }
+
+        await self.db.automation_log.update_one(
+            {"type": "adaptive_status"},
+            {"$set": status},
+            upsert=True,
+        )
+        return status
+
+    async def get_adaptive_status(self) -> dict:
+        """Get the current adaptive strategy status — always recalculates for freshness."""
+        return await self._record_adaptive_status()
+
+    async def generate_blog_batch(self, count: int = 5) -> dict:
+        """Generate a batch of blog posts targeting underperforming/unused keywords."""
+        selected = await self._get_adaptive_keywords(count)
+        results = []
+        for kw in selected:
+            post = await self.generate_blog_post(kw)
+            if post:
+                results.append({"slug": post["slug"], "title": post["title"], "keyword": kw, "status": "published"})
+                try:
+                    from server import submit_to_indexnow
+                    await submit_to_indexnow([f"{BASE_URL}/blog/{post['slug']}"])
+                except Exception:
+                    pass
+            else:
+                results.append({"keyword": kw, "status": "failed"})
+            await asyncio.sleep(3)
+
+        # Update sitemap
+        await self.generate_and_write_sitemap()
+        await self.ping_google()
+
+        return {
+            "generated": sum(1 for r in results if r.get("status") == "published"),
+            "failed": sum(1 for r in results if r.get("status") == "failed"),
+            "results": results,
+        }
 
     def launch(self):
         """Start the background automation scheduler."""

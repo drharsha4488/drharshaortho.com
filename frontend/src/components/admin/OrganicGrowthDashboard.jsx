@@ -64,6 +64,11 @@ const OrganicGrowthDashboard = () => {
   const [showGapDetails, setShowGapDetails] = useState(false);
   const [enrichStatus, setEnrichStatus] = useState(null); // inline status message
 
+  // Adaptive Growth Strategy
+  const [adaptiveStatus, setAdaptiveStatus] = useState(null);
+  const [generatingBlogs, setGeneratingBlogs] = useState(false);
+  const [enrichingWeakSections, setEnrichingWeakSections] = useState(false);
+
   // Fetch functions
   const fetchBlogPosts = useCallback(async () => {
     try {
@@ -265,7 +270,49 @@ const OrganicGrowthDashboard = () => {
     fetchGrowthHistory();
     fetchSeoAudit();
     fetchContentGaps();
+    fetchAdaptiveStatus();
   }, [fetchBlogPosts, fetchAutoStatus, fetchIndexNowStatus, fetchGrowthHistory, fetchSeoAudit, fetchContentGaps]);
+
+  const fetchAdaptiveStatus = async () => {
+    try {
+      const r = await fetch(`${API_URL}/api/growth/adaptive-status`);
+      if (r.ok) { const d = await r.json(); if (d.success) setAdaptiveStatus(d); }
+    } catch (e) { console.error(e); }
+  };
+
+  const generateBlogBatch = async () => {
+    setGeneratingBlogs(true);
+    try {
+      const r = await fetch(`${API_URL}/api/growth/generate-blogs`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ count: 5 })
+      });
+      if (r.ok) {
+        const d = await r.json();
+        setAiResult({ type: 'success', message: d.message || `Blog generation started! Check back in ~2 minutes.` });
+        // Poll for completion
+        setTimeout(() => { fetchBlogPosts(); fetchAdaptiveStatus(); }, 120000);
+      }
+    } catch (e) {
+      setAiResult({ type: 'error', message: `Blog generation failed: ${e.message}` });
+    }
+    setGeneratingBlogs(false);
+  };
+
+  const enrichWeakSections = async () => {
+    setEnrichingWeakSections(true);
+    try {
+      const r = await fetch(`${API_URL}/api/growth/enrich-weak-sections`, { method: 'POST' });
+      if (r.ok) {
+        const d = await r.json();
+        setAiResult({ type: 'success', message: d.message || `Section enrichment started! Check back in ~2 minutes.` });
+        setTimeout(() => { fetchAdaptiveStatus(); fetchContentGaps(); }, 120000);
+      }
+    } catch (e) {
+      setAiResult({ type: 'error', message: `Section enrichment failed: ${e.message}` });
+    }
+    setEnrichingWeakSections(false);
+  };
 
   // Blog CRUD
   const resetBlogForm = () => { setShowBlogForm(false); setEditingPost(null); setBlogForm({ title: '', excerpt: '', content: '', tags: '', image_url: '' }); };
@@ -502,6 +549,118 @@ const OrganicGrowthDashboard = () => {
               <BarChart3 className="w-8 h-8 mx-auto mb-2 opacity-30" />
               <p className="text-sm">Growth tracking will start showing data after 2+ days.</p>
               <p className="text-xs mt-1">The system records daily snapshots automatically.</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ADAPTIVE GROWTH STRATEGY — self-adapting intelligence */}
+      <div className="bg-card rounded-xl border border-border overflow-hidden" data-testid="adaptive-growth-strategy">
+        <div className="p-5 border-b border-border">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <Zap className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="font-bold text-foreground text-lg" data-testid="adaptive-strategy-title">Self-Adaptive Growth Engine</h2>
+                <p className="text-sm text-muted-foreground">AI-driven strategy that auto-adapts: SEO healing, keyword targeting, content velocity</p>
+              </div>
+            </div>
+            {adaptiveStatus && (
+              <span className={`text-xs px-3 py-1.5 rounded-full font-semibold ${
+                adaptiveStatus.strategy === 'maintain' ? 'bg-green-100 text-green-700' :
+                adaptiveStatus.strategy === 'boost' ? 'bg-amber-100 text-amber-700' :
+                adaptiveStatus.strategy === 'aggressive' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
+              }`} data-testid="adaptive-strategy-label">
+                {adaptiveStatus.strategy?.toUpperCase()} MODE
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="p-5">
+          {adaptiveStatus ? (
+            <div className="space-y-5">
+              {/* Key Metrics Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="bg-secondary rounded-lg p-3 text-center" data-testid="metric-seo-score">
+                  <p className={`text-2xl font-bold ${adaptiveStatus.seo_score >= 90 ? 'text-green-600' : adaptiveStatus.seo_score >= 50 ? 'text-amber-500' : 'text-red-500'}`}>
+                    {adaptiveStatus.seo_score}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground font-medium">SEO Score</p>
+                </div>
+                <div className="bg-secondary rounded-lg p-3 text-center" data-testid="metric-keyword-coverage">
+                  <p className={`text-2xl font-bold ${adaptiveStatus.keyword_coverage_pct >= 80 ? 'text-green-600' : adaptiveStatus.keyword_coverage_pct >= 40 ? 'text-amber-500' : 'text-red-500'}`}>
+                    {adaptiveStatus.keyword_coverage_pct}%
+                  </p>
+                  <p className="text-[10px] text-muted-foreground font-medium">Keyword Coverage ({adaptiveStatus.keywords_used}/{adaptiveStatus.keywords_total})</p>
+                </div>
+                <div className="bg-secondary rounded-lg p-3 text-center" data-testid="metric-content-velocity">
+                  <p className={`text-2xl font-bold ${adaptiveStatus.content_velocity > 0 ? 'text-green-600' : 'text-amber-500'}`}>
+                    {adaptiveStatus.content_velocity}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground font-medium">Blogs This Week</p>
+                </div>
+                <div className="bg-secondary rounded-lg p-3 text-center" data-testid="metric-total-content">
+                  <p className="text-2xl font-bold text-primary">{(adaptiveStatus.total_blogs || 0) + (adaptiveStatus.total_cms_pages || 0)}</p>
+                  <p className="text-[10px] text-muted-foreground font-medium">Total Content ({adaptiveStatus.total_blogs} blogs + {adaptiveStatus.total_cms_pages} CMS)</p>
+                </div>
+              </div>
+
+              {/* Strategy Message */}
+              <div className={`p-3 rounded-lg border ${
+                adaptiveStatus.strategy === 'maintain' ? 'bg-green-50 border-green-200' :
+                adaptiveStatus.strategy === 'boost' ? 'bg-amber-50 border-amber-200' :
+                'bg-red-50 border-red-200'
+              }`}>
+                <p className={`text-sm font-medium ${
+                  adaptiveStatus.strategy === 'maintain' ? 'text-green-700' :
+                  adaptiveStatus.strategy === 'boost' ? 'text-amber-700' : 'text-red-700'
+                }`}>{adaptiveStatus.message}</p>
+              </div>
+
+              {/* Adaptive Actions */}
+              {adaptiveStatus.adaptive_actions && adaptiveStatus.adaptive_actions.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium text-foreground mb-2">Recommended Actions</h4>
+                  <div className="space-y-2">
+                    {adaptiveStatus.adaptive_actions.map((action, i) => (
+                      <div key={i} className={`flex items-center justify-between p-2.5 rounded-lg border text-sm ${
+                        action.priority === 'high' ? 'bg-red-50 border-red-200' : 'bg-amber-50 border-amber-200'
+                      }`}>
+                        <div className="flex items-center gap-2">
+                          <span className={`w-2 h-2 rounded-full flex-shrink-0 ${action.priority === 'high' ? 'bg-red-500' : 'bg-amber-500'}`} />
+                          <span className="text-foreground font-medium capitalize">{action.action.replace(/_/g, ' ')}</span>
+                          <span className="text-muted-foreground">— {action.reason}</span>
+                        </div>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full ${action.priority === 'high' ? 'bg-red-200 text-red-800' : 'bg-amber-200 text-amber-800'}`}>
+                          {action.priority}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-3">
+                <Button onClick={generateBlogBatch} disabled={generatingBlogs || enrichingWeakSections} size="sm" className="gap-2" data-testid="generate-blogs-btn">
+                  {generatingBlogs ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Generating...</> : <><BookOpen className="w-3.5 h-3.5" /> Generate 5 Blog Posts</>}
+                </Button>
+                <Button onClick={enrichWeakSections} disabled={enrichingWeakSections || generatingBlogs} size="sm" variant="outline"
+                  className="gap-2 border-violet-300 text-violet-700 hover:bg-violet-50" data-testid="enrich-sections-btn">
+                  {enrichingWeakSections ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Enriching...</> : <><Edit className="w-3.5 h-3.5" /> Enrich Weak Sections</>}
+                </Button>
+                <Button onClick={fetchAdaptiveStatus} size="sm" variant="ghost" className="gap-2">
+                  <RefreshCw className="w-3.5 h-3.5" /> Refresh
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-6 text-muted-foreground">
+              <Zap className="w-8 h-8 mx-auto mb-2 opacity-30" />
+              <p className="text-sm">Loading adaptive strategy...</p>
             </div>
           )}
         </div>

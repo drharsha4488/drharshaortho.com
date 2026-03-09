@@ -3919,6 +3919,48 @@ async def enrich_content(data: dict = None):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@api_router.get("/growth/adaptive-status")
+async def get_adaptive_status():
+    """Get self-adaptive growth strategy status: SEO score, keyword coverage, content velocity."""
+    try:
+        status = await seo_automation.get_adaptive_status()
+        return {"success": True, **status}
+    except Exception as e:
+        logger.error(f"Adaptive status error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.post("/growth/generate-blogs")
+async def generate_blog_batch(data: dict = None, background_tasks: BackgroundTasks = None):
+    """Generate a batch of blog posts targeting underperforming keywords (runs in background)."""
+    data = data or {}
+    count = min(data.get("count", 5), 10)
+
+    async def _run():
+        try:
+            result = await seo_automation.generate_blog_batch(count=count)
+            logger.info(f"[Blog Batch] Generated {result.get('generated', 0)} posts")
+        except Exception as e:
+            logger.error(f"[Blog Batch] Failed: {e}")
+
+    background_tasks.add_task(asyncio.ensure_future, _run())
+    return {"success": True, "status": "started", "message": f"Generating {count} blog posts in background. Check blog list in ~2 minutes."}
+
+
+@api_router.post("/growth/enrich-weak-sections")
+async def enrich_weak_sections(background_tasks: BackgroundTasks = None):
+    """Enrich weak CMS sections (recovery, procedure, symptoms etc.) via AI (runs in background)."""
+    async def _run():
+        try:
+            count = await seo_automation._enrich_weak_cms_sections()
+            logger.info(f"[Section Enrich] Enriched {count} weak sections")
+        except Exception as e:
+            logger.error(f"[Section Enrich] Failed: {e}")
+
+    background_tasks.add_task(asyncio.ensure_future, _run())
+    return {"success": True, "status": "started", "message": "Enriching weak CMS sections in background. Check back in ~2 minutes."}
+
+
 app.include_router(api_router)
 
 # ============ AUTOMATION STARTUP ============
