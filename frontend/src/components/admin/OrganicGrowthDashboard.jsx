@@ -734,6 +734,14 @@ const OrganicGrowthDashboard = () => {
                       {autoFixResult.fixes_applied} Auto-Fixes Applied
                     </span>
                   </div>
+                  {/* Phase summary */}
+                  {autoFixResult.phases && (
+                    <div className="flex gap-4 mb-2 text-xs text-emerald-600">
+                      <span>Titles: {autoFixResult.phases.meta_titles?.fixed || 0}/{autoFixResult.phases.meta_titles?.needed || 0}</span>
+                      <span>Descriptions: {autoFixResult.phases.meta_descriptions?.fixed || 0}/{autoFixResult.phases.meta_descriptions?.needed || 0}</span>
+                      <span>Content: {autoFixResult.phases.thin_content?.fixed || 0}/{autoFixResult.phases.thin_content?.needed || 0}</span>
+                    </div>
+                  )}
                   <div className="space-y-1 max-h-32 overflow-y-auto">
                     {(autoFixResult.fixes || []).map((fix, i) => (
                       <div key={i} className="flex items-center gap-2 text-xs">

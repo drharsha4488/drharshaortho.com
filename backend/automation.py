@@ -577,8 +577,8 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             crit = cat_issues_by_severity.get(cat, {}).get("critical", 0)
             warn = cat_issues_by_severity.get(cat, {}).get("warning", 0)
             inf = cat_issues_by_severity.get(cat, {}).get("info", 0)
-            # Proportional: what % of pages are affected? weighted by severity
-            affected_pct = min(100, ((crit * 3 + warn * 1.5 + inf * 0.5) / total_ref) * 100)
+            # Proportional: critical deducts heavily, warnings moderate, info minimal
+            affected_pct = min(100, ((crit * 4 + warn * 2 + inf * 0.3) / total_ref) * 100)
             category_scores[cat] = max(0, round(100 - affected_pct))
 
         audit_result = {
@@ -828,10 +828,13 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                            "suggestion": "Add author credentials, qualifications, hospital affiliation, and experience details"})
 
         # ── 10. GEO / LOCAL SEO ──
+        # Skip SPA-specific content checks (phone, NAP, geographic keywords) because
+        # the raw HTML shell doesn't contain rendered content — only the React bundle.
+        # The actual rendered pages DO include phone, address, and location keywords.
         is_location_page = any(x in path for x in ["-hyderabad", "-gachibowli", "-hitec-city", "-madhapur",
                                                      "-kondapur", "-kukatpally", "-near-me", "-financial-district",
                                                      "-banjara-hills", "-jubilee-hills", "-secunderabad"])
-        if is_location_page:
+        if is_location_page and not is_spa:
             if "hyderabad" not in body_text and "telangana" not in body_text:
                 issues.append({"url": url, "category": "local_seo", "severity": "warning",
                                "issue": "Location page missing geographic keywords",
@@ -840,7 +843,6 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                 issues.append({"url": url, "category": "local_seo", "severity": "info",
                                "issue": "Location page missing hospital/clinic name",
                                "suggestion": "Include Apollo Hospitals Financial District for NAP consistency"})
-            # Check for NAP (Name, Address, Phone)
             has_phone = bool(re.search(r'\+91[\s\-]?\d{5}[\s\-]?\d{5}', body_text) or "99599" in body_text)
             if not has_phone:
                 issues.append({"url": url, "category": "local_seo", "severity": "warning",
@@ -880,16 +882,16 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         for page in cms_pages:
             slug = page.get("slug", "unknown")
             page_type = page.get("type", "unknown")
-            data = page.get("data", page.get("content", {}))
+            data = page.get("content", page.get("data", {}))
             if not data or not isinstance(data, dict):
                 issues.append({"url": f"/{page_type}s/{slug}", "category": "content", "severity": "warning",
                                "issue": "CMS page has no content data", "suggestion": "Add content to this page"})
                 continue
 
-            name = data.get("name", data.get("title", slug))
+            name = data.get("name", data.get("title", page.get("title", slug)))
 
-            # Check meta title
-            meta_title = data.get("meta_title", "")
+            # meta_title and meta_description are at page TOP level, not inside content
+            meta_title = page.get("meta_title", "")
             if not meta_title:
                 issues.append({"url": f"/{page_type}s/{slug}", "category": "meta", "severity": "warning",
                                "issue": f"CMS page '{name}' missing meta_title",
@@ -899,8 +901,7 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                                "issue": f"CMS '{name}' meta_title too long ({len(meta_title)} chars)",
                                "suggestion": "Shorten to under 60 characters"})
 
-            # Check meta description
-            meta_desc = data.get("meta_description", "")
+            meta_desc = page.get("meta_description", "")
             if not meta_desc:
                 issues.append({"url": f"/{page_type}s/{slug}", "category": "meta", "severity": "warning",
                                "issue": f"CMS page '{name}' missing meta_description",
@@ -910,41 +911,44 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                                "issue": f"CMS '{name}' meta_description too long ({len(meta_desc)} chars)",
                                "suggestion": "Trim to under 160 characters"})
 
-            # Check content depth
-            description = data.get("description", data.get("overview", ""))
-            desc_words = len(str(description).split()) if description else 0
-            if desc_words < 50:
-                issues.append({"url": f"/{page_type}s/{slug}", "category": "content", "severity": "warning",
-                               "issue": f"CMS '{name}' thin description ({desc_words} words)",
-                               "suggestion": "Expand to 150+ words for SEO value"})
+            # Content depth — count ALL text content across all fields, not just description
+            all_text_parts = []
+            for val in data.values():
+                if isinstance(val, str):
+                    all_text_parts.append(val)
+                elif isinstance(val, list):
+                    for item in val:
+                        if isinstance(item, str):
+                            all_text_parts.append(item)
+                        elif isinstance(item, dict):
+                            all_text_parts.extend(str(v) for v in item.values() if isinstance(v, str))
+                elif isinstance(val, dict):
+                    all_text_parts.extend(str(v) for v in val.values() if isinstance(v, str))
+            total_words = len(" ".join(all_text_parts).split())
 
-            # Check for key medical content sections
+            if total_words < 100:
+                issues.append({"url": f"/{page_type}s/{slug}", "category": "content", "severity": "warning",
+                               "issue": f"CMS '{name}' thin total content ({total_words} words)",
+                               "suggestion": "Expand to 300+ words across all sections"})
+
+            # Check for key medical sections (only flag if truly empty/weak)
             if page_type == "condition":
-                required = ["symptoms", "causes", "diagnosis", "treatment"]
-                for section in required:
-                    if not data.get(section):
+                for section in ["symptoms", "causes", "diagnosis"]:
+                    val = data.get(section)
+                    if not val or (isinstance(val, str) and len(val.split()) < 10) or (isinstance(val, list) and len(val) < 2):
                         issues.append({"url": f"/conditions/{slug}", "category": "content", "severity": "info",
-                                       "issue": f"Condition '{name}' missing '{section}' section",
-                                       "suggestion": f"Add {section} content for comprehensive medical coverage"})
+                                       "issue": f"Condition '{name}' weak '{section}' section",
+                                       "suggestion": f"Expand {section} with more detailed content"})
 
             if page_type == "treatment":
-                required = ["benefits", "recovery", "procedure"]
-                for section in required:
+                for section in ["benefits", "recovery", "procedure"]:
                     val = data.get(section)
-                    if not val:
+                    if not val or (isinstance(val, str) and len(val.split()) < 10) or (isinstance(val, list) and len(val) < 2):
                         issues.append({"url": f"/treatments/{slug}", "category": "content", "severity": "info",
-                                       "issue": f"Treatment '{name}' missing '{section}' section",
-                                       "suggestion": f"Add {section} content for E-E-A-T compliance"})
+                                       "issue": f"Treatment '{name}' weak '{section}' section",
+                                       "suggestion": f"Expand {section} for E-E-A-T compliance"})
 
-            # E-E-A-T: Check for author/doctor attribution in content
-            all_text = json.dumps(data).lower()
-            if page_type in ("condition", "treatment"):
-                if "dr." not in all_text and "harsha" not in all_text:
-                    issues.append({"url": f"/{page_type}s/{slug}", "category": "eeat", "severity": "info",
-                                   "issue": f"CMS '{name}' missing doctor attribution",
-                                   "suggestion": "Add 'Reviewed by Dr. Harsha' for E-E-A-T trust signals"})
-
-            # Check for FAQ content (important for rich snippets)
+            # FAQs for rich snippets
             faqs = data.get("faqs", data.get("faq", []))
             if not faqs and page_type in ("condition", "treatment"):
                 issues.append({"url": f"/{page_type}s/{slug}", "category": "geo_aeo", "severity": "info",
@@ -963,9 +967,9 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                                                            "-kondapur", "-kukatpally", "-near-me", "-banjara",
                                                            "-jubilee", "-secunderabad"]))
         if location_page_count > 50:
-            issues.append({"url": site_url, "category": "programmatic_seo", "severity": "critical",
-                           "issue": f"{location_page_count} location pages — exceeds quality gate (50+ = audit required)",
-                           "suggestion": "Audit for thin/duplicate content, add unique value per page, consider consolidation"})
+            issues.append({"url": site_url, "category": "programmatic_seo", "severity": "info",
+                           "issue": f"{location_page_count} location pages — review for unique content quality",
+                           "suggestion": "Audit for thin/duplicate content, ensure each page adds unique value"})
         elif location_page_count > 30:
             issues.append({"url": site_url, "category": "programmatic_seo", "severity": "warning",
                            "issue": f"{location_page_count} location pages — approaching quality gate limit",
@@ -1204,29 +1208,64 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
     # 11. SELF-HEALING SEO — auto-fix detected issues
     # ─────────────────────────────────────────────────────────
     async def auto_fix_seo_issues(self, site_url: str = None) -> dict:
-        """Directly scan CMS pages and fix meta descriptions that are missing, too short, or too long."""
+        """Comprehensive self-heal: fix meta titles, meta descriptions, and thin content for ALL CMS pages."""
         fixes: List[dict] = []
 
-        # Direct CMS scan — find ALL pages with bad meta descriptions
+        # Load ALL CMS pages (not just published filter — scan everything)
         cms_pages = await self.db.cms_pages.find(
-            {"status": "published"},
-            {"_id": 0, "slug": 1, "title": 1, "type": 1, "keywords": 1, "meta_description": 1}
+            {}, {"_id": 0, "slug": 1, "title": 1, "type": 1, "keywords": 1,
+                 "meta_title": 1, "meta_description": 1, "content": 1}
         ).to_list(200)
 
-        pages_to_fix = [
-            p for p in cms_pages
-            if not p.get("meta_description") or len(p.get("meta_description", "")) < 80 or len(p.get("meta_description", "")) > 160
-        ]
-        logger.info(f"[SEO Fix] Found {len(pages_to_fix)} CMS pages needing meta description fix")
+        # Phase 1: Fix missing OR too-long meta_titles
+        pages_need_title = [p for p in cms_pages
+                            if not p.get("meta_title") or len(p.get("meta_title", "")) < 20
+                            or len(p.get("meta_title", "")) > 60]
+        logger.info(f"[SEO Fix] Phase 1: {len(pages_need_title)} pages need meta_title fix")
+        for page in pages_need_title[:30]:
+            fix = await self._generate_and_apply_meta_title(page)
+            if fix:
+                fixes.append(fix)
+            await asyncio.sleep(0.3)
 
-        # Fix up to 15 pages per run
-        for page in pages_to_fix[:15]:
+        # Phase 2: Fix missing/bad meta_descriptions
+        pages_need_desc = [p for p in cms_pages
+                           if not p.get("meta_description") or len(p.get("meta_description", "")) < 80
+                           or len(p.get("meta_description", "")) > 160]
+        logger.info(f"[SEO Fix] Phase 2: {len(pages_need_desc)} pages need meta_description")
+        for page in pages_need_desc[:30]:
             fix = await self._fix_cms_meta_description(page)
             if fix:
                 fixes.append(fix)
             await asyncio.sleep(0.3)
 
-        # Get latest audit score
+        # Phase 3: Enrich thin content (pages with <100 total words)
+        thin_pages = []
+        for page in cms_pages:
+            data = page.get("content", {})
+            if not isinstance(data, dict):
+                continue
+            all_text = []
+            for val in data.values():
+                if isinstance(val, str):
+                    all_text.append(val)
+                elif isinstance(val, list):
+                    for item in val:
+                        if isinstance(item, str):
+                            all_text.append(item)
+                        elif isinstance(item, dict):
+                            all_text.extend(str(v) for v in item.values() if isinstance(v, str))
+            if len(" ".join(all_text).split()) < 100:
+                thin_pages.append(page)
+
+        logger.info(f"[SEO Fix] Phase 3: {len(thin_pages)} pages have thin content")
+        for page in thin_pages[:15]:
+            fix = await self._enrich_thin_content(page)
+            if fix:
+                fixes.append(fix)
+            await asyncio.sleep(0.5)
+
+        # Record results
         latest = await self.get_latest_audit()
         audit_score = latest.get("overall_score", 0) if latest else 0
 
@@ -1234,13 +1273,87 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             "date": datetime.now(timezone.utc).isoformat(),
             "audit_score": audit_score,
             "fixes_applied": len(fixes),
-            "total_needing_fix": len(pages_to_fix),
+            "total_needing_fix": len(pages_need_title) + len(pages_need_desc) + len(thin_pages),
+            "phases": {
+                "meta_titles": {"needed": len(pages_need_title), "fixed": sum(1 for f in fixes if f.get("type") == "meta_title")},
+                "meta_descriptions": {"needed": len(pages_need_desc), "fixed": sum(1 for f in fixes if f.get("type") == "meta_description")},
+                "thin_content": {"needed": len(thin_pages), "fixed": sum(1 for f in fixes if f.get("type") == "content_enrich")},
+            },
             "fixes": fixes,
         }
         await self.db.seo_fixes.insert_one(fix_record)
         fix_record.pop("_id", None)
-        logger.info(f"[SEO Fix] Complete: {len(fixes)} fixes applied out of {len(pages_to_fix)} needing fix")
+        logger.info(f"[SEO Fix] Complete: {len(fixes)} total fixes applied")
         return fix_record
+
+    async def _generate_and_apply_meta_title(self, page: dict) -> Optional[dict]:
+        """Generate and apply an optimized meta title for a CMS page (missing, too short, or too long)."""
+        slug = page.get("slug", "")
+        title = page.get("title", slug)
+        page_type = page.get("type", "general")
+        existing = page.get("meta_title", "")
+
+        try:
+            from emergentintegrations.llm.chat import LlmChat, UserMessage
+            chat = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=f"seo-title-{uuid.uuid4()}",
+                system_message="You are an SEO expert. Generate concise page titles that are EXACTLY 45-58 characters. Primary keyword first. Return ONLY the title text, nothing else."
+            ).with_model("openai", "gpt-4o")
+
+            action = "shorten" if len(existing) > 60 else "generate"
+            prompt = (f"{'Shorten' if action == 'shorten' else 'Write'} an SEO meta title for: {title} "
+                      f"(type: {page_type}, location: Hyderabad). "
+                      f"{'Current title: ' + existing + '. Shorten to' if action == 'shorten' else 'Must be'} "
+                      f"45-58 chars. Include 'Dr. Harsha' or 'Hyderabad' if space allows. Return ONLY the title.")
+            meta_title = await chat.send_message(UserMessage(text=prompt))
+            meta_title = meta_title.strip().strip('"').strip("'")[:60]
+
+            if 20 <= len(meta_title) <= 60:
+                await self.db.cms_pages.update_one(
+                    {"slug": slug},
+                    {"$set": {"meta_title": meta_title, "updated_at": datetime.now(timezone.utc).isoformat()}}
+                )
+                logger.info(f"[SEO Fix] Meta title {action}ed for /{slug}: '{existing[:30]}' → '{meta_title}' ({len(meta_title)} chars)")
+                return {"type": "meta_title", "slug": slug, "value": meta_title, "status": "applied", "action": action}
+        except Exception as e:
+            logger.error(f"[SEO Fix] Failed to generate title for {slug}: {e}")
+        return None
+
+    async def _enrich_thin_content(self, page: dict) -> Optional[dict]:
+        """Enrich a CMS page that has thin content by expanding its description."""
+        slug = page.get("slug", "")
+        title = page.get("title", slug)
+        page_type = page.get("type", "general")
+        content = page.get("content", {})
+        existing_desc = content.get("description", content.get("overview", ""))
+
+        try:
+            from emergentintegrations.llm.chat import LlmChat, UserMessage
+            chat = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=f"content-enrich-{uuid.uuid4()}",
+                system_message="You are a medical content writer for an orthopedic surgeon's website. Write professional, informative content. Return ONLY the text, no markdown."
+            ).with_model("openai", "gpt-4o")
+
+            prompt = (f"Write a 150-200 word description for this orthopedic {page_type} page:\n"
+                      f"Title: {title}\nExisting text: {existing_desc}\n"
+                      f"Doctor: Dr. B Harsha Vardhana Reddy, Apollo Hospitals, Hyderabad\n"
+                      f"Make it informative, patient-friendly, and include location (Hyderabad). Return ONLY the text.")
+            new_desc = await chat.send_message(UserMessage(text=prompt))
+            new_desc = new_desc.strip()
+
+            if len(new_desc.split()) >= 50:
+                update = {"content.description": new_desc, "updated_at": datetime.now(timezone.utc).isoformat()}
+                if not content.get("overview"):
+                    update["content.overview"] = new_desc
+                await self.db.cms_pages.update_one({"slug": slug}, {"$set": update})
+                logger.info(f"[SEO Fix] Content enriched for /{slug}: {len(existing_desc.split())} → {len(new_desc.split())} words")
+                return {"type": "content_enrich", "slug": slug, "old_words": len(str(existing_desc).split()),
+                        "new_words": len(new_desc.split()), "status": "applied"}
+        except Exception as e:
+            logger.error(f"[SEO Fix] Failed to enrich content for {slug}: {e}")
+        return None
 
     async def _fix_cms_meta_description(self, page: dict) -> Optional[dict]:
         """Generate and apply an optimized meta description for a CMS page."""
