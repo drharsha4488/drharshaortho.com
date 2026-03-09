@@ -58,9 +58,9 @@ const Treatments = () => {
             description: t.content?.description || t.meta_description || '',
             imageUrl: t.content?.imageUrl || '',
             icon: t.content?.icon || '🏥',
-            recovery: t.content?.recovery || '',
+            recovery: typeof t.content?.recovery === 'string' ? t.content.recovery : (t.content?.recovery?.timeline || ''),
             hospitalStay: t.content?.hospitalStay || '',
-            benefits: t.content?.benefits || [],
+            benefits: Array.isArray(t.content?.benefits) ? t.content.benefits : [],
           }));
           setAllTreatments(mapped);
         }

@@ -9,7 +9,7 @@ import requests
 import os
 
 # Use the public URL from frontend .env
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://care-audit-hub-2.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://harsha-care-connect.preview.emergentagent.com')
 
 class TestSEOAutoFix:
     """Tests for SEO Auto-Fix self-healing feature"""

@@ -66,11 +66,14 @@ const TreatmentDetailEnhanced = () => {
         if (response.ok) {
           const data = await response.json();
           if (data && data.content) {
+            const content = data.content || {};
+            const recoveryVal = typeof content.recovery === 'object' ? content.recovery?.timeline || '' : (content.recovery || '');
             setTreatment({
-              ...data.content,
+              ...content,
+              recovery: recoveryVal,
               slug: data.slug,
-              seoTitle: data.title || data.content.name,
-              seoDescription: data.meta_description || data.content.description,
+              seoTitle: data.title || content.name,
+              seoDescription: data.meta_description || content.description,
               seoKeywords: data.keywords?.join(', ') || '',
             });
           } else {
