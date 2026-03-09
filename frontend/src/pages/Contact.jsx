@@ -1,31 +1,101 @@
 import React, { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import SEO from '@/components/SEO';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Phone, Mail, MapPin, Clock, Send, Calendar } from 'lucide-react';
+import {
+  Phone, Mail, MapPin, Clock, Send, Calendar,
+  ChevronDown, ChevronUp, Shield, FileText, CreditCard,
+  Stethoscope, ClipboardList, UserCheck
+} from 'lucide-react';
 import { createAppointment } from '@/lib/api';
 import CostCalculator from '@/components/CostCalculator';
+
+const contactFAQs = [
+  {
+    "@type": "Question",
+    "name": "How do I book an appointment with Dr. Harsha?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "You can book an appointment by calling +91 99599 64567, filling out the appointment form on this page, or booking online through Apollo 247. Walk-in consultations are also available during clinic hours (Mon-Sat, 9 AM - 5 PM)."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "Does Dr. Harsha accept health insurance?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Apollo Hospitals Financial District accepts cashless treatment from 30+ insurance companies including Star Health, ICICI Lombard, HDFC Ergo, Bajaj Allianz, and government schemes (CGHS, ESI, EHS, Aarogyasri)."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "What should I bring for my first consultation?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Please bring: previous medical records and X-rays/MRI reports, current medication list, insurance card/TPA details, a list of your symptoms and questions, and a government-issued photo ID."
+    }
+  }
+];
+
+const appointmentFAQs = [
+  {
+    q: 'How long does a consultation take?',
+    a: 'A typical first consultation takes 20-30 minutes. Dr. Harsha takes time to thoroughly examine you, review reports, and explain treatment options in detail. Follow-up visits are usually 10-15 minutes.'
+  },
+  {
+    q: 'Do I need a referral to see Dr. Harsha?',
+    a: 'No referral is needed. You can directly book an appointment. However, if you have been referred by another doctor, please bring the referral letter and any relevant medical records.'
+  },
+  {
+    q: 'What insurance plans are accepted?',
+    a: 'Apollo Hospitals accepts cashless treatment from 30+ insurance companies including Star Health, ICICI Lombard, HDFC Ergo, Bajaj Allianz, New India Assurance, and all government schemes (CGHS, ESI, EHS, Aarogyasri).'
+  },
+  {
+    q: 'Is emergency orthopedic care available?',
+    a: 'Yes. Apollo Hospitals Financial District has a 24/7 emergency department. For orthopedic emergencies like fractures or dislocations, you can visit the ER anytime. For urgent consultations during clinic hours, call +91 99599 64567.'
+  },
+  {
+    q: 'Can I get a second opinion from Dr. Harsha?',
+    a: 'Absolutely. Dr. Harsha welcomes second opinion consultations. Please bring all your previous medical records, imaging reports (X-rays, MRI, CT scans), and details of any treatment recommended by other doctors.'
+  }
+];
+
+const FAQItem = ({ faq, isOpen, onToggle }) => (
+  <div className="border border-border rounded-lg overflow-hidden">
+    <button
+      onClick={onToggle}
+      className="w-full flex items-center justify-between p-4 text-left bg-card hover:bg-secondary/50 transition-colors"
+      data-testid={`faq-toggle-${faq.q.slice(0, 20).replace(/\s+/g, '-').toLowerCase()}`}
+    >
+      <span className="font-medium text-foreground pr-4 text-sm">{faq.q}</span>
+      {isOpen ? <ChevronUp className="w-4 h-4 text-primary flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-muted-foreground flex-shrink-0" />}
+    </button>
+    {isOpen && (
+      <div className="p-4 bg-secondary/30 border-t border-border">
+        <p className="text-sm text-muted-foreground">{faq.a}</p>
+      </div>
+    )}
+  </div>
+);
 
 const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openFAQ, setOpenFAQ] = useState(-1);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    date: '',
-    message: '',
+    name: '', email: '', phone: '', date: '', message: '',
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
       await createAppointment({
         name: formData.name.trim(),
@@ -34,12 +104,10 @@ const Contact = () => {
         preferred_date: formData.date || null,
         message: formData.message.trim() || null,
       });
-
       toast({
         title: 'Appointment Request Sent!',
         description: 'We will contact you within 24 hours to confirm your appointment.',
       });
-
       setFormData({ name: '', email: '', phone: '', date: '', message: '' });
     } catch (error) {
       console.error('Error submitting appointment:', error);
@@ -59,30 +127,33 @@ const Contact = () => {
 
   return (
     <Layout>
-      <SEO 
+      <SEO
         title="Book Appointment - Best Orthopedic Surgeon Hyderabad | Dr. B Harsha Vardhana Reddy"
-        description="Book appointment with Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District, Hyderabad. Expert orthopedic consultation for knee, hip, shoulder, and sports injuries. Call +91 99599 64567"
-        keywords="book orthopedic appointment Hyderabad, orthopedic consultation, Apollo Hospitals Financial District, knee pain doctor appointment, hip replacement consultation, sports injury appointment"
+        description="Book appointment with Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District, Hyderabad. Expert orthopedic consultation for knee, hip, shoulder, and sports injuries. Call +91 99599 64567. Insurance accepted."
+        keywords="book orthopedic appointment Hyderabad, orthopedic consultation, Apollo Hospitals Financial District, knee pain doctor appointment, hip replacement consultation, sports injury appointment, orthopedic surgeon near me"
       />
+      <SchemaMarkup type="MedicalClinic" faqs={contactFAQs} />
+
+      {/* Breadcrumb */}
+      <div className="bg-secondary py-3">
+        <div className="container-medical">
+          <Breadcrumbs items={[{ name: 'Contact & Appointments', path: '/contact' }]} />
+        </div>
+      </div>
+
       <section className="section-padding bg-gradient-to-br from-background to-teal-light" data-testid="contact-page">
         <div className="container-medical">
           <SectionHeading
             badge="Contact Us"
             title="Book Your Appointment with Best Orthopedic Surgeon in Hyderabad"
-            subtitle="Schedule a consultation with Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District. Expert treatment for all orthopedic conditions."
+            subtitle="Schedule a consultation with Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District. Expert treatment for all orthopedic conditions including knee pain, hip problems, sports injuries, and fractures."
           />
 
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="space-y-8"
-            >
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
               <div className="bg-card rounded-xl p-6 shadow-md border border-border">
-                <h3 className="text-xl font-serif font-semibold text-foreground mb-6">
-                  Contact Information
-                </h3>
+                <h3 className="text-xl font-serif font-semibold text-foreground mb-6">Contact Information</h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 bg-teal-light rounded-full flex items-center justify-center flex-shrink-0">
@@ -97,31 +168,24 @@ const Contact = () => {
                       </p>
                     </div>
                   </div>
-
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 bg-teal-light rounded-full flex items-center justify-center flex-shrink-0">
                       <Phone className="w-5 h-5 text-primary" />
                     </div>
                     <div>
                       <p className="font-medium text-foreground">Phone</p>
-                      <a href="tel:+919959964567" className="text-sm text-primary hover:underline">
-                        +91 99599 64567
-                      </a>
+                      <a href="tel:+919959964567" className="text-sm text-primary hover:underline">+91 99599 64567</a>
                     </div>
                   </div>
-
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 bg-teal-light rounded-full flex items-center justify-center flex-shrink-0">
                       <Mail className="w-5 h-5 text-primary" />
                     </div>
                     <div>
                       <p className="font-medium text-foreground">Email</p>
-                      <a href="mailto:drharsha4488@gmail.com" className="text-sm text-primary hover:underline">
-                        drharsha4488@gmail.com
-                      </a>
+                      <a href="mailto:drharsha4488@gmail.com" className="text-sm text-primary hover:underline">drharsha4488@gmail.com</a>
                     </div>
                   </div>
-
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 bg-teal-light rounded-full flex items-center justify-center flex-shrink-0">
                       <Clock className="w-5 h-5 text-primary" />
@@ -131,7 +195,7 @@ const Contact = () => {
                       <p className="text-sm text-muted-foreground">
                         Mon - Sat: 9:00 AM - 5:00 PM<br />
                         Sunday: Closed<br />
-                        <span className="text-primary">Emergency: 24/7</span>
+                        <span className="text-primary font-medium">Emergency: 24/7</span>
                       </p>
                     </div>
                   </div>
@@ -144,7 +208,7 @@ const Contact = () => {
                   title="Apollo Hospitals Financial District Location"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.0234567890123!2d78.3550579!3d17.4167554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb95001ecefe67%3A0x16f103db18412633!2sApollo%20Hospitals%20-%20Best%20Multispeciality%20Hospital%20in%20Financial%20District%2C%20Hyderabad!5e0!3m2!1sen!2sin!4v1735469000000!5m2!1sen!2sin"
                   width="100%"
-                  height="350"
+                  height="300"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
@@ -154,119 +218,40 @@ const Contact = () => {
             </motion.div>
 
             {/* Appointment Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <form
-                onSubmit={handleSubmit}
-                className="bg-card rounded-xl p-6 md:p-8 shadow-md border border-border"
-                data-testid="appointment-form"
-              >
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
+              <form onSubmit={handleSubmit} className="bg-card rounded-xl p-6 md:p-8 shadow-md border border-border" data-testid="appointment-form">
                 <div className="flex items-center gap-3 mb-6">
                   <Calendar className="w-6 h-6 text-primary" />
-                  <h3 className="text-xl font-serif font-semibold text-foreground">
-                    Request Appointment
-                  </h3>
+                  <h3 className="text-xl font-serif font-semibold text-foreground">Request Appointment</h3>
                 </div>
-
                 <div className="space-y-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">
-                      Full Name *
-                    </label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Enter your full name"
-                      required
-                      data-testid="name-input"
-                    />
+                    <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">Full Name *</label>
+                    <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Enter your full name" required data-testid="name-input" />
                   </div>
-
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">
-                        Email *
-                      </label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="your@email.com"
-                        required
-                        data-testid="email-input"
-                      />
+                      <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">Email *</label>
+                      <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="your@email.com" required data-testid="email-input" />
                     </div>
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-1">
-                        Phone *
-                      </label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="+91 98765 43210"
-                        required
-                        data-testid="phone-input"
-                      />
+                      <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-1">Phone *</label>
+                      <Input id="phone" name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="+91 98765 43210" required data-testid="phone-input" />
                     </div>
                   </div>
-
                   <div>
-                    <label htmlFor="date" className="block text-sm font-medium text-foreground mb-1">
-                      Preferred Date
-                    </label>
-                    <Input
-                      id="date"
-                      name="date"
-                      type="date"
-                      value={formData.date}
-                      onChange={handleChange}
-                      data-testid="date-input"
-                    />
+                    <label htmlFor="date" className="block text-sm font-medium text-foreground mb-1">Preferred Date</label>
+                    <Input id="date" name="date" type="date" value={formData.date} onChange={handleChange} data-testid="date-input" />
                   </div>
-
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-foreground mb-1">
-                      Describe Your Condition
-                    </label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Please describe your symptoms or condition..."
-                      rows={4}
-                      data-testid="message-input"
-                    />
+                    <label htmlFor="message" className="block text-sm font-medium text-foreground mb-1">Describe Your Condition</label>
+                    <Textarea id="message" name="message" value={formData.message} onChange={handleChange} placeholder="Please describe your symptoms, condition, or what you'd like to discuss..." rows={4} data-testid="message-input" />
                   </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full bg-accent hover:brightness-110 text-accent-foreground shadow-gold gap-2"
-                    disabled={isSubmitting}
-                    data-testid="submit-appointment-btn"
-                  >
-                    {isSubmitting ? (
-                      'Sending...'
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        Submit Appointment Request
-                      </>
-                    )}
+                  <Button type="submit" className="w-full bg-accent hover:brightness-110 text-accent-foreground shadow-gold gap-2" disabled={isSubmitting} data-testid="submit-appointment-btn">
+                    {isSubmitting ? 'Sending...' : (<><Send className="w-4 h-4" />Submit Appointment Request</>)}
                   </Button>
-
                   <p className="text-xs text-muted-foreground text-center">
-                    We'll contact you within 24 hours to confirm your appointment.
+                    We&apos;ll contact you within 24 hours to confirm your appointment.
                   </p>
                 </div>
               </form>
@@ -276,6 +261,102 @@ const Contact = () => {
                 <CostCalculator />
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* What to Expect */}
+      <section className="section-padding bg-secondary" data-testid="what-to-expect">
+        <div className="container-medical">
+          <SectionHeading
+            badge="Your Visit"
+            title="What to Expect at Your First Consultation"
+            subtitle="Here's how Dr. Harsha ensures a thorough and comfortable consultation experience."
+          />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { icon: ClipboardList, step: '1', title: 'Medical History Review', desc: 'Dr. Harsha reviews your complete medical history, previous treatments, imaging reports (X-rays, MRI), and current medications to understand your condition.' },
+              { icon: Stethoscope, step: '2', title: 'Physical Examination', desc: 'A thorough physical examination of the affected area including range of motion testing, stability tests, and functional assessment to accurately diagnose your condition.' },
+              { icon: FileText, step: '3', title: 'Imaging & Diagnosis', desc: 'If needed, additional X-rays, MRI, or blood tests may be ordered. Dr. Harsha explains the findings in simple, easy-to-understand terms with visual aids.' },
+              { icon: UserCheck, step: '4', title: 'Treatment Plan Discussion', desc: 'A personalized treatment plan is presented with all options explained — conservative to surgical. Dr. Harsha takes time to answer every question you have.' },
+              { icon: CreditCard, step: '5', title: 'Insurance & Cost Guidance', desc: 'Our team assists with insurance pre-authorization, cost estimates, and payment options. We work with 30+ insurance providers for cashless treatment.' },
+              { icon: Calendar, step: '6', title: 'Follow-up Planning', desc: 'Clear next steps including follow-up schedule, physiotherapy referral if needed, and direct access to Dr. Harsha\'s team for any post-visit questions.' },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="bg-card rounded-xl p-6 shadow-sm border border-border"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                    {item.step}
+                  </div>
+                  <item.icon className="w-5 h-5 text-primary" />
+                </div>
+                <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Insurance Section */}
+      <section className="section-padding" data-testid="insurance-section">
+        <div className="container-medical max-w-4xl">
+          <SectionHeading
+            badge="Insurance"
+            title="Insurance & Payment Options"
+            subtitle="Apollo Hospitals Financial District partners with all major insurance providers to make orthopedic care accessible and affordable."
+          />
+          <div className="grid sm:grid-cols-2 gap-6 mb-8">
+            <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
+              <Shield className="w-8 h-8 text-primary mb-3" />
+              <h3 className="font-semibold text-foreground mb-2">Cashless Insurance</h3>
+              <p className="text-sm text-muted-foreground mb-3">We accept cashless treatment from 30+ insurance companies:</p>
+              <div className="flex flex-wrap gap-2">
+                {['Star Health', 'ICICI Lombard', 'HDFC Ergo', 'Bajaj Allianz', 'New India', 'Max Bupa', 'Care Health', 'Niva Bupa'].map(ins => (
+                  <span key={ins} className="px-2 py-1 bg-teal-light text-primary text-xs rounded-full">{ins}</span>
+                ))}
+              </div>
+            </div>
+            <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
+              <CreditCard className="w-8 h-8 text-primary mb-3" />
+              <h3 className="font-semibold text-foreground mb-2">Government Schemes</h3>
+              <p className="text-sm text-muted-foreground mb-3">All government health schemes accepted:</p>
+              <div className="flex flex-wrap gap-2">
+                {['CGHS', 'ESI', 'EHS', 'Aarogyasri', 'ECHS', 'Railway Health'].map(scheme => (
+                  <span key={scheme} className="px-2 py-1 bg-teal-light text-primary text-xs rounded-full">{scheme}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <p className="text-center text-sm text-muted-foreground">
+            Our dedicated insurance desk assists with pre-authorization, claim processing, and all documentation.
+            For insurance queries, call <a href="tel:+919959964567" className="text-primary hover:underline font-medium">+91 99599 64567</a>.
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="section-padding bg-secondary" data-testid="contact-faq-section">
+        <div className="container-medical max-w-3xl">
+          <SectionHeading
+            badge="FAQ"
+            title="Frequently Asked Questions About Appointments"
+          />
+          <div className="space-y-3">
+            {appointmentFAQs.map((faq, i) => (
+              <FAQItem
+                key={i}
+                faq={faq}
+                isOpen={openFAQ === i}
+                onToggle={() => setOpenFAQ(openFAQ === i ? -1 : i)}
+              />
+            ))}
           </div>
         </div>
       </section>
