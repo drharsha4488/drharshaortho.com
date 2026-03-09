@@ -464,7 +464,7 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             trend = "flat"
             strategy = "boost"
             posts_per_cycle = 5
-            message = f"No new content added. Increasing to 5 posts/cycle to drive growth."
+            message = "No new content added. Increasing to 5 posts/cycle to drive growth."
 
         return {
             "trend": trend,
@@ -484,11 +484,12 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
     # 6. SEO HEALTH MONITOR — automated site auditing
     # ─────────────────────────────────────────────────────────
     async def run_seo_audit(self, site_url: str, max_pages: int = 500) -> dict:
-        """Crawl the site and audit ALL pages from sitemap. No hard limit — scans every page."""
+        """Comprehensive SEO audit: HTML crawl + CMS content + site-wide checks.
+        Modeled after claude-seo: Technical, E-E-A-T, Schema, GEO/AEO, Local SEO, Images, Content."""
         if not BS4_AVAILABLE:
             return {"error": "BeautifulSoup not installed", "score": 0, "pages_audited": 0, "issues": []}
 
-        logger.info(f"[SEO Audit] Starting full audit of {site_url}")
+        logger.info(f"[SEO Audit] Starting comprehensive audit of {site_url}")
         sitemap_url = f"{site_url}/api/sitemap.xml"
         page_urls = await self._get_urls_from_sitemap(sitemap_url)
 
@@ -507,13 +508,13 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         if not page_urls:
             page_urls = [site_url + p for p, _, _ in STATIC_SITEMAP_PAGES]
 
-        # Scan ALL pages — no artificial cap
-        logger.info(f"[SEO Audit] Scanning {len(page_urls)} pages (all from sitemap)")
+        logger.info(f"[SEO Audit] Phase 1: Crawling {len(page_urls)} pages from sitemap")
 
         all_issues: List[dict] = []
         page_results: List[dict] = []
         pages_ok = 0
 
+        # Phase 1: HTML crawl audit (all pages)
         async with httpx.AsyncClient(timeout=15, follow_redirects=True, verify=False) as client:
             for url in page_urls:
                 try:
@@ -527,7 +528,7 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                     html = resp.text
                     issues = self._audit_page(url, html)
                     all_issues.extend(issues)
-                    page_score = max(0, 100 - len(issues) * 8)
+                    page_score = max(0, 100 - len(issues) * 5)
                     page_results.append({"url": url, "status": 200, "score": page_score,
                                          "issues": len(issues)})
                     if page_score >= 80:
@@ -536,9 +537,19 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                     all_issues.append({"url": url, "category": "accessibility", "severity": "critical",
                                        "issue": f"Fetch failed: {str(e)[:80]}", "suggestion": "Check if page is accessible"})
                     page_results.append({"url": url, "status": 0, "score": 0, "issues": 1})
-                await asyncio.sleep(0.3)
+                await asyncio.sleep(0.2)
 
-        # Summarise
+        # Phase 2: CMS content audit (database content quality)
+        logger.info("[SEO Audit] Phase 2: Auditing CMS content quality")
+        cms_issues = await self._audit_cms_content()
+        all_issues.extend(cms_issues)
+
+        # Phase 3: Site-wide checks (local SEO, programmatic SEO quality gates)
+        logger.info("[SEO Audit] Phase 3: Site-wide SEO checks")
+        sitewide_issues = await self._audit_site_wide(site_url)
+        all_issues.extend(sitewide_issues)
+
+        # Summarise with category scoring
         total_pages = len(page_results)
         overall_score = round(sum(p["score"] for p in page_results) / max(total_pages, 1))
         critical = sum(1 for i in all_issues if i["severity"] == "critical")
@@ -548,6 +559,27 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         category_counts: Dict[str, int] = {}
         for i in all_issues:
             category_counts[i["category"]] = category_counts.get(i["category"], 0) + 1
+
+        # Category-level scoring (out of 100 each)
+        category_scores = {}
+        cat_issues_by_severity = {}
+        for i in all_issues:
+            cat = i["category"]
+            if cat not in cat_issues_by_severity:
+                cat_issues_by_severity[cat] = {"critical": 0, "warning": 0, "info": 0}
+            cat_issues_by_severity[cat][i["severity"]] = cat_issues_by_severity[cat].get(i["severity"], 0) + 1
+
+        all_categories = ["meta", "schema", "headings", "images", "content", "social",
+                          "technical", "internal_linking", "eeat", "local_seo", "geo_aeo",
+                          "performance", "programmatic_seo", "accessibility"]
+        total_ref = max(total_pages, 1)
+        for cat in set(list(category_counts.keys()) + all_categories):
+            crit = cat_issues_by_severity.get(cat, {}).get("critical", 0)
+            warn = cat_issues_by_severity.get(cat, {}).get("warning", 0)
+            inf = cat_issues_by_severity.get(cat, {}).get("info", 0)
+            # Proportional: what % of pages are affected? weighted by severity
+            affected_pct = min(100, ((crit * 3 + warn * 1.5 + inf * 0.5) / total_ref) * 100)
+            category_scores[cat] = max(0, round(100 - affected_pct))
 
         audit_result = {
             "date": datetime.now(timezone.utc).isoformat(),
@@ -560,15 +592,21 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             "warnings": warnings,
             "info": info,
             "category_breakdown": category_counts,
-            "issues": all_issues[:200],  # cap stored issues
+            "category_scores": category_scores,
+            "audit_phases": {
+                "html_crawl": {"pages": total_pages, "issues": len(all_issues) - len(cms_issues) - len(sitewide_issues)},
+                "cms_content": {"pages_checked": await self.db.cms_pages.count_documents({}), "issues": len(cms_issues)},
+                "site_wide": {"issues": len(sitewide_issues)},
+            },
+            "issues": all_issues[:300],
             "page_results": page_results,
         }
 
         # Store in MongoDB
         await self.db.seo_audits.insert_one({**audit_result, "recorded_at": datetime.now(timezone.utc).isoformat()})
-        # remove _id before returning
         audit_result.pop("_id", None)
-        logger.info(f"[SEO Audit] Complete: score={overall_score}, pages={total_pages}, issues={len(all_issues)}")
+        logger.info(f"[SEO Audit] Complete: score={overall_score}, pages={total_pages}, total_issues={len(all_issues)}, "
+                     f"categories={len(category_counts)}")
         return audit_result
 
     async def _get_urls_from_sitemap(self, sitemap_url: str) -> List[str]:
@@ -586,14 +624,12 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             return []
 
     def _audit_page(self, url: str, html: str) -> List[dict]:
-        """Audit a single page HTML for SEO issues. Returns list of issues."""
+        """Comprehensive SEO audit of a single page — modeled after claude-seo's 13 sub-skills."""
         issues: List[dict] = []
         soup = BeautifulSoup(html, "lxml")
-
-        # Detect React/SPA pages
         is_spa = bool(soup.find("div", id="root"))
 
-        # --- Title tag ---
+        # ── 1. META TAGS ──
         title_tag = soup.find("title")
         title_text = title_tag.get_text(strip=True) if title_tag else ""
         if not title_text:
@@ -602,60 +638,122 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         elif len(title_text) < 20:
             issues.append({"url": url, "category": "meta", "severity": "warning",
                            "issue": f"Title too short ({len(title_text)} chars)", "suggestion": "Expand title to 50-60 characters"})
-        elif len(title_text) > 70:
+        elif len(title_text) > 60:
             issues.append({"url": url, "category": "meta", "severity": "warning",
-                           "issue": f"Title too long ({len(title_text)} chars)", "suggestion": "Shorten title to under 60 characters"})
+                           "issue": f"Title too long ({len(title_text)} chars)", "suggestion": "Shorten title to under 60 characters (Google truncates at ~60)"})
 
-        # --- Meta description ---
         meta_desc = soup.find("meta", attrs={"name": "description"})
         desc_text = meta_desc.get("content", "").strip() if meta_desc else ""
         if not desc_text:
             issues.append({"url": url, "category": "meta", "severity": "critical",
-                           "issue": "Missing meta description", "suggestion": "Add a meta description (120-160 chars)"})
-        elif len(desc_text) < 50:
+                           "issue": "Missing meta description", "suggestion": "Add meta description (120-160 chars)"})
+        elif len(desc_text) < 80:
             issues.append({"url": url, "category": "meta", "severity": "warning",
-                           "issue": f"Meta description too short ({len(desc_text)} chars)",
-                           "suggestion": "Expand to 120-160 characters"})
+                           "issue": f"Meta description short ({len(desc_text)} chars)", "suggestion": "Expand to 120-160 characters"})
         elif len(desc_text) > 160:
             issues.append({"url": url, "category": "meta", "severity": "warning",
-                           "issue": f"Meta description long ({len(desc_text)} chars)",
-                           "suggestion": "Consider trimming to under 160 characters"})
+                           "issue": f"Meta description long ({len(desc_text)} chars)", "suggestion": "Trim to under 160 characters"})
 
-        # --- Canonical tag ---
         canonical = soup.find("link", attrs={"rel": "canonical"})
         if not canonical or not canonical.get("href"):
             issues.append({"url": url, "category": "meta", "severity": "warning",
                            "issue": "Missing canonical tag", "suggestion": "Add <link rel='canonical'> to prevent duplicate content"})
 
-        # --- Schema markup (JSON-LD) ---
+        robots_meta = soup.find("meta", attrs={"name": "robots"})
+        if robots_meta:
+            robots_content = robots_meta.get("content", "").lower()
+            if "noindex" in robots_content:
+                issues.append({"url": url, "category": "meta", "severity": "critical",
+                               "issue": "Page has noindex directive", "suggestion": "Remove noindex unless intentional"})
+
+        # ── 2. SCHEMA / STRUCTURED DATA ──
         schema_scripts = soup.find_all("script", attrs={"type": "application/ld+json"})
         if not schema_scripts:
             issues.append({"url": url, "category": "schema", "severity": "warning",
-                           "issue": "No JSON-LD schema markup", "suggestion": "Add structured data for better rich snippets"})
+                           "issue": "No JSON-LD schema markup", "suggestion": "Add structured data (MedicalBusiness, Physician, FAQPage)"})
+        else:
+            for script in schema_scripts:
+                try:
+                    schema_data = json.loads(script.string or "{}")
+                    schema_type = schema_data.get("@type", "")
+                    # Check for deprecated schema types
+                    deprecated_types = ["HowTo", "SpecialAnnouncement"]
+                    if schema_type in deprecated_types:
+                        issues.append({"url": url, "category": "schema", "severity": "warning",
+                                       "issue": f"Deprecated schema type: {schema_type}",
+                                       "suggestion": f"{schema_type} schema was deprecated by Google — remove or replace"})
+                    # Check FAQ schema (restricted to gov/health since Aug 2023 — this IS health)
+                    if schema_type == "FAQPage":
+                        entities = schema_data.get("mainEntity", [])
+                        if len(entities) < 2:
+                            issues.append({"url": url, "category": "schema", "severity": "info",
+                                           "issue": "FAQPage schema has fewer than 2 questions",
+                                           "suggestion": "Add at least 3-5 FAQs for rich snippet eligibility"})
+                    # Medical-specific: check for Physician / MedicalBusiness
+                    if schema_type in ("MedicalBusiness", "Physician", "MedicalClinic"):
+                        if not schema_data.get("name"):
+                            issues.append({"url": url, "category": "schema", "severity": "warning",
+                                           "issue": f"{schema_type} schema missing 'name' field",
+                                           "suggestion": "Add doctor/clinic name to schema"})
+                        if not schema_data.get("address") and not schema_data.get("location"):
+                            issues.append({"url": url, "category": "local_seo", "severity": "warning",
+                                           "issue": f"{schema_type} schema missing address",
+                                           "suggestion": "Add address for local search visibility"})
+                        if not schema_data.get("telephone") and not schema_data.get("phone"):
+                            issues.append({"url": url, "category": "local_seo", "severity": "info",
+                                           "issue": f"{schema_type} schema missing telephone",
+                                           "suggestion": "Add phone number for click-to-call in search results"})
+                    # AggregateRating check
+                    if schema_type == "Physician" and not schema_data.get("aggregateRating"):
+                        issues.append({"url": url, "category": "schema", "severity": "info",
+                                       "issue": "Physician schema missing aggregateRating",
+                                       "suggestion": "Add aggregateRating for star ratings in search results"})
+                except (json.JSONDecodeError, TypeError):
+                    issues.append({"url": url, "category": "schema", "severity": "warning",
+                                   "issue": "Invalid JSON-LD schema (parse error)",
+                                   "suggestion": "Fix JSON syntax in structured data"})
 
-        # --- H1 tag (check in both main content and noscript) ---
+        # ── 3. HEADINGS HIERARCHY ──
         h1_tags = soup.find_all("h1")
+        h2_tags = soup.find_all("h2")
+        h3_tags = soup.find_all("h3")
         if not h1_tags:
             issues.append({"url": url, "category": "headings", "severity": "critical",
-                           "issue": "Missing H1 heading", "suggestion": "Add exactly one H1 tag per page"})
+                           "issue": "Missing H1 heading", "suggestion": "Add exactly one H1 per page"})
         elif len(h1_tags) > 1:
             issues.append({"url": url, "category": "headings", "severity": "info",
                            "issue": f"Multiple H1 tags ({len(h1_tags)})", "suggestion": "Use only one H1 per page"})
+        if not h2_tags and not is_spa:
+            issues.append({"url": url, "category": "headings", "severity": "warning",
+                           "issue": "No H2 headings found", "suggestion": "Add H2 subheadings to structure content"})
+        if h3_tags and not h2_tags and not is_spa:
+            issues.append({"url": url, "category": "headings", "severity": "info",
+                           "issue": "H3 tags without H2 — heading hierarchy skip",
+                           "suggestion": "Ensure headings follow H1 > H2 > H3 order"})
 
-        # --- Images without alt text ---
+        # ── 4. IMAGE OPTIMIZATION ──
         images = soup.find_all("img")
         missing_alt = [img.get("src", "?")[:60] for img in images if not img.get("alt")]
         if missing_alt:
             issues.append({"url": url, "category": "images", "severity": "warning",
                            "issue": f"{len(missing_alt)} images missing alt text",
                            "suggestion": "Add descriptive alt text to all images"})
+        missing_dimensions = [img.get("src", "?")[:60] for img in images if not img.get("width") and not img.get("height") and not img.get("style")]
+        if missing_dimensions and len(missing_dimensions) > 2:
+            issues.append({"url": url, "category": "images", "severity": "info",
+                           "issue": f"{len(missing_dimensions)} images missing width/height",
+                           "suggestion": "Set explicit dimensions to prevent CLS (layout shift)"})
+        missing_lazy = [img for img in images if not img.get("loading") and img.get("src", "").startswith("http")]
+        if len(missing_lazy) > 3:
+            issues.append({"url": url, "category": "images", "severity": "info",
+                           "issue": f"{len(missing_lazy)} external images without lazy loading",
+                           "suggestion": "Add loading='lazy' to below-the-fold images for faster LCP"})
 
-        # --- Content length (check full page text including noscript) ---
+        # ── 5. CONTENT QUALITY ──
         body = soup.find("body")
         text_content = body.get_text(separator=" ", strip=True) if body else ""
         word_count = len(text_content.split())
         if is_spa and word_count < 30:
-            # For SPA pages, check noscript content separately
             noscript = soup.find("noscript")
             if noscript:
                 noscript_words = len(noscript.get_text(separator=" ", strip=True).split())
@@ -665,18 +763,228 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                            "issue": f"Thin content ({word_count} words)",
                            "suggestion": "Aim for 300+ words of unique content"})
 
-        # --- Open Graph tags ---
+        # ── 6. SOCIAL / OPEN GRAPH ──
         og_title = soup.find("meta", attrs={"property": "og:title"})
         og_desc = soup.find("meta", attrs={"property": "og:description"})
+        og_image = soup.find("meta", attrs={"property": "og:image"})
+        _ = soup.find("meta", attrs={"property": "og:type"})
         if not og_title or not og_desc:
             issues.append({"url": url, "category": "social", "severity": "info",
-                           "issue": "Missing Open Graph tags", "suggestion": "Add og:title and og:description for social sharing"})
+                           "issue": "Missing Open Graph tags (og:title / og:description)",
+                           "suggestion": "Add OG tags for social sharing previews"})
+        if not og_image:
+            issues.append({"url": url, "category": "social", "severity": "info",
+                           "issue": "Missing og:image", "suggestion": "Add og:image for rich social media previews"})
+        twitter_card = soup.find("meta", attrs={"name": "twitter:card"})
+        if not twitter_card:
+            issues.append({"url": url, "category": "social", "severity": "info",
+                           "issue": "Missing Twitter Card meta tags",
+                           "suggestion": "Add twitter:card, twitter:title, twitter:description for Twitter/X sharing"})
 
-        # --- Viewport meta ---
+        # ── 7. MOBILE / TECHNICAL ──
         viewport = soup.find("meta", attrs={"name": "viewport"})
         if not viewport:
-            issues.append({"url": url, "category": "mobile", "severity": "critical",
+            issues.append({"url": url, "category": "technical", "severity": "critical",
                            "issue": "Missing viewport meta tag", "suggestion": "Add viewport meta for mobile responsiveness"})
+        charset = soup.find("meta", attrs={"charset": True}) or soup.find("meta", attrs={"http-equiv": "Content-Type"})
+        if not charset:
+            issues.append({"url": url, "category": "technical", "severity": "info",
+                           "issue": "No charset declaration", "suggestion": "Add <meta charset='utf-8'>"})
+        lang = soup.find("html")
+        if lang and not lang.get("lang"):
+            issues.append({"url": url, "category": "technical", "severity": "warning",
+                           "issue": "HTML tag missing lang attribute", "suggestion": "Add lang='en' to <html> for accessibility & SEO"})
+
+        # ── 8. INTERNAL LINKING ──
+        internal_links = []
+        all_links = soup.find_all("a", href=True)
+        for a in all_links:
+            href = a.get("href", "")
+            if href.startswith("/") or (url and href.startswith(url.split("/")[0] + "//" + url.split("/")[2])):
+                internal_links.append(href)
+        if len(internal_links) < 2 and not is_spa:
+            issues.append({"url": url, "category": "internal_linking", "severity": "warning",
+                           "issue": f"Only {len(internal_links)} internal links on page",
+                           "suggestion": "Add 3+ internal links to related content for better crawlability"})
+
+        # ── 9. E-E-A-T SIGNALS ──
+        body_text = text_content.lower()
+        eeat_signals = 0
+        if "dr." in body_text or "doctor" in body_text or "surgeon" in body_text:
+            eeat_signals += 1
+        if "experience" in body_text or "years" in body_text or "fellowship" in body_text:
+            eeat_signals += 1
+        if "apollo" in body_text or "hospital" in body_text or "certified" in body_text:
+            eeat_signals += 1
+        if "mbbs" in body_text or "dnb" in body_text or "d.ortho" in body_text:
+            eeat_signals += 1
+        # Only flag on pages that should have E-E-A-T (medical content pages)
+        from urllib.parse import urlparse
+        path = urlparse(url).path
+        is_medical_page = any(x in path for x in ["/conditions/", "/treatments/", "/about", "/blog/"])
+        if is_medical_page and eeat_signals < 2 and not is_spa:
+            issues.append({"url": url, "category": "eeat", "severity": "warning",
+                           "issue": "Low E-E-A-T signals on medical page",
+                           "suggestion": "Add author credentials, qualifications, hospital affiliation, and experience details"})
+
+        # ── 10. GEO / LOCAL SEO ──
+        is_location_page = any(x in path for x in ["-hyderabad", "-gachibowli", "-hitec-city", "-madhapur",
+                                                     "-kondapur", "-kukatpally", "-near-me", "-financial-district",
+                                                     "-banjara-hills", "-jubilee-hills", "-secunderabad"])
+        if is_location_page:
+            if "hyderabad" not in body_text and "telangana" not in body_text:
+                issues.append({"url": url, "category": "local_seo", "severity": "warning",
+                               "issue": "Location page missing geographic keywords",
+                               "suggestion": "Include city/area name (Hyderabad, Telangana) in page content"})
+            if "apollo" not in body_text and "hospital" not in body_text:
+                issues.append({"url": url, "category": "local_seo", "severity": "info",
+                               "issue": "Location page missing hospital/clinic name",
+                               "suggestion": "Include Apollo Hospitals Financial District for NAP consistency"})
+            # Check for NAP (Name, Address, Phone)
+            has_phone = bool(re.search(r'\+91[\s\-]?\d{5}[\s\-]?\d{5}', body_text) or "99599" in body_text)
+            if not has_phone:
+                issues.append({"url": url, "category": "local_seo", "severity": "warning",
+                               "issue": "Location page missing phone number (NAP)",
+                               "suggestion": "Include clinic phone number for local SEO NAP consistency"})
+
+        # ── 11. GEO / AI SEARCH OPTIMIZATION (AEO) ──
+        # Check for AI-friendly content structure
+        if not is_spa:
+            has_lists = bool(soup.find("ul") or soup.find("ol"))
+            has_tables = bool(soup.find("table"))
+            has_definitions = any(tag.name in ("dl", "dt", "dd") for tag in soup.find_all(True))
+            has_faq = bool(soup.find(attrs={"itemtype": "https://schema.org/FAQPage"}) or
+                          any('"FAQPage"' in (s.string or "") for s in schema_scripts))
+            aeo_score = sum([has_lists, has_tables or has_definitions, has_faq, len(h2_tags) >= 3])
+            if is_medical_page and aeo_score < 2:
+                issues.append({"url": url, "category": "geo_aeo", "severity": "info",
+                               "issue": "Low AI search optimization (AEO) score",
+                               "suggestion": "Add structured content: lists, FAQ schema, clear H2 sections for AI Overviews"})
+
+        # ── 12. PERFORMANCE HINTS ──
+        soup.find_all("link", attrs={"rel": "stylesheet"})  # Check for render-blocking CSS
+        sync_scripts = [s for s in soup.find_all("script", src=True)
+                       if not s.get("async") and not s.get("defer") and not s.get("type") == "application/ld+json"]
+        if len(sync_scripts) > 3:
+            issues.append({"url": url, "category": "performance", "severity": "info",
+                           "issue": f"{len(sync_scripts)} render-blocking scripts",
+                           "suggestion": "Add async/defer to non-critical scripts for faster page load"})
+
+        return issues
+
+    async def _audit_cms_content(self) -> List[dict]:
+        """Audit CMS pages stored in MongoDB for content quality. Returns issues list."""
+        issues = []
+        cms_pages = await self.db.cms_pages.find({}, {"_id": 0}).to_list(500)
+
+        for page in cms_pages:
+            slug = page.get("slug", "unknown")
+            page_type = page.get("type", "unknown")
+            data = page.get("data", page.get("content", {}))
+            if not data or not isinstance(data, dict):
+                issues.append({"url": f"/{page_type}s/{slug}", "category": "content", "severity": "warning",
+                               "issue": "CMS page has no content data", "suggestion": "Add content to this page"})
+                continue
+
+            name = data.get("name", data.get("title", slug))
+
+            # Check meta title
+            meta_title = data.get("meta_title", "")
+            if not meta_title:
+                issues.append({"url": f"/{page_type}s/{slug}", "category": "meta", "severity": "warning",
+                               "issue": f"CMS page '{name}' missing meta_title",
+                               "suggestion": "Add a unique meta title (50-60 chars)"})
+            elif len(meta_title) > 60:
+                issues.append({"url": f"/{page_type}s/{slug}", "category": "meta", "severity": "info",
+                               "issue": f"CMS '{name}' meta_title too long ({len(meta_title)} chars)",
+                               "suggestion": "Shorten to under 60 characters"})
+
+            # Check meta description
+            meta_desc = data.get("meta_description", "")
+            if not meta_desc:
+                issues.append({"url": f"/{page_type}s/{slug}", "category": "meta", "severity": "warning",
+                               "issue": f"CMS page '{name}' missing meta_description",
+                               "suggestion": "Add a meta description (120-160 chars)"})
+            elif len(meta_desc) > 160:
+                issues.append({"url": f"/{page_type}s/{slug}", "category": "meta", "severity": "info",
+                               "issue": f"CMS '{name}' meta_description too long ({len(meta_desc)} chars)",
+                               "suggestion": "Trim to under 160 characters"})
+
+            # Check content depth
+            description = data.get("description", data.get("overview", ""))
+            desc_words = len(str(description).split()) if description else 0
+            if desc_words < 50:
+                issues.append({"url": f"/{page_type}s/{slug}", "category": "content", "severity": "warning",
+                               "issue": f"CMS '{name}' thin description ({desc_words} words)",
+                               "suggestion": "Expand to 150+ words for SEO value"})
+
+            # Check for key medical content sections
+            if page_type == "condition":
+                required = ["symptoms", "causes", "diagnosis", "treatment"]
+                for section in required:
+                    if not data.get(section):
+                        issues.append({"url": f"/conditions/{slug}", "category": "content", "severity": "info",
+                                       "issue": f"Condition '{name}' missing '{section}' section",
+                                       "suggestion": f"Add {section} content for comprehensive medical coverage"})
+
+            if page_type == "treatment":
+                required = ["benefits", "recovery", "procedure"]
+                for section in required:
+                    val = data.get(section)
+                    if not val:
+                        issues.append({"url": f"/treatments/{slug}", "category": "content", "severity": "info",
+                                       "issue": f"Treatment '{name}' missing '{section}' section",
+                                       "suggestion": f"Add {section} content for E-E-A-T compliance"})
+
+            # E-E-A-T: Check for author/doctor attribution in content
+            all_text = json.dumps(data).lower()
+            if page_type in ("condition", "treatment"):
+                if "dr." not in all_text and "harsha" not in all_text:
+                    issues.append({"url": f"/{page_type}s/{slug}", "category": "eeat", "severity": "info",
+                                   "issue": f"CMS '{name}' missing doctor attribution",
+                                   "suggestion": "Add 'Reviewed by Dr. Harsha' for E-E-A-T trust signals"})
+
+            # Check for FAQ content (important for rich snippets)
+            faqs = data.get("faqs", data.get("faq", []))
+            if not faqs and page_type in ("condition", "treatment"):
+                issues.append({"url": f"/{page_type}s/{slug}", "category": "geo_aeo", "severity": "info",
+                               "issue": f"CMS '{name}' has no FAQs",
+                               "suggestion": "Add 3-5 FAQs for FAQ rich snippets and AI search visibility"})
+
+        return issues
+
+    async def _audit_site_wide(self, site_url: str) -> List[dict]:
+        """Site-wide SEO checks: local SEO, E-E-A-T, programmatic SEO quality gates."""
+        issues = []
+
+        # Count location pages for programmatic SEO quality gates
+        location_page_count = sum(1 for p, _, _ in STATIC_SITEMAP_PAGES
+                                  if any(x in p for x in ["-hyderabad", "-gachibowli", "-hitec-city", "-madhapur",
+                                                           "-kondapur", "-kukatpally", "-near-me", "-banjara",
+                                                           "-jubilee", "-secunderabad"]))
+        if location_page_count > 50:
+            issues.append({"url": site_url, "category": "programmatic_seo", "severity": "critical",
+                           "issue": f"{location_page_count} location pages — exceeds quality gate (50+ = audit required)",
+                           "suggestion": "Audit for thin/duplicate content, add unique value per page, consider consolidation"})
+        elif location_page_count > 30:
+            issues.append({"url": site_url, "category": "programmatic_seo", "severity": "warning",
+                           "issue": f"{location_page_count} location pages — approaching quality gate limit",
+                           "suggestion": "Ensure each location page has unique, substantial content (300+ words)"})
+
+        # Check blog count for content freshness
+        blog_count = await self.db.blog_posts.count_documents({})
+        if blog_count < 5:
+            issues.append({"url": f"{site_url}/blog", "category": "content", "severity": "warning",
+                           "issue": f"Only {blog_count} blog posts — low content freshness signal",
+                           "suggestion": "Publish 2-4 blog posts per month for freshness signals"})
+
+        # Check for sitemap health
+        sitemap_pages = len(STATIC_SITEMAP_PAGES)
+        cms_count = await self.db.cms_pages.count_documents({})
+        if sitemap_pages + cms_count + blog_count > 500:
+            issues.append({"url": f"{site_url}/api/sitemap.xml", "category": "technical", "severity": "info",
+                           "issue": f"Large sitemap ({sitemap_pages + cms_count + blog_count} URLs)",
+                           "suggestion": "Consider splitting into multiple sitemaps for faster crawling"})
 
         return issues
 

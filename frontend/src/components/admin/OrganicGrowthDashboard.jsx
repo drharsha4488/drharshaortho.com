@@ -140,7 +140,7 @@ const OrganicGrowthDashboard = () => {
       if (r.ok) {
         const d = await r.json();
         if (d.status === 'started' || d.status === 'running') {
-          setSeoStatus({ type: 'loading', message: d.message || 'Audit running — scanning all pages...' });
+          setSeoStatus({ type: 'loading', message: d.message || 'Running 3-phase audit: HTML crawl → CMS content → Site-wide checks...' });
           // Poll for results
           pollAuditResults();
         }
@@ -507,17 +507,17 @@ const OrganicGrowthDashboard = () => {
         </div>
       </div>
 
-      {/* SEO HEALTH MONITOR */}
+      {/* SEO HEALTH MONITOR — Comprehensive (Technical, E-E-A-T, Schema, GEO, Local SEO) */}
       <div className="bg-card rounded-xl border border-border overflow-hidden" data-testid="seo-health-monitor">
         <div className="p-5 border-b border-border">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h2 className="font-bold text-foreground text-lg" data-testid="seo-health-title">SEO Health Monitor</h2>
-                <p className="text-sm text-muted-foreground">Automated site audit — finds issues before Google does</p>
+                <p className="text-sm text-muted-foreground">13-point audit: Technical, E-E-A-T, Schema, GEO/AEO, Local SEO, Content</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -528,7 +528,7 @@ const OrganicGrowthDashboard = () => {
                 }`} data-testid="seo-score">{seoAudit.overall_score}<span className="text-sm font-normal text-muted-foreground">/100</span></div>
               )}
               <Button onClick={runSeoAudit} disabled={runningAudit || runningAutoFix} size="sm" className="gap-2" data-testid="run-audit-btn">
-                {runningAudit ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Scanning...</> : <><ScanLine className="w-3.5 h-3.5" /> Run Audit</>}
+                {runningAudit ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Scanning...</> : <><ScanLine className="w-3.5 h-3.5" /> Run Full Audit</>}
               </Button>
               <Button onClick={runAutoFix} disabled={runningAutoFix || runningAudit || !seoAudit?.total_issues} size="sm" variant="outline"
                 className="gap-2 border-emerald-300 text-emerald-700 hover:bg-emerald-50" data-testid="auto-fix-btn">
@@ -536,11 +536,11 @@ const OrganicGrowthDashboard = () => {
               </Button>
             </div>
           </div>
-          {/* Inline status message for SEO actions */}
+          {/* Inline status */}
           <AnimatePresence>
             {seoStatus && (
               <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-                className={`mx-5 mt-0 mb-0 flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
+                className={`mt-3 flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
                   seoStatus.type === 'loading' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
                   seoStatus.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' :
                   'bg-red-50 text-red-700 border border-red-200'
@@ -562,11 +562,11 @@ const OrganicGrowthDashboard = () => {
             <div className="text-center py-8 text-muted-foreground">
               <ShieldCheck className="w-10 h-10 mx-auto mb-3 opacity-20" />
               <p className="text-sm font-medium">No audit data yet</p>
-              <p className="text-xs mt-1">Click "Run Audit" to scan your site for SEO issues</p>
+              <p className="text-xs mt-1">Click "Run Full Audit" — scans all {seoAudit?.pages_audited || '164+'} pages across 13 SEO categories</p>
             </div>
           ) : (
             <div className="space-y-4">
-              {/* Score bar */}
+              {/* Score bar + phases */}
               <div>
                 <div className="flex items-center justify-between text-sm mb-2">
                   <span className="text-muted-foreground">Overall Health</span>
@@ -579,9 +579,17 @@ const OrganicGrowthDashboard = () => {
                       seoAudit.overall_score >= 50 ? 'bg-amber-500' : 'bg-red-500'
                     }`} />
                 </div>
+                {/* Audit phases summary */}
+                {seoAudit.audit_phases && (
+                  <div className="flex gap-4 mt-2 text-[11px] text-muted-foreground">
+                    <span>HTML Crawl: {seoAudit.audit_phases.html_crawl?.pages} pages, {seoAudit.audit_phases.html_crawl?.issues} issues</span>
+                    <span>CMS Content: {seoAudit.audit_phases.cms_content?.pages_checked} pages, {seoAudit.audit_phases.cms_content?.issues} issues</span>
+                    <span>Site-wide: {seoAudit.audit_phases.site_wide?.issues} issues</span>
+                  </div>
+                )}
               </div>
 
-              {/* Audit Score Trend */}
+              {/* Score Trend */}
               {auditHistory.length > 1 && (
                 <div>
                   <h4 className="text-sm font-medium text-foreground mb-2">Score Trend</h4>
@@ -612,7 +620,7 @@ const OrganicGrowthDashboard = () => {
                 </div>
               )}
 
-              {/* Issue summary */}
+              {/* Severity summary */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-center">
                   <AlertTriangle className="w-4 h-4 text-red-500 mx-auto mb-1" />
@@ -631,14 +639,51 @@ const OrganicGrowthDashboard = () => {
                 </div>
               </div>
 
-              {/* Category breakdown */}
-              {seoAudit.category_breakdown && Object.keys(seoAudit.category_breakdown).length > 0 && (
+              {/* Category Scores Grid — the key new feature */}
+              {seoAudit.category_scores && Object.keys(seoAudit.category_scores).length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium text-foreground mb-3">Category Scores</h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2" data-testid="category-scores-grid">
+                    {(() => {
+                      const categoryLabels = {
+                        meta: 'Meta Tags', schema: 'Schema / Structured Data', headings: 'Heading Hierarchy',
+                        images: 'Image Optimization', content: 'Content Quality', social: 'Social / OG Tags',
+                        technical: 'Technical SEO', internal_linking: 'Internal Linking', eeat: 'E-E-A-T',
+                        local_seo: 'Local / Geo SEO', geo_aeo: 'AI Search (GEO)', performance: 'Performance',
+                        programmatic_seo: 'Programmatic SEO', accessibility: 'Accessibility'
+                      };
+                      return Object.entries(seoAudit.category_scores)
+                        .sort((a, b) => a[1] - b[1])
+                        .map(([cat, score]) => {
+                          const issueCount = seoAudit.category_breakdown?.[cat] || 0;
+                          return (
+                            <div key={cat} className={`rounded-lg p-2.5 border text-center ${
+                              score >= 90 ? 'bg-green-50 border-green-200' :
+                              score >= 60 ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200'
+                            }`} data-testid={`category-score-${cat}`}>
+                              <p className={`text-lg font-bold ${
+                                score >= 90 ? 'text-green-600' : score >= 60 ? 'text-amber-600' : 'text-red-600'
+                              }`}>{score}</p>
+                              <p className="text-[10px] font-medium text-foreground leading-tight">{categoryLabels[cat] || cat.replace(/_/g, ' ')}</p>
+                              {issueCount > 0 && (
+                                <p className="text-[9px] text-muted-foreground mt-0.5">{issueCount} issues</p>
+                              )}
+                            </div>
+                          );
+                        });
+                    })()}
+                  </div>
+                </div>
+              )}
+
+              {/* Category issue counts (compact) */}
+              {seoAudit.category_breakdown && Object.keys(seoAudit.category_breakdown).length > 0 && !seoAudit.category_scores && (
                 <div>
                   <h4 className="text-sm font-medium text-foreground mb-2">Issues by Category</h4>
                   <div className="flex flex-wrap gap-2">
                     {Object.entries(seoAudit.category_breakdown).sort((a, b) => b[1] - a[1]).map(([cat, count]) => (
                       <span key={cat} className="px-2.5 py-1 bg-secondary rounded-full text-xs font-medium text-foreground capitalize">
-                        {cat}: {count}
+                        {cat.replace(/_/g, ' ')}: {count}
                       </span>
                     ))}
                   </div>
@@ -668,10 +713,10 @@ const OrganicGrowthDashboard = () => {
                               <p className="text-xs text-muted-foreground truncate">{issue.url}</p>
                               {issue.suggestion && <p className="text-xs text-primary mt-0.5">{issue.suggestion}</p>}
                             </div>
-                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full flex-shrink-0 ${
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full flex-shrink-0 capitalize ${
                               issue.severity === 'critical' ? 'bg-red-100 text-red-700' :
                               issue.severity === 'warning' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
-                            }`}>{issue.category}</span>
+                            }`}>{issue.category?.replace(/_/g, ' ')}</span>
                           </div>
                         ))}
                       </div>
@@ -701,7 +746,7 @@ const OrganicGrowthDashboard = () => {
                 </div>
               )}
 
-              {/* Audit timestamp */}
+              {/* Timestamp */}
               <p className="text-xs text-muted-foreground text-right">
                 Last audit: {seoAudit.date ? new Date(seoAudit.date).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—'}
               </p>
