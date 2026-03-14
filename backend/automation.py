@@ -515,8 +515,16 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
     # 6. SEO HEALTH MONITOR — automated site auditing
     # ─────────────────────────────────────────────────────────
     async def run_seo_audit(self, site_url: str, max_pages: int = 500) -> dict:
-        """Comprehensive SEO audit: HTML crawl + CMS content + site-wide checks.
-        Modeled after claude-seo: Technical, E-E-A-T, Schema, GEO/AEO, Local SEO, Images, Content."""
+        """Comprehensive SEO audit: SPA-aware HTML crawl + CMS content + site-wide checks.
+
+        Audit methodology:
+        - If site is a React SPA: audit base HTML ONCE for head-level elements,
+          then verify all routes return HTTP 200 (reachability). Content quality
+          is audited from the database directly (Phase 2) — not from JS-rendered HTML.
+        - If site is server-rendered: full per-page HTML audit.
+
+        This eliminates false positives from crawling an empty SPA shell 169 times.
+        """
         if not BS4_AVAILABLE:
             return {"error": "BeautifulSoup not installed", "score": 0, "pages_audited": 0, "issues": []}
 
@@ -524,7 +532,7 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         sitemap_url = f"{site_url}/api/sitemap.xml"
         page_urls = await self._get_urls_from_sitemap(sitemap_url)
 
-        # Replace production domain with actual accessible site URL for crawling
+        # Normalise all sitemap URLs to the current accessible site URL
         if page_urls and site_url:
             from urllib.parse import urlparse
             site_host = urlparse(site_url).netloc
@@ -539,63 +547,122 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         if not page_urls:
             page_urls = [site_url + p for p, _, _ in STATIC_SITEMAP_PAGES]
 
-        logger.info(f"[SEO Audit] Phase 1: Crawling {len(page_urls)} pages from sitemap")
-
         all_issues: List[dict] = []
         page_results: List[dict] = []
         pages_ok = 0
+        is_site_spa = False
+        html_crawl_issues_count = 0
 
-        # Phase 1: HTML crawl audit (all pages)
         async with httpx.AsyncClient(timeout=15, follow_redirects=True, verify=False) as client:
-            for url in page_urls:
-                try:
-                    resp = await client.get(url)
-                    if resp.status_code != 200:
-                        all_issues.append({"url": url, "category": "accessibility", "severity": "critical",
-                                           "issue": f"HTTP {resp.status_code}", "suggestion": "Fix broken page"})
-                        page_results.append({"url": url, "status": resp.status_code, "score": 0, "issues": 1})
+
+            # ── Step 1: Probe base URL to detect SPA vs server-rendered ──
+            base_html = ""
+            try:
+                probe = await client.get(site_url)
+                if probe.status_code == 200:
+                    base_html = probe.text
+                    probe_soup = BeautifulSoup(base_html, "lxml")
+                    body_words = len(probe_soup.get_text(strip=True).split())
+                    # SPA shell: React root div present AND minimal raw body text
+                    is_site_spa = bool(probe_soup.find("div", id="root")) and body_words < 150
+            except Exception as e:
+                logger.warning(f"[SEO Audit] Base URL probe failed: {e}")
+
+            if is_site_spa:
+                logger.info(f"[SEO Audit] SPA detected — auditing base HTML once + reachability for {len(page_urls)} routes")
+
+                # Audit base HTML once for all head-level elements
+                head_issues = self._audit_spa_head(site_url, base_html)
+                all_issues.extend(head_issues)
+                html_crawl_issues_count = len(head_issues)
+                base_score = max(0, 100 - len(head_issues) * 15)
+                page_results.append({
+                    "url": site_url, "status": 200, "score": base_score,
+                    "issues": len(head_issues), "note": "SPA base HTML audit"
+                })
+                if base_score >= 80:
+                    pages_ok += 1
+
+                # Verify reachability (HTTP 200) for all SPA routes
+                for url in page_urls:
+                    if url.rstrip("/") == site_url.rstrip("/"):
                         continue
+                    try:
+                        resp = await client.get(url, timeout=10)
+                        if resp.status_code == 200:
+                            page_results.append({
+                                "url": url, "status": 200, "score": 100, "issues": 0,
+                                "note": "SPA route reachable"
+                            })
+                            pages_ok += 1
+                        else:
+                            all_issues.append({
+                                "url": url, "category": "accessibility", "severity": "critical",
+                                "issue": f"HTTP {resp.status_code} — route not accessible",
+                                "suggestion": "Ensure the web server serves index.html for all React Router paths"
+                            })
+                            html_crawl_issues_count += 1
+                            page_results.append({"url": url, "status": resp.status_code, "score": 0, "issues": 1})
+                    except Exception as e:
+                        all_issues.append({
+                            "url": url, "category": "accessibility", "severity": "critical",
+                            "issue": f"Route not reachable: {str(e)[:60]}",
+                            "suggestion": "Check server configuration for React Router fallback"
+                        })
+                        html_crawl_issues_count += 1
+                        page_results.append({"url": url, "status": 0, "score": 0, "issues": 1})
+                    await asyncio.sleep(0.05)
 
-                    html = resp.text
-                    issues = self._audit_page(url, html)
-                    all_issues.extend(issues)
-                    page_score = max(0, 100 - len(issues) * 5)
-                    page_results.append({"url": url, "status": 200, "score": page_score,
-                                         "issues": len(issues)})
-                    if page_score >= 80:
-                        pages_ok += 1
-                except Exception as e:
-                    all_issues.append({"url": url, "category": "accessibility", "severity": "critical",
-                                       "issue": f"Fetch failed: {str(e)[:80]}", "suggestion": "Check if page is accessible"})
-                    page_results.append({"url": url, "status": 0, "score": 0, "issues": 1})
-                await asyncio.sleep(0.2)
+            else:
+                # Server-rendered site: full per-page HTML audit
+                logger.info(f"[SEO Audit] Static site — full audit of {len(page_urls)} pages")
+                for url in page_urls:
+                    try:
+                        resp = await client.get(url)
+                        if resp.status_code != 200:
+                            all_issues.append({"url": url, "category": "accessibility", "severity": "critical",
+                                               "issue": f"HTTP {resp.status_code}", "suggestion": "Fix broken page"})
+                            page_results.append({"url": url, "status": resp.status_code, "score": 0, "issues": 1})
+                            html_crawl_issues_count += 1
+                            continue
+                        issues = self._audit_page(url, resp.text)
+                        all_issues.extend(issues)
+                        html_crawl_issues_count += len(issues)
+                        page_score = max(0, 100 - len(issues) * 5)
+                        page_results.append({"url": url, "status": 200, "score": page_score, "issues": len(issues)})
+                        if page_score >= 80:
+                            pages_ok += 1
+                    except Exception as e:
+                        all_issues.append({"url": url, "category": "accessibility", "severity": "critical",
+                                           "issue": f"Fetch failed: {str(e)[:80]}", "suggestion": "Check if page is accessible"})
+                        page_results.append({"url": url, "status": 0, "score": 0, "issues": 1})
+                        html_crawl_issues_count += 1
+                    await asyncio.sleep(0.2)
 
-        # Phase 2: CMS content audit (database content quality)
-        logger.info("[SEO Audit] Phase 2: Auditing CMS content quality")
+        # Phase 2: CMS content audit (reads directly from MongoDB — always accurate)
+        logger.info("[SEO Audit] Phase 2: Auditing CMS content quality from database")
         cms_issues = await self._audit_cms_content()
         all_issues.extend(cms_issues)
 
-        # Phase 3: Site-wide checks (local SEO, programmatic SEO quality gates)
+        # Phase 3: Site-wide structural checks
         logger.info("[SEO Audit] Phase 3: Site-wide SEO checks")
         sitewide_issues = await self._audit_site_wide(site_url)
         all_issues.extend(sitewide_issues)
 
-        # Summarise with category scoring
+        # ── Scoring ──
         total_pages = len(page_results)
-        overall_score = round(sum(p["score"] for p in page_results) / max(total_pages, 1))
         critical = sum(1 for i in all_issues if i["severity"] == "critical")
         warnings = sum(1 for i in all_issues if i["severity"] == "warning")
         info = sum(1 for i in all_issues if i["severity"] == "info")
 
-        category_counts: Dict[str, int] = {}
-        for i in all_issues:
-            category_counts[i["category"]] = category_counts.get(i["category"], 0) + 1
+        # Severity-weighted score: critical=-10, warning=-3, info=-0.5 (capped at 0)
+        overall_score = max(0, round(100 - (critical * 10) - (warnings * 3) - (info * 0.5)))
 
-        # Category-level scoring (out of 100 each)
-        category_scores = {}
-        cat_issues_by_severity = {}
+        category_counts: Dict[str, int] = {}
+        cat_issues_by_severity: Dict[str, dict] = {}
         for i in all_issues:
             cat = i["category"]
+            category_counts[cat] = category_counts.get(cat, 0) + 1
             if cat not in cat_issues_by_severity:
                 cat_issues_by_severity[cat] = {"critical": 0, "warning": 0, "info": 0}
             cat_issues_by_severity[cat][i["severity"]] = cat_issues_by_severity[cat].get(i["severity"], 0) + 1
@@ -603,14 +670,12 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
         all_categories = ["meta", "schema", "headings", "images", "content", "social",
                           "technical", "internal_linking", "eeat", "local_seo", "geo_aeo",
                           "performance", "programmatic_seo", "accessibility"]
-        total_ref = max(total_pages, 1)
+        category_scores = {}
         for cat in set(list(category_counts.keys()) + all_categories):
             crit = cat_issues_by_severity.get(cat, {}).get("critical", 0)
             warn = cat_issues_by_severity.get(cat, {}).get("warning", 0)
             inf = cat_issues_by_severity.get(cat, {}).get("info", 0)
-            # Proportional: critical deducts heavily, warnings moderate, info minimal
-            affected_pct = min(100, ((crit * 4 + warn * 2 + inf * 0.3) / total_ref) * 100)
-            category_scores[cat] = max(0, round(100 - affected_pct))
+            category_scores[cat] = max(0, round(100 - (crit * 10) - (warn * 3) - (inf * 0.5)))
 
         audit_result = {
             "date": datetime.now(timezone.utc).isoformat(),
@@ -622,22 +687,31 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             "critical": critical,
             "warnings": warnings,
             "info": info,
+            "spa_mode": is_site_spa,
             "category_breakdown": category_counts,
             "category_scores": category_scores,
             "audit_phases": {
-                "html_crawl": {"pages": total_pages, "issues": len(all_issues) - len(cms_issues) - len(sitewide_issues)},
+                "html_crawl": {
+                    "pages": total_pages,
+                    "issues": html_crawl_issues_count,
+                    "mode": "spa_head_only" if is_site_spa else "full_page_audit",
+                    "note": (
+                        "SPA detected: audited base HTML once for head-level elements + "
+                        "verified all routes are reachable. Content quality audited via CMS database."
+                    ) if is_site_spa else "Full per-page HTML audit"
+                },
                 "cms_content": {"pages_checked": await self.db.cms_pages.count_documents({}), "issues": len(cms_issues)},
                 "site_wide": {"issues": len(sitewide_issues)},
             },
             "issues": all_issues[:300],
-            "page_results": page_results,
+            "page_results": page_results[:50],  # Keep top 50 for UI display
         }
 
-        # Store in MongoDB
         await self.db.seo_audits.insert_one({**audit_result, "recorded_at": datetime.now(timezone.utc).isoformat()})
         audit_result.pop("_id", None)
-        logger.info(f"[SEO Audit] Complete: score={overall_score}, pages={total_pages}, total_issues={len(all_issues)}, "
-                     f"categories={len(category_counts)}")
+        logger.info(f"[SEO Audit] Complete: score={overall_score}, spa_mode={is_site_spa}, "
+                    f"pages={total_pages}, total_issues={len(all_issues)} "
+                    f"(critical={critical}, warnings={warnings}, info={info})")
         return audit_result
 
     async def _get_urls_from_sitemap(self, sitemap_url: str) -> List[str]:
@@ -654,8 +728,130 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
             logger.error(f"[SEO Audit] Sitemap parse error: {e}")
             return []
 
+    def _audit_spa_head(self, url: str, html: str) -> List[dict]:
+        """Audit ONLY the static <head> of an SPA base HTML shell.
+
+        Checks that are valid on raw SPA HTML (before JS renders):
+          title, meta description, robots noindex, viewport, charset, lang,
+          OG/social tags, base JSON-LD schema, render-blocking scripts.
+
+        Does NOT check: canonical (set by React Helmet per-route), H1/H2
+        (JS-rendered), images (JS-rendered), content length (JS-rendered),
+        internal links (JS-rendered), E-E-A-T (JS-rendered), local SEO (JS-rendered).
+        All content quality checks run in Phase 2 against the CMS database.
+        """
+        issues: List[dict] = []
+        soup = BeautifulSoup(html, "lxml")
+
+        # ── Title ──
+        title_tag = soup.find("title")
+        title_text = title_tag.get_text(strip=True) if title_tag else ""
+        if not title_text:
+            issues.append({"url": url, "category": "meta", "severity": "critical",
+                           "issue": "Missing <title> tag in base HTML",
+                           "suggestion": "Add a descriptive title to public/index.html (50-60 chars)"})
+        elif len(title_text) > 70:
+            issues.append({"url": url, "category": "meta", "severity": "warning",
+                           "issue": f"Base HTML title too long ({len(title_text)} chars)",
+                           "suggestion": "Shorten to 50-60 chars in public/index.html"})
+
+        # ── Meta description ──
+        meta_desc_tag = soup.find("meta", attrs={"name": "description"})
+        desc_text = meta_desc_tag.get("content", "").strip() if meta_desc_tag else ""
+        if not desc_text:
+            issues.append({"url": url, "category": "meta", "severity": "critical",
+                           "issue": "Missing meta description in base HTML",
+                           "suggestion": "Add meta description (120-160 chars) to public/index.html"})
+        elif len(desc_text) < 80:
+            issues.append({"url": url, "category": "meta", "severity": "warning",
+                           "issue": f"Base HTML meta description too short ({len(desc_text)} chars)",
+                           "suggestion": "Expand to 120-160 chars in public/index.html"})
+        elif len(desc_text) > 160:
+            issues.append({"url": url, "category": "meta", "severity": "warning",
+                           "issue": f"Base HTML meta description too long ({len(desc_text)} chars)",
+                           "suggestion": "Trim to under 160 chars in public/index.html"})
+
+        # ── Robots noindex (critical — would block all indexing) ──
+        robots_meta = soup.find("meta", attrs={"name": "robots"})
+        if robots_meta and "noindex" in robots_meta.get("content", "").lower():
+            issues.append({"url": url, "category": "meta", "severity": "critical",
+                           "issue": "Base HTML has noindex directive — entire site is de-indexed",
+                           "suggestion": "Remove noindex from public/index.html immediately"})
+
+        # ── Viewport ──
+        if not soup.find("meta", attrs={"name": "viewport"}):
+            issues.append({"url": url, "category": "technical", "severity": "critical",
+                           "issue": "Missing viewport meta tag",
+                           "suggestion": "Add <meta name='viewport' content='width=device-width, initial-scale=1'>"})
+
+        # ── Charset ──
+        if not soup.find("meta", attrs={"charset": True}):
+            issues.append({"url": url, "category": "technical", "severity": "info",
+                           "issue": "Missing charset declaration",
+                           "suggestion": "Add <meta charset='utf-8'> to public/index.html"})
+
+        # ── HTML lang attribute ──
+        html_tag = soup.find("html")
+        if html_tag and not html_tag.get("lang"):
+            issues.append({"url": url, "category": "technical", "severity": "warning",
+                           "issue": "HTML tag missing lang attribute",
+                           "suggestion": "Add lang='en' to <html> in public/index.html"})
+
+        # ── Open Graph / Social (fallback tags in base HTML) ──
+        og_title = soup.find("meta", attrs={"property": "og:title"})
+        og_desc = soup.find("meta", attrs={"property": "og:description"})
+        og_image = soup.find("meta", attrs={"property": "og:image"})
+        if not og_title or not og_desc:
+            issues.append({"url": url, "category": "social", "severity": "info",
+                           "issue": "Missing fallback OG tags in base HTML (og:title / og:description)",
+                           "suggestion": "Add og:title and og:description to public/index.html as social sharing fallback"})
+        if not og_image:
+            issues.append({"url": url, "category": "social", "severity": "info",
+                           "issue": "Missing og:image in base HTML",
+                           "suggestion": "Add og:image to public/index.html for social media previews"})
+
+        # ── JSON-LD Schema in base HTML ──
+        schema_scripts = soup.find_all("script", attrs={"type": "application/ld+json"})
+        if not schema_scripts:
+            issues.append({"url": url, "category": "schema", "severity": "warning",
+                           "issue": "No JSON-LD schema markup in base HTML",
+                           "suggestion": "Add MedicalBusiness / Physician schema to public/index.html"})
+        else:
+            for script in schema_scripts:
+                try:
+                    schema_data = json.loads(script.string or "{}")
+                    schema_type = schema_data.get("@type", "")
+                    if schema_type in ("MedicalBusiness", "Physician", "MedicalClinic"):
+                        if not schema_data.get("name"):
+                            issues.append({"url": url, "category": "schema", "severity": "warning",
+                                           "issue": f"{schema_type} schema missing 'name' field",
+                                           "suggestion": "Add doctor/clinic name to schema"})
+                        if not schema_data.get("telephone") and not schema_data.get("phone"):
+                            issues.append({"url": url, "category": "schema", "severity": "info",
+                                           "issue": f"{schema_type} schema missing telephone",
+                                           "suggestion": "Add phone number for click-to-call in search results"})
+                        if not schema_data.get("address"):
+                            issues.append({"url": url, "category": "local_seo", "severity": "warning",
+                                           "issue": f"{schema_type} schema missing address",
+                                           "suggestion": "Add address to schema for local search visibility"})
+                except (json.JSONDecodeError, TypeError):
+                    issues.append({"url": url, "category": "schema", "severity": "warning",
+                                   "issue": "Invalid JSON-LD schema (parse error)",
+                                   "suggestion": "Fix JSON syntax in structured data in public/index.html"})
+
+        # ── Render-blocking scripts ──
+        sync_scripts = [s for s in soup.find_all("script", src=True)
+                        if not s.get("async") and not s.get("defer")]
+        if len(sync_scripts) > 3:
+            issues.append({"url": url, "category": "performance", "severity": "info",
+                           "issue": f"{len(sync_scripts)} render-blocking scripts in base HTML",
+                           "suggestion": "Add async/defer to non-critical scripts to improve LCP"})
+
+        return issues
+
     def _audit_page(self, url: str, html: str) -> List[dict]:
-        """Comprehensive SEO audit of a single page — modeled after claude-seo's 13 sub-skills."""
+        """Comprehensive SEO audit of a single page — modeled after claude-seo's 13 sub-skills.
+        Called only for server-rendered (non-SPA) pages."""
         issues: List[dict] = []
         soup = BeautifulSoup(html, "lxml")
         is_spa = bool(soup.find("div", id="root"))
@@ -972,15 +1168,27 @@ Return ONLY the HTML content. No code blocks, no markdown, no explanation."""
                                        "suggestion": f"Expand {section} with more detailed content"})
 
             if page_type == "treatment":
-                for section in ["benefits", "recovery", "procedure"]:
-                    val = data.get(section)
+                # Check key treatment sections, accepting common field-name aliases
+                section_aliases = {
+                    "benefits": ["benefits"],
+                    "recovery": ["recovery", "recoveryTimeline"],
+                    "procedure": ["procedure", "procedureSteps", "procedure_steps"],
+                }
+                for section, aliases in section_aliases.items():
+                    # Use the first non-empty alias found
+                    val = None
+                    for alias in aliases:
+                        candidate = data.get(alias)
+                        if candidate and not (isinstance(candidate, (list, dict)) and len(candidate) == 0):
+                            val = candidate
+                            break
                     if not val or (isinstance(val, str) and len(val.split()) < 10) or (isinstance(val, list) and len(val) < 2):
                         issues.append({"url": f"/treatments/{slug}", "category": "content", "severity": "info",
                                        "issue": f"Treatment '{name}' weak '{section}' section",
                                        "suggestion": f"Expand {section} for E-E-A-T compliance"})
 
-            # FAQs for rich snippets
-            faqs = data.get("faqs", data.get("faq", []))
+            # FAQs for rich snippets — accept both 'faqs' and 'faq'
+            faqs = data.get("faqs") or data.get("faq", [])
             if not faqs and page_type in ("condition", "treatment"):
                 issues.append({"url": f"/{page_type}s/{slug}", "category": "geo_aeo", "severity": "info",
                                "issue": f"CMS '{name}' has no FAQs",
