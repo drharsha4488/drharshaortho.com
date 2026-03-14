@@ -11,6 +11,7 @@ import httpx
 import uuid
 import re
 import json
+import os
 import logging
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -25,10 +26,10 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
-BASE_URL = "https://drharshaortho.com"
+BASE_URL = os.environ.get("BASE_URL", os.environ.get("REACT_APP_BACKEND_URL", "https://drharshaortho.com"))
 SITEMAP_PATH = Path("/app/frontend/public/sitemap.xml")
 SITEMAP_URL = f"{BASE_URL}/api/sitemap.xml"   # Dynamic endpoint — never stale
-EMERGENT_LLM_KEY = "sk-emergent-817A95a8cA6E27eAc2"
+EMERGENT_LLM_KEY = os.environ.get("EMERGENT_LLM_KEY", "")
 
 # Fresh SEO keywords to generate blog posts for (20 topics = ~20 weeks of auto content)
 AUTOMATION_KEYWORDS = [

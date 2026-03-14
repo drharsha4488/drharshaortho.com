@@ -551,7 +551,7 @@ async def create_blog_post(post_data: BlogPostCreate):
         await db.blog_posts.insert_one(doc)
         
         # Auto: update sitemap + ping Google + IndexNow
-        await seo_automation.on_content_published(f"https://drharshaortho.com/blog/{post.slug}")
+        await seo_automation.on_content_published(f"{os.environ.get('BASE_URL', 'https://drharshaortho.com')}/blog/{post.slug}")
         
         logger.info(f"New blog post created: {post.title}")
         return {"success": True, "id": post.id, "slug": post.slug}
@@ -3781,7 +3781,7 @@ async def generate_single_blog(data: dict):
     post = await seo_automation.generate_blog_post(keyword)
     if not post:
         raise HTTPException(status_code=500, detail="Blog generation failed")
-    await seo_automation.on_content_published(f"https://drharshaortho.com/blog/{post['slug']}")
+    await seo_automation.on_content_published(f"{os.environ.get('BASE_URL', 'https://drharshaortho.com')}/blog/{post['slug']}")
     return {"success": True, "post": post}
 
 
@@ -3833,7 +3833,7 @@ async def run_seo_audit(data: dict = None, background_tasks: BackgroundTasks = N
                 site_url = line.split("=", 1)[1].strip()
                 break
     if not site_url:
-        site_url = "https://drharshaortho.com"
+        site_url = os.environ.get("BASE_URL", "https://drharshaortho.com")
 
     async def _run_audit():
         global _audit_running
