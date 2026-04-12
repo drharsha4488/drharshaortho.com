@@ -1,0 +1,4 @@
+# Netlify SPA routing — serve index.html for all routes
+# This ensures React Router handles all client-side navigation
+# and prevents 404s when users or Google visit a deep link directly
+/*    /index.html   200

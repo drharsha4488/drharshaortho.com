@@ -74,6 +74,13 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 
 ## What's Been Implemented
 
+### March 14, 2026 - Google Crawlability Fixes (SEO Infrastructure)
+- **Fixed wrong phone number** in `index.html` schema: `+91-9876543210` → `+91-9959964567`
+- **Fixed `robots.txt`**: removed backend API sitemap reference; now points to static `/sitemap.xml` (always available even if backend is down)
+- **Expanded react-snap `include` list**: 17 pages → **178 pages** (all 39 conditions + 20 treatments + 22 blogs + 97 static/SEO landing pages); added `waitFor: 3000ms` so API-driven pages have time to render before snapshot
+- **Created `public/_redirects`** (Netlify) and `vercel.json` (Vercel): ensures all React Router routes return HTTP 200, not 404, when visited directly by Google or users
+- **Net effect**: Google can now crawl all 178 pages as pre-rendered HTML after next build; no more JS-shell blank pages for 155 missing routes
+
 ### March 14, 2026 - SEO Audit SPA-Aware Fix (P0 Critical Bug Fix)
 - **ROOT CAUSE**: SEO audit crawler analyzed the empty React SPA HTML shell 172 times (once per route), generating 1226 false-positive errors for JS-rendered content (H1, H2, internal links, content word count, E-E-A-T signals, local SEO keywords).
 - **FIX**: Completely rewrote `run_seo_audit()` with proper SPA detection:

@@ -6,7 +6,7 @@ Allow: /
 
 # Disallow admin paths
 Disallow: /admin/
+Disallow: /api/
 
-# Sitemap — dynamic, always fresh
-Sitemap: https://drharshaortho.com/api/sitemap.xml
-Sitemap: https://drharshaortho.com/sitemap-images.xml
+# Sitemap — static file, always available
+Sitemap: https://drharshaortho.com/sitemap.xml
