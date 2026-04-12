@@ -74,6 +74,15 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, an
 
 ## What's Been Implemented
 
+### March 14, 2026 - react-snap Pre-render Build (97 pages)
+- Successfully ran `yarn build` + react-snap pre-render for all 97 static pages
+- All SEO landing pages, location pages, core pages pre-rendered as full HTML
+- Each page: 140KB–200KB of real HTML (vs ~2KB empty SPA shell before)
+- Zero build errors; completed in 405 seconds
+- Build config: `crawl: false`, `skipThirdPartyRequests: true`, `waitFor: 1000ms`, `navigationTimeout: 20000ms`
+- Note: Conditions/treatments/blogs excluded (API-dependent, handled by Googlebot JS rendering)
+- Build output in `/app/frontend/build/` — ready for production deployment
+
 ### March 14, 2026 - Google Crawlability Fixes (SEO Infrastructure)
 - **Fixed wrong phone number** in `index.html` schema: `+91-9876543210` → `+91-9959964567`
 - **Fixed `robots.txt`**: removed backend API sitemap reference; now points to static `/sitemap.xml` (always available even if backend is down)
