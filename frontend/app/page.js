@@ -4,6 +4,7 @@ import {
   Activity, Stethoscope, Sparkles, ArrowUpRight, MapPin, CheckCircle,
 } from 'lucide-react';
 import { getAllConditions, getAllTreatments, whatsappUrl } from '@/lib/data';
+import Reveal, { RevealStagger, RevealItem } from '@/components/Reveal';
 
 export const metadata = {
   title: 'Best Orthopedic Surgeon in Hyderabad | Dr. B Harsha Vardhana Reddy',
@@ -60,71 +61,81 @@ export default function HomePage() {
 
             {/* Left — content */}
             <div className="lg:col-span-7 space-y-7">
-              <div className="trust-pill">
-                <span className="relative flex w-2 h-2">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
-                Apollo Hospitals · Financial District, Hyderabad
-              </div>
+              <Reveal>
+                <div className="trust-pill">
+                  <span className="relative flex w-2 h-2">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                  </span>
+                  Apollo Hospitals · Financial District, Hyderabad
+                </div>
+              </Reveal>
 
-              <h1 className="font-outfit text-[2.5rem] sm:text-5xl lg:text-[4.25rem] font-semibold leading-[1.05] tracking-[-0.02em] text-slate-900">
-                Move better.<br />
-                <span className="relative inline-block">
-                  Live <span className="text-sky-600">pain-free.</span>
-                  <svg
-                    className="absolute -bottom-2 left-0 w-full h-3"
-                    viewBox="0 0 200 12" preserveAspectRatio="none" fill="none" aria-hidden
+              <Reveal delay={0.08}>
+                <h1 className="font-outfit text-[2.5rem] sm:text-5xl lg:text-[4.25rem] font-semibold leading-[1.05] tracking-[-0.02em] text-slate-900">
+                  Move better.<br />
+                  <span className="relative inline-block">
+                    Live <span className="text-sky-600">pain-free.</span>
+                    <svg
+                      className="absolute -bottom-2 left-0 w-full h-3"
+                      viewBox="0 0 200 12" preserveAspectRatio="none" fill="none" aria-hidden
+                    >
+                      <path d="M2 8 Q 50 2, 100 6 T 198 8" stroke="#0EA5E9" strokeWidth="3" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                </h1>
+              </Reveal>
+
+              <Reveal delay={0.16}>
+                <p className="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-xl">
+                  Dr. B Harsha Vardhana Reddy — Senior Orthopedic Surgeon specializing in <strong className="text-slate-900 font-semibold">robotic joint replacement</strong>, ACL reconstruction, and sports injuries. <strong className="text-slate-900 font-semibold">3500+ surgeries</strong> across 15 years.
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.24}>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+                  <a
+                    href={whatsappUrl('Hello Dr. Harsha, I would like to book an appointment for orthopedic consultation.')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-whatsapp text-base px-7 py-4"
+                    data-testid="hero-whatsapp-btn"
                   >
-                    <path d="M2 8 Q 50 2, 100 6 T 198 8" stroke="#0EA5E9" strokeWidth="3" strokeLinecap="round" />
-                  </svg>
-                </span>
-              </h1>
-
-              <p className="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-xl">
-                Dr. B Harsha Vardhana Reddy — Senior Orthopedic Surgeon specializing in <strong className="text-slate-900 font-semibold">robotic joint replacement</strong>, ACL reconstruction, and sports injuries. <strong className="text-slate-900 font-semibold">3500+ surgeries</strong> across 15 years.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
-                <a
-                  href={whatsappUrl('Hello Dr. Harsha, I would like to book an appointment for orthopedic consultation.')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-whatsapp text-base px-7 py-4"
-                  data-testid="hero-whatsapp-btn"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Book on WhatsApp
-                </a>
-                <a href="tel:+919959964567" className="btn-outline text-base px-7 py-4">
-                  <Phone className="w-5 h-5" />
-                  +91 99599 64567
-                </a>
-              </div>
+                    <MessageCircle className="w-5 h-5" />
+                    Book on WhatsApp
+                  </a>
+                  <a href="tel:+919959964567" className="btn-outline text-base px-7 py-4">
+                    <Phone className="w-5 h-5" />
+                    +91 99599 64567
+                  </a>
+                </div>
+              </Reveal>
 
               {/* Trust micro-row */}
-              <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-4 text-sm text-slate-500">
-                <div className="flex items-center gap-2">
-                  <div className="flex -space-x-1">
-                    {[1, 2, 3, 4, 5].map(i => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
+              <Reveal delay={0.32}>
+                <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-4 text-sm text-slate-500">
+                  <div className="flex items-center gap-2">
+                    <div className="flex -space-x-1">
+                      {[1, 2, 3, 4, 5].map(i => (
+                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                    <span><strong className="text-slate-900">4.9/5</strong> · 500+ reviews</span>
                   </div>
-                  <span><strong className="text-slate-900">4.9/5</strong> · 500+ reviews</span>
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-sky-600" />
+                    <span>Cashless insurance accepted</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Award className="w-4 h-4 text-sky-600" />
+                    <span>MS Ortho · Robotic Surgery Expert</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-sky-600" />
-                  <span>Cashless insurance accepted</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Award className="w-4 h-4 text-sky-600" />
-                  <span>MS Ortho · Robotic Surgery Expert</span>
-                </div>
-              </div>
+              </Reveal>
             </div>
 
             {/* Right — doctor portrait card */}
-            <div className="lg:col-span-5 relative">
+            <Reveal delay={0.1} y={32} className="lg:col-span-5 relative">
               <div className="relative">
                 {/* Background ring */}
                 <div className="absolute -inset-4 bg-gradient-to-br from-sky-200/50 via-transparent to-emerald-100/40 rounded-[2.5rem] blur-2xl" />
@@ -156,7 +167,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -171,7 +182,7 @@ export default function HomePage() {
 
             <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-2 lg:divide-x lg:divide-white/10">
               {stats.map((s, i) => (
-                <div key={s.label} className="text-center lg:px-6">
+                <Reveal key={s.label} delay={i * 0.1} y={16} className="text-center lg:px-6">
                   <div className="font-outfit text-4xl sm:text-5xl lg:text-6xl font-semibold text-white tracking-tight">
                     <span className="bg-gradient-to-br from-sky-300 to-sky-500 bg-clip-text text-transparent">
                       {s.value}
@@ -180,7 +191,7 @@ export default function HomePage() {
                   <div className="text-xs sm:text-sm text-slate-400 mt-2 font-medium tracking-wide uppercase">
                     {s.label}
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -309,26 +320,27 @@ export default function HomePage() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {conditions.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/conditions/${c.slug}`}
-                className="card-base card-hover p-6 group flex flex-col"
-                data-testid={`condition-card-${c.slug}`}
-              >
-                <div className="w-10 h-10 rounded-xl bg-sky-50 group-hover:bg-sky-600 flex items-center justify-center text-sky-600 group-hover:text-white transition-colors mb-4">
-                  <Activity className="w-5 h-5" />
-                </div>
-                <h3 className="font-outfit font-semibold text-base text-slate-900 mb-2 group-hover:text-sky-700 transition-colors">
-                  {c.title}
-                </h3>
-                <p className="text-sm text-slate-500 line-clamp-2 mb-4 flex-1">
-                  {c.content?.overview || c.meta_description}
-                </p>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-sky-600 group-hover:gap-2 transition-all">
-                  Read more <ChevronRight className="w-3.5 h-3.5" />
-                </span>
-              </Link>
+            {conditions.map((c, i) => (
+              <Reveal key={c.slug} delay={(i % 4) * 0.06} className="h-full">
+                <Link
+                  href={`/conditions/${c.slug}`}
+                  className="card-base card-hover p-6 group flex flex-col h-full"
+                  data-testid={`condition-card-${c.slug}`}
+                >
+                  <div className="w-10 h-10 rounded-xl bg-sky-50 group-hover:bg-sky-600 flex items-center justify-center text-sky-600 group-hover:text-white transition-colors mb-4">
+                    <Activity className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-outfit font-semibold text-base text-slate-900 mb-2 group-hover:text-sky-700 transition-colors">
+                    {c.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 line-clamp-2 mb-4 flex-1">
+                    {c.content?.overview || c.meta_description}
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-sm font-medium text-sky-600 group-hover:gap-2 transition-all">
+                    Read more <ChevronRight className="w-3.5 h-3.5" />
+                  </span>
+                </Link>
+              </Reveal>
             ))}
           </div>
 
@@ -351,26 +363,27 @@ export default function HomePage() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {treatments.map((t) => (
-              <Link
-                key={t.slug}
-                href={`/treatments/${t.slug}`}
-                className="card-base card-hover p-7 group relative overflow-hidden"
-                data-testid={`treatment-card-${t.slug}`}
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center text-white">
-                    <Stethoscope className="w-5 h-5" />
+            {treatments.map((t, i) => (
+              <Reveal key={t.slug} delay={(i % 3) * 0.08} className="h-full">
+                <Link
+                  href={`/treatments/${t.slug}`}
+                  className="card-base card-hover p-7 group relative overflow-hidden block h-full"
+                  data-testid={`treatment-card-${t.slug}`}
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center text-white">
+                      <Stethoscope className="w-5 h-5" />
+                    </div>
+                    <ArrowUpRight className="w-5 h-5 text-slate-300 group-hover:text-sky-600 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
                   </div>
-                  <ArrowUpRight className="w-5 h-5 text-slate-300 group-hover:text-sky-600 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
-                </div>
-                <h3 className="font-outfit font-semibold text-lg text-slate-900 mb-2 leading-snug">
-                  {t.title}
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
-                  {t.content?.description || t.meta_description}
-                </p>
-              </Link>
+                  <h3 className="font-outfit font-semibold text-lg text-slate-900 mb-2 leading-snug">
+                    {t.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
+                    {t.content?.description || t.meta_description}
+                  </p>
+                </Link>
+              </Reveal>
             ))}
           </div>
 
@@ -393,29 +406,30 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-5">
-            {testimonials.map((t) => (
-              <figure
-                key={t.name}
-                className="card-base p-7 lg:p-8 flex flex-col relative"
-                data-testid="testimonial-card"
-              >
-                <div className="flex gap-0.5 mb-5">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <blockquote className="text-slate-700 leading-relaxed flex-1 text-base">
-                  "{t.text}"
-                </blockquote>
-                <figcaption className="mt-6 pt-5 border-t border-slate-100">
-                  <div className="font-semibold text-slate-900">{t.name}</div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
-                    <MapPin className="w-3 h-3" /> {t.location}
-                    <span className="w-1 h-1 rounded-full bg-slate-300" />
-                    <span className="text-sky-600 font-medium">{t.procedure}</span>
+            {testimonials.map((t, i) => (
+              <Reveal key={t.name} delay={i * 0.1} className="h-full">
+                <figure
+                  className="card-base p-7 lg:p-8 flex flex-col relative h-full"
+                  data-testid="testimonial-card"
+                >
+                  <div className="flex gap-0.5 mb-5">
+                    {[...Array(t.rating)].map((_, j) => (
+                      <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
                   </div>
-                </figcaption>
-              </figure>
+                  <blockquote className="text-slate-700 leading-relaxed flex-1 text-base">
+                    "{t.text}"
+                  </blockquote>
+                  <figcaption className="mt-6 pt-5 border-t border-slate-100">
+                    <div className="font-semibold text-slate-900">{t.name}</div>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+                      <MapPin className="w-3 h-3" /> {t.location}
+                      <span className="w-1 h-1 rounded-full bg-slate-300" />
+                      <span className="text-sky-600 font-medium">{t.procedure}</span>
+                    </div>
+                  </figcaption>
+                </figure>
+              </Reveal>
             ))}
           </div>
 
