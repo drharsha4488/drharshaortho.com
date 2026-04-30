@@ -86,7 +86,7 @@ export default function Header() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200 hover:scale-105 shadow-md"
-              data-testid="book-appointment-btn"
+              data-testid="whatsapp-inline-btn"
             >
               <MessageCircle className="w-4 h-4" />
               WhatsApp Us
@@ -132,7 +132,7 @@ export default function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-green-500 text-white font-semibold px-4 py-3 rounded-full"
-                data-testid="mobile-book-appointment-btn"
+                data-testid="mobile-whatsapp-inline-btn"
               >
                 <MessageCircle className="w-5 h-5" /> Chat on WhatsApp
               </a>
