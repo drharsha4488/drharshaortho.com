@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu, X, Phone, ChevronRight, MessageCircle } from 'lucide-react';
+import { Menu, X, Phone, MessageCircle } from 'lucide-react';
 import { whatsappUrl } from '@/lib/data';
 
 const navLinks = [
@@ -22,8 +22,8 @@ export default function Header() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 12);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -31,53 +31,55 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/98 backdrop-blur-md shadow-lg border-b border-border/50'
-                   : 'bg-white/95 backdrop-blur-sm border-b border-border'
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-white/85 backdrop-blur-xl border-b border-slate-200/60 shadow-[0_1px_0_rgba(15,23,42,0.04)]'
+          : 'bg-white/70 backdrop-blur-md border-b border-transparent'
       }`}
       data-testid="header"
     >
       <div className="container-medical">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2" data-testid="logo-link">
+          <Link href="/" className="flex items-center gap-3 shrink-0" data-testid="logo-link">
             <picture>
               <source srcSet="/images/dr-harsha-logo.webp" type="image/webp" />
               <img
                 src="/images/dr-harsha-logo.png"
-                alt="Dr. Harsha Orthopedic Centre Logo"
-                className="h-12 lg:h-14 w-auto"
-                width="170" height="56"
+                alt="Dr. Harsha Orthopedic Centre"
+                className="h-10 lg:h-12 w-auto"
+                width="170" height="48"
                 loading="eager"
               />
             </picture>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-0.5">
             {navLinks.map((link) => {
               const isActive = pathname === link.path;
               return (
                 <Link
                   key={link.path}
                   href={link.path}
-                  className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                    isActive ? 'text-primary' : 'text-foreground hover:text-primary'
+                  className={`relative px-3.5 py-2 text-sm font-medium rounded-full transition-colors duration-200 ${
+                    isActive ? 'text-sky-700 bg-sky-50' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                   data-testid={`nav-${link.name.toLowerCase()}`}
                 >
                   {link.name}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
-                  )}
                 </Link>
               );
             })}
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-3">
-            <a href="tel:+919959964567" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+          <div className="hidden lg:flex items-center gap-2">
+            <a
+              href="tel:+919959964567"
+              className="hidden xl:inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-sky-600 transition-colors px-3 py-2 rounded-full"
+              data-testid="header-tel-btn"
+            >
               <Phone className="w-4 h-4" />
               <span>+91 99599 64567</span>
             </a>
@@ -85,7 +87,7 @@ export default function Header() {
               href={whatsappUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-4 py-2 rounded-full transition-all duration-200 hover:scale-105 shadow-md"
+              className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-sm font-semibold pl-4 pr-5 py-2.5 rounded-full shadow-[0_8px_24px_-8px_rgba(37,211,102,0.5)] hover:-translate-y-0.5 transition-all duration-300"
               data-testid="whatsapp-inline-btn"
             >
               <MessageCircle className="w-4 h-4" />
@@ -96,7 +98,7 @@ export default function Header() {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 text-foreground rounded-lg hover:bg-secondary transition-colors"
+            className="lg:hidden p-2 -mr-2 text-slate-900 rounded-full hover:bg-slate-100 transition-colors"
             aria-label="Toggle menu"
             data-testid="mobile-menu-button"
           >
@@ -106,36 +108,45 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <nav className="lg:hidden border-t border-border py-4" data-testid="mobile-menu">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.path;
-              return (
-                <Link
-                  key={link.path}
-                  href={link.path}
-                  className={`block px-4 py-3 text-sm font-medium transition-all duration-200 ${
-                    isActive ? 'text-primary bg-primary/5 border-l-2 border-primary' : 'text-foreground hover:bg-teal-light hover:pl-6'
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                  data-testid={`mobile-nav-${link.name.toLowerCase()}`}
+          <nav
+            className="lg:hidden absolute inset-x-0 top-full bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-elevated"
+            data-testid="mobile-menu"
+          >
+            <div className="container-medical py-4">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.path;
+                return (
+                  <Link
+                    key={link.path}
+                    href={link.path}
+                    className={`flex items-center justify-between px-4 py-3.5 text-[15px] font-medium rounded-xl transition-all duration-200 ${
+                      isActive ? 'text-sky-700 bg-sky-50' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                    data-testid={`mobile-nav-${link.name.toLowerCase()}`}
+                  >
+                    {link.name}
+                    <span className="text-slate-300">→</span>
+                  </Link>
+                );
+              })}
+              <div className="mt-3 pt-4 border-t border-slate-100 grid grid-cols-2 gap-2">
+                <a
+                  href="tel:+919959964567"
+                  className="flex items-center justify-center gap-2 bg-slate-900 text-white px-4 py-3 rounded-full font-semibold text-sm"
                 >
-                  {link.name}
-                </Link>
-              );
-            })}
-            <div className="px-4 py-3 mt-2 border-t border-border flex flex-col gap-3">
-              <a href="tel:+919959964567" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
-                <Phone className="w-4 h-4" /> +91 99599 64567
-              </a>
-              <a
-                href={whatsappUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-green-500 text-white font-semibold px-4 py-3 rounded-full"
-                data-testid="mobile-whatsapp-inline-btn"
-              >
-                <MessageCircle className="w-5 h-5" /> Chat on WhatsApp
-              </a>
+                  <Phone className="w-4 h-4" /> Call
+                </a>
+                <a
+                  href={whatsappUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-4 py-3 rounded-full font-semibold text-sm"
+                  data-testid="mobile-whatsapp-inline-btn"
+                >
+                  <MessageCircle className="w-4 h-4" /> WhatsApp
+                </a>
+              </div>
             </div>
           </nav>
         )}

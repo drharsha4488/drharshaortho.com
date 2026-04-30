@@ -1,7 +1,22 @@
 import './globals.css';
+import { Outfit, Plus_Jakarta_Sans } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit',
+  weight: ['300', '400', '500', '600', '700'],
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jakarta',
+  weight: ['400', '500', '600', '700'],
+});
 
 export const metadata = {
   metadataBase: new URL('https://drharshaortho.com'),
@@ -27,7 +42,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${outfit.variable} ${jakarta.variable}`}>
       <head>
         <script
           type="application/ld+json"

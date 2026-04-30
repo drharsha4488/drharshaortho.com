@@ -1,0 +1,40 @@
+{
+  "summary": "Regression + new-redesign testing against the 'UI UX Pro Max' overhaul of the static Next.js site at https://dr-harsha-nextjs.preview.emergentagent.com. Reran the iteration_16 baseline (29/29 pass) plus a new redesign-specific suite of 21 tests (test_redesign.py) — total 50/50 pytest checks pass. Playwright visual checks performed at desktop 1920x1080 and mobile 390x844: asymmetric hero with doctor portrait card on the right, sky-gradient stats strip (3500+ / 15+ / 99% / 200+) overlaps hero via -mt-24, next/font (Outfit + Plus Jakarta Sans) woff2 preloaded and __variable_* classes injected on <html>, hamburger slide-in menu opens on mobile exposing 18 nav links + Call + WhatsApp, no horizontal overflow (0px) on either viewport, zero blocking console errors. All required data-testid contracts are now fulfilled: header, footer, whatsapp-float-btn, whatsapp-inline-btn (the gap flagged in iteration_16 is resolved — now rendered in Header and hero), hero-whatsapp-btn, cta-whatsapp-btn, footer-whatsapp-btn, mobile-whatsapp-inline-btn. All CTAs point to wa.me/919959964567. /contact has 0 <form> elements. /conditions shows 39 condition cards. Sitemap returns 200 with 180+ <loc> URLs. No critical defects.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Next.js RSC soft-navigation prefetch (pre-existing, preview-only)",
+        "issue": "Same carry-over from iteration_16: on the preview ingress, RSC .rsc prefetch requests sometimes return 'Failed to fetch' and Next falls back to full-page navigation. User-visible behaviour is unaffected (functional navigation works). Likely resolves on Vercel production. On this iteration's desktop run no RSC errors surfaced in the console (0 errors total), so the issue appears intermittent.",
+        "affected_selectors": ["all <Link> components"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_static_pages.py",
+    "/app/backend/tests/test_redesign.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Redesign successfully implemented without regressions. All 29 baseline tests + 21 new redesign tests pass.",
+    "data-testid gap from previous iteration (whatsapp-inline-btn) is now fixed — attribute is rendered on inline CTAs in Header and hero.",
+    "Zero horizontal overflow at mobile 390px and desktop 1920px; responsive heading hierarchy intact.",
+    "Fonts are loaded via next/font with preload + CSS variable classes — no FOIT/FOUT-related layout shifts observed.",
+    "188 static pages; sitemap has >= 180 <loc> entries; robots.txt references sitemap.",
+    "/contact has no <form> elements — only WhatsApp + tel CTAs as required.",
+    "Floating WhatsApp button rendered on every tested page with correct wa.me/919959964567 href."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_redesign.py"
+  ],
+  "success_rate": {"backend": "N/A (no backend, supervisor stopped intentionally)", "frontend": "100% (50/50 pytest + Playwright desktop & mobile checks pass)"},
+  "test_credentials": "N/A — no auth",
+  "seed_data_creation": "None — site is fully static (data in /app/frontend/lib/data.js).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend supervisor is intentionally STOPPED — do NOT test /api/*. Base URL: https://dr-harsha-nextjs.preview.emergentagent.com. Two regression files to re-run: `pytest /app/backend/tests/test_static_pages.py /app/backend/tests/test_redesign.py -v` (50 tests). Visual spot-checks at 1920x1080 and 390x844 confirmed on this iteration — asymmetric hero + doctor portrait card + dark stats strip + sky accents all rendered correctly. Only lingering observation: RSC prefetch noise on preview ingress (non-blocking, did not appear on this run).",
+  "rca_of_the_issue": "No bugs to RCA — redesign passes all regression and new redesign-specific tests."
+}

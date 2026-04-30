@@ -25,7 +25,7 @@ export default function TreatmentPage({ params }) {
 
   return (
     <>
-      <section className="bg-gradient-to-r from-charcoal to-charcoal/90 text-white py-16 md:py-20">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950 text-white pt-20 pb-24 md:pt-24 md:pb-28">
         <div className="container-medical">
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-6">
             <Link href="/" className="hover:text-white">Home</Link>
