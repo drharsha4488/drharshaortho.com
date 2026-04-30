@@ -108,3 +108,7 @@ credentials.json
 nextjs/node_modules/@next/swc-linux-x64-gnu/next-swc.linux-x64-gnu.node
 nextjs/node_modules/@next/swc-linux-x64-gnu/next-swc.linux-x64-gnu.node
 nextjs/node_modules/@next/swc-linux-x64-musl/next-swc.linux-x64-musl.node
+frontend/node_modules/@next/swc-linux-x64-gnu/next-swc.linux-x64-gnu.node
+frontend/node_modules/@next/swc-linux-x64-musl/next-swc.linux-x64-musl.node
+_archive_old/frontend_react/node_modules/.cache/default-development/0.pack
+_archive_old/frontend_react/node_modules/puppeteer/.local-chromium/linux-686378/chrome-linux/chrome
