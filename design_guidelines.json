@@ -1,0 +1,151 @@
+{
+  "theme_and_archetype": {
+    "name": "Archetype 1 (Organic & Earthy) - Medical Premium Variant",
+    "theme": "Light Mode Only",
+    "description": "A high-end, trust-forward, and empathetic design system. Replaces the cold, clinical generic look with a premium 'concierge' aesthetic. Deep slate blues anchor the medical authority, warm bone-whites provide approachability, and WhatsApp Green is the solitary high-contrast highlight color optimized strictly for conversion."
+  },
+  "critique_of_current_site": [
+    "Lacks distinctive visual identity: The slate-blue and orange/yellow accent feels templated, diluting the perceived premium nature of Apollo Hospitals.",
+    "Generic stat presentation: The stats grid lacks depth and hierarchy. It doesn't tell a story or build immediate trust through visual weight.",
+    "Suboptimal CTA hierarchy: The primary goal is WhatsApp booking, but without a unified conversion-focused layout, CTAs might blend in.",
+    "Lack of editorial polish: Missing subtle textures, micro-interactions, and appropriate negative space that signals 'expert/specialist'."
+  ],
+  "typography": {
+    "strategy": "The 'Soft Utility' approach tailored for medical authority.",
+    "headings": {
+      "family": "Outfit",
+      "instruction": "Use Google Font 'Outfit'. Use font-light for elegance in sub-headings and font-semibold for primary impact.",
+      "tracking": "tracking-tight",
+      "sizes": {
+        "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-none",
+        "h2": "text-3xl sm:text-4xl lg:text-5xl tracking-tight",
+        "h3": "text-2xl sm:text-3xl tracking-tight",
+        "h4": "text-xl sm:text-2xl font-medium"
+      }
+    },
+    "body": {
+      "family": "Plus Jakarta Sans",
+      "instruction": "Use Google Font 'Plus Jakarta Sans'. Maintain high readability with leading-relaxed.",
+      "sizes": {
+        "base": "text-base sm:text-lg leading-relaxed text-slate-600",
+        "small": "text-sm text-slate-500",
+        "overline": "text-xs font-bold tracking-[0.2em] uppercase text-sky-600"
+      }
+    }
+  },
+  "color_palette": {
+    "primary": {
+      "name": "Authority Slate",
+      "hex": "#0F172A",
+      "tailwind": "bg-slate-900 text-slate-900"
+    },
+    "secondary": {
+      "name": "Medical Trust Sky",
+      "hex": "#0284C7",
+      "tailwind": "bg-sky-600 text-sky-600"
+    },
+    "accent": {
+      "name": "Bone White",
+      "hex": "#F8FAFC",
+      "tailwind": "bg-slate-50"
+    },
+    "cta": {
+      "name": "WhatsApp Green",
+      "hex": "#25D366",
+      "tailwind": "bg-[#25D366] hover:bg-[#1EBE5D] text-white"
+    },
+    "surface": {
+      "glass": "bg-white/70 backdrop-blur-xl border border-white/20",
+      "card": "bg-white border border-slate-100 shadow-sm"
+    }
+  },
+  "spacing_and_layout": {
+    "philosophy": "Generous Spacing, Subtle Roundness, High Contrast.",
+    "section_padding": "py-16 md:py-24 lg:py-32",
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "radii": {
+      "card": "rounded-2xl",
+      "button": "rounded-full",
+      "image": "rounded-3xl"
+    },
+    "layout_patterns": {
+      "hero": "Asymmetrical 60/40 split. Left side: Heavy typography, clear trust signals (Apollo badge), primary WhatsApp CTA. Right side: High-quality doctor portrait overlaid on abstract medical background. Do not center everything.",
+      "bento_grid": "For 'Meet the Surgeon' and Stats. Use a Tetris-style grid (col-span-full md:col-span-8 etc.) to create visual tension rather than generic equal columns.",
+      "seo_pages": "Template must include breadcrumbs, H1 heavily weighted, immediate 2nd paragraph WhatsApp CTA, a sticky table of contents (desktop), and clean hierarchical H2s."
+    }
+  },
+  "component_blueprints": {
+    "header": {
+      "desktop": "fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-200. Left: Brand. Middle: Navigation items (text-sm font-medium text-slate-600 hover:text-slate-900). Right: Primary WhatsApp button.",
+      "mobile": "Sticky top, hamburger menu opens a full-screen or slide-over sheet. Must include quick-dial and WhatsApp links inside the menu."
+    },
+    "hero": {
+      "container": "relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-50",
+      "content": "grid grid-cols-1 lg:grid-cols-12 gap-12 items-center",
+      "left_col": "lg:col-span-7 flex flex-col items-start space-y-8",
+      "right_col": "lg:col-span-5 relative h-[600px] w-full rounded-3xl overflow-hidden",
+      "trust_badge": "inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-50 text-sky-700 text-sm font-semibold border border-sky-100",
+      "cta_group": "flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
+    },
+    "stats_strip": {
+      "container": "bg-slate-900 py-12 rounded-3xl mx-4 sm:mx-6 lg:mx-8 mb-24 text-white relative z-10 -mt-12 shadow-2xl",
+      "grid": "grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-slate-800",
+      "item": "flex flex-col items-center justify-center text-center px-4",
+      "number": "text-4xl md:text-5xl font-bold text-sky-400 mb-2",
+      "label": "text-sm text-slate-400 font-medium uppercase tracking-wider"
+    },
+    "condition_card": {
+      "container": "group relative bg-white rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden",
+      "icon_wrapper": "w-12 h-12 rounded-full bg-sky-50 flex items-center justify-center mb-6 text-sky-600 group-hover:bg-sky-600 group-hover:text-white transition-colors duration-300",
+      "title": "text-xl font-semibold text-slate-900 mb-3",
+      "description": "text-slate-600 text-sm leading-relaxed mb-6",
+      "link": "inline-flex items-center text-sky-600 font-medium text-sm group-hover:translate-x-1 transition-transform duration-300"
+    },
+    "floating_whatsapp": {
+      "container": "fixed bottom-6 right-6 z-50 flex flex-col items-end group",
+      "button": "bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-[#25D366]/30 hover:-translate-y-1 hover:scale-105 hover:shadow-xl hover:shadow-[#25D366]/40 transition-all duration-300 flex items-center justify-center",
+      "tooltip": "absolute right-full mr-4 bg-white text-slate-900 px-4 py-2 rounded-xl shadow-lg border border-slate-100 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none"
+    },
+    "seo_template": {
+      "header_section": "pt-32 pb-16 bg-slate-50 border-b border-slate-200",
+      "breadcrumb": "flex items-center text-sm text-slate-500 mb-6",
+      "title": "text-4xl md:text-5xl font-bold text-slate-900 mb-6",
+      "content_layout": "grid grid-cols-1 lg:grid-cols-12 gap-12 py-16",
+      "main_article": "lg:col-span-8 prose prose-lg prose-slate max-w-none prose-headings:font-outfit prose-headings:tracking-tight prose-a:text-sky-600 prose-img:rounded-2xl",
+      "sidebar": "lg:col-span-4 space-y-8 sticky top-32"
+    }
+  },
+  "anti_patterns": [
+    "NO dark mode variants. Medical UI must remain strictly light, clean, and high-contrast.",
+    "NO purple, pink, or neon gradients. If a gradient is needed, use subtle white-to-slate-50.",
+    "NO generic centered 3-column layouts. Use asymmetrical bento grids or side-by-side splits.",
+    "NO generic Shadcn UI cards. Use the custom component blueprints defined above (HTML + Tailwind classes).",
+    "NO native HTML forms. Everything converts via the WhatsApp deep-link CTA.",
+    "NO missing hover states. Every interactive element MUST have an explicit hover state.",
+    "NO placeholder images. Use ONLY the provided media URLs."
+  ],
+  "pre_delivery_checklist": {
+    "accessibility": "Ensure all text meets 4.5:1 contrast ratio. Use focus-visible for keyboard navigation rings.",
+    "motion": "Wrap animations with Framer Motion, but respect prefers-reduced-motion CSS queries.",
+    "responsive": "Test explicitly on 375px (budget mobile). Ensure hero loads instantly and doesn't push CTA below the fold.",
+    "seo": "Maintain semantic HTML (nav, section, article, aside). H1 must be the first heading on every page."
+  },
+  "media_urls": {
+    "hero_background": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/fb40576a-d551-4640-a17a-1eb3d948c66e/images/a63c3265da4719b9e989e59cfa1f6b77caa1911711998733e69b1584fdd81de1.png",
+      "description": "Abstract medical background for the hero section."
+    },
+    "feature_3d_knee": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/fb40576a-d551-4640-a17a-1eb3d948c66e/images/d0a280c2a6d5b7ce004b2a529974d813d391070c4876316fceab6ed35bef6b92.png",
+      "description": "3D render of a knee joint. Use in 'Treatments' or 'Conditions' feature sections."
+    },
+    "doctor_portrait": {
+      "url": "https://images.pexels.com/photos/19438563/pexels-photo-19438563.jpeg",
+      "description": "Primary doctor portrait for 'Meet your surgeon' and Hero image overlay."
+    },
+    "hospital_exterior": {
+      "url": "https://images.pexels.com/photos/668300/pexels-photo-668300.jpeg",
+      "description": "Clinic/Hospital exterior for the About or Contact page."
+    }
+  }
+}
