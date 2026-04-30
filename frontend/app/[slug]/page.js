@@ -1,15 +1,13 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight, MessageCircle, CheckCircle, ChevronDown, Phone, Star, MapPin } from 'lucide-react';
+import { ChevronRight, MessageCircle, CheckCircle, ChevronDown, Phone, MapPin } from 'lucide-react';
 import { getAllSEOPageSlugs, getSEOPageBySlug } from '@/lib/seoData';
 import { whatsappUrl } from '@/lib/data';
 
-// These are the non-dynamic routes already defined — the slug catchall handles all SEO/location pages
 const RESERVED_ROUTES = ['about', 'contact', 'conditions', 'treatments', 'blog', 'testimonials', 'gallery', 'admin'];
 
 export async function generateStaticParams() {
   const all = getAllSEOPageSlugs();
-  // Filter out reserved routes
   return all.filter(p => !RESERVED_ROUTES.includes(p.slug));
 }
 
@@ -39,27 +37,28 @@ export default function SEOLandingPage({ params }) {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950 text-white pt-20 pb-24 md:pt-24 md:pb-28">
-        <div className="container-medical">
+        <div aria-hidden className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-sky-500/10 blur-3xl" />
+        <div className="container-medical relative">
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-6">
             <Link href="/" className="hover:text-white">Home</Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-white">{page.title}</span>
+            <span className="text-white/90 truncate max-w-[60ch]">{page.title}</span>
           </nav>
-          <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-serif font-semibold mb-4 leading-tight">
+          <div className="max-w-4xl">
+            <h1 className="font-outfit text-4xl md:text-5xl lg:text-6xl font-semibold mb-5 leading-[1.05] tracking-tight">
               {page.heroTitle || page.title}
             </h1>
             {page.heroSubtitle && (
-              <p className="text-xl text-white/85 mb-4">{page.heroSubtitle}</p>
+              <p className="text-lg sm:text-xl text-white/85 mb-4">{page.heroSubtitle}</p>
             )}
             {page.metaDescription && (
-              <p className="text-white/75 mb-8 leading-relaxed">{page.metaDescription}</p>
+              <p className="text-white/70 mb-8 max-w-3xl leading-relaxed">{page.metaDescription}</p>
             )}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href={whatsappUrl(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-whatsapp text-lg px-8 py-4" data-testid="seo-page-whatsapp-btn">
-                <MessageCircle className="w-6 h-6" /> Book on WhatsApp
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a href={whatsappUrl(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-whatsapp text-base px-7 py-4" data-testid="seo-page-whatsapp-btn">
+                <MessageCircle className="w-5 h-5" /> Book on WhatsApp
               </a>
-              <a href="tel:+919959964567" className="inline-flex items-center gap-2 border-2 border-white text-white hover:bg-white hover:text-charcoal font-semibold px-6 py-3 rounded-full transition-all">
+              <a href="tel:+919959964567" className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 font-semibold px-7 py-4 rounded-full backdrop-blur-sm transition-all duration-300">
                 <Phone className="w-5 h-5" /> +91 99599 64567
               </a>
             </div>
@@ -67,17 +66,22 @@ export default function SEOLandingPage({ params }) {
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Stats strip — overlap hero */}
       {c.stats && c.stats.length > 0 && (
-        <section className="bg-primary text-white py-8">
+        <section className="relative -mt-12 z-10">
           <div className="container-medical">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              {c.stats.map((s, i) => (
-                <div key={i}>
-                  <div className="text-3xl font-bold text-accent">{s.value}</div>
-                  <div className="text-sm text-white/80 mt-1">{s.label}</div>
-                </div>
-              ))}
+            <div className="bg-slate-900 rounded-3xl p-8 sm:p-10 shadow-elevated relative overflow-hidden">
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-br from-sky-500/10 via-transparent to-transparent" />
+              <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-2 lg:divide-x lg:divide-white/10">
+                {c.stats.map((s, i) => (
+                  <div key={i} className="text-center lg:px-6">
+                    <div className="font-outfit text-4xl sm:text-5xl font-semibold tracking-tight">
+                      <span className="bg-gradient-to-br from-sky-300 to-sky-500 bg-clip-text text-transparent">{s.value}</span>
+                    </div>
+                    <div className="text-xs sm:text-sm text-slate-400 mt-2 font-medium tracking-wide uppercase">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -86,23 +90,30 @@ export default function SEOLandingPage({ params }) {
       {/* Introduction */}
       {c.introduction && (
         <section className="section-padding">
-          <div className="container-medical max-w-4xl">
-            <p className="text-lg text-muted-foreground leading-relaxed whitespace-pre-line">{c.introduction}</p>
+          <div className="container-medical max-w-3xl">
+            <p className="text-lg sm:text-xl text-slate-700 leading-relaxed whitespace-pre-line">{c.introduction}</p>
           </div>
         </section>
       )}
 
       {/* Why Choose */}
       {c.whyChoose && c.whyChoose.length > 0 && (
-        <section className="section-padding bg-secondary">
+        <section className="section-padding bg-slate-50">
           <div className="container-medical">
-            <h2 className="text-2xl md:text-3xl font-serif font-semibold text-center mb-10">Why Choose Dr. Harsha?</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="max-w-2xl mb-12">
+              <p className="eyebrow mb-3">Why patients choose us</p>
+              <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight leading-[1.1]">
+                Specialist care at Apollo
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {c.whyChoose.map((item, i) => (
-                <div key={i} className="bg-card rounded-xl p-6 border border-border hover:border-primary hover:shadow-lg transition-all">
-                  <CheckCircle className="w-7 h-7 text-primary mb-4" />
-                  <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">{item.description}</p>
+                <div key={i} className="card-base card-hover p-7">
+                  <div className="w-11 h-11 rounded-xl bg-sky-50 flex items-center justify-center text-sky-600 mb-4">
+                    <CheckCircle className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-outfit font-semibold text-base text-slate-900 mb-2">{item.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{item.description}</p>
                 </div>
               ))}
             </div>
@@ -110,16 +121,21 @@ export default function SEOLandingPage({ params }) {
         </section>
       )}
 
-      {/* Specializations */}
+      {/* Specializations (only on the older curated SEO pages) */}
       {c.specializations && c.specializations.length > 0 && (
         <section className="section-padding">
           <div className="container-medical">
-            <h2 className="text-2xl md:text-3xl font-serif font-semibold text-center mb-10">Specializations</h2>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="max-w-2xl mb-12">
+              <p className="eyebrow mb-3">Specializations</p>
+              <h2 className="font-outfit text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight leading-tight">
+                Expert care across all major orthopedic conditions
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {c.specializations.map((spec, i) => (
-                <Link key={i} href={spec.link || '#'} className="bg-card border border-border hover:border-primary hover:shadow-lg rounded-xl p-5 transition-all group">
-                  <h3 className="font-semibold text-foreground group-hover:text-primary mb-2">{spec.name || spec.title}</h3>
-                  <p className="text-sm text-muted-foreground">{spec.description}</p>
+                <Link key={i} href={spec.link || '#'} className="card-base card-hover p-6 group">
+                  <h3 className="font-outfit font-semibold text-slate-900 group-hover:text-sky-700 mb-2 transition-colors">{spec.name || spec.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{spec.description}</p>
                 </Link>
               ))}
             </div>
@@ -129,12 +145,17 @@ export default function SEOLandingPage({ params }) {
 
       {/* Location info */}
       {page.location && (
-        <section className="section-padding bg-secondary">
+        <section className="section-padding">
           <div className="container-medical max-w-3xl text-center">
-            <MapPin className="w-10 h-10 text-primary mx-auto mb-4" />
-            <h2 className="text-2xl font-serif font-semibold mb-4">Serving Patients in {page.location}</h2>
-            {page.distance && <p className="text-muted-foreground mb-2">Distance from Apollo Hospitals: <strong>{page.distance}</strong></p>}
-            <p className="text-muted-foreground mb-6">Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District is easily accessible from {page.location}.</p>
+            <div className="w-14 h-14 rounded-2xl bg-sky-50 flex items-center justify-center text-sky-600 mx-auto mb-5">
+              <MapPin className="w-7 h-7" />
+            </div>
+            <h2 className="font-outfit text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight mb-3">
+              Serving Patients in {page.location}
+            </h2>
+            <p className="text-slate-600 mb-6 max-w-xl mx-auto leading-relaxed">
+              Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District is a short, well-connected drive from {page.location} — easily reached via the Outer Ring Road.
+            </p>
             <a href="https://maps.app.goo.gl/8nE3J5ajgmtizEyTA" target="_blank" rel="noopener noreferrer" className="btn-outline">
               <MapPin className="w-4 h-4" /> Get Directions
             </a>
@@ -144,17 +165,22 @@ export default function SEOLandingPage({ params }) {
 
       {/* FAQs */}
       {c.faqs && c.faqs.length > 0 && (
-        <section className="section-padding">
+        <section className="section-padding bg-slate-50">
           <div className="container-medical max-w-3xl">
-            <h2 className="text-2xl md:text-3xl font-serif font-semibold mb-8 text-center">Frequently Asked Questions</h2>
+            <div className="mb-10">
+              <p className="eyebrow mb-3">FAQs</p>
+              <h2 className="font-outfit text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight leading-tight">
+                Frequently asked questions
+              </h2>
+            </div>
             <div className="space-y-3">
               {c.faqs.map((faq, i) => (
-                <details key={i} className="border border-border rounded-lg overflow-hidden group">
-                  <summary className="flex items-center justify-between p-4 cursor-pointer bg-card hover:bg-secondary/50 font-medium">
-                    {faq.question}
-                    <ChevronDown className="w-5 h-5 flex-shrink-0 group-open:rotate-180 transition-transform" />
+                <details key={i} className="card-base overflow-hidden group">
+                  <summary className="flex items-center justify-between p-5 cursor-pointer font-medium text-slate-900 hover:bg-slate-50 transition-colors list-none">
+                    <span className="flex-1 pr-4">{faq.question}</span>
+                    <ChevronDown className="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform flex-shrink-0" />
                   </summary>
-                  <div className="p-4 bg-secondary/30 border-t border-border text-muted-foreground text-sm">{faq.answer}</div>
+                  <div className="px-5 pb-5 pt-1 text-slate-600 leading-relaxed text-sm border-t border-slate-100">{faq.answer}</div>
                 </details>
               ))}
             </div>
@@ -168,13 +194,29 @@ export default function SEOLandingPage({ params }) {
       )}
 
       {/* CTA */}
-      <section className="section-padding bg-gradient-to-r from-primary to-primary/80 text-white">
-        <div className="container-medical text-center">
-          <h2 className="text-2xl md:text-3xl font-serif font-semibold mb-4">Book Your Appointment Today</h2>
-          <p className="text-white/90 mb-8 max-w-2xl mx-auto">Chat with Dr. Harsha on WhatsApp for a quick response.</p>
-          <a href={whatsappUrl(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-whatsapp text-lg px-8 py-4">
-            <MessageCircle className="w-6 h-6" /> WhatsApp Dr. Harsha
-          </a>
+      <section className="section-padding">
+        <div className="container-medical">
+          <div className="relative bg-slate-900 rounded-3xl overflow-hidden p-10 sm:p-14 lg:p-20 text-center shadow-elevated">
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-br from-sky-600/30 via-slate-900 to-emerald-900/20" />
+            <div aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-sky-500/20 rounded-full blur-3xl" />
+            <div className="relative max-w-2xl mx-auto">
+              <p className="eyebrow text-sky-400 mb-3">Take the next step</p>
+              <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-[1.1] mb-5">
+                Book your appointment with Dr. Harsha
+              </h2>
+              <p className="text-slate-300 text-lg mb-8 max-w-xl mx-auto">
+                WhatsApp Dr. Harsha's team for appointments, second opinions, or to discuss your orthopedic condition. Typical reply within 30 minutes.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-3">
+                <a href={whatsappUrl(waMsg)} target="_blank" rel="noopener noreferrer" className="btn-whatsapp text-base px-7 py-4">
+                  <MessageCircle className="w-5 h-5" /> WhatsApp Dr. Harsha
+                </a>
+                <a href="tel:+919959964567" className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 text-white border border-white/20 font-semibold px-7 py-4 rounded-full backdrop-blur-sm transition-all duration-300">
+                  <Phone className="w-5 h-5" /> Call Now
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </>

@@ -16,6 +16,7 @@ export {
   procedureSEOPages as moreProcedurePages,
   conditionSEOPages as moreConditionPages,
 } from './moreSEOPages.js';
+export { programmaticSEOPages } from './programmaticSEOPages.js';
 
 function collectAll() {
   const { seoLandingPages } = require('./seoPages.js');
@@ -33,6 +34,7 @@ function collectAll() {
     procedureSEOPages: mProc,
     conditionSEOPages: mCond,
   } = require('./moreSEOPages.js');
+  const { programmaticSEOPages } = require('./programmaticSEOPages.js');
 
   return [
     ...(seoLandingPages || []),
@@ -46,6 +48,7 @@ function collectAll() {
     ...(mLoc || []),
     ...(mProc || []),
     ...(mCond || []),
+    ...(programmaticSEOPages || []),
   ];
 }
 
