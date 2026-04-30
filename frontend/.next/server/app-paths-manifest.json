@@ -3,15 +3,15 @@
   "/robots.txt/route": "app/robots.txt/route.js",
   "/sitemap.xml/route": "app/sitemap.xml/route.js",
   "/blog/page": "app/blog/page.js",
-  "/[slug]/page": "app/[slug]/page.js",
   "/blog/[slug]/page": "app/blog/[slug]/page.js",
-  "/gallery/page": "app/gallery/page.js",
-  "/conditions/page": "app/conditions/page.js",
-  "/conditions/[slug]/page": "app/conditions/[slug]/page.js",
   "/about/page": "app/about/page.js",
+  "/conditions/page": "app/conditions/page.js",
   "/contact/page": "app/contact/page.js",
-  "/testimonials/page": "app/testimonials/page.js",
+  "/conditions/[slug]/page": "app/conditions/[slug]/page.js",
+  "/gallery/page": "app/gallery/page.js",
   "/treatments/page": "app/treatments/page.js",
-  "/treatments/[slug]/page": "app/treatments/[slug]/page.js",
-  "/page": "app/page.js"
+  "/testimonials/page": "app/testimonials/page.js",
+  "/[slug]/page": "app/[slug]/page.js",
+  "/page": "app/page.js",
+  "/treatments/[slug]/page": "app/treatments/[slug]/page.js"
 }
