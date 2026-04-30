@@ -89,7 +89,7 @@ export default function HomePage() {
 
               <Reveal delay={0.16}>
                 <p className="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-xl">
-                  Dr. B Harsha Vardhana Reddy — Senior Consultant Orthopedic Surgeon at Apollo Hospitals & Founder of <strong className="text-slate-900 font-semibold">AgileOrtho</strong>. Specializing in <strong className="text-slate-900 font-semibold">joint replacement</strong>, arthroscopy, sports medicine & trauma. <strong className="text-slate-900 font-semibold">4,000+ surgeries</strong>, 15+ years.
+                  Dr. B Harsha Vardhana Reddy — Senior Consultant Orthopedic Surgeon at Apollo Hospitals, Financial District. Specializing in <strong className="text-slate-900 font-semibold">joint replacement</strong>, arthroscopy, sports medicine & trauma. <strong className="text-slate-900 font-semibold">4,000+ surgeries</strong>, 15+ years.
                 </p>
               </Reveal>
 
@@ -125,7 +125,7 @@ export default function HomePage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Award className="w-4 h-4 text-sky-600" />
-                    <span>DNB Ortho · MBA · Founder, AgileOrtho</span>
+                    <span>DNB Ortho · MBA · Fellowships in Arthroplasty &amp; Arthroscopy</span>
                   </div>
                 </div>
               </Reveal>
@@ -208,13 +208,13 @@ export default function HomePage() {
             </div>
             <div className="lg:col-span-7 space-y-6">
               <p className="text-lg text-slate-600 leading-relaxed">
-                Dr. B Harsha Vardhana Reddy is a Senior Consultant Orthopedic Surgeon at Apollo Hospitals, Financial District, Hyderabad and the Founder &amp; Managing Director of <strong className="text-slate-900">AgileOrtho Healthcare</strong>. With over 15 years of clinical experience, he is one of Telangana's most trusted orthopedic surgeons.
+                Dr. B Harsha Vardhana Reddy is a Senior Consultant Orthopedic Surgeon at Apollo Hospitals, Financial District, Hyderabad. With over 15 years of clinical experience, he is one of Telangana's most trusted orthopedic surgeons.
               </p>
               <p className="text-base text-slate-500 leading-relaxed">
                 Trained at Continental Hospitals with fellowships in <strong className="text-slate-700">Arthroplasty</strong> and <strong className="text-slate-700">Arthroscopy</strong>, Dr. Harsha has performed 4,000+ successful surgeries — 2,000+ joint replacements, 1,500+ arthroscopies, 3,000+ trauma cases. He combines DNB Orthopedics with an MBA in Hospital Administration to deliver care that's both medically excellent and patient-friendly.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
-                {['DNB Orthopedics', 'MBA Hospital Admin', 'Arthroplasty', 'Arthroscopy', 'Apollo Hospitals', 'Founder, AgileOrtho'].map(tag => (
+                {['DNB Orthopedics', 'MBA Hospital Admin', 'Arthroplasty', 'Arthroscopy', 'Apollo Hospitals', 'Sports Medicine'].map(tag => (
                   <span key={tag} className="bg-slate-50 text-slate-700 text-sm px-3 py-1.5 rounded-full border border-slate-200 font-medium">
                     {tag}
                   </span>

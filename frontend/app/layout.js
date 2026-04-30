@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
               '@context': 'https://schema.org',
               '@type': 'Physician',
               name: 'Dr. B Harsha Vardhana Reddy',
-              description: 'Senior Consultant Orthopedic Surgeon at Apollo Hospitals, Financial District, Hyderabad and Founder of AgileOrtho Healthcare. DNB Orthopedics with fellowships in Arthroplasty and Arthroscopy. 15+ years of experience and 4,000+ successful surgeries spanning joint replacement, sports medicine, trauma, and regenerative orthopedics.',
+              description: 'Senior Consultant Orthopedic Surgeon at Apollo Hospitals, Financial District, Hyderabad. DNB Orthopedics with fellowships in Arthroplasty and Arthroscopy. 15+ years of experience and 4,000+ successful surgeries spanning joint replacement, sports medicine, trauma, and regenerative orthopedics.',
               telephone: '+91-9959964567',
               url: 'https://drharshaortho.com',
               image: 'https://drharshaortho.com/images/dr-harsha-profile-optimized.jpg',

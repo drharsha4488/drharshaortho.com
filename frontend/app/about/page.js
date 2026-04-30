@@ -8,7 +8,7 @@ import Reveal from '@/components/Reveal';
 
 export const metadata = {
   title: 'About Dr. B Harsha Vardhana Reddy | Senior Orthopedic Surgeon, Apollo Hospitals Hyderabad',
-  description: 'Dr. B Harsha Vardhana Reddy — DNB Orthopedics, MBA, Fellowships in Arthroplasty & Arthroscopy. Senior Consultant at Apollo Hospitals Financial District, Hyderabad. 4,000+ successful surgeries, 8,000+ patients treated, 15+ years experience. Founder of AgileOrtho Healthcare.',
+  description: 'Dr. B Harsha Vardhana Reddy — DNB Orthopedics, MBA, Fellowships in Arthroplasty & Arthroscopy. Senior Consultant at Apollo Hospitals Financial District, Hyderabad. 4,000+ successful surgeries, 8,000+ patients treated, 15+ years experience.',
   alternates: { canonical: 'https://drharshaortho.com/about' },
 };
 
@@ -19,7 +19,6 @@ const milestones = [
   { year: '2017', event: 'Fellowship in Arthroscopy — Continental Hospitals, Hyderabad' },
   { year: '2020', event: 'DNB Orthopedics — Continental Hospital, Hyderabad' },
   { year: '2020', event: 'MBA in Hospital Administration — ICFAI Business School' },
-  { year: '2022', event: 'Founded AgileOrtho Healthcare (Founder & MD)' },
   { year: '2022', event: 'Consultant Orthopedic Surgeon — Himagiri Hospital, Gachibowli' },
   { year: '2025', event: 'Senior Consultant — Apollo Hospitals, Financial District' },
 ];
@@ -78,7 +77,7 @@ export default function AboutPage() {
                   Senior Consultant Orthopedic Surgeon at Apollo Hospitals, Financial District, Hyderabad.
                 </p>
                 <p className="text-base md:text-lg text-white/65 mb-8 max-w-3xl leading-relaxed">
-                  Founder &amp; Managing Director — <span className="text-sky-400 font-medium">AgileOrtho Healthcare</span>. 15+ years of clinical experience. 4,000+ successful surgeries.
+                  15+ years of clinical experience. 4,000+ successful surgeries.
                 </p>
               </Reveal>
               <Reveal delay={0.24}>
@@ -135,7 +134,7 @@ export default function AboutPage() {
               Dr. B Harsha Vardhana Reddy is one of Hyderabad's most trusted orthopedic surgeons and a healthcare entrepreneur, known for his patient-centric approach and surgical excellence. After completing his D.Ortho from the prestigious Dr. G.S. Kulkarni Institute, Miraj, he pursued advanced fellowship training in <strong>Arthroplasty</strong> and <strong>Arthroscopy</strong> at Continental Hospitals, Hyderabad.
             </p>
             <p>
-              Beyond his medical qualifications, Dr. Reddy holds an <strong>MBA in Hospital Administration</strong> from ICFAI Business School (2020), combining clinical expertise with healthcare management excellence. He is the founder and Managing Director of <strong>AgileOrtho</strong>, a healthcare startup specializing in innovative orthopedic solutions and accessible patient care.
+              Beyond his medical qualifications, Dr. Reddy holds an <strong>MBA in Hospital Administration</strong> from ICFAI Business School (2020), combining clinical expertise with healthcare management excellence to deliver care that's both medically rigorous and patient-friendly.
             </p>
             <p>
               With a commitment to using the latest minimally invasive techniques and computer-navigated surgical systems, Dr. Reddy ensures faster recovery times and better outcomes for his patients. He has successfully performed over <strong>4,000 surgeries</strong> ranging from complex trauma cases to precision joint replacements and sports injury reconstructions.
