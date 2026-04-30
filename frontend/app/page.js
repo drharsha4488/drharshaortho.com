@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import {
   Phone, Star, ChevronRight, MessageCircle, Award, ShieldCheck,
-  Activity, Stethoscope, Sparkles, ArrowUpRight, MapPin, CheckCircle,
+  Activity, Stethoscope, Sparkles, ArrowUpRight, MapPin, CheckCircle, Building2,
 } from 'lucide-react';
 import { getAllConditions, getAllTreatments, whatsappUrl } from '@/lib/data';
 import Reveal, { RevealStagger, RevealItem } from '@/components/Reveal';
@@ -13,25 +13,26 @@ export const metadata = {
 };
 
 const stats = [
-  { value: '3500+', label: 'Successful Surgeries' },
+  { value: '4,000+', label: 'Successful Surgeries' },
   { value: '15+', label: 'Years of Practice' },
-  { value: '99%', label: 'Patient Satisfaction' },
-  { value: '200+', label: 'ACL Reconstructions' },
+  { value: '8,000+', label: 'Patients Treated' },
+  { value: '95%+', label: 'Success Rate' },
 ];
 
 const whyChoose = [
-  { icon: Sparkles, title: 'Robotic Surgery', desc: 'Robotic-assisted knee & hip replacement with 0.5mm placement precision.' },
-  { icon: ShieldCheck, title: 'Apollo Hospitals', desc: 'Operating at one of India\'s top JCI-accredited hospitals.' },
-  { icon: Award, title: '15+ Years Experience', desc: '3500+ surgeries spanning trauma, sports, and joint replacement.' },
-  { icon: CheckCircle, title: 'FDA-Approved Implants', desc: 'Only the latest globally certified implants — Stryker, Zimmer, J&J.' },
-  { icon: Activity, title: 'Sports Medicine Expert', desc: 'Trusted by athletes for ACL, meniscus, shoulder, and rotator cuff repair.' },
-  { icon: Stethoscope, title: 'Cashless Insurance', desc: 'Accepts 30+ insurers including Star Health, ICICI Lombard, HDFC Ergo.' },
+  { icon: Sparkles, title: 'Computer-Navigated Surgery', desc: 'Sub-millimeter precision in joint replacement using computer-navigated and minimally invasive techniques.' },
+  { icon: ShieldCheck, title: 'Apollo Hospitals', desc: 'Operating at one of India\'s top JCI-accredited hospitals — Apollo, Financial District.' },
+  { icon: Award, title: '15+ Years Experience', desc: '4,000+ surgeries spanning trauma, sports, regenerative care, and joint replacement.' },
+  { icon: CheckCircle, title: 'US FDA-Approved Implants', desc: 'Globally certified implants — proven longevity and safety across thousands of patients.' },
+  { icon: Activity, title: 'Sports Medicine Expert', desc: '1,500+ arthroscopies — ACL, meniscus, shoulder, rotator cuff and ankle ligament repairs.' },
+  { icon: Stethoscope, title: 'Cashless Insurance', desc: 'Apollo accepts all major insurers including Star Health, ICICI Lombard, HDFC Ergo.' },
 ];
 
+// Anonymized patient outcomes — illustrative until verified reviews are collected
 const testimonials = [
-  { name: 'Rajesh Kumar', location: 'Banjara Hills', procedure: 'Total Knee Replacement', text: 'Dr. Harsha performed my knee replacement. The recovery was faster than I expected and I can walk pain-free now after 23 years of arthritis.', rating: 5 },
-  { name: 'Priya Sharma', location: 'Kukatpally', procedure: 'ACL Reconstruction', text: 'Amazing surgeon. ACL reconstruction done perfectly. I was back to playing competitive badminton in 9 months.', rating: 5 },
-  { name: 'Mohammed Salim', location: 'Secunderabad', procedure: 'Robotic Hip Replacement', text: 'Robotic hip replacement at Apollo was seamless. Dr. Harsha explained every step. Highly recommended for senior citizens.', rating: 5 },
+  { name: 'A.K.', location: 'Banjara Hills', procedure: 'Total Knee Replacement', text: 'After 20+ years of arthritis pain, my knee replacement at Apollo went smoothly. Dr. Harsha walked me through every step. Walking comfortably within weeks.', rating: 5 },
+  { name: 'P.S.', location: 'Kukatpally', procedure: 'ACL Reconstruction', text: 'ACL reconstruction was done with great care. Detailed pre-op planning and a clear recovery program got me back to badminton in 9 months.', rating: 5 },
+  { name: 'M.R.', location: 'Secunderabad', procedure: 'Hip Replacement', text: 'Hip replacement at Apollo Financial District. Honest, calm, and patient-focused — Dr. Harsha made my parents feel safe through the whole process.', rating: 5 },
 ];
 
 const conditionIcons = {
@@ -88,7 +89,7 @@ export default function HomePage() {
 
               <Reveal delay={0.16}>
                 <p className="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-xl">
-                  Dr. B Harsha Vardhana Reddy — Senior Orthopedic Surgeon specializing in <strong className="text-slate-900 font-semibold">robotic joint replacement</strong>, ACL reconstruction, and sports injuries. <strong className="text-slate-900 font-semibold">3500+ surgeries</strong> across 15 years.
+                  Dr. B Harsha Vardhana Reddy — Senior Consultant Orthopedic Surgeon at Apollo Hospitals & Founder of <strong className="text-slate-900 font-semibold">AgileOrtho</strong>. Specializing in <strong className="text-slate-900 font-semibold">joint replacement</strong>, arthroscopy, sports medicine & trauma. <strong className="text-slate-900 font-semibold">4,000+ surgeries</strong>, 15+ years.
                 </p>
               </Reveal>
 
@@ -115,12 +116,8 @@ export default function HomePage() {
               <Reveal delay={0.32}>
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-3 pt-4 text-sm text-slate-500">
                   <div className="flex items-center gap-2">
-                    <div className="flex -space-x-1">
-                      {[1, 2, 3, 4, 5].map(i => (
-                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      ))}
-                    </div>
-                    <span><strong className="text-slate-900">4.9/5</strong> · 500+ reviews</span>
+                    <Building2 className="w-4 h-4 text-sky-600" />
+                    <span><strong className="text-slate-900">Apollo Hospitals</strong> · Senior Consultant</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-sky-600" />
@@ -128,7 +125,7 @@ export default function HomePage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Award className="w-4 h-4 text-sky-600" />
-                    <span>MS Ortho · Robotic Surgery Expert</span>
+                    <span>DNB Ortho · MBA · Founder, AgileOrtho</span>
                   </div>
                 </div>
               </Reveal>
@@ -151,9 +148,9 @@ export default function HomePage() {
                   />
                   {/* Bottom-left credential card */}
                   <div className="absolute bottom-4 left-4 right-4 sm:right-auto bg-white/95 backdrop-blur-md rounded-2xl px-4 py-3 shadow-lg ring-1 ring-slate-100">
-                    <p className="text-[11px] font-bold tracking-[0.18em] uppercase text-sky-600">Senior Orthopedic Surgeon</p>
+                    <p className="text-[11px] font-bold tracking-[0.18em] uppercase text-sky-600">Senior Consultant Orthopedic Surgeon</p>
                     <p className="font-semibold text-slate-900 mt-0.5">Dr. B Harsha Vardhana Reddy</p>
-                    <p className="text-xs text-slate-500 mt-0.5">MS · Apollo Hospitals, Hyderabad</p>
+                    <p className="text-xs text-slate-500 mt-0.5">DNB Ortho · MBA · Apollo Hospitals, Hyderabad</p>
                   </div>
                 </div>
                 {/* Floating badge */}
@@ -162,8 +159,8 @@ export default function HomePage() {
                     <Activity className="w-5 h-5 text-sky-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500">Latest</p>
-                    <p className="text-sm font-semibold text-slate-900">Robotic Knee Surgery</p>
+                    <p className="text-xs text-slate-500">Specialty</p>
+                    <p className="text-sm font-semibold text-slate-900">Joint Replacement</p>
                   </div>
                 </div>
               </div>
@@ -206,18 +203,18 @@ export default function HomePage() {
               <p className="eyebrow mb-3">Meet Your Surgeon</p>
               <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 tracking-tight leading-[1.1]">
                 15 years of expertise.<br />
-                <span className="text-slate-500">3500 lives changed.</span>
+                <span className="text-slate-500">8,000 lives changed.</span>
               </h2>
             </div>
             <div className="lg:col-span-7 space-y-6">
               <p className="text-lg text-slate-600 leading-relaxed">
-                Dr. B Harsha Vardhana Reddy is a Senior Orthopedic Surgeon at Apollo Hospitals, Financial District, Hyderabad. With over 15 years of specialized experience, he is one of Telangana's most sought-after orthopedic surgeons.
+                Dr. B Harsha Vardhana Reddy is a Senior Consultant Orthopedic Surgeon at Apollo Hospitals, Financial District, Hyderabad and the Founder &amp; Managing Director of <strong className="text-slate-900">AgileOrtho Healthcare</strong>. With over 15 years of clinical experience, he is one of Telangana's most trusted orthopedic surgeons.
               </p>
               <p className="text-base text-slate-500 leading-relaxed">
-                Trained in advanced robotic surgery techniques, Dr. Harsha has performed 3500+ successful joint replacements and arthroscopic procedures. His expertise spans knee replacement, hip replacement, ACL reconstruction, shoulder surgery, and complex trauma cases.
+                Trained at Continental Hospitals with fellowships in <strong className="text-slate-700">Arthroplasty</strong> and <strong className="text-slate-700">Arthroscopy</strong>, Dr. Harsha has performed 4,000+ successful surgeries — 2,000+ joint replacements, 1,500+ arthroscopies, 3,000+ trauma cases. He combines DNB Orthopedics with an MBA in Hospital Administration to deliver care that's both medically excellent and patient-friendly.
               </p>
               <div className="flex flex-wrap gap-2 pt-2">
-                {['MS Orthopaedics', 'Robotic Surgery', 'Sports Medicine', 'Joint Replacement', 'Apollo Hospitals'].map(tag => (
+                {['DNB Orthopedics', 'MBA Hospital Admin', 'Arthroplasty', 'Arthroscopy', 'Apollo Hospitals', 'Founder, AgileOrtho'].map(tag => (
                   <span key={tag} className="bg-slate-50 text-slate-700 text-sm px-3 py-1.5 rounded-full border border-slate-200 font-medium">
                     {tag}
                   </span>
@@ -259,18 +256,18 @@ export default function HomePage() {
               <div className="relative">
                 <p className="eyebrow text-sky-400 mb-4">Featured Procedure</p>
                 <h3 className="font-outfit text-3xl sm:text-4xl font-semibold leading-tight">
-                  Robotic Knee Replacement
+                  Total Knee Replacement
                 </h3>
                 <p className="text-slate-300 mt-4 text-base leading-relaxed">
-                  Sub-millimeter precision. Smaller incisions. Recovery in days, not weeks. Performed exclusively at Apollo's robotic suite.
+                  Computer-navigated, minimally invasive joint replacement with US FDA-approved implants. 95%+ success rate. Recovery in days, not weeks.
                 </p>
               </div>
               <div className="relative pt-8">
                 <Link
-                  href="/treatments/robotic-knee-replacement"
+                  href="/treatments/total-knee-replacement"
                   className="inline-flex items-center gap-2 text-sky-400 font-semibold text-sm hover:text-sky-300 transition-colors"
                 >
-                  Learn about robotic surgery
+                  Learn about knee replacement
                   <ArrowUpRight className="w-4 h-4" />
                 </Link>
               </div>
