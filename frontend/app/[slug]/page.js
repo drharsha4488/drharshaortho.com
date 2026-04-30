@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight, MessageCircle, CheckCircle, ChevronDown, Phone, MapPin } from 'lucide-react';
+import { ChevronRight, MessageCircle, CheckCircle, ChevronDown, Phone, MapPin, Stethoscope } from 'lucide-react';
 import { getAllSEOPageSlugs, getSEOPageBySlug } from '@/lib/seoData';
 import { whatsappUrl } from '@/lib/data';
+import { getSiblingsForProgrammaticPage, PROC_TO_TREATMENT_SLUG, COND_TO_CONDITION_SLUG } from '@/lib/internalLinks';
+import RelatedLinks from '@/components/RelatedLinks';
 
 const RESERVED_ROUTES = ['about', 'contact', 'conditions', 'treatments', 'blog', 'testimonials', 'gallery', 'admin'];
 
@@ -32,6 +34,15 @@ export default function SEOLandingPage({ params }) {
 
   const c = page.content || {};
   const waMsg = `Hello Dr. Harsha, I found you via "${page.title}". I would like to book an orthopedic consultation.`;
+
+  // Internal hub linking — siblings of this programmatic page
+  const siblings = (page.pageType === 'procedure-location' || page.pageType === 'condition-location')
+    ? getSiblingsForProgrammaticPage(page, 8)
+    : { otherLocations: [], otherProcsSameLocation: [], otherCondsSameLocation: [] };
+
+  // Bridge link back to canonical condition/treatment page
+  const canonicalTreatment = page.procedureSlug ? PROC_TO_TREATMENT_SLUG[page.procedureSlug] : null;
+  const canonicalCondition = page.conditionSlug ? COND_TO_CONDITION_SLUG[page.conditionSlug] : null;
 
   return (
     <>
@@ -189,6 +200,49 @@ export default function SEOLandingPage({ params }) {
               '@type': 'FAQPage',
               mainEntity: c.faqs.map(f => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })),
             })}} />
+          </div>
+        </section>
+      )}
+
+      {/* INTERNAL LINK HUB — siblings & canonical bridge */}
+      {siblings.otherLocations && siblings.otherLocations.length > 0 && (
+        <RelatedLinks
+          subtitle="Available across Hyderabad"
+          title={`${page.procedureName || page.conditionName || 'Care'} in other parts of the city`}
+          pages={siblings.otherLocations}
+          icon={MapPin}
+        />
+      )}
+
+      {(siblings.otherProcsSameLocation?.length > 0 || siblings.otherCondsSameLocation?.length > 0) && (
+        <RelatedLinks
+          subtitle={`Other treatments in ${page.location}`}
+          title="Explore related orthopedic care"
+          pages={siblings.otherProcsSameLocation || siblings.otherCondsSameLocation || []}
+          icon={Stethoscope}
+          variant="compact"
+        />
+      )}
+
+      {/* Bridge to canonical procedure/condition page for topical authority */}
+      {(canonicalTreatment || canonicalCondition) && (
+        <section className="section-padding pt-0">
+          <div className="container-medical max-w-3xl">
+            <div className="card-base p-6 sm:p-8 bg-sky-50/50 border-sky-100">
+              <p className="eyebrow mb-2">Learn more</p>
+              <h2 className="font-outfit text-xl sm:text-2xl font-semibold text-slate-900 mb-3">
+                Detailed information about {page.procedureName || page.conditionName}
+              </h2>
+              <p className="text-slate-600 mb-5 text-sm leading-relaxed">
+                Read about the procedure steps, recovery timeline, risks, costs, and FAQs on our dedicated guide.
+              </p>
+              <Link
+                href={canonicalTreatment ? `/treatments/${canonicalTreatment}` : `/conditions/${canonicalCondition}`}
+                className="btn-outline"
+              >
+                Read the full guide <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </section>
       )}

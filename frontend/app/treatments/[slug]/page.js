@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ChevronRight, MessageCircle, CheckCircle, ChevronDown, Phone, ShieldCheck, AlertTriangle, BarChart3 } from 'lucide-react';
+import { ChevronRight, MessageCircle, CheckCircle, ChevronDown, Phone, ShieldCheck, AlertTriangle, BarChart3, MapPin } from 'lucide-react';
 import { getTreatmentBySlug, getAllTreatmentSlugs, whatsappUrl } from '@/lib/data';
+import { getRelatedLocationPagesForProcedure } from '@/lib/internalLinks';
+import RelatedLinks from '@/components/RelatedLinks';
 
 export async function generateStaticParams() {
   return getAllTreatmentSlugs();
@@ -33,6 +35,7 @@ export default function TreatmentPage({ params }) {
   const waMsg = `Hello Dr. Harsha, I would like to know more about ${treatment.title} and book a consultation.`;
   const steps = c.procedureSteps || c.procedure_steps || c.procedure;
   const faqs = c.faqs || c.faq;
+  const relatedLocationPages = getRelatedLocationPagesForProcedure(params.slug, null, 12);
 
   return (
     <>
@@ -240,6 +243,16 @@ export default function TreatmentPage({ params }) {
             })}} />
           </div>
         </section>
+      )}
+
+      {/* INTERNAL LINK HUB — location-specific care for this procedure */}
+      {relatedLocationPages.length > 0 && (
+        <RelatedLinks
+          subtitle="Find care near you"
+          title={`${treatment.title.replace(/\s*in\s+Hyderabad\s*$/i, '')} across Hyderabad`}
+          pages={relatedLocationPages}
+          icon={MapPin}
+        />
       )}
 
       {/* Final CTA */}

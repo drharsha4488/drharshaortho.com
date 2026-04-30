@@ -168,6 +168,11 @@ function buildProcedureLocationPage(proc, loc, modifier) {
     heroTitle: h1,
     heroSubtitle: `Senior Consultant Orthopedic Surgeon · Apollo Hospitals, Financial District`,
     location: loc.name,
+    locationSlug: loc.slug,
+    procedureSlug: proc.slug,
+    procedureName: proc.name,
+    pageType: 'procedure-location',
+    modifier: modifier.replace(/-$/, '') || 'in',
     content: {
       introduction: introTpl({ proc, loc }),
       whyChoose: pickWhyChoose(seed),
@@ -198,6 +203,10 @@ function buildConditionLocationPage(cond, loc) {
     heroTitle: `${cond.name} Treatment in ${loc.name}`,
     heroSubtitle: `Senior Consultant Orthopedic Surgeon · Apollo Hospitals, Financial District`,
     location: loc.name,
+    locationSlug: loc.slug,
+    conditionSlug: cond.slug,
+    conditionName: cond.name,
+    pageType: 'condition-location',
     content: {
       introduction: introTpl({ cond, loc }),
       whyChoose: pickWhyChoose(seed),

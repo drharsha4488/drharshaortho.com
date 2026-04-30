@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ChevronRight, MessageCircle, CheckCircle, ChevronDown, Phone, Stethoscope, AlertCircle } from 'lucide-react';
+import { ChevronRight, MessageCircle, CheckCircle, ChevronDown, Phone, Stethoscope, AlertCircle, MapPin } from 'lucide-react';
 import { getConditionBySlug, getAllConditionSlugs, whatsappUrl } from '@/lib/data';
+import { getRelatedLocationPagesForCondition } from '@/lib/internalLinks';
+import RelatedLinks from '@/components/RelatedLinks';
 
 export async function generateStaticParams() {
   return getAllConditionSlugs();
@@ -32,6 +34,7 @@ export default function ConditionPage({ params }) {
 
   const c = condition.content || {};
   const waMsg = `Hello Dr. Harsha, I am suffering from ${condition.title} and would like to consult you for treatment options.`;
+  const relatedLocationPages = getRelatedLocationPagesForCondition(params.slug, null, 12);
 
   return (
     <>
@@ -216,6 +219,16 @@ export default function ConditionPage({ params }) {
             })}} />
           </div>
         </section>
+      )}
+
+      {/* INTERNAL LINK HUB — location-specific care for this condition */}
+      {relatedLocationPages.length > 0 && (
+        <RelatedLinks
+          subtitle="Find care near you"
+          title={`${condition.title.replace(/\s*in\s+Hyderabad\s*$/i, '')} treatment across Hyderabad`}
+          pages={relatedLocationPages}
+          icon={MapPin}
+        />
       )}
 
       {/* Final CTA */}
