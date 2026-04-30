@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 210 24% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 24% 16%;
+    --primary: 174 72% 30%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 210 14% 97%;
+    --secondary-foreground: 210 24% 16%;
+    --muted: 210 14% 97%;
+    --muted-foreground: 215 20% 35%;
+    --accent: 43 93% 53%;
+    --accent-foreground: 210 24% 16%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 174 72% 36%;
+    --radius: 0.5rem;
+  }
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+}
+
+@layer components {
+  .container-medical {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  .section-padding {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+  .btn-whatsapp {
+    @apply inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold
+           px-6 py-3 rounded-full transition-all duration-200 hover:scale-105 shadow-lg;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-accent hover:brightness-110 text-accent-foreground
+           font-semibold px-6 py-3 rounded-lg transition-all duration-200 shadow-md;
+  }
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border-2 border-primary text-primary hover:bg-primary
+           hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200;
+  }
+}
