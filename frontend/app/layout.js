@@ -1,4 +1,5 @@
 import './globals.css';
+import Script from 'next/script';
 import { Outfit, Plus_Jakarta_Sans } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -76,6 +77,20 @@ export default function RootLayout({ children }) {
         <main className="flex-1 pt-16 lg:pt-20">{children}</main>
         <Footer />
         <WhatsAppButton variant="float" />
+
+        {/* Google Analytics — GA4 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-3P71PLBL85"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-3P71PLBL85');
+          `}
+        </Script>
       </body>
     </html>
   );
