@@ -88,19 +88,13 @@ frontend/node_modules/.cache/default-development/1.pack
 # *.env.*
 -e 
 # Environment files - KEEP FOR DEPLOYMENT
-# *.env
-# *.env.*
+# *.env files are committed for Emergent native deployment (MANAGE_SECRETS step)
 frontend/node_modules/puppeteer/.local-chromium/linux-686378/chrome-linux/chrome
 frontend/node_modules/.cache/default-development/11.pack
 -e 
-# Environment files
-*.env
-*.env.*
+# Environment files - intentionally NOT blocking .env so Emergent deployment can read them
 -e 
-# Environment and credential files
-.env
-.env.*
-*.env
+# Environment and credential files - block only secret-bearing files, NOT .env
 credentials.json
 *.pem
 *.key
@@ -114,55 +108,35 @@ _archive_old/frontend_react/node_modules/.cache/default-development/0.pack
 _archive_old/frontend_react/node_modules/puppeteer/.local-chromium/linux-686378/chrome-linux/chrome
 -e 
 # Environment and credential files
-.env
-.env.*
-*.env
 credentials.json
 *.pem
 *.key
 .credentials
 -e 
 # Environment and credential files
-.env
-.env.*
-*.env
 credentials.json
 *.pem
 *.key
 .credentials
 -e 
 # Environment and credential files
-.env
-.env.*
-*.env
 credentials.json
 *.pem
 *.key
 .credentials
 -e 
 # Environment and credential files
-.env
-.env.*
-*.env
 credentials.json
 *.pem
 *.key
 .credentials
 -e 
 # Environment and credential files
-.env
-.env.*
-*.env
 credentials.json
 *.pem
 *.key
 .credentials
 -e 
 # Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
+
+# .env intentionally tracked for Emergent deployment MANAGE_SECRETS step
