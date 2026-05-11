@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/blog/[slug]":{},"/blog":{},"/conditions":{},"/contact":{},"/[slug]":{},"/about":{},"/testimonials":{},"/gallery":{},"/treatments":{},"/":{},"/treatments/[slug]":{},"/conditions/[slug]":{}}}
+{"version":1,"functions":{"/blog":{},"/[slug]":{},"/conditions":{},"/blog/[slug]":{},"/gallery":{},"/contact":{},"/about":{},"/treatments/[slug]":{},"/treatments":{},"/":{},"/testimonials":{},"/conditions/[slug]":{}}}
