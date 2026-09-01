@@ -9,7 +9,7 @@ Build a comprehensive, SEO-optimized website for Dr. B Harsha Vardhana Reddy, Se
 - Content lives in plain JS files under `/app/frontend/lib/` so the user can edit and redeploy without a CMS
 
 ## Tech Stack
-- Next.js 14 App Router (static + SSG, **992 prerendered pages**)
+- Next.js 14 App Router (static + SSG, **2,052 prerendered pages**)
 - Tailwind CSS + custom design tokens (sky-600 medical / slate-950 / #25D366 WhatsApp)
 - next/font Google — Outfit (headings) + Plus Jakarta Sans (body)
 - motion@12 — scroll-triggered fade-up animations
@@ -73,9 +73,11 @@ Each programmatic page now has ~17 inbound/outbound internal links:
 - ✅ Real bio restored across all pages (no fictional credentials)
 - ✅ Premium UI/UX redesign with Outfit + Plus Jakarta Sans
 - ✅ 805 programmatic SEO pages generated
+- ✅ **Regional expansion (Jun 2026): Telangana + Andhra Pradesh cities** — programmatic SEO grown to 1,864 pages (site total 2,052). 20 regional cities (Warangal, Nizamabad, Karimnagar, Khammam, Mahbubnagar, Nalgonda, Siddipet, Suryapet, Adilabad + Vijayawada, Visakhapatnam, Guntur, Nellore, Kurnool, Rajahmundry, Kakinada, Tirupati, Anantapur, Kadapa, Ongole) with travel/teleconsult-focused content (WhatsApp reports before travel, single-trip planning, outstation support, distance context). Two-tier location model (metro = short-drive framing, regional = travel framing) in `lib/programmaticSEOPages.js`. Tier-aware renderer in `app/[slug]/page.js` (localContext section, dynamic location blurb, regional WhatsApp CTA, "Across Telangana & Andhra Pradesh" related links). Physician JSON-LD `areaServed` = Telangana + AP.
+- ✅ Removed stale `public/sitemap.xml` + `public/robots.txt` that shadowed dynamic routes — `/sitemap.xml` now serves all 2,049 URLs incl. regional pages.
 - ✅ Internal linking hub wired
 - ✅ Vercel `Root Directory = frontend` documented
-- ✅ Build clean — 992 static pages
+- ✅ Build clean — 2,052 static pages, 0 errors
 - ⏳ User QA pending on live preview / Vercel deploy
 
 ## P1 / Backlog

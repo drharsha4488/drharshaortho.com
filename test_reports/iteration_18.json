@@ -1,0 +1,26 @@
+{
+  "summary": "Frontend-only testing of the regional (Telangana + AP) programmatic SEO expansion on the preview URL. Verified regional procedure/condition pages (Vijayawada, Warangal, Visakhapatnam), metro page regression (Hyderabad), WhatsApp CTA hrefs, related-link navigation, homepage + header nav, and sitemap. 100 regional slugs spot-checked over 20 cities x 5 page types: all HTTP 200, zero 404s, zero console/page errors. One real SEO defect found: /sitemap.xml served is a STALE STATIC file in public/ that shadows app/sitemap.js and contains only 192 URLs with NO programmatic/regional slugs.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Sitemap / SEO discovery", "issue": "/app/frontend/public/sitemap.xml is a stale static file (192 <loc> entries, no programmatic pages) and takes precedence over the dynamic app/sitemap.js route (whose built body is 388KB and DOES contain vijayawada/warangal/etc.). robots.txt points to this stale sitemap, so ~1,860 new regional/metro programmatic pages are not discoverable via sitemap. Fix: delete public/sitemap.xml (let app/sitemap.js serve it) or regenerate the static file from the full page list.", "affected_selectors": ["/sitemap.xml", "/robots.txt"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/tests/check_slugs.sh"],
+  "action_items": [
+    "Remove or regenerate /app/frontend/public/sitemap.xml so /sitemap.xml includes all regional programmatic slugs (verify grep vijayawada in the served sitemap > 0)."
+  ],
+  "critical_code_review_comments": [
+    "public/sitemap.xml silently shadowing app/sitemap.js is a duplicate source of truth for sitemap generation — keep only the dynamic generator to avoid regressions on future page additions.",
+    "programmaticSEOPages.js is a large single-module generator (~366 lines, content banks + builders); consider splitting taxonomy/content-banks/builders if it grows further."
+  ],
+  "updated_files": ["/app/tests/check_slugs.sh"],
+  "success_rate": {"backend": "not tested (per request)", "frontend": "95% (all page-render/CTA/nav checks pass; sitemap coverage fails)"},
+  "seed_data_creation": "none (static site)",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Verified passing: /best-knee-replacement-in-vijayawada (H1 'Best Knee Replacement Surgeon for Vijayawada Patients', hero wa.me/919959964567 + tel CTA, stats 4,000+/15+/8,000+/95%+, 'Travelling from Vijayawada?' section with data-testid='regional-whatsapp-btn' whose href prefills 'I am from Vijayawada...', 6 FAQs, 'Across Telangana & Andhra Pradesh' related links, related-link click navigates to /best-partial-knee-replacement-in-vijayawada OK); /cost-of-hip-replacement-in-warangal; /knee-arthritis-treatment-in-visakhapatnam; /best-knee-replacement-in-hyderabad (metro framing 'Outer Ring Road', no regional button); homepage + About nav. Use /app/tests/check_slugs.sh for bulk slug 404 sweeps (takes >2 min, run in background).",
+  "rca_of_the_issue": "Next.js serves files in public/ before matching app routes, so the legacy hand-written public/sitemap.xml (192 URLs, generated before the programmatic expansion) overrides the dynamic app/sitemap.js output which correctly includes 53 vijayawada references. Reproduce: curl $BASE/sitemap.xml | grep -c vijayawada -> 0, while grep -c vijayawada .next/server/app/sitemap.xml.body -> 53."
+}

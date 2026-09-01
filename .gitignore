@@ -21,7 +21,10 @@ node_modules/
 
 # Next.js
 /.next/
+.next/
+frontend/.next/
 /out/
+frontend/out/
 next-env.d.ts
 *.tsbuildinfo
 

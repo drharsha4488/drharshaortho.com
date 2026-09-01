@@ -44,6 +44,8 @@ export default function SEOLandingPage({ params }) {
   const canonicalTreatment = page.procedureSlug ? PROC_TO_TREATMENT_SLUG[page.procedureSlug] : null;
   const canonicalCondition = page.conditionSlug ? COND_TO_CONDITION_SLUG[page.conditionSlug] : null;
 
+  const isRegional = page.locationTier === 'regional';
+
   return (
     <>
       {/* Hero */}
@@ -107,6 +109,23 @@ export default function SEOLandingPage({ params }) {
         </section>
       )}
 
+      {/* Local / travel context — extra editorial body copy */}
+      {c.localContext && (
+        <section className="section-padding pt-0">
+          <div className="container-medical max-w-3xl">
+            <div className={`card-base p-6 sm:p-8 ${isRegional ? 'bg-emerald-50/60 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
+              <p className="eyebrow mb-3">{isRegional ? `Travelling from ${page.location}?` : `Serving ${page.location}`}</p>
+              <p className="text-slate-700 leading-relaxed">{c.localContext}</p>
+              {isRegional && (
+                <a href={whatsappUrl(`Hello Dr. Harsha, I am from ${page.location}. I would like to send my reports for an opinion before travelling to Hyderabad.`)} target="_blank" rel="noopener noreferrer" className="btn-whatsapp mt-6" data-testid="regional-whatsapp-btn">
+                  <MessageCircle className="w-5 h-5" /> Send reports on WhatsApp before you travel
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Why Choose */}
       {c.whyChoose && c.whyChoose.length > 0 && (
         <section className="section-padding bg-slate-50">
@@ -162,10 +181,10 @@ export default function SEOLandingPage({ params }) {
               <MapPin className="w-7 h-7" />
             </div>
             <h2 className="font-outfit text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight mb-3">
-              Serving Patients in {page.location}
+              Serving Patients {isRegional ? `from ${page.location}` : `in ${page.location}`}
             </h2>
             <p className="text-slate-600 mb-6 max-w-xl mx-auto leading-relaxed">
-              Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District is a short, well-connected drive from {page.location} — easily reached via the Outer Ring Road.
+              {page.locationBlurb || `Dr. B Harsha Vardhana Reddy at Apollo Hospitals, Financial District is a short, well-connected drive from ${page.location} — easily reached via the Outer Ring Road.`}
             </p>
             <a href="https://maps.app.goo.gl/8nE3J5ajgmtizEyTA" target="_blank" rel="noopener noreferrer" className="btn-outline">
               <MapPin className="w-4 h-4" /> Get Directions
@@ -207,8 +226,10 @@ export default function SEOLandingPage({ params }) {
       {/* INTERNAL LINK HUB — siblings & canonical bridge */}
       {siblings.otherLocations && siblings.otherLocations.length > 0 && (
         <RelatedLinks
-          subtitle="Available across Hyderabad"
-          title={`${page.procedureName || page.conditionName || 'Care'} in other parts of the city`}
+          subtitle={isRegional ? 'Across Telangana & Andhra Pradesh' : 'Available across Hyderabad'}
+          title={isRegional
+            ? `${page.procedureName || page.conditionName || 'Care'} for patients in other cities`
+            : `${page.procedureName || page.conditionName || 'Care'} in other parts of the city`}
           pages={siblings.otherLocations}
           icon={MapPin}
         />
