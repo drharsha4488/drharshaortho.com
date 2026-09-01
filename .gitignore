@@ -143,3 +143,6 @@ credentials.json
 # Environment and credential files
 
 # .env intentionally tracked for Emergent deployment MANAGE_SECRETS step
+.env
+.env.*
+*.env
